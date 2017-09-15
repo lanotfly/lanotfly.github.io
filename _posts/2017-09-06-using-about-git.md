@@ -2,7 +2,7 @@
 layout: default
 title: 关于git的使用
 ---
-<h2>{{ page.title }}</h2>
+{{ page.title }}
 以前很不适应，正在努力  
 相比svn来说，简直就是一个质的飞跃。  
 并不是每家公司都会使用git，但是大型项目用的多。  
