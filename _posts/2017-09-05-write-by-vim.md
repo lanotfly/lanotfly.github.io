@@ -1,10 +1,9 @@
 ---
 layout: default
 title: 在github上开的博客
+data: 2017-09-05 22:22:22
 ---
-<h2>{{ page.title }}</h2>
 我的第一篇文章  
 用vim来做编辑器，感觉还是很不错的。  
 刚开始慢一点，慢慢就熟悉起来了。  
 试试看，以后会定期更新点感想。  
-{{ page.date | date_to_string }}
