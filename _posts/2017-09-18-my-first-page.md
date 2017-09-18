@@ -5,7 +5,7 @@ date:   2017-09-18 15:10:26 +0900
 categories: jekyll page
 ---
 Recently I learn the jekyll on the github, so decided to make a blog for myself.
-Not for something others, just by the interest.
+Not for something else, just by the interesting.
 
 You can also do it by yourself.
 
