@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Thanks God"
-date:   2017-09-19 10:10:26 +0900
+date:   2017-09-23 10:10:26 +0900
 categories: jekyll page
 ---
 O, my God.I give thanks to you.
