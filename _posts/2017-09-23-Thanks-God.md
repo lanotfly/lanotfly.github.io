@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Thanks God"
+date:   2017-09-19 10:10:26 +0900
+categories: jekyll page
+---
+O, my God.I give thanks to you.
+There are many things to have to say thanks to you.
+Without you, I cannot do so good as now.
+
+Halleluyah
