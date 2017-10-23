@@ -16,7 +16,7 @@
 title: Yu Wang's Blog
 email: lanotfly@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  This site is based on jekyll.
+  This site is based on jekyll.  
   Thank you for coming! BR
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
