@@ -17,7 +17,7 @@ title: Yu Wang's Blog
 email: lanotfly@gmail.com
 description: Thank you for coming! BR
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://lanotfly.com" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: /:year/:month/:title/
 
 #twitter_username: lanotfly
