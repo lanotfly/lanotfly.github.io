@@ -23,10 +23,6 @@ permalink: /:year/:month/:title/
 
 #twitter_username: lanotfly
 github_username:  lanotfly
-social:
-    weibo: lanotfly
-    github: lanotfly
-    twitter: lanotfly
 
 # Build settings
 markdown: kramdown
