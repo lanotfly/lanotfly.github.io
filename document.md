@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Doc
+title: 文章
 permalink: /doc/
 ---
 
