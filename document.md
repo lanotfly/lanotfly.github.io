@@ -1,3 +1,9 @@
+---
+layout: page
+title: Doc
+permalink: /doc/
+---
+
 <ul>
   {% for post in site.posts %}
     <li>
