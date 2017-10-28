@@ -21,6 +21,8 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://lanotfly.com" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: /:year/:month/:title/
 
+paginate: 3
+
 #twitter_username: lanotfly
 github_username:  lanotfly
 
