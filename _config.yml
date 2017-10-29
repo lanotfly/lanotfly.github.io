@@ -22,8 +22,8 @@ blog_button:
 
 # Navigation buttons in the front page.
 nav:
-    - {title: About, description: about me, url: '/about'}
-    - {title: Home, description: home, url: '/'}
+    - {title: About, description: about me, url: '/#
+    - {title: Home, description: home, url: '/#'}
     # - {title: Another Button, description: A button, url: 'http://example.com'}
 
 # Pagination
