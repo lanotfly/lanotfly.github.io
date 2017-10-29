@@ -1,45 +1,49 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+# Basic
+title: Vno Jekyll
+subtitle: A blog-orientation theme for Jekyll
+welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
+description: Vno Jekyll is a port of my Ghost theme vno.
+creator: <a href="http://onev.cat">@onevcat</a>
 
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-title: Yu Wang's Blog
-email: lanotfly@gmail.com
-welcome_message: hello world
-description: Thank you for coming! BR
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://lanotfly.com" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://vno.onevcat.com"
+
 permalink: /:year/:month/:title/
 
-paginate: 3
+# Format
+highlighter: rouge
 
-#twitter_username: lanotfly
-github_username:  lanotfly
+# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
+cover_color: red
 
-# Build settings
-markdown: kramdown
-theme: minima
-plugins:
-  - jekyll-feed
+# The blog button should not be removed.
+blog_button:
+    title: Blog
+    description: Visit blog
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+# Navigation buttons in the front page.
+nav:
+    - {title: Projects, description: My Projects, url: 'http://project.onevcat.com'}
+    # - {title: Another Button, description: A button, url: 'http://example.com'}
+
+# Pagination
+gems: [jekyll-paginate]
+paginate: 10
+paginate_path: "page/:num/"
+
+# Comment
+comment:
+    disqus: lanotfly
+    # duoshuo: 
+    
+# Social
+social:
+    weibo: lanotfly
+    github: lanotfly
+    twitter: lanotfly
+    gplus: 101451140448782093699
+    Mail: Lanotfly@gmail.com
+
+# Google Analytics
+ga:
+    # id: your_ga_id
+    # host: your_host
