@@ -2,8 +2,8 @@
 title: Yu Wang Blog
 subtitle: A blog-orientation theme for Jekyll
 welcome_message: <a href="https://github.com/lanotfly/lanotfly.github.io" target="_blank">Download the theme</a>
-description: Vno Jekyll is a port of my Ghost theme vno.
-creator: <a href="http://onev.cat">@onevcat</a>
+description: Welcome to my Blog
+creator: Yu
 
 url: "http://lanotfly.com"
 
@@ -41,7 +41,7 @@ social:
     github: lanotfly
     twitter: lanotfly
     gplus: 101451140448782093699
-    Mail: Lanotfly@gmail.com
+    Mail: lanotfly@gmail.com
 
 # Google Analytics
 ga:
