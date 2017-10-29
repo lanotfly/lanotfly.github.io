@@ -1,7 +1,7 @@
 # Basic
 title: Yu Wang Blog
 subtitle: A blog-orientation theme for Jekyll
-welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
+welcome_message: <a href="https://github.com/lanotfly/lanotfly.github.io" target="_blank">Download the theme</a>
 description: Vno Jekyll is a port of my Ghost theme vno.
 creator: <a href="http://onev.cat">@onevcat</a>
 
@@ -22,7 +22,7 @@ blog_button:
 
 # Navigation buttons in the front page.
 nav:
-    - {title: Projects, description: My Projects, url: 'http://project.onevcat.com'}
+    - {title: UOO123, description: Other Blog, url: 'http://uoo123.com'}
     # - {title: Another Button, description: A button, url: 'http://example.com'}
 
 # Pagination
