@@ -4,7 +4,8 @@ title:  "vscode feeling"
 date:   2018-02-07 15:10:26 +0900
 categories: jekyll page
 ---
-使用vscode有一段时间了，感觉比emacs要舒服多了，再配合terminal的vim简直
-可以和emacs相匹敌
+I have used vscode for some times, really feel that it is a good editor for programmer.
+In the past time, may be the emacs is best for me, because of the inside terminal.
+Vscode also has the terminal embaded, so vim is naturally can be used.
 
-这篇文章就是用vscode的vim编辑的
+Best regards.
