@@ -11,15 +11,15 @@ $(document).ready(function () {
 //      $('.panel-cover').addClass('panel-cover--collapsed');
       $('.panel-cover').css('max-height', currentHeight);
       $('.panel-cover').animate({
-        'max-height': '700px',
-        'height': '30%'
-      }, 700, swing = 'swing', function () {});
+        'max-height': '400px',
+        'height': '15%'
+      }, 400, swing = 'swing', function () {});
     } else {
       $('.panel-cover').css('max-width', currentWidth);
       $('.panel-cover').animate({
         'max-width': '700px',
         'width': '30%'
-      }, 700, swing = 'swing', function () {});
+      }, 400, swing = 'swing', function () {});
     }
   });
 
