@@ -8,7 +8,7 @@ $(document).ready(function () {
     currentWidth = $('.panel-cover').width();
     currentHeight = $('.panel-cover').height();
     if (currentWidth < 960) {
-//      $('.panel-cover').addClass('panel-cover--collapsed');
+      $('.panel-cover').addClass('panel-cover--collapsed');
       $('.panel-cover').css('max-height', currentHeight);
       $('.panel-cover').animate({
         'max-height': '200px',
