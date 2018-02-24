@@ -6,8 +6,14 @@ $(document).ready(function () {
     if ($('.panel-cover').hasClass('panel-cover--collapsed')) return;
     $('.main-post-list').removeClass('hidden');
     currentWidth = $('.panel-cover').width();
-    if (currentWidth > 960) {
-      $('.panel-cover').addClass('panel-cover--collapsed');
+    currentHeight = $('.panel-cover').height();
+    if (currentWidth < 960) {
+//      $('.panel-cover').addClass('panel-cover--collapsed');
+      $('.panel-cover').css('max-height', currentHeight);
+      $('.panel-cover').animate({
+        'max-height': '700px',
+        'height': '30%'
+      }, 700, swing = 'swing', function () {});
     } else {
       $('.panel-cover').css('max-width', currentWidth);
       $('.panel-cover').animate({
