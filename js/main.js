@@ -11,8 +11,8 @@ $(document).ready(function () {
 //      $('.panel-cover').addClass('panel-cover--collapsed');
       $('.panel-cover').css('max-height', currentHeight);
       $('.panel-cover').animate({
-        'max-height': '400px',
-        'height': '15%'
+        'max-height': '200px',
+        'height': '17%'
       }, 400, swing = 'swing', function () {});
     } else {
       $('.panel-cover').css('max-width', currentWidth);
