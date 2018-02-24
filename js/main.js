@@ -8,12 +8,12 @@ $(document).ready(function () {
     currentWidth = $('.panel-cover').width();
     currentHeight = $('.panel-cover').height();
     if (currentWidth < 960) {
-      $('.panel-cover').addClass('panel-cover--collapsed');
       $('.panel-cover').css('max-height', currentHeight);
       $('.panel-cover').animate({
         'max-height': '200px',
         'height': '17%'
       }, 400, swing = 'swing', function () {});
+      $('.panel-cover').addClass('panel-cover--collapsed');
     } else {
       $('.panel-cover').css('max-width', currentWidth);
       $('.panel-cover').animate({
