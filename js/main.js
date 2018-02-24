@@ -12,7 +12,7 @@ $(document).ready(function () {
       $('.panel-cover').css('max-width', currentWidth);
       $('.panel-cover').animate({
         'max-width': '700px',
-        'width': '0%'
+        'width': '30%'
       }, 400, swing = 'swing', function () {});
     }
   });
