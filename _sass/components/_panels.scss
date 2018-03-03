@@ -45,10 +45,8 @@
 }
 
   .panel-cover--collapsed {
-//    width: 30%;
-//    max-width: 700px;
-    width: 0%;
-    max-width: 0px;
+    width: 30%;
+    max-width: 700px;
   }
 
   .panel-cover--overlay {
@@ -59,7 +57,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    @include linear-gradient(140deg, rgba(#444444,.6) 20%, rgba(#000000,.9));
+    @include linear-gradient(140deg, rgba(#fcf9f9,.6) 20%, rgba(#fbfce7,.9));
   }
 
   .panel-cover__logo {

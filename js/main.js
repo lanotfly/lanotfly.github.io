@@ -17,7 +17,7 @@ $(document).ready(function () {
     } else {
       $('.panel-cover').css('max-width', currentWidth);
       $('.panel-cover').animate({
-        'max-width': '700px',
+        'max-width': '0px',
         'width': '0%'
       }, 400, swing = 'swing', function () {});
     }
