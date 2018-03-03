@@ -45,8 +45,10 @@
 }
 
   .panel-cover--collapsed {
-    width: 30%;
-    max-width: 700px;
+//    width: 30%;
+//    max-width: 700px;
+    width: 0%;
+    max-width: 0px;
   }
 
   .panel-cover--overlay {
