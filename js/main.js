@@ -4,7 +4,7 @@ $(document).ready(function () {
     // If already in blog, return early without animate overlay panel again.
     if (location.hash && location.hash == "#blog")
     {
-      location.href = "/";
+      location.href = "http://lanotfly.com";
       return;
     }
     if ($('.panel-cover').hasClass('panel-cover--collapsed')) return;
