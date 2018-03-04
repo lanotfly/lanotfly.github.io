@@ -21,7 +21,7 @@ $(document).ready(function () {
         'width': '30%'
       }, 400, swing = 'swing', function () {});
     }
-    this.href = "/";
+    $('a.blog-button').href = "/";
   });
 
   if (window.location.hash && window.location.hash == "#blog") {
