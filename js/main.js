@@ -4,6 +4,12 @@ $(document).ready(function () {
     // If already in blog, return early without animate overlay panel again.
     if (location.hash && location.hash == "#blog")
     {
+      currentWidth = $('.panel-cover').width();
+      $('.panel-cover').css('max-width', currentWidth);
+      $('.panel-cover').animate({
+        'max-width': '100%',
+        'width': '100%'
+      }, 400, swing = 'swing', function () {});
       location.href = "http://lanotfly.com";
       return;
     }
