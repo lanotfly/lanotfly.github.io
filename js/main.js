@@ -24,6 +24,7 @@ $(document).ready(function () {
         'height': '17%'
       }, 400, swing = 'swing', function () {});
       $('.panel-cover').addClass('panel-cover--collapsed');
+      location.reload(true);
     } else {
       $('.panel-cover').css('max-width', currentWidth);
       $('.panel-cover').animate({
