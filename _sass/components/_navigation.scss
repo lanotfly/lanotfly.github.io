@@ -21,11 +21,11 @@ nav {
       position: relative;
       @extend .btn;
       border-color: #FFF;
-      color: rgb(27, 26, 26);
+      color: #FFF;
       opacity: .8;
 
       &:hover {
-        color: rgb(26, 24, 24);
+        color: #FFF;
         border-color: #FFF;
         opacity: 1;
       }
