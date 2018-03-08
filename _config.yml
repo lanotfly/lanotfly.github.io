@@ -16,7 +16,7 @@ highlighter: rouge
 cover_color: slate
 
 # The blog button should not be removed.
-blog_button1:
+blog_button:
     title: Blog
     description: Visit blog
 
