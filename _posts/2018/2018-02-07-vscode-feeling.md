@@ -6,7 +6,7 @@ categories: jekyll page
 ---
  **vim** | **emacs** |**vscode**
  -- | -- | --
- simple |difficult | happy 
+ simple | difficult | happy 
 
 I have used vscode for some times, really feel that it is a good editor for a programmer.  
 In the past time, may be the emacs is best for me, because of the inside terminal.
