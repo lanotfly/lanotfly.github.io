@@ -1,1 +1,1 @@
-Based on [Vno - Jekyll](https://github.com/onevcat/vno-jekyll)
+This is my blog.
