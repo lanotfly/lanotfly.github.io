@@ -10,7 +10,7 @@ $(document).ready(function () {
         'max-width': '100%',
         'width': '100%'
       }, 400, swing = 'swing', function () {});
-      location.href = "http://lanotfly.com";
+      location.href = "https://lanotfly.github.io";
       return;
     }
     if ($('.panel-cover').hasClass('panel-cover--collapsed')) return;
