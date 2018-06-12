@@ -1,11 +1,11 @@
 # Basic
 title: Yu Wang Blog
 subtitle: A blog-orientation theme for Jekyll
-welcome_message: <a href="http://lanotfly.com/tetris/" target="_blank">Tetris(game)</a>
+welcome_message: <a href="http://lanotfly.github.io/tetris/" target="_blank">Tetris(game)</a>
 description: Welcome to my Blog
 creator: Yu
 
-url: "http://lanotfly.com"
+url: "http://lanotfly.github.io"
 
 permalink: /:year/:month/:title/
 
