@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Feel God's love"
+title:  "The way you do effect yourself"
 date:   2018-05-13 15:10:26 +0900
 categories: jekyll page
 ---
