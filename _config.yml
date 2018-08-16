@@ -49,3 +49,5 @@ ga:
     # host: your_host
 
 markdown: kramdown
+
+theme: jekyll-theme-cayman
