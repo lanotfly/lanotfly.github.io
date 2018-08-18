@@ -296,7 +296,7 @@ td:last-child {
 .footer {
   display: block;
   padding: 2em 0 0 0;
-  border-top: 2px solid $gray-light;
+  border-top: 2px solid #6ab750;
   font-size: .7em;
   color: lighten($gray-dark, 10%);
 }
@@ -306,7 +306,7 @@ td:last-child {
     margin-bottom: .7em;
 
     a {
-      color: lighten($gray-dark, 5%);
+      color: #6ab750;
       text-decoration: underline;
 
       &:hover {
