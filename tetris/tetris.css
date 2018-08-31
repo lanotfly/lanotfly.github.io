@@ -43,6 +43,7 @@ div.block {
     height: 27px;
     background-color: #69c;
     border: 1px solid #ddd;
+    border-radius: 20px;
 }
 
 div.space {
@@ -58,4 +59,5 @@ div.current {
     height: 27px;
     background-color: #906;
     border: 1px solid #ddd;
+    border-radius: 20px;
 }
