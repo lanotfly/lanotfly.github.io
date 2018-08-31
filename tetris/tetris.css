@@ -8,7 +8,7 @@ div#screen {
 
 div#panel {
     position: absolute;
-/*    top: 0px;     */
+    left: 260px;
     width: 150px;
     height: 514px;
     border: 1px solid #036;
