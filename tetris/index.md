@@ -10,6 +10,6 @@ layout: default
     };
 </script>
 
-<div class="log"></div>
 <div class="screen"></div>
+<div class="log"></div>
 <div class="data"></div>
