@@ -1,5 +1,5 @@
 body {
-    position: absolute;
+    position: relative;
     margin:0 auto;
     padding:0;
     width: 80%;
@@ -8,7 +8,7 @@ body {
 }
 
 div#screen {
-    position: absolute;
+    position: relative;
     top: 0px;
     width: 258px;
     height: 514px;
@@ -16,7 +16,7 @@ div#screen {
 }
 
 div#log {
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 258px;
     width: 148px;
@@ -28,7 +28,7 @@ div#log {
 }
 
 div#data {
-    position: absolute;
+    position: relative;
     top: 32px;
     left: 258px;
     width: 148px;
@@ -40,7 +40,7 @@ div#data {
 }
 
 div#btn_left {
-    position: absolute;
+    position: relative;
     top: 514px;
     left: 0px;
     width: 135px;
@@ -51,7 +51,7 @@ div#btn_left {
     text-align: center;
 }
 div#btn_up {
-    position: absolute;
+    position: relative;
     top: 514px;
     left: 135px;
     width: 135px;
@@ -62,7 +62,7 @@ div#btn_up {
     text-align: center;
 }
 div#btn_right {
-    position: absolute;
+    position: relative;
     top: 514px;
     left: 270px;
     width: 135px;
@@ -73,7 +73,7 @@ div#btn_right {
     text-align: center;
 }
 div#btn_down {
-    position: absolute;
+    position: relative;
     top: 595px;
     left: 0px;
     width: 203px;
@@ -84,7 +84,7 @@ div#btn_down {
     text-align: center;
 }
 div#btn_pause {
-    position: absolute;
+    position: relative;
     top: 595px;
     left: 203px;
     width: 203px;
@@ -98,7 +98,7 @@ div#btn_pause {
 /* --------------------------- */
 
 div.block {
-    position: absolute;
+    position: relative;
     width: 27px;
     height: 27px;
     background-color: #69c;
@@ -106,14 +106,14 @@ div.block {
 }
 
 div.space {
-    position: absolute;
+    position: relative;
     width: 27px;
     height: 27px;
     background-color: #eee;
 }
 
 div.current {
-    position: absolute;
+    position: relative;
     width: 27px;
     height: 27px;
     background-color: #906;
