@@ -1,14 +1,5 @@
-/*body {
-    position: relative;
-    margin:0 auto;
-    padding:0;
-    width: 80%;
-    height: 80%;
-    text-align: center;
-}*/
-
 div#screen {
-    position: relative;
+    position: absolute;
     top: 0px;
     width: 258px;
     height: 514px;
@@ -16,7 +7,7 @@ div#screen {
 }
 
 div#log {
-    position: relative;
+    position: absolute;
     top: 0px;
     left: 258px;
     width: 148px;
@@ -28,69 +19,13 @@ div#log {
 }
 
 div#data {
-    position: relative;
+    position: absolute;
     top: 32px;
     left: 258px;
     width: 148px;
     height: 482px;
     border: 1px solid #999;
     background-color: rgb(217, 238, 192);
-    color: #fff;
-    text-align: center;
-}
-
-div#btn_left {
-    position: relative;
-    top: 514px;
-    left: 0px;
-    width: 135px;
-    height: 80px;
-    border: 1px solid #999;
-    background-color: rgb(247, 192, 222);
-    color: #fff;
-    text-align: center;
-}
-div#btn_up {
-    position: relative;
-    top: 514px;
-    left: 135px;
-    width: 135px;
-    height: 80px;
-    border: 1px solid #999;
-    background-color: rgb(247, 192, 222);
-    color: #fff;
-    text-align: center;
-}
-div#btn_right {
-    position: relative;
-    top: 514px;
-    left: 270px;
-    width: 135px;
-    height: 80px;
-    border: 1px solid #999;
-    background-color: rgb(247, 192, 222);
-    color: #fff;
-    text-align: center;
-}
-div#btn_down {
-    position: relative;
-    top: 595px;
-    left: 0px;
-    width: 203px;
-    height: 80px;
-    border: 1px solid #999;
-    background-color: rgb(247, 192, 222);
-    color: #fff;
-    text-align: center;
-}
-div#btn_pause {
-    position: relative;
-    top: 595px;
-    left: 203px;
-    width: 203px;
-    height: 80px;
-    border: 1px solid #999;
-    background-color: rgb(247, 192, 222);
     color: #fff;
     text-align: center;
 }
