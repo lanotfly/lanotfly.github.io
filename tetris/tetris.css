@@ -6,12 +6,20 @@ div#screen {
     border: 1px solid #036;
 }
 
+div#panel {
+    position: absolute;
+/*    top: 0px;     */
+    width: 150px;
+    height: 514px;
+    border: 1px solid #036;
+}
+
 div#log {
     position: absolute;
 /*    top: 0px;     */
     left: 558px;  
     width: 148px;
-    height: 32px;
+    height: 30px;
     border: 1px solid #999;
     background-color: rgb(247, 192, 222);
     color: #fff;
@@ -23,7 +31,7 @@ div#data {
     top: 32px;
     left: 558px;    
     width: 148px;
-    height: 482px;
+    height: 480px;
     border: 1px solid #999;
     background-color: rgb(217, 238, 192);
     color: #fff;
