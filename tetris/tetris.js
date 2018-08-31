@@ -402,7 +402,7 @@ function main() {
 
 	bricks = init_view(board[0].length, board.length);
 	user = new User().init(board, bricks);
-	toggle();
+	//toggle();
 }
 
 // vim:set fdm=marker:
