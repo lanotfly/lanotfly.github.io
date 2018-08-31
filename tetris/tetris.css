@@ -16,8 +16,6 @@ div#panel {
 
 div#log {
     position: absolute;
-/*    top: 0px;     */
-    left: 558px;  
     width: 148px;
     height: 30px;
     border: 1px solid #999;
@@ -28,8 +26,7 @@ div#log {
 
 div#data {
     position: absolute;
-    top: 32px;
-    left: 558px;    
+    top: 32px;   
     width: 148px;
     height: 480px;
     border: 1px solid #999;
