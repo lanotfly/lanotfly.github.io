@@ -9,7 +9,8 @@ layout: default
         main();
     };
 </script>
-
+<div>
 <div id="screen"></div>
 <div id="log"></div>
 <div id="data"></div>
+</div>
