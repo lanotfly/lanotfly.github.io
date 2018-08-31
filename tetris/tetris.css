@@ -1,4 +1,4 @@
-div.screen {
+div#screen {
     position: absolute;
 /*    top: 0px;     */
     width: 258px;
@@ -6,7 +6,7 @@ div.screen {
     border: 1px solid #036;
 }
 
-div.log {
+div#log {
     position: absolute;
 /*    top: 0px;     */
 /*    left: 258px;  */
@@ -18,7 +18,7 @@ div.log {
     text-align: center;
 }
 
-div.data {
+div#data {
     position: absolute;
 /*    top: 32px;
     left: 258px;    */
