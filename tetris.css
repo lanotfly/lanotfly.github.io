@@ -1,0 +1,121 @@
+body {
+    position: absolute;
+    margin:0 auto;
+    padding:0;
+    width: 80%;
+    height: 80%;
+    text-align: center;
+}
+
+div#screen {
+    position: absolute;
+    top: 0px;
+    width: 258px;
+    height: 514px;
+    border: 1px solid #036;
+}
+
+div#log {
+    position: absolute;
+    top: 0px;
+    left: 258px;
+    width: 148px;
+    height: 32px;
+    border: 1px solid #999;
+    background-color: rgb(247, 192, 222);
+    color: #fff;
+    text-align: center;
+}
+
+div#data {
+    position: absolute;
+    top: 32px;
+    left: 258px;
+    width: 148px;
+    height: 482px;
+    border: 1px solid #999;
+    background-color: rgb(217, 238, 192);
+    color: #fff;
+    text-align: center;
+}
+
+div#btn_left {
+    position: absolute;
+    top: 514px;
+    left: 0px;
+    width: 135px;
+    height: 80px;
+    border: 1px solid #999;
+    background-color: rgb(247, 192, 222);
+    color: #fff;
+    text-align: center;
+}
+div#btn_up {
+    position: absolute;
+    top: 514px;
+    left: 135px;
+    width: 135px;
+    height: 80px;
+    border: 1px solid #999;
+    background-color: rgb(247, 192, 222);
+    color: #fff;
+    text-align: center;
+}
+div#btn_right {
+    position: absolute;
+    top: 514px;
+    left: 270px;
+    width: 135px;
+    height: 80px;
+    border: 1px solid #999;
+    background-color: rgb(247, 192, 222);
+    color: #fff;
+    text-align: center;
+}
+div#btn_down {
+    position: absolute;
+    top: 595px;
+    left: 0px;
+    width: 203px;
+    height: 80px;
+    border: 1px solid #999;
+    background-color: rgb(247, 192, 222);
+    color: #fff;
+    text-align: center;
+}
+div#btn_pause {
+    position: absolute;
+    top: 595px;
+    left: 203px;
+    width: 203px;
+    height: 80px;
+    border: 1px solid #999;
+    background-color: rgb(247, 192, 222);
+    color: #fff;
+    text-align: center;
+}
+
+/* --------------------------- */
+
+div.block {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    background-color: #69c;
+    border: 1px solid #ddd;
+}
+
+div.space {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    background-color: #eee;
+}
+
+div.current {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    background-color: #906;
+    border: 1px solid #ddd;
+}
