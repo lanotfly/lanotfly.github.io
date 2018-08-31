@@ -98,7 +98,7 @@ div#btn_pause {
 /* --------------------------- */
 
 div.block {
-    position: relative;
+    position: absolute;
     width: 27px;
     height: 27px;
     background-color: #69c;
@@ -106,14 +106,14 @@ div.block {
 }
 
 div.space {
-    position: relative;
+    position: absolute;
     width: 27px;
     height: 27px;
     background-color: #eee;
 }
 
 div.current {
-    position: relative;
+    position: absolute;
     width: 27px;
     height: 27px;
     background-color: #906;
