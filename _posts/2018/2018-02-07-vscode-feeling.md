@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "vscode feeling"
-date:   2018-02-07 15:10:26 +0900
+date:   2018-02-07 16:10:26 +0900
 categories: jekyll page
 ---
 I have used vscode for some times, really feel that it is a good editor for a programmer.  
