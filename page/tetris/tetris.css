@@ -1,6 +1,5 @@
 div#screen {
     position: absolute;
-/*    top: 0px;     */
     width: 258px;
     height: 514px;
     border: 1px solid #036;
@@ -59,5 +58,5 @@ div.current {
     height: 27px;
     background-color: #906;
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 5px;
 }
