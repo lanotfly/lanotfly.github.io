@@ -404,5 +404,3 @@ function main() {
 	user = new User().init(board, bricks);
 	//toggle();
 }
-
-// vim:set fdm=marker:
