@@ -1,4 +1,10 @@
-This is my blog also for my javascrip test.  
-I need something to manage my document about work or knowledge.  
-Just use this repository to do it.  
-Edit it on web-ide, so may have many commits only by sigle test.  
+This is my blog also for my javascrip test. which is only in the page folder.   
+I need something to manage my document about work or knowledge. This repository is for it.  
+Not formally using this repository, but for testing or blog writing or something else.  
+Edit it by web-ide, so maybe have many dummy commits.  
+
+The blog is based on jekyll.  
+
+Welcome to star me.  
+
+To be continue...
