@@ -1,7 +1,6 @@
 ---
 layout: default
 ---
-<p>
 Exodus 20 3~17  
 3 You shall have no other gods before me.  
 4 You shall not make for yourself an image in the form of anything in heaven above or on the earth beneath or in the waters below. 5 You shall not bow down to them or worship them; for I, the Lord your God, am a jealous God, punishing the children for the sin of the parents to the third and fourth generation of those who hate me, 6 but showing love to a thousand generations of those who love me and keep my commandments.  
@@ -13,7 +12,6 @@ Exodus 20 3~17
 15 You shall not steal.  
 16 You shall not give false testimony against your neighbor.  
 17 You shall not covet your neighbor’s house. You shall not covet your neighbor’s wife, or his male or female servant, his ox or donkey, or anything that belongs to your neighbor.  
-</p>
 
 <div class="youtube_container">
   <iframe src="https://www.youtube.com/embed/qumYPTrINUM" frameborder="0" allowfullscreen class="youtube_video"></iframe>
