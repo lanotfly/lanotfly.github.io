@@ -8,4 +8,6 @@ When I was 18 years old, entered the school of NanJin Science and Technology. At
 
 Not learning truly on the first two years in school, for I get free from my parent. I offen go to the outside to play game at the net cafe. Playing the net game, because it feels much more funny than the study. In the game you have a account for you, each time you use it to login, you will get a charactor based on the last time you logout. It is continueous, So I feel that it is great, you can train the person in the game. And you are not alone, also friends in the same game. The two years, almost have not study any thing but spend a lot of money and time in it. The thing that even now I regreted.
 
+I did not write blog at that time.
+
 To be continue...
