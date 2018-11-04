@@ -61,7 +61,7 @@ User.prototype.init = function(board, bricks) {
             // right
             if (that.right_ok()) that.move_right();
             draw(that.board, that.bricks, that);
-        } else if (kc == 38 || kc = 87) {
+        } else if (kc == 38 || kc == 87) {
             // up rotate
             if (that.rotate_ok()) {
                 that.block.rotate();
