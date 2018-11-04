@@ -73,7 +73,7 @@ User.prototype.init = function(board, bricks) {
                 that.move_down();
                 draw(that.board, that.bricks, that);
             }
-        } else if (kc == 32) {
+        } else if (kc == 32 || kc == 65 || kc == 68 || kc == 87 || kc == 83) {
             // space
             toggle();
         }
