@@ -1,2 +1,8 @@
 .sass-cache
 .jekyll-metadata
+package.json
+goorm.manifest
+.bundle/
+_site/
+bin/
+
