@@ -50,4 +50,4 @@ ga:
 
 markdown: kramdown
 
-theme: minima
+theme: jekyll-theme-cayman
