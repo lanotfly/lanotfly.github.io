@@ -89,6 +89,8 @@ h5 {
 p {
   margin-bottom: 1.3em;
   line-height: 1.7em;
+  font-size: .9em;
+  color: #999999;
 }
 
 strong {
@@ -285,10 +287,10 @@ td:last-child {
   }
 
 .frame-border {
-  border: 1px solid #6ab750;
+  border: 1px solid #CCC;
   border-style: dashed;
-  border-radius: 20px;
-  padding: 15px 15px;
+  border-radius: 10px;
+  padding: 12px 12px;
   font-size: .8em;
   margin-left: 10px;
 }
@@ -296,7 +298,7 @@ td:last-child {
 .footer {
   display: block;
   padding: 2em 0 0 0;
-  border-top: 2px solid #6ab750;
+  border-top: 2px solid #BBB;
   font-size: .7em;
   color: lighten($gray-dark, 10%);
 }
@@ -306,7 +308,7 @@ td:last-child {
     margin-bottom: .7em;
 
     a {
-      color: #6ab750;
+      color: #AAA;
       text-decoration: underline;
 
       &:hover {
