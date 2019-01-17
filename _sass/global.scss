@@ -242,7 +242,7 @@ td:last-child {
 }
 
 .block-heading {
-  @include column(12);
+//  @include column(12);
   position: relative;
   bottom: -15px;
   font-size: .8em;
@@ -269,7 +269,7 @@ td:last-child {
 .container {
   position: relative;
   z-index: 500;
-  width: $total-width - $gutter-width;
+//  width: $total-width - $gutter-width;
   margin: 0 auto;
 }
 
