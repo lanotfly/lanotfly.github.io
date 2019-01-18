@@ -14,5 +14,5 @@ Exodus 20 3~17
 17 You shall not covet your neighbor’s house. You shall not covet your neighbor’s wife, or his male or female servant, his ox or donkey, or anything that belongs to your neighbor.  
 
 <div class="youtube_container">
-  <iframe src="https://www.youtube.com/embed/qumYPTrINUM" frameborder="0" allowfullscreen class="youtube_video"></iframe>
+  <iframe src="https://www.youtube.com/embed/qumYPTrINUM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="youtube_video"></iframe>
 </div>
