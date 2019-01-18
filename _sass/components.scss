@@ -1,0 +1,124 @@
+// ------------------------------
+// BUTTONS
+// ------------------------------
+.btn-border-small {
+    border: 1px solid $primary-color;
+    border-radius: 7px;
+    padding: 4px 7px;
+    font-size: 0.8em;
+    margin-left: 10px;
+
+    &:hover {
+        color: $green; //darken($primary-color, 15%);
+        border-color: $green; //darken($primary-color, 15%);
+    }
+}
+
+// ------------------------------
+// PAGINATION
+// ------------------------------
+
+.pagination {
+  display: block;
+  margin: 0 0 1em 0;
+}
+
+  .pagination__page-number {
+    margin: 0;
+    font-size: .8em;
+    color: $gray-dark;
+  }
+
+  .pagination__newer {
+    margin-right: 1em;
+  }
+
+  .pagination__older {
+    margin-left: 1em;
+  }
+
+// ------------------------------
+// POST LIST
+// ------------------------------
+
+.post-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: left;
+
+  li {
+    margin: 0 0 2.2em 0;
+
+    &:last-child {
+
+      hr {
+        display: none;
+      }
+
+    }
+
+  }
+
+}
+
+  .post-list__post-title {
+    margin-top: 0;
+    margin-bottom: .2em;
+    font-size: 1.5em;
+    line-height: 1.3em;
+
+    a {
+      color: $gray-darkest;
+
+      &:hover {
+        color: $hover-color;
+      }
+
+    }
+
+  }
+
+  .post-list__divider {
+//    width: 30%;
+    margin: 2.0em 0 1.7em 0;
+    border-top: 1px solid $gray-light;
+  }
+
+// ------------------------------
+// READ MORE
+// ------------------------------
+.read-more-item {
+  display: inline-block;;
+  vertical-align: top;
+  width: 48%;
+}
+
+.tab {
+//    border: 1px solid $primary-color;
+//    border-radius: 20px;
+    padding: 6px 8px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    float:left;
+
+
+    &:hover {
+        color: $green; //darken($primary-color, 15%);
+        border-color: $green; //darken($primary-color, 15%);
+    }
+}
+
+.youtube_container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+}
+.youtube_video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
