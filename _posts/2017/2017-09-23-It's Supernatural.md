@@ -10,10 +10,5 @@ There are many things to have to say thanks to you.
 Without you, I cannot do so good as now.
 </p>
 <p>
-<div class="youtube_container">
-  <iframe src="https://www.youtube.com/embed/qumYPTrINUM" frameborder="0" allowfullscreen class="youtube_video"></iframe>
-</div>
-</P>
-<p>
   Halleluyah!
 </p>
