@@ -115,3 +115,12 @@
     width: 100%;
     height: 100%;
 }
+
+.highlight {
+  overflow: auto;
+
+  pre code {
+    font-weight: normal;
+    white-space: pre;
+  }
+}

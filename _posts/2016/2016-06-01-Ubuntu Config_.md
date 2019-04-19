@@ -1,15 +1,15 @@
 ---
 layout: post
 title:  "Ubuntu Config"
-date:   2006-06-01 15:10:26 +0900
+date:   2016-06-01 15:10:26 +0900
 categories: jekyll page
 ---
+#### reference site
 ~~~~
-reference site
 https://gorails.com/setup/ubuntu/14.04
 ~~~~
 
-### Ruby
+#### Ruby
 ~~~~
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -35,7 +35,7 @@ ruby -v
 gem install bundler
 ~~~~
 
-### JDK8
+#### JDK8
 ~~~~
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
@@ -43,12 +43,12 @@ sudo apt-get install oracle-java8-installer
 sudo apt-get install oracle-java8-set-default
 ~~~~
 
-### phpmyadmin
+#### phpmyadmin
 ~~~~
 sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 ~~~~
 
-### jekyll
+#### jekyll
 ~~~~
 gem install bundler jekyll
 
@@ -61,7 +61,7 @@ bundle install
 bundle exec jekyll serve --host 0.0.0.0 --port 80
 ~~~~
 
-### webmin
+#### webmin
 ~~~~
 rm /etc/apt/apt.conf.d/docker-gzip-indexes
 apt-get purge apt-show-versions
