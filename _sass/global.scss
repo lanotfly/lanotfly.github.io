@@ -1,25 +1,6 @@
 // ------------------------------
-// BASICS
+// TYPOGRAPHY
 // ------------------------------
-
-html,
-body {
-    height: 100%;
-}
-
-html {
-    height: 100%;
-    max-height: 100%;
-}
-
-body {
-    font-family: $sans-font;
-    font-size: 1em;
-    color: $gray-darker;
-    background: #ffffff;
-    -webkit-font-smoothing: antialiased;
-    height:100%;
-}
 
 ::selection {
     background: #f0d0f0;
@@ -28,10 +9,6 @@ body {
 ::-moz-selection {
     background: #f0d0f0;
 }
-
-// ------------------------------
-// TYPOGRAPHY
-// ------------------------------
 
 a {
     text-decoration: none;
@@ -156,118 +133,6 @@ code {
     word-wrap: break-word;
 }
 
-pre {
-    margin-bottom: 1.3em;
-    padding: 1em 2.5%;
-    background: lighten($secondary-color, 32%);
-    border: 1px solid lighten($secondary-color, 25%);
-    border-radius: $border-radius;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-        Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    font-size: 0.9em;
-    font-weight: normal;
-    line-height: 1.3em;
-    overflow: scroll;
-
-    code {
-        padding: 0;
-        background: none;
-        border: none;
-        word-wrap: normal;
-    }
-}
-
-table {
-    color: $gray-darkest;
-    font-size: 0.9em;
-    text-align: center;
-    line-height: 40px;
-    border-spacing: 0;
-    border: 2px solid darken($primary-color, 10%);
-    width: 90%;
-    margin: 50px auto;
-}
-
-thead tr:first-child {
-    background-color: darken($primary-color, 10%);
-    color: $gray-lightest;
-    border: none;
-}
-
-th {
-    font-weight: bold;
-}
-th:first-child,
-td:first-child {
-    padding: 0 15px 0 20px;
-}
-
-thead tr:last-child th {
-    border-bottom: 1px solid $gray-light;
-}
-
-tbody tr:last-child td {
-    border: none;
-}
-tbody td {
-    border-bottom: 1px solid $gray-light;
-    font-size: 0.85em;
-}
-
-td:last-child {
-    padding-right: 10px;
-}
-
-.date,
-.time,
-.author,
-.tags {
-    font-size: 0.8em;
-    color: darken($gray, 2%);
-
-    a {
-        color: $gray-darker;
-
-        &:hover {
-            color: $hover-color;
-        }
-    }
-}
-
-.excerpt {
-    margin: 0;
-    font-size: 0.9em;
-    color: $gray-dark;
-}
-
-.intro {
-    font-family: $serif-font;
-    font-size: 1.2em;
-    font-weight: lighter;
-    color: $gray-dark;
-}
-
-.block-heading {
-    //  @include column(12);
-    position: relative;
-    bottom: -15px;
-    font-size: 0.8em;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.label {
-    position: relative;
-    display: inline-block;
-    padding: 8px 18px 9px 18px;
-    background: $primary-color;
-    border-radius: $border-radius;
-    text-align: center;
-    color: #fff;
-}
-
 // ------------------------------
 // MAIN LAYOUT
 // ------------------------------
@@ -335,35 +200,24 @@ td:last-child {
     }
 }
 
-// ------------------------------
-// AVATAR & LOGO
-// ------------------------------
+pre {
+    margin-bottom: 1.3em;
+    padding: 1em 2.5%;
+    background: lighten($secondary-color, 32%);
+    border: 1px solid lighten($secondary-color, 25%);
+    border-radius: $border-radius;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+        Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-size: 0.9em;
+    font-weight: normal;
+    line-height: 1.3em;
+//    overflow: scroll;
 
-.avatar,
-.logo {
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 0 1px 1px rgba(000, 000, 000, 0.3);
+    code {
+        padding: 0;
+        background: none;
+        border: none;
+        word-wrap: normal;
+    }
 }
 
-// ------------------------------
-// DIVIDERS
-// ------------------------------
-
-hr {
-    border: none;
-}
-
-.section-title__divider {
-    width: 30%;
-    margin: 2.2em 0 2.1em 0;
-    border-top: 1px solid $gray-light;
-}
-
-// ------------------------------
-// MISC STYLES / HELPERS
-// ------------------------------
-
-.hidden {
-    display: none !important;
-}
