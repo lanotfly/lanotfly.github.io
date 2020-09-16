@@ -7,4 +7,6 @@ categories: jekyll page
 
 ---
 
-Since java file can be executed individually. It is good language for structure design.
+Since java file can be executed individually. It is a good language for structure design. Compare to C or C++, Java is a higher funtional language. You can use it in anywhere, like web server, embeded system, android app ...
+
+
