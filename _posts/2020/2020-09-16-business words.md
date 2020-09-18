@@ -24,6 +24,5 @@ Biz words(Jp⇒En) below for retailing system
 仕分処理⇒sort  
 受注処理⇒order input  
 
-About retailing system, it consisted of several sub systems. Runing individually and worked together.
-Basically there are two type of shops in this whole system, online shop and offline shop.
-When customers buy something from the street shop, the shopping info is registered into the order system including client info, productions info, sometimes delivery address.
+About retailing system, it consisted of several sub systems. They are running individually and worked together. Like pos system, client system and others. Each has it's own job to do, POS need to calculating the money customer paid and link the client system to get and update the point generated or used by purchase activity.
+Speaking the retailing system, basically there are two type of shops in this whole system, online and offline shops. When customers buy something from the street shop, the shopping info is registered into the order system including client info, productions info, sometimes delivery address.
