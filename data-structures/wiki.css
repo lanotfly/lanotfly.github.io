@@ -1,4 +1,5 @@
 /* Learning hub — shared responsive styles */
+.content-wrapper__inner:has(.wiki-wrap) > .post-list__divider{display:none}
 .wiki-wrap{max-width:1040px;margin:0 auto;padding:0 16px;overflow-wrap:break-word;box-sizing:border-box}
 .wiki-wrap img,.wiki-wrap svg{max-width:100%;height:auto}
 .wiki-nav{display:flex;flex-wrap:wrap;gap:.45em;margin:0 0 1.2em}
