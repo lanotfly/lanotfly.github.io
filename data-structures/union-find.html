@@ -55,9 +55,9 @@ permalink: /data-structures/union-find/
 assert find_circle_num([[1, 1, 0], [1, 1, 0], [0, 0, 1]]) == 2</code></pre>
 <p>And &quot;redundant connection&quot; is one line of logic: the first edge whose <code>union()</code> returns <code>False</code> is the answer.</p>
 <h3>Pitfalls</h3>
-<ul><li>Skip path compression <em>or</em> union by rank and depth can degrade to O(n).</li><li><code>components</code> bookkeeping: decrement only on a successful merge.</li><li>Union-Find answers connectivity, <strong>not paths</strong> — for &quot;give me the route&quot;, use <a href="graph/">Graph BFS/DFS</a>.</li></ul>
+<ul><li>Skip path compression <em>or</em> union by rank and depth can degrade to O(n).</li><li><code>components</code> bookkeeping: decrement only on a successful merge.</li><li>Union-Find answers connectivity, <strong>not paths</strong> — for &quot;give me the route&quot;, use <a href="/data-structures/graph/">Graph BFS/DFS</a>.</li></ul>
 <h3>Practice</h3>
 <ul><li>[ ] Redundant connection</li><li>[ ] Accounts merge (map emails → ids, then union)</li><li>[ ] Number of connected components in an undirected graph</li><li>[ ] Satisfiability of equality equations</li></ul>
-<p>Next: <a href="sorting-binary-search/">Sorting &amp; Binary Search →</a></p>
+<p>Next: <a href="/data-structures/sorting-binary-search/">Sorting &amp; Binary Search →</a></p>
 <div class="prev-next"><a href="/data-structures/trie/">← 8. Trie</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search →</a></div>
 </div>
