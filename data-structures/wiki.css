@@ -62,3 +62,20 @@
   .wiki-wrap .diagram{padding:6px 3px 3px}
   .wiki-wrap .diagram svg{width:100%;height:auto}
 }
+
+/* Final responsive overrides: compact chapter pills and truly fluid diagrams */
+.wiki-wrap{width:100%;min-width:0;max-width:1040px;box-sizing:border-box}
+.wiki-wrap .wiki-nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:100%;max-width:100%;min-width:0;margin:0 0 1em}
+.wiki-wrap .wiki-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:5px 9px;font-size:.8rem;line-height:1.2;border-radius:999px;box-sizing:border-box;white-space:normal}
+.wiki-wrap .diagram{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;overflow:hidden}
+.wiki-wrap .diagram svg,.wiki-wrap svg.ai-illustration{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;height:auto!important;max-height:none!important;margin-left:auto;margin-right:auto;box-sizing:border-box}
+.wiki-wrap figure img{display:block;width:100%;max-width:100%;height:auto}
+.wiki-wrap .cards,.wiki-wrap .card{min-width:0;max-width:100%;box-sizing:border-box}
+@media(max-width:700px){
+ .wiki-wrap{padding-left:8px;padding-right:8px}
+ .wiki-wrap .wiki-nav{gap:5px;margin-bottom:.8em}
+ .wiki-wrap .wiki-nav a{min-height:28px;padding:4px 7px;font-size:.74rem;line-height:1.15}
+ .wiki-wrap .diagram{padding:6px 3px 3px;margin:.9em 0}
+ .wiki-wrap .diagram figcaption{font-size:.8rem}
+ .wiki-wrap .ai-illustration{width:100%!important;height:auto!important}
+}
