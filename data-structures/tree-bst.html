@@ -1,0 +1,74 @@
+---
+layout: page
+title: "5. Tree & Binary Search Tree"
+permalink: /data-structures/tree-bst/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/" class="current">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>5. Tree &amp; Binary Search Tree</h1>
+<figure class="diagram"><svg viewBox="0 0 560 165" role="img" aria-label="Binary search tree: smaller values go left, larger go right"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><line x1="280" y1="38" x2="170" y2="82" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><line x1="280" y1="38" x2="390" y2="82" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><line x1="170" y1="96" x2="110" y2="128" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><line x1="170" y1="96" x2="225" y2="128" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><circle cx="280" cy="28" r="17" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="280" y="33" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">8</text><circle cx="170" cy="88" r="17" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="170" y="93" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><circle cx="390" cy="88" r="17" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="390" y="93" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">10</text><circle cx="105" cy="132" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="105" y="137" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">1</text><circle cx="230" cy="132" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="230" y="137" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">6</text><text x="470" y="50" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">left &lt; node</text><text x="470" y="68" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">right &gt; node</text></svg><figcaption>Binary search tree: smaller values go left, larger go right</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>Hierarchical data, &quot;traverse&quot;, divide-and-conquer on subtrees, ordered data with O(log n) search/insert/delete (a <strong>BST</strong>: left &lt; node &lt; right).</p>
+<h3>Complexity</h3>
+<p>Balanced tree: search/insert/delete O(log n), traversal O(n). Unbalanced (degenerate) tree: everything degrades to O(n) — always mention this.</p>
+<h3>Core implementation &amp; traversals</h3>
+<pre><code>from __future__ import annotations
+from collections import deque
+from dataclasses import dataclass
+
+@dataclass
+class TreeNode:
+    val: int
+    left: TreeNode | None = None
+    right: TreeNode | None = None
+
+def inorder(root: TreeNode | None) -&gt; list[int]:
+    &quot;&quot;&quot;Left → Root → Right. On a BST this returns sorted order.&quot;&quot;&quot;
+    if not root:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+
+def level_order(root: TreeNode | None) -&gt; list[list[int]]:
+    &quot;&quot;&quot;Breadth-first, one list per level — BFS with a queue.&quot;&quot;&quot;
+    if not root:
+        return []
+    result, queue = [], deque([root])
+    while queue:
+        level = []
+        for _ in range(len(queue)):
+            node = queue.popleft()
+            level.append(node.val)
+            if node.left:  queue.append(node.left)
+            if node.right: queue.append(node.right)
+        result.append(level)
+    return result</code></pre>
+<h3>Classic interview problem: Lowest common ancestor (BST)</h3>
+<pre><code>def lca_bst(root: TreeNode, p: int, q: int) -&gt; TreeNode:
+    node = root
+    while node:
+        if p &lt; node.val and q &lt; node.val:
+            node = node.left          # both in the left subtree
+        elif p &gt; node.val and q &gt; node.val:
+            node = node.right         # both in the right subtree
+        else:
+            return node               # split point = the LCA
+    return node</code></pre>
+<h3>Classic problem 2: Validate a BST</h3>
+<p>Pass the allowed (low, high) range down — checking only parent vs children is <strong>not</strong> enough.</p>
+<pre><code>def is_valid_bst(root: TreeNode | None,
+                 low: float = float(&quot;-inf&quot;),
+                 high: float = float(&quot;inf&quot;)) -&gt; bool:
+    if not root:
+        return True
+    return (low &lt; root.val &lt; high
+            and is_valid_bst(root.left, low, root.val)
+            and is_valid_bst(root.right, root.val, high))</code></pre>
+<h3>Pitfalls</h3>
+<ul><li>Preorder / inorder / postorder mix-ups: name the root&#x27;s position in the sequence.</li><li>Python recursion limit on skewed trees — mention an iterative stack version.</li><li>&quot;Kth smallest in BST&quot; = inorder traversal, stop at k. Don&#x27;t sort.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Maximum depth &amp; diameter of a binary tree</li><li>[ ] Invert / mirror a binary tree</li><li>[ ] Serialize &amp; deserialize a binary tree</li><li>[ ] Build a tree from preorder + inorder traversals</li></ul>
+<p>Next: <a href="heap/">Heap →</a></p>
+<div class="prev-next"><a href="/data-structures/stack-queue/">← 4. Stack & Queue</a><a href="/data-structures/heap/">6. Heap →</a></div>
+</div>

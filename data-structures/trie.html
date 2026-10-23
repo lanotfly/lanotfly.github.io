@@ -1,0 +1,63 @@
+---
+layout: page
+title: "8. Trie (Prefix Tree)"
+permalink: /data-structures/trie/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/" class="current">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>8. Trie (Prefix Tree)</h1>
+<figure class="diagram"><svg viewBox="0 0 560 170" role="img" aria-label="Trie: letters down a tree; words share their prefix path"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><line x1="80" y1="30" x2="80" y2="62" stroke="#3b6fd4" stroke-width="2"/><line x1="80" y1="76" x2="80" y2="108" stroke="#3b6fd4" stroke-width="2"/><line x1="80" y1="122" x2="80" y2="140" stroke="#3b6fd4" stroke-width="2"/><circle cx="80" cy="22" r="14" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="80" y="27" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">·</text><circle cx="80" cy="70" r="14" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="80" y="75" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">a</text><circle cx="80" cy="116" r="14" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="80" y="121" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">p</text><circle cx="80" cy="148" r="6" fill="#3b6fd4"/><text x="200" y="45" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">→ "app" branches to "apple", "apply"…</text><text x="200" y="70" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">shared prefixes are stored once</text><text x="200" y="95" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">search cost = word length, not dictionary size</text></svg><figcaption>Trie: letters down a tree; words share their prefix path</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>Anything about <strong>prefixes</strong>: autocomplete, spell-check, &quot;find all words starting with…&quot;, IP routing, word search on a board. A trie trades space (shared prefixes stored once) for O(L) operations, L = word length — <strong>independent of how many words you stored</strong>. A hash set can&#x27;t answer prefix queries.</p>
+<h3>Complexity</h3>
+<p>Insert / search / starts-with: O(L). Space: O(total characters) worst case. Each node holds child pointers (dict in Python) plus an end-of-word flag.</p>
+<h3>Core implementation</h3>
+<pre><code>class TrieNode:
+    __slots__ = (&quot;children&quot;, &quot;is_end&quot;)
+
+    def __init__(self) -&gt; None:
+        self.children: dict[str, TrieNode] = {}
+        self.is_end = False
+
+
+class Trie:
+    def __init__(self) -&gt; None:
+        self.root = TrieNode()
+
+    def insert(self, word: str) -&gt; None:
+        node = self.root
+        for ch in word:
+            node = node.children.setdefault(ch, TrieNode())
+        node.is_end = True
+
+    def _walk(self, prefix: str) -&gt; TrieNode | None:
+        node = self.root
+        for ch in prefix:
+            if ch not in node.children:
+                return None
+            node = node.children[ch]
+        return node
+
+    def search(self, word: str) -&gt; bool:
+        node = self._walk(word)
+        return node is not None and node.is_end
+
+    def starts_with(self, prefix: str) -&gt; bool:
+        return self._walk(prefix) is not None
+
+
+trie = Trie()
+trie.insert(&quot;apple&quot;)
+assert trie.search(&quot;apple&quot;) and not trie.search(&quot;app&quot;)
+assert trie.starts_with(&quot;app&quot;)</code></pre>
+<h3>Classic interview angle: Word Search II (board + trie)</h3>
+<p>Build a trie of the target words, then DFS the board, walking the trie as you go — a dead prefix prunes the whole branch. Delete found words from the trie (or clear <code>is_end</code>) to avoid duplicates. Mentioning <em>pruning</em> is the sentence that separates a pass from a strong pass here.</p>
+<h3>Pitfalls</h3>
+<ul><li><code>is_end</code> matters: &quot;app&quot; is a prefix of &quot;apple&quot; but not a stored word.</li><li>Memory: a node per character — for huge alphabets use dict children, not fixed arrays, in Python.</li><li>Case &amp; character set: clarify lowercase a–z vs full Unicode up front.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Implement a trie (above) from memory, without looking</li><li>[ ] Longest word in dictionary built one character at a time</li><li>[ ] Replace words (shortest root / prefix in a sentence)</li><li>[ ] Design search autocomplete (trie + top-3 cache per node)</li></ul>
+<p>Next: <a href="union-find/">Union-Find →</a></p>
+<div class="prev-next"><a href="/data-structures/graph/">← 7. Graph</a><a href="/data-structures/union-find/">9. Union-Find →</a></div>
+</div>

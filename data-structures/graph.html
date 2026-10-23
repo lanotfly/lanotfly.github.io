@@ -1,0 +1,69 @@
+---
+layout: page
+title: "7. Graph"
+permalink: /data-structures/graph/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/" class="current">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>7. Graph</h1>
+<figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Graph: nodes connected by edges — paths, reachability, components"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><line x1="110" y1="50" x2="240" y2="35" stroke="#3b6fd4" stroke-width="2"/><line x1="110" y1="50" x2="180" y2="115" stroke="#3b6fd4" stroke-width="2"/><line x1="240" y1="35" x2="340" y2="90" stroke="#3b6fd4" stroke-width="2"/><line x1="180" y1="115" x2="340" y2="90" stroke="#3b6fd4" stroke-width="2"/><line x1="240" y1="35" x2="180" y2="115" stroke="#3b6fd4" stroke-width="2"/><line x1="340" y1="90" x2="460" y2="55" stroke="#3b6fd4" stroke-width="2"/><circle cx="110" cy="50" r="18" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="110" y="55" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">A</text><circle cx="240" cy="35" r="18" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="240" y="40" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">B</text><circle cx="180" cy="115" r="18" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="180" y="120" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">C</text><circle cx="340" cy="90" r="18" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="340" y="95" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">D</text><circle cx="460" cy="55" r="18" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="460" y="60" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">E</text></svg><figcaption>Graph: nodes connected by edges — paths, reachability, components</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>Relationships &amp; paths: &quot;connected&quot;, &quot;can A reach B&quot;, &quot;shortest path&quot;, &quot;course order / dependencies&quot;, grids (a grid <strong>is</strong> a graph — cells are nodes, neighbours are edges).</p>
+<h3>Representations</h3>
+<table><thead><tr><th></th><th>Adjacency list</th><th>Adjacency matrix</th></tr></thead><tbody><tr><td>Space</td><td>O(V + E)</td><td>O(V²)</td></tr><tr><td>Check edge u→v</td><td>O(degree)</td><td>O(1)</td></tr><tr><td>Best for</td><td>Sparse graphs (most interviews)</td><td>Dense graphs</td></tr></tbody></table>
+<h3>Core traversals</h3>
+<pre><code>from collections import deque
+
+def bfs(graph: dict[int, list[int]], start: int) -&gt; list[int]:
+    &quot;&quot;&quot;Breadth-first: shortest path in EDGES for unweighted graphs.&quot;&quot;&quot;
+    seen = {start}
+    order, queue = [], deque([start])
+    while queue:
+        u = queue.popleft()
+        order.append(u)
+        for v in graph.get(u, []):
+            if v not in seen:
+                seen.add(v)               # mark when ENQUEUING, not dequeuing
+                queue.append(v)
+    return order
+
+def dfs(graph: dict[int, list[int]], start: int) -&gt; list[int]:
+    seen, order, stack = set(), [], [start]
+    while stack:
+        u = stack.pop()
+        if u in seen:
+            continue
+        seen.add(u)
+        order.append(u)
+        stack.extend(graph.get(u, []))
+    return order</code></pre>
+<h3>Classic interview problem: Number of islands (grid DFS/BFS)</h3>
+<pre><code>def num_islands(grid: list[list[str]]) -&gt; int:
+    if not grid:
+        return 0
+    rows, cols, count = len(grid), len(grid[0]), 0
+
+    def sink(r: int, c: int) -&gt; None:
+        if not (0 &lt;= r &lt; rows and 0 &lt;= c &lt; cols) or grid[r][c] != &quot;1&quot;:
+            return
+        grid[r][c] = &quot;0&quot;                  # visited = sink it
+        for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            sink(r + dr, c + dc)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == &quot;1&quot;:
+                count += 1
+                sink(r, c)
+    return count</code></pre>
+<h3>Know the names (say them in interviews)</h3>
+<ul><li><strong>Topological sort</strong> (Kahn&#x27;s BFS on in-degrees) — ordering with dependencies, cycle = leftover nodes.</li><li><strong>Dijkstra</strong> — shortest path, weighted, no negative edges; BFS + priority queue (a <a href="heap/">heap</a>).</li><li><strong>Bellman-Ford</strong> — tolerates negative edges, O(V·E).</li><li><strong>Union-Find</strong> — connectivity without paths: <a href="union-find/">Chapter 9</a>.</li></ul>
+<h3>Pitfalls</h3>
+<ul><li>Mark visited at enqueue time in BFS or you&#x27;ll enqueue duplicates.</li><li>Clarify: directed or undirected? weighted? cycles? disconnected components?</li><li>Grid problems: state the 4-direction (or 8-direction) assumption.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Clone graph</li><li>[ ] Course schedule (topological sort / cycle detection)</li><li>[ ] Rotting oranges (multi-source BFS)</li><li>[ ] Word ladder (BFS on implicit graph)</li></ul>
+<p>Next: <a href="trie/">Trie →</a></p>
+<div class="prev-next"><a href="/data-structures/heap/">← 6. Heap</a><a href="/data-structures/trie/">8. Trie →</a></div>
+</div>

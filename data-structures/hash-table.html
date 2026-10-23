@@ -1,0 +1,52 @@
+---
+layout: page
+title: "2. Hash Table — dict & set"
+permalink: /data-structures/hash-table/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/" class="current">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>2. Hash Table — dict &amp; set</h1>
+<figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Hash table: keys are hashed into bucket indices"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><text x="70" y="60" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">"cat"</text><text x="70" y="95" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">"dog"</text><line x1="110" y1="55" x2="190" y2="45" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><line x1="110" y1="90" x2="190" y2="105" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><text x="150" y="35" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">hash()</text><rect x="195" y="20" width="90" height="34" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="240" y="42" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">0 → cat</text><rect x="195" y="58" width="90" height="34" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="240" y="80" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">1 → ·</text><rect x="195" y="96" width="90" height="34" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="240" y="118" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">2 → dog</text><text x="430" y="75" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">buckets: average O(1) lookup</text></svg><figcaption>Hash table: keys are hashed into bucket indices</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>&quot;Have I seen this before?&quot;, counting frequencies, grouping, O(1) lookup. Python&#x27;s <code>dict</code> and <code>set</code> are hash tables — this is the single most-used structure in coding interviews.</p>
+<h3>Complexity</h3>
+<p>Average O(1) insert / lookup / delete; O(n) worst case with pathological collisions. Space O(n). Iteration order of <code>dict</code> = insertion order (3.7+).</p>
+<h3>Core patterns</h3>
+<h4>Frequency counting</h4>
+<pre><code>from collections import Counter, defaultdict
+
+freq = Counter(&quot;banana&quot;)          # {&#x27;a&#x27;: 3, &#x27;n&#x27;: 2, &#x27;b&#x27;: 1}
+groups: defaultdict[list] = defaultdict(list)
+for word in [&quot;eat&quot;, &quot;tea&quot;, &quot;tan&quot;, &quot;ate&quot;, &quot;nat&quot;, &quot;bat&quot;]:
+    key = &quot;&quot;.join(sorted(word))   # canonical signature for anagrams
+    groups[key].append(word)
+# {&#x27;aet&#x27;: [&#x27;eat&#x27;, &#x27;tea&#x27;, &#x27;ate&#x27;], &#x27;ant&#x27;: [&#x27;tan&#x27;, &#x27;nat&#x27;], &#x27;abt&#x27;: [&#x27;bat&#x27;]}</code></pre>
+<h3>Classic interview problem: Two Sum (unsorted)</h3>
+<blockquote><p>Return the indices of the two numbers that add to <code>target</code>, in one pass.</p></blockquote>
+<p>Trade space for time: store each value&#x27;s index, look up the complement.</p>
+<pre><code>def two_sum(nums: list[int], target: int) -&gt; tuple[int, int] | None:
+    seen: dict[int, int] = {}           # value -&gt; index
+    for i, x in enumerate(nums):
+        need = target - x
+        if need in seen:
+            return seen[need], i
+        seen[x] = i
+    return None
+
+assert two_sum([2, 7, 11, 15], 9) == (0, 1)</code></pre>
+<h3>Classic problem 2: First non-repeating character</h3>
+<pre><code>def first_unique(s: str) -&gt; int:
+    freq = Counter(s)
+    for i, ch in enumerate(s):
+        if freq[ch] == 1:
+            return i
+    return -1</code></pre>
+<h3>Pitfalls</h3>
+<ul><li>Unhashable keys: <code>list</code> can&#x27;t be a dict key — use <code>tuple</code> instead.</li><li>Mutating a dict during iteration raises <code>RuntimeError</code> — iterate <code>list(d)</code>.</li><li><code>d[key]</code> raises <code>KeyError</code>; prefer <code>d.get(key, default)</code> when unsure.</li><li>For &quot;seen&quot; checks a <code>set</code> communicates intent better than a <code>dict</code>.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Valid anagram in O(n) without sorting</li><li>[ ] Longest consecutive sequence — O(n) with a set (only start counting at sequence heads)</li><li>[ ] Subarray sum equals K (prefix sums + hash map)</li><li>[ ] LRU Cache — <code>dict</code> ordering + discipline, or <code>collections.OrderedDict</code></li></ul>
+<p>Next: <a href="linked-list/">Linked List →</a></p>
+<div class="prev-next"><a href="/data-structures/array-string/">← 1. Arrays & Strings</a><a href="/data-structures/linked-list/">3. Linked List →</a></div>
+</div>

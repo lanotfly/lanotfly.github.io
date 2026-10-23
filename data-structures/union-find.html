@@ -1,0 +1,63 @@
+---
+layout: page
+title: "9. Union-Find (Disjoint Set)"
+permalink: /data-structures/union-find/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/" class="current">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>9. Union-Find (Disjoint Set)</h1>
+<figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Union-Find: elements live in sets; union merges two sets into one"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><circle cx="110" cy="70" r="42" fill="none" stroke="#3b6fd4" stroke-width="1.5" stroke-dasharray="5 4"/><circle cx="330" cy="70" r="42" fill="none" stroke="#3b6fd4" stroke-width="1.5" stroke-dasharray="5 4"/><circle cx="90" cy="60" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="90" y="65" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">1</text><circle cx="135" cy="85" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="135" y="90" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">2</text><circle cx="315" cy="60" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="315" y="65" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><circle cx="355" cy="85" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="355" y="90" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">4</text><line x1="165" y1="70" x2="270" y2="70" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><text x="218" y="55" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">union(2, 3)</text><text x="480" y="75" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">one set after merge</text></svg><figcaption>Union-Find: elements live in sets; union merges two sets into one</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>Dynamic connectivity: &quot;are A and B in the same group?&quot;, &quot;how many groups?&quot;, &quot;does this edge create a cycle?&quot; — in <strong>almost O(1)</strong> per operation. It&#x27;s the connectivity engine inside Kruskal&#x27;s minimum-spanning-tree algorithm.</p>
+<h3>Complexity</h3>
+<p>With <strong>path compression + union by rank/size</strong>: amortised O(α(n)) per op, where α (inverse Ackermann) is ≤ 5 for any realistic n. Space O(n).</p>
+<h3>Core implementation</h3>
+<pre><code>class UnionFind:
+    def __init__(self, n: int) -&gt; None:
+        self.parent = list(range(n))   # everyone starts in their own set
+        self.rank = [0] * n
+        self.components = n            # handy for &quot;number of groups&quot; questions
+
+    def find(self, x: int) -&gt; int:
+        # Path compression: point every node on the path straight at the root
+        while self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]
+            x = self.parent[x]
+        return x
+
+    def union(self, a: int, b: int) -&gt; bool:
+        &quot;&quot;&quot;Merge; return False if they were already connected (a cycle!).&quot;&quot;&quot;
+        ra, rb = self.find(a), self.find(b)
+        if ra == rb:
+            return False
+        if self.rank[ra] &lt; self.rank[rb]:   # union by rank: smaller under bigger
+            ra, rb = rb, ra
+        self.parent[rb] = ra
+        if self.rank[ra] == self.rank[rb]:
+            self.rank[ra] += 1
+        self.components -= 1
+        return True
+
+    def connected(self, a: int, b: int) -&gt; bool:
+        return self.find(a) == self.find(b)</code></pre>
+<h3>Classic interview problem: Number of provinces</h3>
+<pre><code>def find_circle_num(is_connected: list[list[int]]) -&gt; int:
+    n = len(is_connected)
+    uf = UnionFind(n)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if is_connected[i][j]:
+                uf.union(i, j)
+    return uf.components
+
+assert find_circle_num([[1, 1, 0], [1, 1, 0], [0, 0, 1]]) == 2</code></pre>
+<p>And &quot;redundant connection&quot; is one line of logic: the first edge whose <code>union()</code> returns <code>False</code> is the answer.</p>
+<h3>Pitfalls</h3>
+<ul><li>Skip path compression <em>or</em> union by rank and depth can degrade to O(n).</li><li><code>components</code> bookkeeping: decrement only on a successful merge.</li><li>Union-Find answers connectivity, <strong>not paths</strong> — for &quot;give me the route&quot;, use <a href="graph/">Graph BFS/DFS</a>.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Redundant connection</li><li>[ ] Accounts merge (map emails → ids, then union)</li><li>[ ] Number of connected components in an undirected graph</li><li>[ ] Satisfiability of equality equations</li></ul>
+<p>Next: <a href="sorting-binary-search/">Sorting &amp; Binary Search →</a></p>
+<div class="prev-next"><a href="/data-structures/trie/">← 8. Trie</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search →</a></div>
+</div>

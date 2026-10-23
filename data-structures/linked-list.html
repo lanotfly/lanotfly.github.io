@@ -1,0 +1,59 @@
+---
+layout: page
+title: "3. Linked List"
+permalink: /data-structures/linked-list/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/" class="current">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>3. Linked List</h1>
+<figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Linked list: each node points to the next; the last points to None"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><rect x="30" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="65" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">7</text><line x1="100" y1="73" x2="132" y2="73" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><rect x="135" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="170" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><line x1="205" y1="73" x2="237" y2="73" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><rect x="240" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="275" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">9</text><line x1="310" y1="73" x2="342" y2="73" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><rect x="345" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="380" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">4</text><text x="380" y="125" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">next = None</text><text x="65" y="30" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">head</text></svg><figcaption>Linked list: each node points to the next; the last points to None</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>Frequent inserts/deletes, no random access needed, &quot;reverse / reorder / detect a cycle in a chain&quot;. Interviews love it because it tests pointer care.</p>
+<h3>Complexity</h3>
+<p>Access &amp; search O(n); insert/delete O(1) <strong>once you hold the node</strong>; space O(n), no resizing ever.</p>
+<h3>Core implementation</h3>
+<pre><code>from __future__ import annotations
+from dataclasses import dataclass
+
+@dataclass
+class ListNode:
+    val: int
+    next: ListNode | None = None</code></pre>
+<h4>The dummy head trick — never special-case the head again</h4>
+<pre><code>def delete_value(head: ListNode | None, target: int) -&gt; ListNode | None:
+    dummy = ListNode(0, head)
+    cur = dummy
+    while cur.next:
+        if cur.next.val == target:
+            cur.next = cur.next.next
+        else:
+            cur = cur.next
+    return dummy.next</code></pre>
+<h3>Classic interview problem: Reverse a linked list</h3>
+<pre><code>def reverse(head: ListNode | None) -&gt; ListNode | None:
+    prev, cur = None, head
+    while cur:
+        nxt = cur.next      # save
+        cur.next = prev     # flip
+        prev, cur = cur, nxt
+    return prev</code></pre>
+<h3>Classic problem 2: Detect a cycle (Floyd&#x27;s tortoise &amp; hare)</h3>
+<pre><code>def has_cycle(head: ListNode | None) -&gt; bool:
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next          # 1 step
+        fast = fast.next.next     # 2 steps — they must meet inside a cycle
+        if slow is fast:
+            return True
+    return False</code></pre>
+<p>Finding the <em>middle</em> uses the same two speeds: when <code>fast</code> ends, <code>slow</code> is mid.</p>
+<h3>Pitfalls</h3>
+<ul><li>Losing the rest of the list: always save <code>cur.next</code> before rewiring.</li><li>Forgetting the base cases: empty list, single node, cycle.</li><li>In Python interviews, state the complexity of <em>your</em> operations —</li></ul>
+<p>  <code>list.pop(0)</code> is O(n), a linked list pop-front is O(1).</p>
+<h3>Practice</h3>
+<ul><li>[ ] Merge two sorted lists (dummy head again)</li><li>[ ] Remove the Nth node from the end (two pointers, gap of N)</li><li>[ ] Intersection of two lists</li><li>[ ] Palindrome linked list (middle + reverse half)</li></ul>
+<p>Next: <a href="stack-queue/">Stack &amp; Queue →</a></p>
+<div class="prev-next"><a href="/data-structures/hash-table/">← 2. Hash Table</a><a href="/data-structures/stack-queue/">4. Stack & Queue →</a></div>
+</div>

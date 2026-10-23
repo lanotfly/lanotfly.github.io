@@ -1,0 +1,60 @@
+---
+layout: page
+title: "1. Arrays & Strings"
+permalink: /data-structures/array-string/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/" class="current">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>1. Arrays &amp; Strings</h1>
+<figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Array: elements side by side, numbered by index"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><text x="280" y="22" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">contiguous memory — index i is O(1) to reach</text><rect x="30" y="45" width="64" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="62" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">10</text><text x="62" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">0</text><rect x="102" y="45" width="64" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="134" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">20</text><text x="134" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">1</text><rect x="174" y="45" width="64" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="206" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">30</text><text x="206" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">2</text><rect x="246" y="45" width="64" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="278" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">40</text><text x="278" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">3</text><rect x="318" y="45" width="64" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="350" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">50</text><text x="350" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">4</text><rect x="390" y="45" width="64" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="422" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">60</text><text x="422" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">5</text></svg><figcaption>Array: elements side by side, numbered by index</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>Contiguous data, index-based access, &quot;subarray / substring&quot;, order matters. In Python, <code>list</code> <strong>is</strong> your array, and <code>str</code> is an immutable array of characters.</p>
+<h3>Complexity</h3>
+<table><thead><tr><th>Operation</th><th>Time</th><th>Why</th></tr></thead><tbody><tr><td>Access <code>a[i]</code></td><td>O(1)</td><td>Direct index</td></tr><tr><td>Append</td><td>O(1) amortised</td><td>Occasional resize</td></tr><tr><td>Insert / delete in middle</td><td>O(n)</td><td>Everything shifts</td></tr><tr><td>Search (unsorted)</td><td>O(n)</td><td>Must scan</td></tr><tr><td>Search (sorted)</td><td>O(log n)</td><td>Binary search — <a href="sorting-binary-search/">Chapter 10</a></td></tr></tbody></table>
+<h3>Core patterns</h3>
+<h4>Two pointers — remove duplicates from a sorted array</h4>
+<pre><code>def remove_duplicates(nums: list[int]) -&gt; int:
+    &quot;&quot;&quot;Return the length of the deduplicated prefix, in place.&quot;&quot;&quot;
+    if not nums:
+        return 0
+    write = 1  # next position to write a new unique value
+    for read in range(1, len(nums)):
+        if nums[read] != nums[read - 1]:
+            nums[write] = nums[read]
+            write += 1
+    return write</code></pre>
+<h4>Sliding window — longest substring without repeating characters</h4>
+<pre><code>def length_of_longest_substring(s: str) -&gt; int:
+    last_seen: dict[str, int] = {}
+    left = best = 0
+    for right, ch in enumerate(s):
+        if ch in last_seen and last_seen[ch] &gt;= left:
+            left = last_seen[ch] + 1   # shrink the window past the duplicate
+        last_seen[ch] = right
+        best = max(best, right - left + 1)
+    return best
+
+assert length_of_longest_substring(&quot;abcabcbb&quot;) == 3  # &quot;abc&quot;</code></pre>
+<h3>Classic interview problem: Two Sum (sorted)</h3>
+<blockquote><p>Given a <strong>sorted</strong> array, return the indices of the two numbers that add to <code>target</code>.</p></blockquote>
+<p>Two pointers beat a hash map here: O(n) time, <strong>O(1)</strong> space — say that trade-off out loud.</p>
+<pre><code>def two_sum_sorted(nums: list[int], target: int) -&gt; tuple[int, int] | None:
+    lo, hi = 0, len(nums) - 1
+    while lo &lt; hi:
+        total = nums[lo] + nums[hi]
+        if total == target:
+            return lo, hi
+        if total &lt; target:
+            lo += 1    # need a bigger sum
+        else:
+            hi -= 1    # need a smaller sum
+    return None</code></pre>
+<h3>Pitfalls</h3>
+<ul><li>Mutating a list while iterating over it — iterate over a copy or backwards.</li><li><code>a = b</code> does <strong>not</strong> copy a list; use <code>b.copy()</code>, <code>b[:]</code>, or <code>list(b)</code>.</li><li>Off-by-one in windows: be consistent — this book uses inclusive <code>right</code>.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Rotate array by <em>k</em> steps, in place</li><li>[ ] Merge two sorted arrays</li><li>[ ] Longest palindromic substring (expand around centre)</li><li>[ ] Container with most water (two pointers)</li></ul>
+<p>Next: <a href="hash-table/">Hash Table →</a></p>
+<div class="prev-next"><a href="/data-structures/">← Book Home</a><a href="/data-structures/hash-table/">2. Hash Table →</a></div>
+</div>

@@ -1,27 +1,27 @@
 ---
 layout: default
 ---
-<div class="wiki-hero frame-border" style="padding: 1em; margin-bottom: 1em;">
-  <h2 class="post-title">📖 Data Structures for Interviews — The Wiki Book</h2>
-  <p>Arrays, hash tables, linked lists, stacks &amp; queues, trees, heaps, graphs,
-     tries, union-find, sorting &amp; binary search — each with complexity cheat sheets
-     and Python examples for interview prep.</p>
-  <p><a class="btn-border-small" href="/data-structures/">Start reading →</a></p>
-</div>
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+  <h1>📖 Data Structures for Interviews — The Wiki Book</h1>
+  <p>Welcome! This site is a wiki-style book of the data structures that matter
+     in coding interviews. Every chapter has a <strong>picture</strong> of the
+     structure, a <strong>complexity cheat sheet</strong>, a <strong>core Python
+     implementation</strong>, a <strong>classic interview problem</strong> solved
+     end to end, and the pitfalls interviewers probe.</p>
+  <p><a href="/data-structures/"><strong>Start with the book home →</strong></a>
+     (Big-O cheat sheet &amp; a 4-week study plan live there.)</p>
 
-<div class="main-post-list">
-
-  <ol class="post-list">
-    {% for post in paginator.posts %}
-    <li  class="frame-border">
-      <h2 class="post-list__post-title post-title"><a href="{{ post.url }}" title="Access to {{ post.title }}">{{ post.title }}</a></h2>
-      <p class="excerpt">{{ post.content | strip_html | strip_newlines | truncate: 250 }}&hellip;</p>
-      <div class="post-list__meta"><time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{ post.date | date: "%F"}}</time> &#8226; <span class="post-list__meta--tags tags">{{ post.tags }}</span><a class="btn-border-small" href={{ post.url }}>Continue</a></div>
-      <!--<hr class="post-list__divider" />-->
-    </li>
-    {% endfor %}
-  </ol>
-
-  {% include pagination.html %}
-
+  <div class="cards">
+    <div class="card"><h3><a href="/data-structures/array-string/">1. Arrays &amp; Strings</a></h3><p>Two pointers &amp; sliding window — “subarray”, “substring”.</p></div>
+    <div class="card"><h3><a href="/data-structures/hash-table/">2. Hash Table</a></h3><p>dict &amp; set — counting, grouping, O(1) lookup, Two Sum.</p></div>
+    <div class="card"><h3><a href="/data-structures/linked-list/">3. Linked List</a></h3><p>Reversal, dummy head, Floyd's cycle detection.</p></div>
+    <div class="card"><h3><a href="/data-structures/stack-queue/">4. Stack &amp; Queue</a></h3><p>Parentheses, monotonic stack, BFS order.</p></div>
+    <div class="card"><h3><a href="/data-structures/tree-bst/">5. Tree &amp; BST</a></h3><p>Traversals, lowest common ancestor, BST validation.</p></div>
+    <div class="card"><h3><a href="/data-structures/heap/">6. Heap</a></h3><p>Top-K, kth largest, merge K lists, streaming median.</p></div>
+    <div class="card"><h3><a href="/data-structures/graph/">7. Graph</a></h3><p>BFS/DFS, islands, topological sort, Dijkstra.</p></div>
+    <div class="card"><h3><a href="/data-structures/trie/">8. Trie</a></h3><p>Prefix search &amp; autocomplete.</p></div>
+    <div class="card"><h3><a href="/data-structures/union-find/">9. Union-Find</a></h3><p>Connectivity &amp; components in almost O(1).</p></div>
+    <div class="card"><h3><a href="/data-structures/sorting-binary-search/">10. Sorting &amp; Binary Search</a></h3><p>Merge sort &amp; “search on the answer”.</p></div>
+  </div>
 </div>

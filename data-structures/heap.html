@@ -1,0 +1,61 @@
+---
+layout: page
+title: "6. Heap / Priority Queue"
+permalink: /data-structures/heap/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays & Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack & Queue</a><a href="/data-structures/tree-bst/">5. Tree & BST</a><a href="/data-structures/heap/" class="current">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search</a></nav>
+<h1>6. Heap / Priority Queue</h1>
+<figure class="diagram"><svg viewBox="0 0 560 165" role="img" aria-label="Min-heap: parent ≤ children; the minimum sits at the root"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><line x1="180" y1="38" x2="110" y2="82" stroke="#3b6fd4" stroke-width="2"/><line x1="180" y1="38" x2="250" y2="82" stroke="#3b6fd4" stroke-width="2"/><line x1="110" y1="96" x2="70" y2="128" stroke="#3b6fd4" stroke-width="2"/><line x1="110" y1="96" x2="150" y2="128" stroke="#3b6fd4" stroke-width="2"/><circle cx="180" cy="28" r="17" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="180" y="33" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">1</text><circle cx="110" cy="88" r="17" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="110" y="93" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><circle cx="250" cy="88" r="17" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="250" y="93" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">2</text><circle cx="70" cy="132" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="70" y="137" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">7</text><circle cx="150" cy="132" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="150" y="137" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">5</text><text x="400" y="30" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">stored as an array:</text><rect x="330" y="45" width="40" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="350" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">1</text><text x="350" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle"></text><rect x="375" y="45" width="40" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="395" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><text x="395" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle"></text><rect x="420" y="45" width="40" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="440" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">2</text><text x="440" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle"></text><rect x="465" y="45" width="40" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="485" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">7</text><text x="485" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle"></text><rect x="510" y="45" width="40" height="52" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="530" y="77" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">5</text><text x="530" y="117" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle"></text></svg><figcaption>Min-heap: parent ≤ children; the minimum sits at the root</figcaption></figure>
+
+<h3>When to reach for it</h3>
+<p>&quot;Top K&quot;, &quot;Kth largest/smallest&quot;, &quot;merge K sorted …&quot;, streaming median, always need the min/max <em>now</em>. Python&#x27;s <code>heapq</code> is a <strong>min-heap</strong> on a list.</p>
+<h3>Complexity</h3>
+<p>Peek min O(1); push/pop O(log n); build (<code>heapify</code>) O(n) — faster than n pushes. Space O(n). Finding an arbitrary element is O(n): heaps are not search structures.</p>
+<h3>Core patterns</h3>
+<pre><code>import heapq
+
+h = [3, 1, 4]
+heapq.heapify(h)          # in-place, O(n)
+heapq.heappush(h, 2)
+smallest = heapq.heappop(h)   # 1
+
+# Max-heap trick: negate numbers, or store tuples with a flipped key
+max_h = []
+heapq.heappush(max_h, -10)
+biggest = -heapq.heappop(max_h)</code></pre>
+<h3>Classic interview problem: Kth largest element</h3>
+<p>Keep a min-heap of size <em>k</em>: its root is the kth largest seen so far. O(n log k) time, O(k) space — better than sorting when k ≪ n, say so.</p>
+<pre><code>import heapq
+
+def find_kth_largest(nums: list[int], k: int) -&gt; int:
+    heap: list[int] = []
+    for x in nums:
+        heapq.heappush(heap, x)
+        if len(heap) &gt; k:
+            heapq.heappop(heap)       # evict the smallest of the top-k
+    return heap[0]
+
+assert find_kth_largest([3, 2, 1, 5, 6, 4], 2) == 5</code></pre>
+<h3>Classic problem 2: Merge K sorted lists</h3>
+<pre><code>import heapq
+
+def merge_k(lists: list[list[int]]) -&gt; list[int]:
+    heap = [(lst[0], i, 0) for i, lst in enumerate(lists) if lst]
+    heapq.heapify(heap)
+    out = []
+    while heap:
+        val, i, j = heapq.heappop(heap)
+        out.append(val)
+        if j + 1 &lt; len(lists[i]):
+            heapq.heappush(heap, (lists[i][j + 1], i, j + 1))
+    return out</code></pre>
+<p>Note the tuple <code>(value, list_id, index)</code>: the tie-breaker stops Python from comparing things it can&#x27;t compare when values are equal.</p>
+<h3>Pitfalls</h3>
+<ul><li><code>heapq</code> is min-first only. For max, negate — or use <code>heapq.nlargest</code> for one-offs.</li><li><code>heappushpop</code> / <code>heapreplace</code> are O(log n) in one pass when size is fixed.</li><li>Two heaps (max-heap for lower half, min-heap for upper half) = streaming median.</li></ul>
+<h3>Practice</h3>
+<ul><li>[ ] Top K frequent elements (Counter + heap, or bucket sort O(n))</li><li>[ ] Find median from a data stream (two heaps)</li><li>[ ] K closest points to origin</li><li>[ ] Task scheduler</li></ul>
+<p>Next: <a href="graph/">Graph →</a></p>
+<div class="prev-next"><a href="/data-structures/tree-bst/">← 5. Tree & BST</a><a href="/data-structures/graph/">7. Graph →</a></div>
+</div>
