@@ -40,12 +40,12 @@
   .wiki-wrap h1{font-size:clamp(1.3rem,5vw,1.6rem);line-height:1.2;margin:.35em 0 .6em;letter-spacing:-.02em}
   .wiki-wrap h2{font-size:1.12rem;line-height:1.3;margin:1.2em 0 .5em}
   .wiki-wrap h3{font-size:1rem}
-  .wiki-nav{display:flex;flex-wrap:wrap;gap:.4em;margin:0 0 1.1em}
-  .wiki-nav a{min-height:40px;padding:.45em .7em;font-size:.9em}
+  .wiki-nav{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:0 0 .9em;max-width:100%;min-width:0}
+  .wiki-nav a{min-height:30px;padding:5px 8px;font-size:.78em;line-height:1.2}
   .wiki-wrap table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
   .wiki-wrap pre{font-size:13px;padding:12px;overflow-x:auto}
-  .diagram{margin:1em 0;padding:8px 4px 4px;width:100%}
-  .diagram svg{width:100%;min-width:0;height:auto;max-height:none}
+  .diagram{display:block;width:100%;min-width:0;margin:1em 0;padding:6px 3px 3px;overflow:hidden}
+  .diagram svg{display:block;width:100%!important;max-width:100%;min-width:0;height:auto!important;max-height:none;margin:0 auto}
   .diagram figcaption{white-space:normal;font-size:.85em}
   .prev-next{flex-direction:column;gap:.2em}
   .prev-next a{padding:.45em 0}
@@ -58,7 +58,7 @@
 .ai-illustration text{font-family:system-ui,-apple-system,sans-serif}
 .ai-section-figure{margin:.7em 0 1em}
 @media(max-width:700px){
-  .ai-illustration{max-height:150px}
+  .ai-illustration{max-height:none;width:100%!important;height:auto!important}
   .wiki-wrap .diagram{padding:6px 3px 3px}
   .wiki-wrap .diagram svg{width:100%;height:auto}
 }
