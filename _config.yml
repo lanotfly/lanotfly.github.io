@@ -1,8 +1,8 @@
 # Basic
-title: Yu Wang Blog
-subtitle: A blog-orientation theme for Jekyll
+title: Data Structures Wiki — Yu Wang
+subtitle: Data Structures for Interviews, in Python
 welcome_message: <a href="http://lanotfly.github.io/tetris/" target="_blank">Tetris(game)</a>
-description: Welcome to my Blog
+description: A wiki book of data structures for coding interviews, with Python examples
 creator: Yu
 
 url: "http://lanotfly.github.io"
@@ -23,6 +23,7 @@ blog_button:
 # Navigation buttons in the front page.
 nav:
     - {title: Home, description: home, url: '/'}
+    - {title: Data Structures, description: wiki book for interviews, url: '/data-structures/'}
     # - {title: Another Button, description: A button, url: 'http://example.com'}
 
 # Pagination
