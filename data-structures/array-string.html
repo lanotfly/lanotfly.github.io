@@ -12,7 +12,7 @@ permalink: /data-structures/array-string/
 <h3>When to reach for it</h3>
 <p>Contiguous data, index-based access, &quot;subarray / substring&quot;, order matters. In Python, <code>list</code> <strong>is</strong> your array, and <code>str</code> is an immutable array of characters.</p>
 <h3>Complexity</h3>
-<table><thead><tr><th>Operation</th><th>Time</th><th>Why</th></tr></thead><tbody><tr><td>Access <code>a[i]</code></td><td>O(1)</td><td>Direct index</td></tr><tr><td>Append</td><td>O(1) amortised</td><td>Occasional resize</td></tr><tr><td>Insert / delete in middle</td><td>O(n)</td><td>Everything shifts</td></tr><tr><td>Search (unsorted)</td><td>O(n)</td><td>Must scan</td></tr><tr><td>Search (sorted)</td><td>O(log n)</td><td>Binary search — <a href="sorting-binary-search/">Chapter 10</a></td></tr></tbody></table>
+<table><thead><tr><th>Operation</th><th>Time</th><th>Why</th></tr></thead><tbody><tr><td>Access <code>a[i]</code></td><td>O(1)</td><td>Direct index</td></tr><tr><td>Append</td><td>O(1) amortised</td><td>Occasional resize</td></tr><tr><td>Insert / delete in middle</td><td>O(n)</td><td>Everything shifts</td></tr><tr><td>Search (unsorted)</td><td>O(n)</td><td>Must scan</td></tr><tr><td>Search (sorted)</td><td>O(log n)</td><td>Binary search — <a href="/data-structures/sorting-binary-search/">Chapter 10</a></td></tr></tbody></table>
 <h3>Core patterns</h3>
 <h4>Two pointers — remove duplicates from a sorted array</h4>
 <pre><code>def remove_duplicates(nums: list[int]) -&gt; int:
@@ -55,6 +55,6 @@ assert length_of_longest_substring(&quot;abcabcbb&quot;) == 3  # &quot;abc&quot;
 <ul><li>Mutating a list while iterating over it — iterate over a copy or backwards.</li><li><code>a = b</code> does <strong>not</strong> copy a list; use <code>b.copy()</code>, <code>b[:]</code>, or <code>list(b)</code>.</li><li>Off-by-one in windows: be consistent — this book uses inclusive <code>right</code>.</li></ul>
 <h3>Practice</h3>
 <ul><li>[ ] Rotate array by <em>k</em> steps, in place</li><li>[ ] Merge two sorted arrays</li><li>[ ] Longest palindromic substring (expand around centre)</li><li>[ ] Container with most water (two pointers)</li></ul>
-<p>Next: <a href="hash-table/">Hash Table →</a></p>
+<p>Next: <a href="/data-structures/hash-table/">Hash Table →</a></p>
 <div class="prev-next"><a href="/data-structures/">← Book Home</a><a href="/data-structures/hash-table/">2. Hash Table →</a></div>
 </div>
