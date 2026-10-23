@@ -59,11 +59,11 @@ def dfs(graph: dict[int, list[int]], start: int) -&gt; list[int]:
                 sink(r, c)
     return count</code></pre>
 <h3>Know the names (say them in interviews)</h3>
-<ul><li><strong>Topological sort</strong> (Kahn&#x27;s BFS on in-degrees) — ordering with dependencies, cycle = leftover nodes.</li><li><strong>Dijkstra</strong> — shortest path, weighted, no negative edges; BFS + priority queue (a <a href="heap/">heap</a>).</li><li><strong>Bellman-Ford</strong> — tolerates negative edges, O(V·E).</li><li><strong>Union-Find</strong> — connectivity without paths: <a href="union-find/">Chapter 9</a>.</li></ul>
+<ul><li><strong>Topological sort</strong> (Kahn&#x27;s BFS on in-degrees) — ordering with dependencies, cycle = leftover nodes.</li><li><strong>Dijkstra</strong> — shortest path, weighted, no negative edges; BFS + priority queue (a <a href="/data-structures/heap/">heap</a>).</li><li><strong>Bellman-Ford</strong> — tolerates negative edges, O(V·E).</li><li><strong>Union-Find</strong> — connectivity without paths: <a href="/data-structures/union-find/">Chapter 9</a>.</li></ul>
 <h3>Pitfalls</h3>
 <ul><li>Mark visited at enqueue time in BFS or you&#x27;ll enqueue duplicates.</li><li>Clarify: directed or undirected? weighted? cycles? disconnected components?</li><li>Grid problems: state the 4-direction (or 8-direction) assumption.</li></ul>
 <h3>Practice</h3>
 <ul><li>[ ] Clone graph</li><li>[ ] Course schedule (topological sort / cycle detection)</li><li>[ ] Rotting oranges (multi-source BFS)</li><li>[ ] Word ladder (BFS on implicit graph)</li></ul>
-<p>Next: <a href="trie/">Trie →</a></p>
+<p>Next: <a href="/data-structures/trie/">Trie →</a></p>
 <div class="prev-next"><a href="/data-structures/heap/">← 6. Heap</a><a href="/data-structures/trie/">8. Trie →</a></div>
 </div>
