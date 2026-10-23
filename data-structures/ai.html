@@ -1,11 +1,13 @@
 ---
-layout: page
+layout: default
 title: "AI Foundations — From Tokens to Agents"
 permalink: /data-structures/ai/
 ---
 <link rel="stylesheet" href="/data-structures/wiki.css">
-<div class="wiki-wrap">
-<nav class="wiki-nav"><a href="/data-structures/">Book Home</a><a href="/data-structures/array-string/">1. Arrays &amp; Strings</a><a href="/data-structures/hash-table/">2. Hash Table</a><a href="/data-structures/linked-list/">3. Linked List</a><a href="/data-structures/stack-queue/">4. Stack &amp; Queue</a><a href="/data-structures/tree-bst/">5. Tree &amp; BST</a><a href="/data-structures/heap/">6. Heap</a><a href="/data-structures/graph/">7. Graph</a><a href="/data-structures/trie/">8. Trie</a><a href="/data-structures/union-find/">9. Union-Find</a><a href="/data-structures/sorting-binary-search/">10. Sorting &amp; Binary Search</a><a href="/data-structures/ai/" class="current">AI Foundations</a></nav>
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="AI guide sections">
+<a href="#top" class="current">Overview</a><a href="#core-concepts">Core concepts</a><a href="#ai-data-structures">Data structures</a><a href="#vector-similarity">Vectors</a><a href="#rag">RAG</a><a href="#training-inference">Training &amp; inference</a><a href="#mental-model">Mental model</a>
+</nav>
 <h1>AI Foundations — From Tokens to Agents</h1>
 <p>This visual guide connects modern AI concepts to familiar computer-science building blocks: arrays, vectors, graphs, search, and computation. Start with the big picture, then explore how each piece fits together.</p>
 <figure class="diagram">
@@ -27,7 +29,7 @@ permalink: /data-structures/ai/
 </g></svg>
 <figcaption>A simplified language-model pipeline. Real systems can include multiple modalities, tools, retrieval, and safety layers.</figcaption>
 </figure>
-<h2>1. The core concepts</h2>
+<h2 id="core-concepts">1. The core concepts</h2>
 <div class="cards">
 <div class="card"><h3>🔤 Tokens</h3><p>Small text units mapped to integer IDs. A token may be a word, part of a word, punctuation, or whitespace-related unit.</p><p><strong>CS connection:</strong> token IDs are indices into a vocabulary array.</p></div>
 <div class="card"><h3>📐 Embeddings</h3><p>Dense numeric vectors that represent tokens, passages, images, or other items in a learned space.</p><p><strong>CS connection:</strong> vectors are arrays; similarity search is a nearest-neighbour problem.</p></div>
@@ -36,7 +38,7 @@ permalink: /data-structures/ai/
 <div class="card"><h3>🔎 Retrieval (RAG)</h3><p>Find relevant external passages, then provide them as context to a model before it answers.</p><p><strong>CS connection:</strong> indexing, ranking, filtering, and joining retrieved data with a prompt.</p></div>
 <div class="card"><h3>🛠️ Agents</h3><p>Systems that use a model to choose actions, call tools, observe results, and continue toward a goal.</p><p><strong>CS connection:</strong> a state machine or control loop with tools and explicit stopping conditions.</p></div>
 </div>
-<h2>2. Data structures behind AI</h2>
+<h2 id="ai-data-structures">2. Data structures behind AI</h2>
 <table><thead><tr><th>Concept</th><th>Typical representation</th><th>Why it matters</th></tr></thead><tbody>
 <tr><td>Token sequence</td><td>Integer array</td><td>Preserves order and feeds model input.</td></tr>
 <tr><td>Embedding</td><td>Float vector / matrix</td><td>Supports semantic comparison and model computation.</td></tr>
@@ -46,7 +48,7 @@ permalink: /data-structures/ai/
 <tr><td>Vector index</td><td>ANN index / vector database</td><td>Retrieves approximate nearest neighbours efficiently.</td></tr>
 <tr><td>Agent workflow</td><td>State + action history</td><td>Tracks tool calls, observations, and completion.</td></tr>
 </tbody></table>
-<h2>3. Vector similarity in Python</h2>
+<h2 id="vector-similarity">3. Vector similarity in Python</h2>
 <p>Embeddings are often compared with cosine similarity. The score is high when two non-zero vectors point in similar directions. This tiny example uses NumPy:</p>
 <pre><code>import numpy as np
 
@@ -65,7 +67,7 @@ car = [0.1, 0.8, 0.7]
 print(cosine_similarity(cat, kitten))
 print(cosine_similarity(cat, car))</code></pre>
 <p>The numbers above are illustrative vectors, not real model embeddings. In a real application, an embedding model generates the vectors for you.</p>
-<h2>4. How RAG works</h2>
+<h2 id="rag">4. How RAG works</h2>
 <figure class="diagram">
 <svg viewBox="0 0 640 245" role="img" aria-label="RAG flow: question, retrieve relevant passages, add context, generate answer">
 <defs><marker id="ragArrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><g font-family="sans-serif" text-anchor="middle">
@@ -83,15 +85,15 @@ print(cosine_similarity(cat, car))</code></pre>
 <figcaption>Retrieval-augmented generation adds selected external information to the model's context; it does not automatically guarantee a correct answer.</figcaption>
 </figure>
 <ol><li><strong>Prepare:</strong> split documents into chunks and calculate an embedding for each chunk.</li><li><strong>Index:</strong> store chunk text, metadata, and vectors in a searchable index.</li><li><strong>Retrieve:</strong> embed the question and find relevant chunks, optionally using keyword and metadata filters too.</li><li><strong>Generate:</strong> place the question and retrieved evidence in the model context.</li><li><strong>Evaluate:</strong> check whether the answer is supported by the retrieved sources and whether retrieval missed important evidence.</li></ol>
-<h2>5. Training vs. inference</h2>
+<h2 id="training-inference">5. Training vs. inference</h2>
 <table><thead><tr><th></th><th>Training</th><th>Inference</th></tr></thead><tbody>
 <tr><td>Goal</td><td>Learn parameters from examples</td><td>Produce an output for new input</td></tr>
 <tr><td>Typical work</td><td>Forward pass, loss, backpropagation, optimizer update</td><td>Forward pass and decoding</td></tr>
 <tr><td>Changes weights?</td><td>Yes, during optimization</td><td>Usually no</td></tr>
 <tr><td>Cost drivers</td><td>Dataset size, model size, training steps</td><td>Model size, context length, output length, hardware</td></tr>
 </tbody></table>
-<h2>6. A practical mental model</h2>
+<h2 id="mental-model">6. A practical mental model</h2>
 <ul><li><strong>Model:</strong> learned parameters that map context to predictions.</li><li><strong>Context:</strong> the information currently supplied to the model; it is not the same thing as permanent memory.</li><li><strong>Retrieval:</strong> searches an external corpus and supplies selected evidence.</li><li><strong>Tool use:</strong> lets a system call software or APIs to observe or change the outside world.</li><li><strong>Evaluation:</strong> measures quality on representative tasks instead of relying on a few impressive examples.</li></ul>
 <blockquote><p>Important: an AI model can produce fluent but incorrect statements. For high-impact decisions, verify facts, test the system, and keep humans in the loop.</p></blockquote>
-<div class="prev-next"><a href="/data-structures/">← Book Home</a><a href="/data-structures/graph/">Review Graphs →</a></div>
+<div class="prev-next"><a href="#top">Back to top ↑</a></div>
 </div>
