@@ -29,15 +29,18 @@
         let destination = "/home/";
         try {
           sessionStorage.setItem("library_access_granted", "1");
+          const queryReturn = new URLSearchParams(window.location.search).get("return_to");
           const savedPath = sessionStorage.getItem("library_return_to");
           const savedAt = Number(sessionStorage.getItem("library_return_to_at") || 0);
-          if (savedPath && Date.now() - savedAt < 10 * 60 * 1000) {
-            const candidate = new URL(savedPath, window.location.origin);
+          const preferredPath = queryReturn || (savedPath && Date.now() - savedAt < 10 * 60 * 1000 ? savedPath : "");
+          if (preferredPath) {
+            const candidate = new URL(preferredPath, window.location.origin);
             if (
               candidate.origin === window.location.origin &&
               candidate.pathname.startsWith("/") &&
               candidate.pathname !== "/" &&
-              !candidate.pathname.startsWith("//")
+              !candidate.pathname.startsWith("//") &&
+              !candidate.pathname.startsWith("/?return_to=")
             ) {
               destination = candidate.pathname + candidate.search + candidate.hash;
             }
