@@ -30,7 +30,7 @@
     toggle.setAttribute('aria-pressed',String(playing));
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
     toggle.classList.toggle('is-playing',playing);
-    label.textContent=playing?'Pause Radio 4':'Play Radio 4';
+    label.textContent='BBC Radio 4';
   }
   toggle.addEventListener('click',function(){
     if(!audio.paused){
@@ -69,14 +69,16 @@
         link.setAttribute('aria-current', 'page');
         /* Inline important styles make the active state survive page-specific CSS. */
         if (!link.classList.contains('site-tab--radio')) {
-          var activePalette = link.classList.contains('site-tab--home') ? ['#54267f','#3e1b60'] :
-            link.classList.contains('site-tab--data') ? ['#2456a6','#1b407d'] :
-            link.classList.contains('site-tab--algorithm') ? ['#a85a0a','#824306'] :
-            link.classList.contains('site-tab--ai') ? ['#18734b','#115638'] : ['#46546a','#344052'];
-          link.style.setProperty('color', '#fff', 'important');
-          link.style.setProperty('background-color', activePalette[0], 'important');
+          var activePalette = link.classList.contains('site-tab--home') ? ['#54267f','#54267f'] :
+            link.classList.contains('site-tab--data') ? ['#1b407d','#1b407d'] :
+            link.classList.contains('site-tab--algorithm') ? ['#824306','#824306'] :
+            link.classList.contains('site-tab--ai') ? ['#115638','#115638'] : ['#46546a','#344052'];
+          link.style.setProperty('color', activePalette[0], 'important');
+          link.style.setProperty('background-color', 'transparent', 'important');
           link.style.setProperty('border-color', activePalette[1], 'important');
-          link.style.setProperty('box-shadow', '0 2px 7px rgba(30,45,65,.14)', 'important');
+          link.style.setProperty('border-style', 'solid', 'important');
+          link.style.setProperty('border-width', '2px', 'important');
+          link.style.setProperty('box-shadow', 'none', 'important');
         }
       } else {
         link.removeAttribute('aria-current');
