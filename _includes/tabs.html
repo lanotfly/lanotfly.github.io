@@ -1,6 +1,42 @@
-<nav class="site-tabs" aria-label="Main navigation">
-  <a class="site-tab site-tab--home" href="/home/">Home</a>
-  <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
-  <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
-  <a class="site-tab site-tab--ai" href="/data-structures/ai/">AI Structure</a>
-</nav>
+<div class="site-nav-shell">
+  <nav class="site-tabs" aria-label="Main navigation">
+    <div class="site-tab-links">
+      <a class="site-tab site-tab--home" href="/home/">Home</a>
+      <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
+      <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
+      <a class="site-tab site-tab--ai" href="/data-structures/ai/">AI Structure</a>
+    </div>
+    <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-expanded="false" aria-controls="radio4-panel">
+      <span class="radio-dot" aria-hidden="true"></span><span id="radio4-label">BBC Radio 4</span>
+    </button>
+  </nav>
+  <section id="radio4-panel" class="radio4-panel" hidden aria-label="BBC Radio 4 live player">
+    <div class="radio4-panel__heading"><strong>BBC Radio 4 · Live English listening</strong><button type="button" id="radio4-close" class="radio4-close" aria-label="Close radio player">Close ×</button></div>
+    <p class="radio4-note">Tap Play in the BBC player if your browser does not start audio automatically.</p>
+    <iframe id="radio4-frame" title="BBC Radio 4 live audio player" src="about:blank" data-src="https://www.bbc.com/audio/play/live/bbc_radio_fourfm" allow="autoplay; encrypted-media; picture-in-picture" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <p class="radio4-fallback"><a href="https://www.bbc.com/audio/play/live/bbc_radio_fourfm" target="_blank" rel="noopener noreferrer">Open BBC Radio 4 in a new tab ↗</a></p>
+  </section>
+</div>
+<script>
+(function(){
+  var toggle=document.getElementById('radio4-toggle');
+  var panel=document.getElementById('radio4-panel');
+  var frame=document.getElementById('radio4-frame');
+  var label=document.getElementById('radio4-label');
+  var close=document.getElementById('radio4-close');
+  if(!toggle||!panel||!frame||!label||!close)return;
+  function setOpen(open){
+    panel.hidden=!open;
+    toggle.setAttribute('aria-expanded',String(open));
+    toggle.classList.toggle('is-playing',open);
+    label.textContent=open?'Radio 4 Open':'BBC Radio 4';
+    if(open){
+      if(frame.getAttribute('src')==='about:blank')frame.setAttribute('src',frame.getAttribute('data-src'));
+    }else{
+      frame.setAttribute('src','about:blank');
+    }
+  }
+  toggle.addEventListener('click',function(){setOpen(panel.hidden);});
+  close.addEventListener('click',function(){setOpen(false);});
+})();
+</script>
