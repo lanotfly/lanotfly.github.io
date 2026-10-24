@@ -26,14 +26,30 @@
         .join("");
 
       if (actualHash === expectedHash) {
+        let destination = "/home/";
         try {
           sessionStorage.setItem("library_access_granted", "1");
+          const savedPath = sessionStorage.getItem("library_return_to");
+          const savedAt = Number(sessionStorage.getItem("library_return_to_at") || 0);
+          if (savedPath && Date.now() - savedAt < 10 * 60 * 1000) {
+            const candidate = new URL(savedPath, window.location.origin);
+            if (
+              candidate.origin === window.location.origin &&
+              candidate.pathname.startsWith("/") &&
+              candidate.pathname !== "/" &&
+              !candidate.pathname.startsWith("//")
+            ) {
+              destination = candidate.pathname + candidate.search + candidate.hash;
+            }
+          }
+          sessionStorage.removeItem("library_return_to");
+          sessionStorage.removeItem("library_return_to_at");
         } catch (error) {
           message.textContent = "This browser cannot keep the temporary session. Please enable session storage and try again.";
           return;
         }
         message.textContent = "Welcome back. Opening your library…";
-        window.location.replace("/home/");
+        window.location.replace(destination);
         return;
       }
 
