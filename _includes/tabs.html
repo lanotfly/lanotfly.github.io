@@ -61,7 +61,22 @@
       else if (href === '/data-structures/') active = pathname === '/data-structures/' || (pathname.indexOf('/data-structures/') === 0 && pathname.indexOf('/data-structures/ai/') !== 0);
       else if (href === '/home/') active = pathname === '/home/' || pathname === '/';
       link.classList.toggle('is-active', active);
-      if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+      if (active) {
+        link.setAttribute('aria-current', 'page');
+        /* Inline important styles make the active state survive page-specific CSS. */
+        if (!link.classList.contains('site-tab--radio')) {
+          link.style.setProperty('color', '#fff', 'important');
+          link.style.setProperty('background-color', '#315fbd', 'important');
+          link.style.setProperty('border-color', '#244b99', 'important');
+          link.style.setProperty('box-shadow', '0 2px 8px rgba(36,75,153,.2)', 'important');
+        }
+      } else {
+        link.removeAttribute('aria-current');
+        link.style.removeProperty('color');
+        link.style.removeProperty('background-color');
+        link.style.removeProperty('border-color');
+        link.style.removeProperty('box-shadow');
+      }
     });
   }
   updatePrimaryActive(window.location.pathname);
@@ -81,13 +96,16 @@
   function rememberPage(pathname){
     var section = sectionForPath(pathname);
     if (!section) return;
+    try { localStorage.setItem(lastPageKeys[section], pathname); } catch (_) {}
     try { sessionStorage.setItem(lastPageKeys[section], pathname); } catch (_) {}
   }
   function safeRememberedPage(section){
-    try {
-      var path = sessionStorage.getItem(lastPageKeys[section]);
-      return path && sectionForPath(path) === section ? path : null;
-    } catch (_) { return null; }
+    var path = null;
+    try { path = localStorage.getItem(lastPageKeys[section]); } catch (_) {}
+    if (!path) {
+      try { path = sessionStorage.getItem(lastPageKeys[section]); } catch (_) {}
+    }
+    return path && sectionForPath(path) === section ? path : null;
   }
   function resolvePrimaryTab(link, currentPath){
     if (!link || !link.classList) return null;
@@ -192,6 +210,8 @@
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     var link = event.target.closest && event.target.closest('a');
     if (!sameOriginPageLink(link)) return;
+    /* Save the page being left before resolving the destination tab. */
+    rememberPage(window.location.pathname);
     var primaryPath = resolvePrimaryTab(link, window.location.pathname);
     var url = new URL(primaryPath || link.href, window.location.href);
     if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return;
