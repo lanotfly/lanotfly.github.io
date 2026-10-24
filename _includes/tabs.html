@@ -348,7 +348,7 @@
       setMetadata(show,episode.title||show.title);
     }).catch(function(){
       paint(activeId,false);
-      window.location.href=show.apple;
+      if(panelStatus)panelStatus.textContent='Playback was blocked by the browser. Tap an episode again or open the podcast in Apple Podcasts.';
     });
   }
   Object.keys(shows).forEach(function(id){
