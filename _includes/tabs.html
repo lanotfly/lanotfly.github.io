@@ -1,13 +1,10 @@
 <div class="site-nav-shell">
-  <div class="radio4-topbar">
-    <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4">
-      <span class="radio-dot" aria-hidden="true"></span>
-      <span class="radio-live-badge">LIVE</span>
-      <span id="radio4-label">BBC Radio 4 ▶</span>
-    </button>
-  </div>
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
+      <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4">
+        <span class="radio-dot" aria-hidden="true"></span>
+        <span id="radio4-label">BBC ▶</span>
+      </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
       <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
@@ -29,7 +26,7 @@
     toggle.setAttribute('aria-pressed',String(playing));
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
     toggle.classList.toggle('is-playing',playing);
-    label.textContent=playing?'BBC Radio 4 ❚❚':'BBC Radio 4 ▶';
+    label.textContent=playing?'BBC ❚❚':'BBC ▶';
   }
   toggle.addEventListener('click',function(){
     if(!audio.paused){
