@@ -407,32 +407,52 @@
 }
 
 
-/* Radio controls: no play/pause glyph; animate a moving outline while audio is live. */
+/* Radio marquee: keep the rounded rectangle fixed; move the light dots along its perimeter. */
 .site-nav-shell .site-tab-links .site-tab--radio,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio{position:relative;isolation:isolate;overflow:visible}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio{
+  position:relative;
+  isolation:isolate;
+  overflow:visible;
+}
 .site-nav-shell .site-tab-links .site-tab--radio.is-playing,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{border-color:transparent!important}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{
+  border-color:transparent!important;
+}
 .site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
 .site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{
-  content:"";position:absolute;inset:-2px;border-radius:11px;padding:2px;pointer-events:none;z-index:2;
-  /* Many small "Christmas-light" dots travel around a fixed rectangular border. */
-  background:repeating-conic-gradient(from 0deg,
-    transparent 0deg 7deg,
-    #705493 7deg 9deg,
-    #c7b5e0 9deg 11deg,
-    transparent 11deg 18deg);
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:11px;
+  padding:2px;
+  pointer-events:none;
+  z-index:2;
+  /* The gradient itself stays fixed in shape; only its background position advances. */
+  background-size:300% 300%;
+  background-position:0% 50%;
   -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  animation:radio-outline-spin 1.8s linear infinite;
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:radio-marquee-lights 1.6s linear infinite;
+}
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing::after{
+  background-image:repeating-linear-gradient(90deg,
+    transparent 0 8px,
+    #705493 8px 11px,
+    #c7b5e0 11px 13px,
+    transparent 13px 20px);
 }
 .site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{
-  background:repeating-conic-gradient(from 0deg,
-    transparent 0deg 7deg,
-    #183e70 7deg 9deg,
-    #9dbbe2 9deg 11deg,
-    transparent 11deg 18deg);
+  background-image:repeating-linear-gradient(90deg,
+    transparent 0 8px,
+    #183e70 8px 11px,
+    #9dbbe2 11px 13px,
+    transparent 13px 20px);
 }
-@keyframes radio-outline-spin{to{transform:rotate(360deg)}}
+@keyframes radio-marquee-lights{
+  0%{background-position:0% 50%}
+  100%{background-position:100% 50%}
+}
 @media(prefers-reduced-motion:reduce){
  .site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
  .site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{animation:none}
