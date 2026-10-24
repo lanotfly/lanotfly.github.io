@@ -56,4 +56,107 @@
   audio.addEventListener('pause',function(){paint(false);});
   audio.addEventListener('error',function(){status.textContent='Stream unavailable in this browser — use BBC.com below';paint(false);});
 })();
+
+</script>
+<script>
+/* Keep the shared header and audio element alive while navigating between library pages. */
+(function(){
+  if (window.__librarySoftNavigationInstalled) return;
+  window.__librarySoftNavigationInstalled = true;
+
+  function sameOriginPageLink(link){
+    if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
+    var url;
+    try { url = new URL(link.href, window.location.href); } catch (_) { return false; }
+    if (url.origin !== window.location.origin) return false;
+    if (!/^https?:$/.test(url.protocol)) return false;
+    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return false;
+    if (link.getAttribute('rel') === 'external') return false;
+    return true;
+  }
+
+  function runInsertedScripts(root){
+    Array.from(root.querySelectorAll('script')).forEach(function(oldScript){
+      var script = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(function(attr){ script.setAttribute(attr.name, attr.value); });
+      script.textContent = oldScript.textContent;
+      oldScript.replaceWith(script);
+    });
+  }
+
+  async function navigate(url, push){
+    var response = await fetch(url.href, { credentials: 'same-origin' });
+    if (!response.ok) throw new Error('Navigation failed: ' + response.status);
+    var html = await response.text();
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var currentInner = document.querySelector('.content-wrapper__inner');
+    var nextInner = doc.querySelector('.content-wrapper__inner');
+    if (!currentInner || !nextInner || !nextInner.querySelector('.site-nav-shell')) {
+      window.location.href = url.href;
+      return;
+    }
+
+    var currentNav = currentInner.querySelector('.site-nav-shell');
+    var currentFooter = currentInner.querySelector('.footer') || currentInner.querySelector('footer');
+    var nextNav = nextInner.querySelector('.site-nav-shell');
+    var nextFooter = nextInner.querySelector('.footer') || nextInner.querySelector('footer');
+    if (!currentNav || !nextNav) { window.location.href = url.href; return; }
+
+    var currentTopRule = currentNav.nextElementSibling && currentNav.nextElementSibling.tagName === 'HR' ? currentNav.nextElementSibling : null;
+    var currentBottomRule = currentFooter && currentFooter.previousElementSibling && currentFooter.previousElementSibling.tagName === 'HR' ? currentFooter.previousElementSibling : null;
+    var nextTopRule = nextNav.nextElementSibling && nextNav.nextElementSibling.tagName === 'HR' ? nextNav.nextElementSibling : null;
+    var nextBottomRule = nextFooter && nextFooter.previousElementSibling && nextFooter.previousElementSibling.tagName === 'HR' ? nextFooter.previousElementSibling : null;
+    if (!currentTopRule || !currentBottomRule || !nextTopRule || !nextBottomRule) { window.location.href = url.href; return; }
+
+    var newNodes = [];
+    var node = nextTopRule.nextSibling;
+    while (node && node !== nextBottomRule) {
+      newNodes.push(node.cloneNode(true));
+      node = node.nextSibling;
+    }
+
+    node = currentTopRule.nextSibling;
+    while (node && node !== currentBottomRule) {
+      var next = node.nextSibling;
+      node.remove();
+      node = next;
+    }
+    newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, currentBottomRule); });
+
+    /* Update page-specific stylesheet links without touching the persistent player. */
+    document.querySelectorAll('link[data-library-page-style="true"]').forEach(function(link){ link.remove(); });
+    doc.querySelectorAll('link[rel="stylesheet"]').forEach(function(link){
+      var href = link.href;
+      if (href && href.indexOf(window.location.origin + '/data-structures/wiki.css') === 0) {
+        var copy = link.cloneNode(true);
+        copy.setAttribute('data-library-page-style', 'true');
+        document.head.appendChild(copy);
+      }
+    });
+
+    document.title = doc.title;
+    if (push) history.pushState({ libraryPage: true }, '', url.href);
+    runInsertedScripts(currentInner);
+    if (url.hash) {
+      var target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+      if (target) target.scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  document.addEventListener('click', function(event){
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    var link = event.target.closest && event.target.closest('a');
+    if (!sameOriginPageLink(link)) return;
+    var url = new URL(link.href, window.location.href);
+    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return;
+    event.preventDefault();
+    navigate(url, true).catch(function(){ window.location.href = url.href; });
+  });
+
+  window.addEventListener('popstate', function(){
+    navigate(new URL(window.location.href), false).catch(function(){ window.location.reload(); });
+  });
+})();
 </script>
