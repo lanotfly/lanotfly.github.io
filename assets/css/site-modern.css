@@ -165,3 +165,35 @@
 }
 .site-nav-shell .site-tab--radio.is-active{color:#a61b2b!important;background:#fff0f1!important;border-color:#f2b9c0!important}
 .site-nav-shell .site-tab--radio.is-active.is-playing{color:#fff!important;background:#b42336!important;border-color:#b42336!important}
+
+
+/* Refined active states: deepen each tab's own color instead of using one blue. */
+.site-nav-shell .site-tab--home.is-active,
+.site-nav-shell .site-tab--home.is-active:hover{color:#fff!important;background:#54267f!important;border-color:#3e1b60!important}
+.site-nav-shell .site-tab--data.is-active,
+.site-nav-shell .site-tab--data.is-active:hover{color:#fff!important;background:#2456a6!important;border-color:#1b407d!important}
+.site-nav-shell .site-tab--algorithm.is-active,
+.site-nav-shell .site-tab--algorithm.is-active:hover{color:#fff!important;background:#a85a0a!important;border-color:#824306!important}
+.site-nav-shell .site-tab--ai.is-active,
+.site-nav-shell .site-tab--ai.is-active:hover{color:#fff!important;background:#18734b!important;border-color:#115638!important}
+
+/* Quiet violet BBC control; purple deepens slightly while audio is playing. */
+.site-tab-links .site-tab--radio,
+.site-nav-shell .site-tab-links .site-tab--radio{color:#62458a!important;background:#f3eef9!important;border-color:#d6c7e8!important}
+.site-tab-links .site-tab--radio:hover,
+.site-nav-shell .site-tab-links .site-tab--radio:hover{background:#e9def5!important}
+.site-tab-links .site-tab--radio .radio-dot,
+.site-nav-shell .site-tab-links .site-tab--radio .radio-dot{background:#8c72b2!important;box-shadow:none!important}
+.site-tab-links .site-tab--radio.is-playing,
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing{color:#fff!important;background:#705493!important;border-color:#5a4079!important;box-shadow:0 0 0 2px rgba(112,84,147,.12)!important}
+.site-tab-links .site-tab--radio.is-playing .radio-dot,
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing .radio-dot{background:#fff!important;box-shadow:0 0 0 3px rgba(255,255,255,.16)!important}
+
+/* Remove the old loud red treatment from any legacy radio topbar markup too. */
+.site-nav-shell .radio4-topbar .site-tab--radio{color:#fff!important;background:#705493!important;border-color:#5a4079!important;box-shadow:0 3px 9px rgba(90,64,121,.16)!important}
+.site-nav-shell .radio4-topbar .site-tab--radio:hover{background:#5a4079!important}
+.site-nav-shell .radio4-topbar .site-tab--radio.is-playing{background:#4d3868!important;border-color:#4d3868!important}
+.site-nav-shell .radio4-topbar .radio4-panel{border-color:#d6c7e8;background:#faf7fd}
+.site-nav-shell .radio4-topbar .radio4-panel__heading{color:#62458a}
+.site-nav-shell .radio4-topbar .radio4-close{border-color:#d6c7e8;color:#62458a}
+.site-nav-shell .radio4-topbar .radio4-fallback a{color:#62458a}
