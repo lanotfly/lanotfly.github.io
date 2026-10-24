@@ -1,0 +1,54 @@
+---
+layout: default
+title: "Kubernetes security: RBAC, Pod hardening, and network controls"
+permalink: /kubernetes/security-rbac/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Kubernetes chapters">
+<a href="/kubernetes/">Overview</a><a href="/kubernetes/pods/">1. Pods</a><a href="/kubernetes/deployments-scaling/">2. Deployments</a><a href="/kubernetes/services-networking/">3. Services</a><a href="/kubernetes/config-secrets/">4. Configuration</a><a href="/kubernetes/storage/">5. Storage</a><a href="/kubernetes/health-resources/">6. Health checks</a><a href="/kubernetes/security-rbac/" class="current">7. Security</a><a href="/kubernetes/troubleshooting/">8. Troubleshooting</a>
+</nav>
+<h1>Kubernetes security: RBAC, Pod hardening, and network controls</h1>
+<p class="lead">Reduce the blast radius by granting least privilege, restricting workload capabilities, and controlling communication.</p>
+
+<h2>1. Start with least privilege</h2>
+<p>Use Role and RoleBinding for namespace-scoped permissions where possible. ClusterRole and ClusterRoleBinding grant broader cluster-level permissions and should be used only when necessary.</p>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: app
+  name: pod-reader
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]</code></pre>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-pod-reader
+  namespace: app
+subjects:
+  - kind: ServiceAccount
+    name: app-reader
+    namespace: app
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-reader</code></pre>
+<h2>2. Harden the container</h2>
+<pre><code>securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: ["ALL"]</code></pre>
+<p>Apply a suitable Pod Security Standard, avoid privileged containers and host namespaces, pin trusted image versions or digests, scan images, and keep nodes and control-plane components patched.</p>
+<h2>3. Restrict network paths</h2>
+<p>Use NetworkPolicy to define which Pods may communicate. Policies require a CNI plugin that enforces them. Begin with an explicit threat model and test DNS, ingress, egress, and required service-to-service paths before enforcing a default-deny policy.</p>
+<h2>4. Protect secrets and identities</h2>
+<ul><li>Do not treat base64 encoding as encryption.</li><li>Enable encryption at rest and restrict Secret read permissions.</li><li>Disable automatic ServiceAccount token mounting when a workload does not need Kubernetes API access.</li><li>Prefer short-lived workload identity and managed secret systems where available.</li><li>Audit access, separate duties, and test credential rotation.</li></ul>
+<h2>5. Security review checklist</h2>
+<ul><li>Who can create Pods, exec into containers, or read Secrets?</li><li>Can a workload escalate privileges or access host resources?</li><li>Are image sources, versions, and vulnerabilities controlled?</li><li>Are network flows intentionally allowed and observable?</li><li>Are audit logs, backups, patching, and incident response tested?</li></ul>
+<div class="prev-next"><a href="/kubernetes/health-resources/">← Probes & resources</a><a href="/kubernetes/troubleshooting/">Troubleshooting →</a></div>
+</div>
