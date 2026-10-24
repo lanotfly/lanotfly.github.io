@@ -95,7 +95,10 @@
         if(typeof MediaMetadata!=='undefined') navigator.mediaSession.metadata=new MediaMetadata({
           title:'NHK Radio 1',
           artist:'NHK らじる★らじる',
-          album:'NHK Radio 1 — Live'
+          album:'NHK Radio 1 — Live',
+          artwork:[
+            {src:'/assets/images/nhk-radio.svg',sizes:'512x512',type:'image/svg+xml'}
+          ]
         });
         navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){paint(false);});});
         navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
@@ -105,7 +108,11 @@
   toggle.addEventListener('click',function(){
     if(!audio.paused){audio.pause();return;}
     var result=audio.play();
-    if(result&&typeof result.catch==='function')result.catch(function(){paint(false);});
+    if(result&&typeof result.then==='function'){
+      result.then(function(){paint(true);}).catch(function(){paint(false);});
+    }else{
+      paint(true);
+    }
   });
   audio.addEventListener('play',function(){paint(true);});
   audio.addEventListener('pause',function(){paint(false);});
