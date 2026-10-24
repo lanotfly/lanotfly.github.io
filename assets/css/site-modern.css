@@ -322,3 +322,80 @@
 
 .home-card--kubernetes{border-top:4px solid #17858b;background:linear-gradient(180deg,#eafafa 0%,#fff 58%)}
 .home-card--kubernetes .eyebrow{color:#07575d}
+
+
+/* TBS Radio official live-stream shortcut, placed beside BBC Radio 4. */
+.site-nav-shell .site-tab-links .site-tab--tbs-radio{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-height:38px!important;
+  padding:6px 10px!important;
+  border:1px solid #b9cce5!important;
+  border-radius:9px!important;
+  color:#174b82!important;
+  background:#eef5fc!important;
+  box-shadow:none!important;
+  font-size:12px!important;
+  font-weight:650!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+}
+.site-nav-shell .site-tab-links .site-tab--tbs-radio:hover{
+  color:#123d69!important;
+  background:#e0edfa!important;
+  border-color:#8eafd7!important;
+}
+.tbs-radio-icon{
+  display:inline-flex;
+  position:relative;
+  align-items:center;
+  justify-content:center;
+  width:29px;
+  height:25px;
+  border-radius:4px;
+  color:#fff;
+  background:#174b82;
+  overflow:hidden;
+}
+.tbs-radio-icon__letters{
+  font:800 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:-.06em;
+}
+.tbs-radio-icon svg{
+  position:absolute;
+  right:0;
+  bottom:0;
+  width:12px;
+  height:12px;
+  padding:1px;
+  box-sizing:border-box;
+  color:#174b82;
+  background:#fff;
+  border-radius:2px 0 0 0;
+}
+.tbs-radio-label{font-size:11.5px!important;font-weight:650!important}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+  .site-nav-shell .site-tab-links .site-tab--radio,
+  .site-nav-shell .site-tab-links .site-tab--tbs-radio,
+  .site-nav-shell .site-tab-links .site-tab--home,
+  .site-nav-shell .site-tab-links .site-tab--data,
+  .site-nav-shell .site-tab-links .site-tab--algorithm,
+  .site-nav-shell .site-tab-links .site-tab--ai{grid-column:span 2!important}
+  .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 4!important}
+  .site-nav-shell .site-tab-links .site-tab--tbs-radio{
+    width:100%!important;
+    min-width:0!important;
+    min-height:37px!important;
+    height:37px!important;
+    padding:5px 4px!important;
+    gap:5px!important;
+    font-size:11px!important;
+  }
+  .tbs-radio-icon{width:24px;height:23px}
+  .tbs-radio-label{font-size:10.5px!important}
+}
