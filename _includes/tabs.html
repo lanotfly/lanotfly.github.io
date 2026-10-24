@@ -9,10 +9,10 @@
         </span>
         <span class="radio4-sr-label" id="radio4-label">Play Radio 4</span>
       </button>
-      <a class="site-tab site-tab--tbs-radio" href="https://www.tbsradio.jp/live/" target="_blank" rel="noopener noreferrer" aria-label="Listen to TBS Radio live" title="TBS Radio Live">
+      <button class="site-tab site-tab--tbs-radio" id="tbs-radio-toggle" type="button" aria-expanded="false" aria-controls="tbs-radio-panel" aria-label="Show TBS Radio live player" title="TBS Radio Live">
         <span class="tbs-radio-icon" aria-hidden="true"><span class="tbs-radio-icon__letters">TBS</span><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5v13L19 12z" fill="currentColor"/></svg></span>
         <span class="tbs-radio-label">TBS Radio</span>
-      </a>
+      </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
       <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
@@ -20,6 +20,15 @@
       <a class="site-tab site-tab--kubernetes" href="/kubernetes/">Kubernetes</a>
     </div>
   </nav>
+  <section id="tbs-radio-panel" class="tbs-radio-panel" aria-label="TBS Radio live player" hidden>
+    <div class="tbs-radio-panel__heading">
+      <strong>TBS Radio — Live</strong>
+      <button id="tbs-radio-close" class="tbs-radio-close" type="button" aria-label="Close TBS Radio player">Close</button>
+    </div>
+    <p class="tbs-radio-note">Official TBS Radio live page embedded here. If the player does not load in this embedded view, use the official page link below.</p>
+    <iframe title="TBS Radio official live player" src="https://www.tbsradio.jp/live/" loading="lazy" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <p class="tbs-radio-fallback"><a href="https://www.tbsradio.jp/live/" target="_blank" rel="noopener noreferrer">Open TBS Radio official live page</a></p>
+  </section>
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
@@ -76,6 +85,23 @@
 })();
 </script>
 <script>
+/* Expand/collapse the TBS official live player inline, without navigating away. */
+(function(){
+  var toggle=document.getElementById('tbs-radio-toggle');
+  var panel=document.getElementById('tbs-radio-panel');
+  var close=document.getElementById('tbs-radio-close');
+  if(!toggle||!panel||!close||toggle.dataset.bound==='true')return;
+  toggle.dataset.bound='true';
+  function setOpen(open){
+    panel.hidden=!open;
+    toggle.setAttribute('aria-expanded',String(open));
+    toggle.classList.toggle('is-open',open);
+    if(open) panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  toggle.addEventListener('click',function(){setOpen(panel.hidden);});
+  close.addEventListener('click',function(){setOpen(false);});
+})();
+
 /* Keep the shared navigation and its audio element alive between library pages. */
 (function(){
   if (window.__librarySoftNavigationInstalled) return;
