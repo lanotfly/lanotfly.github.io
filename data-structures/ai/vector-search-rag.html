@@ -1,0 +1,26 @@
+---
+layout: default
+title: "3. Vector Search &amp; RAG — Retrieve Evidence Before Generation"
+permalink: /data-structures/ai/vector-search-rag/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="AI chapters"><a href="/data-structures/ai/">Book Home</a><a href="/data-structures/ai/tokens-embeddings/">1. Tokens &amp; embeddings</a><a href="/data-structures/ai/transformers-attention/">2. Transformers &amp; attention</a><a href="/data-structures/ai/vector-search-rag/">3. Vector search &amp; RAG</a><a href="/data-structures/ai/training-inference/">4. Training &amp; inference</a><a href="/data-structures/ai/agents-production/">5. Agents &amp; production</a></nav>
+<h1>3. Vector Search &amp; RAG — Retrieve Evidence Before Generation</h1>
+
+<p class="lead">Retrieval-augmented generation (RAG) combines search over external data with a language model. It is useful when answers must draw on documents that may be private, changing, or too large to fit in a prompt.</p>
+<h2>1. Embeddings and similarity</h2><p>An embedding model maps text or other content to a vector. Similarity measures such as cosine similarity or dot product rank candidates, but “similar” depends on the embedding model and the task.</p>
+<pre><code>import numpy as np
+
+def cosine_similarity(a, b):
+    a, b = np.asarray(a), np.asarray(b)
+    denom = np.linalg.norm(a) * np.linalg.norm(b)
+    return 0.0 if denom == 0 else float(a @ b / denom)</code></pre>
+<h2>2. Indexing pipeline</h2><ol><li>Collect and normalize source documents.</li><li>Split documents into chunks with useful overlap and metadata.</li><li>Calculate an embedding for each chunk.</li><li>Store vectors alongside text, source ID, timestamp, and access metadata.</li><li>Build an exact or approximate nearest-neighbour index.</li></ol>
+<h2>3. Query-time pipeline</h2><ol><li>Embed the user's query.</li><li>Retrieve top candidates using vector, keyword, or hybrid search.</li><li>Apply permission and metadata filters.</li><li>Optionally rerank candidates with a stronger relevance model.</li><li>Fit selected evidence within the context budget and ask the model to answer from it.</li><li>Return citations or source references and evaluate whether the answer is supported.</li></ol>
+<h2>4. Exact vs approximate search</h2><p>Exact nearest-neighbour search compares the query with every vector and can be expensive at scale. Approximate nearest-neighbour (ANN) indexes trade a controlled amount of recall for lower latency. HNSW and IVF-style indexes are common design families; their trade-offs depend on data size and tuning.</p>
+<h2>5. Failure modes</h2><ul><li>Chunking separates a fact from its heading or necessary context.</li><li>Embeddings retrieve semantically similar but incorrect passages.</li><li>Stale documents or wrong permissions leak into the context.</li><li>The context contains evidence but the generated answer ignores it.</li><li>Prompt injection inside retrieved content attempts to influence tool use.</li></ul>
+<h2>6. Evaluate components separately</h2><p>Measure retrieval recall and relevance separately from answer correctness and groundedness. Include “no answer in corpus” cases, access-control tests, and freshness tests. RAG can improve grounding, but it does not guarantee correctness.</p>
+
+<div class="prev-next"><a href="/data-structures/ai/">← AI Structure Home</a><a href="/algorithms/">Explore Algorithms →</a></div>
+</div>
