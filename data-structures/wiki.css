@@ -153,3 +153,9 @@
   outline:2px solid #7194d1;
   outline-offset:2px;
 }
+
+
+/* Current sublink uses only a solid outline; idle links use dotted outlines. */
+.wiki-wrap .wiki-nav a{background:transparent!important;color:inherit!important;border:1px dashed #aab4c3!important;font-weight:400!important;box-shadow:none!important}
+.wiki-wrap .wiki-nav a:hover{background:transparent!important;border-style:solid!important;border-color:#5878a8!important}
+.wiki-wrap .wiki-nav a.current,.wiki-wrap .wiki-nav a.current:hover{background:transparent!important;color:inherit!important;border:2px solid #315fbd!important;font-weight:400!important;box-shadow:none!important}
