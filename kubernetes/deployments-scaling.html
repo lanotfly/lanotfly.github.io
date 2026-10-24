@@ -10,11 +10,23 @@ permalink: /kubernetes/deployments-scaling/
 </nav>
 <h1>Deployments, ReplicaSets, and scaling</h1>
 <p class="lead">Declare the desired number of replicas and let Kubernetes reconcile the running workload toward that state.</p>
-<figure class="diagram official-diagram">
-<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener noreferrer" aria-label="Open official Kubernetes documentation for this topic">
-<img src="https://kubernetes.io/images/docs/kubectl_rollingupdate.svg" alt="Official Kubernetes diagram illustrating a rolling update" loading="lazy" style="display:block;width:100%;height:auto;max-width:900px;margin:1rem auto;border-radius:12px;">
-</a>
-<figcaption>Official Kubernetes rolling-update diagram, relevant to Deployment rollout behavior. <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener noreferrer">Official Kubernetes documentation</a>.</figcaption>
+<figure class="diagram">
+<svg viewBox="0 0 600 190" role="img" aria-label="A Deployment manages a ReplicaSet, which keeps three Pods running" style="display:block;width:100%;height:auto;max-width:760px;margin:1rem auto">
+  <rect x="190" y="10" width="220" height="42" rx="9" fill="#e8f4ff" stroke="#3976b8" stroke-width="2"/>
+  <text x="300" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="#20354a">Deployment</text>
+  <path d="M300 52 V76" stroke="#3976b8" stroke-width="2"/>
+  <path d="M294 69 L300 77 L306 69" fill="none" stroke="#3976b8" stroke-width="2"/>
+  <rect x="190" y="78" width="220" height="42" rx="9" fill="#f1f8e9" stroke="#67983b" stroke-width="2"/>
+  <text x="300" y="104" text-anchor="middle" font-size="15" font-weight="600" fill="#2f4821">ReplicaSet · 3 replicas</text>
+  <path d="M300 120 V139 M110 139 H490 M110 139 V151 M300 139 V151 M490 139 V151" stroke="#67983b" stroke-width="2" fill="none"/>
+  <g fill="#fff" stroke="#67983b" stroke-width="2">
+    <rect x="55" y="151" width="110" height="32" rx="7"/>
+    <rect x="245" y="151" width="110" height="32" rx="7"/>
+    <rect x="435" y="151" width="110" height="32" rx="7"/>
+  </g>
+  <g fill="#2f4821" font-size="13" text-anchor="middle"><text x="110" y="171">Pod 1</text><text x="300" y="171">Pod 2</text><text x="490" y="171">Pod 3</text></g>
+</svg>
+<figcaption>Simple view: a Deployment manages a ReplicaSet, which keeps the desired number of Pods running.</figcaption>
 </figure>
 
 
