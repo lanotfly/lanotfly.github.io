@@ -2,12 +2,8 @@
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
       <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4" title="BBC Radio 4">
-        <span class="radio4-icon" aria-hidden="true">
-          <span class="radio4-icon__number">4</span>
-          <svg class="radio4-icon__play" viewBox="0 0 24 24" focusable="false"><path d="M8 5.5v13L19 12z" fill="currentColor"/></svg>
-          <svg class="radio4-icon__pause" viewBox="0 0 24 24" focusable="false"><path d="M7 5h4v14H7zM14 5h4v14h-4z" fill="currentColor"/></svg>
-        </span>
-        <span class="radio4-sr-label" id="radio4-label">Play Radio 4</span>
+        <span class="radio4-icon" aria-hidden="true"><span class="radio4-icon__number">4</span></span>
+        <span class="radio4-sr-label" id="radio4-label">BBC Radio 4</span>
       </button>
       <button class="site-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1">
         <span class="nhk-radio-icon" aria-hidden="true">NHK</span>
@@ -115,6 +111,16 @@
   audio.addEventListener('pause',function(){paint(false);});
   audio.addEventListener('ended',function(){paint(false);});
   audio.addEventListener('error',function(){paint(false);});
+})();
+
+/* Only one radio stream should play at a time, including media-session playback. */
+(function(){
+  var bbc=document.getElementById('radio4-audio');
+  var nhk=document.getElementById('nhk-radio-audio');
+  if(!bbc||!nhk||window.__radioMutualExclusionInstalled)return;
+  window.__radioMutualExclusionInstalled=true;
+  bbc.addEventListener('play',function(){if(!nhk.paused)nhk.pause();});
+  nhk.addEventListener('play',function(){if(!bbc.paused)bbc.pause();});
 })();
 
 /* Keep the shared navigation and its audio element alive between library pages. */
