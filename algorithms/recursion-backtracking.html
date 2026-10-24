@@ -1,0 +1,35 @@
+---
+layout: default
+title: "3. Recursion &amp; Backtracking — State, Choices, Undo"
+permalink: /algorithms/recursion-backtracking/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="Algorithm chapters"><a href="/algorithms/">Book Home</a><a href="/algorithms/array-patterns/">1. Array patterns</a><a href="/algorithms/search-traversal/">2. Search &amp; traversal</a><a href="/algorithms/recursion-backtracking/">3. Recursion &amp; backtracking</a><a href="/algorithms/greedy-dp/">4. Greedy &amp; DP</a><a href="/algorithms/graph-algorithms/">5. Graph algorithms</a><a href="/algorithms/complexity-practice/">6. Complexity &amp; practice</a></nav>
+<h1>3. Recursion &amp; Backtracking — State, Choices, Undo</h1>
+
+<p class="lead">Recursion expresses a problem in terms of smaller versions of itself. Backtracking explores a decision tree and undoes each choice when returning from a branch.</p>
+<h2>1. The recursion contract</h2><p>Before writing recursive code, identify four things: the function's meaning, the base case, how the input gets smaller, and how sub-results are combined. The call stack uses O(depth) memory.</p>
+<pre><code>def factorial(n: int) -&gt; int:
+    if n &lt;= 1:
+        return 1
+    return n * factorial(n - 1)</code></pre>
+<h2>2. Backtracking template</h2><p>Backtracking has a state, a set of choices, a stopping condition, and an undo step. It is common for subsets, permutations, combinations, and grid paths.</p>
+<pre><code>def subsets(nums):
+    result, path = [], []
+    def visit(i):
+        if i == len(nums):
+            result.append(path.copy())
+            return
+        visit(i + 1)                 # exclude nums[i]
+        path.append(nums[i])         # choose
+        visit(i + 1)                 # explore
+        path.pop()                   # undo
+    visit(0)
+    return result</code></pre>
+<p>There are 2^n subsets, so output itself is exponential. Copy the mutable path when saving an answer; otherwise every result can point to the same list.</p>
+<h2>3. Pruning</h2><p>Pruning stops exploring a branch once it cannot produce a valid answer. For Combination Sum, if candidates are sorted and the current candidate exceeds the remaining target, later candidates can be skipped too. Good pruning can greatly reduce real work, but the worst case may remain exponential.</p>
+<h2>4. Divide and conquer vs. backtracking</h2><table><thead><tr><th>Technique</th><th>Purpose</th><th>Example</th></tr></thead><tbody><tr><td>Recursion</td><td>Describe smaller subproblems</td><td>Tree traversal, factorial</td></tr><tr><td>Divide and conquer</td><td>Solve independent pieces and combine</td><td>Merge sort</td></tr><tr><td>Backtracking</td><td>Enumerate choices with undo and pruning</td><td>Permutations, N-Queens</td></tr><tr><td>Dynamic programming</td><td>Reuse overlapping subproblem results</td><td>Coin Change</td></tr></tbody></table>
+<h2>Practice</h2><ul><li>Subsets and Permutations</li><li>Combination Sum</li><li>Word Search</li><li>N-Queens</li><li>Generate Parentheses</li></ul>
+<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data-structures/">Explore Data Structure →</a></div>
+</div>
