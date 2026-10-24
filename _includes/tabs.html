@@ -220,8 +220,7 @@
 /* Podcast buttons: play the newest episode from each public RSS feed, using one shared audio element. */
 (function(){
   var audio=document.getElementById('podcast-audio');
-  if(!audio || window.__libraryPodcastsInstalled)return;
-  window.__libraryPodcastsInstalled=true;
+  if(!audio)return;
   var shows={
     'bite-size-toggle':{
       title:'The Bite Size Japanese Podcast',
