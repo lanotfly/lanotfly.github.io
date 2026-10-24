@@ -382,6 +382,7 @@
   }
   .site-nav-shell .site-tab-links .site-tab--radio,
   .site-nav-shell .site-tab-links .site-tab--tbs-radio,
+  .site-nav-shell .site-tab-links .site-tab--nhk-radio,
   .site-nav-shell .site-tab-links .site-tab--home,
   .site-nav-shell .site-tab-links .site-tab--data,
   .site-nav-shell .site-tab-links .site-tab--algorithm,
@@ -444,4 +445,72 @@
 @media(max-width:700px){
   .tbs-radio-panel{padding:10px;margin:8px 0 12px}
   .tbs-radio-panel iframe{height:65vh;min-height:420px}
+}
+
+
+/* Inline NHK Radio official page player. */
+.site-nav-shell .site-tab-links .site-tab--nhk-radio{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-height:38px!important;
+  padding:6px 10px!important;
+  border:1px solid #b8c8dc!important;
+  border-radius:9px!important;
+  color:#183e70!important;
+  background:#f1f6fc!important;
+  box-shadow:none!important;
+  font-size:12px!important;
+  font-weight:650!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+  cursor:pointer;
+  font-family:inherit;
+}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio:hover,
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-open{
+  background:#e3edf9!important;
+  border-color:#7899c4!important;
+}
+.nhk-radio-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:29px;
+  height:25px;
+  padding:0 3px;
+  box-sizing:border-box;
+  border-radius:4px;
+  color:#fff;
+  background:#183e70;
+  font:800 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:-.06em;
+}
+.nhk-radio-label{font-size:11.5px!important;font-weight:650!important}
+.nhk-radio-panel{
+  margin:10px 0 16px;
+  padding:14px;
+  border:1px solid #b8c8dc;
+  border-radius:12px;
+  background:#f7faff;
+  box-sizing:border-box;
+}
+.nhk-radio-panel[hidden]{display:none}
+.nhk-radio-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#183e70}
+.nhk-radio-close{
+  border:1px solid #b8c8dc;border-radius:7px;background:#fff;color:#183e70;
+  padding:6px 11px;min-height:34px;cursor:pointer;font:600 13px system-ui,sans-serif;
+}
+.nhk-radio-note,.nhk-radio-fallback{font-size:.88rem;color:#4d5d70;margin:.65em 0}
+.nhk-radio-panel iframe{
+  display:block;width:100%;height:560px;border:1px solid #d8e3ef;border-radius:8px;background:#fff;
+}
+.nhk-radio-fallback a{color:#183e70;font-weight:650}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links .site-tab--nhk-radio{width:100%!important;min-width:0!important;min-height:37px!important;height:37px!important;padding:5px 4px!important;gap:5px!important;font-size:11px!important}
+  .nhk-radio-icon{min-width:24px;height:23px}
+  .nhk-radio-label{font-size:10.5px!important}
+  .nhk-radio-panel{padding:10px;margin:8px 0 12px}
+  .nhk-radio-panel iframe{height:65vh;min-height:420px}
 }
