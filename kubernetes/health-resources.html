@@ -10,6 +10,13 @@ permalink: /kubernetes/health-resources/
 </nav>
 <h1>Health probes, requests, limits, and autoscaling</h1>
 <p class="lead">Tell Kubernetes when a container is alive, ready for traffic, or should be restarted—and reserve resources predictably.</p>
+<figure class="diagram official-diagram">
+<a href="https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/" target="_blank" rel="noopener noreferrer" aria-label="Open official Kubernetes documentation for this topic">
+<img src="https://kubernetes.io/images/docs/components-of-kubernetes.svg" alt="Official Kubernetes cluster architecture showing the control plane and worker nodes; use the linked official documentation for topic-specific details" loading="lazy" style="display:block;width:100%;height:auto;max-width:100%;cursor:zoom-in">
+</a>
+<figcaption>Official Kubernetes architecture for context. This chapter's topic-specific explanation is complemented by the <a href="https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/" target="_blank" rel="noopener noreferrer">official Kubernetes documentation</a>.</figcaption>
+</figure>
+
 
 <h2>1. Three probe types</h2>
 <ul><li><strong>Startup probe:</strong> gives a slow-starting application time to initialize before liveness/readiness checks take effect.</li><li><strong>Liveness probe:</strong> detects a stuck process and can trigger a container restart.</li><li><strong>Readiness probe:</strong> controls whether a Pod should receive Service traffic.</li></ul>
