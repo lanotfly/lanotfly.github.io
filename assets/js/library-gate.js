@@ -26,6 +26,12 @@
         .join("");
 
       if (actualHash === expectedHash) {
+        try {
+          sessionStorage.setItem("library_access_granted", "1");
+        } catch (error) {
+          message.textContent = "This browser cannot keep the temporary session. Please enable session storage and try again.";
+          return;
+        }
         message.textContent = "Welcome back. Opening your library…";
         window.location.replace("/home/");
         return;
