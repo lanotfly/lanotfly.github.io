@@ -27,24 +27,45 @@
   var audio=document.getElementById('radio4-audio');
   var label=document.getElementById('radio4-label');
   if(!toggle||!audio||!label)return;
+  /* Keep iOS Lock Screen / Control Center metadata independent of the chapter title. */
+  function setRadioMetadata(){
+    if (!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'BBC Radio 4',
+      artist: 'BBC Radio 4',
+      album: 'BBC Radio 4 — Live',
+      artwork: [
+        { src: '/assets/images/bbc-radio-4.svg', sizes: '512x512', type: 'image/svg+xml' }
+      ]
+    });
+    try {
+      navigator.mediaSession.setActionHandler('play', function(){ audio.play().catch(function(){}); });
+      navigator.mediaSession.setActionHandler('pause', function(){ audio.pause(); });
+    } catch (_) {}
+  }
   function paint(playing){
     toggle.setAttribute('aria-pressed',String(playing));
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
     toggle.classList.toggle('is-playing',playing);
     label.textContent='BBC Radio 4';
+    if ('mediaSession' in navigator) {
+      try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch (_) {}
+    }
   }
+  setRadioMetadata();
   toggle.addEventListener('click',function(){
     if(!audio.paused){
       audio.pause();
       paint(false);
       return;
     }
+    setRadioMetadata();
     var result=audio.play();
     if(result&&typeof result.catch==='function'){
       result.catch(function(){paint(false);});
     }
   });
-  audio.addEventListener('play',function(){paint(true);});
+  audio.addEventListener('play',function(){setRadioMetadata();paint(true);});
   audio.addEventListener('pause',function(){paint(false);});
   audio.addEventListener('ended',function(){paint(false);});
   audio.addEventListener('error',function(){paint(false);});
