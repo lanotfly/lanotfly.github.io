@@ -1,0 +1,29 @@
+---
+layout: default
+title: "5. AI Agents &amp; Production — State, Tools, Safety and Evaluation"
+permalink: /data-structures/ai/agents-production/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="AI chapters"><a href="/data-structures/ai/">Book Home</a><a href="/data-structures/ai/tokens-embeddings/">1. Tokens &amp; embeddings</a><a href="/data-structures/ai/transformers-attention/">2. Transformers &amp; attention</a><a href="/data-structures/ai/vector-search-rag/">3. Vector search &amp; RAG</a><a href="/data-structures/ai/training-inference/">4. Training &amp; inference</a><a href="/data-structures/ai/agents-production/">5. Agents &amp; production</a></nav>
+<h1>5. AI Agents &amp; Production — State, Tools, Safety and Evaluation</h1>
+
+<p class="lead">An AI agent is a system that uses a model to choose actions, observes results, and continues toward a goal. Reliable agents need explicit state and guardrails—not just a model prompt.</p>
+<h2>1. Basic agent loop</h2><ol><li>Receive a goal and current context.</li><li>Choose an action or tool call.</li><li>Validate that the action is allowed and arguments are well formed.</li><li>Execute the tool and capture its result.</li><li>Update state, evaluate progress, and continue or stop.</li></ol>
+<pre><code>state = {"goal": goal, "observations": [], "steps": 0}
+while state["steps"] &lt; MAX_STEPS:
+    action = model_choose_action(state)
+    if action["type"] == "finish":
+        break
+    validate_permissions(action)
+    result = execute_tool(action)
+    state["observations"].append(result)
+    state["steps"] += 1</code></pre>
+<p>This is conceptual pseudocode: a production implementation also needs exception handling, schemas, timeouts, cancellation, and durable logs.</p>
+<h2>2. Useful CS abstractions</h2><table><thead><tr><th>Structure</th><th>Role in an agent</th></tr></thead><tbody><tr><td>Finite-state machine</td><td>Defines legal stages and transitions</td></tr><tr><td>Queue</td><td>Schedules tasks and tool results</td></tr><tr><td>Directed graph</td><td>Represents dependencies in a workflow</td></tr><tr><td>Append-only log</td><td>Records actions and observations for debugging</td></tr><tr><td>Retry policy</td><td>Bounds repeated attempts and handles transient errors</td></tr></tbody></table>
+<h2>3. Guardrails and security</h2><ul><li>Use least-privilege credentials and explicit per-tool authorization.</li><li>Validate tool arguments against schemas and business rules.</li><li>Require confirmation for destructive or externally visible actions.</li><li>Treat model output and retrieved documents as untrusted input.</li><li>Set timeouts, step limits, budgets, and retry limits.</li><li>Prevent secrets from entering prompts or logs unnecessarily.</li></ul>
+<h2>4. Evaluation and observability</h2><p>Log each step with trace IDs, latency, tool name, outcome, and error category. Evaluate task success, invalid tool calls, recovery behavior, and safety violations. Test adversarial instructions and partial outages, not only the happy path.</p>
+<h2>5. SRE checklist</h2><ul><li>Define an SLO for completion rate and latency.</li><li>Measure model latency separately from tool/API latency.</li><li>Use idempotency keys for retryable writes.</li><li>Provide cancellation and human handoff.</li><li>Keep an auditable event history and a rollback path.</li><li>Fail safely when confidence, permissions, or dependencies are insufficient.</li></ul>
+
+<div class="prev-next"><a href="/data-structures/ai/">← AI Structure Home</a><a href="/algorithms/">Explore Algorithms →</a></div>
+</div>
