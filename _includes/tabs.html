@@ -12,8 +12,8 @@
       <button class="site-tab site-tab--podcast" id="bite-size-toggle" type="button" aria-pressed="false" aria-label="Play latest Bite Size Japanese episode" title="Play latest Bite Size Japanese episode">
         <span aria-hidden="true">JP</span><span class="podcast-button-label">Bite Size JP</span>
       </button>
-      <button class="site-tab site-tab--podcast" id="lukes-english-toggle" type="button" aria-pressed="false" aria-label="Play latest Luke's English Podcast episode" title="Play latest Luke's English Podcast episode">
-        <span aria-hidden="true">EN</span><span class="podcast-button-label">Luke's English</span>
+      <button class="site-tab site-tab--podcast" id="lukes-english-toggle" type="button" aria-pressed="false" aria-label="Play latest Easy Natural English with Liam episode" title="Play latest Easy Natural English with Liam episode">
+        <span aria-hidden="true">EN</span><span class="podcast-button-label">Easy Natural English</span>
       </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
@@ -235,13 +235,12 @@
       artwork:'https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/3c/2c/7f/3c2c7f52-ef6a-4f20-89b9-40d2b7a61c85/mza_16673831214975369420.jpg/600x600bb.jpg'
     },
     'lukes-english-toggle':{
-      title:"Luke's English Podcast",
-      artist:'Luke Thompson',
-      feed:'https://feeds.acast.com/public/shows/62b0ada25c7ea10012f541cb',
-      archive:'https://teacherluke.co.uk/episodelist/',
+      title:'Easy Natural English with Liam',
+      artist:'Liam',
+      feed:'https://anchor.fm/s/1258881c/podcast/rss',
       proxyFeed:true,
-      apple:'https://podcasts.apple.com/jp/podcast/lukes-english-podcast-learn-british-english-with-luke/id312059190?l=en-US',
-      artwork:'https://teacherluke.co.uk/wp-content/uploads/2012/03/LEP-Logo-3000x3000.jpg'
+      apple:'https://podcasts.apple.com/jp/podcast/easy-natural-english-with-liam/id1495535233?l=en-US',
+      artwork:'https://i.podnews.network/r/t/150/584554-ad074a45.jpeg'
     }
   };
   var activeId=null;
@@ -382,7 +381,7 @@
     });
   }
   function fetchEpisodes(show){
-    /* The Acast RSS currently may contain no playable enclosures. Fall back to Luke's official archive. */
+    /* The Acast RSS currently may contain no playable enclosures. Use the official podcast RSS with proxy fallbacks if direct access fails. */
     return fetch(show.feed,{cache:'no-store'}).then(function(response){
       if(!response.ok)throw new Error('RSS feed unavailable');
       return response.text();
