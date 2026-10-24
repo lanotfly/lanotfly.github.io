@@ -64,8 +64,15 @@
     }
     setRadioMetadata();
     var result=audio.play();
-    if(result&&typeof result.catch==='function'){
-      result.catch(function(){paint(false);});
+    if(result&&typeof result.then==='function'){
+      result.then(function(){
+        /* Re-apply BBC metadata after playback starts, overriding the previous station. */
+        setRadioMetadata();
+        paint(true);
+      }).catch(function(){paint(false);});
+    }else{
+      setRadioMetadata();
+      paint(true);
     }
   });
   audio.addEventListener('play',function(){setRadioMetadata();paint(true);});
