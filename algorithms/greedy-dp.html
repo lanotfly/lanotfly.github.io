@@ -1,0 +1,33 @@
+---
+layout: default
+title: "4. Greedy &amp; Dynamic Programming — Local Choices vs States"
+permalink: /algorithms/greedy-dp/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="Algorithm chapters"><a href="/algorithms/">Book Home</a><a href="/algorithms/array-patterns/">1. Array patterns</a><a href="/algorithms/search-traversal/">2. Search &amp; traversal</a><a href="/algorithms/recursion-backtracking/">3. Recursion &amp; backtracking</a><a href="/algorithms/greedy-dp/">4. Greedy &amp; DP</a><a href="/algorithms/graph-algorithms/">5. Graph algorithms</a><a href="/algorithms/complexity-practice/">6. Complexity &amp; practice</a></nav>
+<h1>4. Greedy &amp; Dynamic Programming — Local Choices vs States</h1>
+
+<p class="lead">Greedy algorithms commit to local choices. Dynamic programming evaluates states and reuses answers to overlapping subproblems. The challenge is proving the model, not merely coding it.</p>
+<h2>1. Greedy</h2><p>A greedy choice is safe only when there is a proof that some optimal solution includes it. Common proof techniques include an exchange argument and showing a structural property that makes local choices compatible with a global optimum.</p>
+<p>Example: to select the maximum number of non-overlapping intervals, sort by end time and repeatedly choose the next interval that starts after the last selected one ends.</p>
+<pre><code>def max_non_overlapping(intervals):
+    end = float("-inf")
+    count = 0
+    for start, finish in sorted(intervals, key=lambda x: x[1]):
+        if start &gt;= end:
+            count += 1
+            end = finish
+    return count</code></pre>
+<h2>2. Dynamic programming recipe</h2><ol><li><strong>State:</strong> what information uniquely identifies a subproblem?</li><li><strong>Transition:</strong> how do smaller states combine?</li><li><strong>Base case:</strong> what can be answered immediately?</li><li><strong>Order:</strong> in what order are dependencies computed?</li><li><strong>Answer:</strong> which state or combination is the requested result?</li></ol>
+<h2>3. Example: climbing stairs</h2><p>To reach step n, the final move came from n−1 or n−2. Thus <code>dp[n] = dp[n-1] + dp[n-2]</code>, with the first states defined explicitly.</p>
+<pre><code>def climb_stairs(n: int) -&gt; int:
+    a, b = 1, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a</code></pre>
+<p>The iterative version takes O(n) time and O(1) extra space. The DP table is unnecessary because each state depends only on the previous two.</p>
+<h2>4. Common DP families</h2><table><thead><tr><th>Family</th><th>State idea</th><th>Examples</th></tr></thead><tbody><tr><td>1D sequence</td><td>Best answer up to index i</td><td>House Robber, LIS</td></tr><tr><td>Knapsack</td><td>Best value using capacity c</td><td>Coin Change, Partition Equal Subset Sum</td></tr><tr><td>Grid</td><td>Best ways/cost to reach cell (r,c)</td><td>Unique Paths, Minimum Path Sum</td></tr><tr><td>String pair</td><td>Answer for prefixes i and j</td><td>Edit Distance, LCS</td></tr><tr><td>Interval</td><td>Best result for subrange [l,r]</td><td>Matrix Chain Multiplication</td></tr></tbody></table>
+<h2>Practice</h2><ul><li>Jump Game</li><li>House Robber</li><li>Coin Change</li><li>Longest Increasing Subsequence</li><li>Edit Distance</li></ul>
+<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data-structures/">Explore Data Structure →</a></div>
+</div>
