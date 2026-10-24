@@ -5,11 +5,19 @@ permalink: /data-structures/ai/
 ---
 <link rel="stylesheet" href="/data-structures/wiki.css">
 <div class="wiki-wrap" id="top">
-<nav class="wiki-nav" aria-label="AI guide sections">
-<a href="#top" class="current">Overview</a><a href="#core-concepts">Core concepts</a><a href="#ai-data-structures">Data structures</a><a href="#vector-similarity">Vectors</a><a href="#rag">RAG</a><a href="#training-inference">Training &amp; inference</a><a href="#mental-model">Mental model</a>
+<nav class="wiki-nav" aria-label="AI chapters">
+<a href="/data-structures/ai/" class="current">Overview</a><a href="/data-structures/ai/tokens-embeddings/">1. Tokens &amp; embeddings</a><a href="/data-structures/ai/transformers-attention/">2. Transformers</a><a href="/data-structures/ai/vector-search-rag/">3. Vector search &amp; RAG</a><a href="/data-structures/ai/training-inference/">4. Training &amp; inference</a><a href="/data-structures/ai/agents-production/">5. Agents &amp; production</a>
 </nav>
 <h1>AI Foundations — From Tokens to Agents</h1>
 <p>This visual guide connects modern AI concepts to familiar computer-science building blocks: arrays, vectors, graphs, search, and computation. Start with the big picture, then explore how each piece fits together.</p>
+<h2>Chapters — open each topic as its own page</h2>
+<div class="cards">
+<section class="card"><h3><a href="/data-structures/ai/tokens-embeddings/">1. Tokens &amp; embeddings</a></h3><p>Tokenization, vocabulary IDs, embedding tables, vectors, and context length.</p></section>
+<section class="card"><h3><a href="/data-structures/ai/transformers-attention/">2. Transformers &amp; attention</a></h3><p>Queries, keys, values, attention, Transformer blocks and next-token prediction.</p></section>
+<section class="card"><h3><a href="/data-structures/ai/vector-search-rag/">3. Vector search &amp; RAG</a></h3><p>Vector similarity, ANN indexes, retrieval pipelines, ranking and evaluation.</p></section>
+<section class="card"><h3><a href="/data-structures/ai/training-inference/">4. Training &amp; inference</a></h3><p>Loss, gradients, fine-tuning, decoding, serving cost and monitoring.</p></section>
+<section class="card"><h3><a href="/data-structures/ai/agents-production/">5. Agents &amp; production</a></h3><p>Tool calls, state machines, workflow reliability, security and SRE practices.</p></section>
+</div>
 <figure class="diagram">
 <svg viewBox="0 0 700 245" role="img" aria-label="AI pipeline: input, tokenization, embeddings, model, output">
 <defs><marker id="aiArrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs>
