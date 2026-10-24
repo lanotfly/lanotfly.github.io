@@ -1,0 +1,25 @@
+---
+layout: default
+title: "4. Training &amp; Inference — Learning vs Using a Model"
+permalink: /data-structures/ai/training-inference/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="AI chapters"><a href="/data-structures/ai/">Book Home</a><a href="/data-structures/ai/tokens-embeddings/">1. Tokens &amp; embeddings</a><a href="/data-structures/ai/transformers-attention/">2. Transformers &amp; attention</a><a href="/data-structures/ai/vector-search-rag/">3. Vector search &amp; RAG</a><a href="/data-structures/ai/training-inference/">4. Training &amp; inference</a><a href="/data-structures/ai/agents-production/">5. Agents &amp; production</a></nav>
+<h1>4. Training &amp; Inference — Learning vs Using a Model</h1>
+
+<p class="lead">Training adjusts model parameters from examples. Inference uses the learned parameters to produce outputs for new inputs. The two phases have different computational and operational requirements.</p>
+<h2>1. Training loop</h2><ol><li>Prepare examples and labels or next-token targets.</li><li>Run a forward pass to calculate predictions.</li><li>Calculate a loss measuring prediction error.</li><li>Backpropagate gradients through the computation graph.</li><li>Use an optimizer to update parameters.</li><li>Repeat over batches and monitor validation performance.</li></ol>
+<pre><code># Conceptual PyTorch-style training step
+optimizer.zero_grad()
+logits = model(inputs)
+loss = loss_fn(logits, targets)
+loss.backward()
+optimizer.step()</code></pre>
+<h2>2. Inference and decoding</h2><p>Inference usually does not update weights. For autoregressive text generation, the model repeatedly predicts a distribution for the next token, selects a token, appends it to the context, and continues. KV caching reuses previous attention key/value computations.</p>
+<h2>3. Fine-tuning and prompting</h2><table><thead><tr><th>Approach</th><th>What changes?</th><th>Best suited for</th></tr></thead><tbody><tr><td>Prompting</td><td>Input context only</td><td>Fast iteration, instructions, examples</td></tr><tr><td>RAG</td><td>External evidence supplied at runtime</td><td>Fresh or private knowledge</td></tr><tr><td>Fine-tuning</td><td>Some or all model parameters, or adapter parameters</td><td>Consistent task behavior, style, specialized patterns</td></tr></tbody></table>
+<h2>4. Compute and serving</h2><p>Training is dominated by repeated forward/backward passes and optimizer state. Inference cost depends on model size, prompt length, generated token count, batching, hardware, and cache behavior. Quantization can reduce memory and increase throughput, with potential quality trade-offs.</p>
+<h2>5. Monitoring</h2><p>Track latency percentiles, throughput, error rate, token counts, cost per request, timeouts, and quality regressions. Keep offline evaluation sets and compare model or prompt changes before production rollout.</p>
+
+<div class="prev-next"><a href="/data-structures/ai/">← AI Structure Home</a><a href="/algorithms/">Explore Algorithms →</a></div>
+</div>
