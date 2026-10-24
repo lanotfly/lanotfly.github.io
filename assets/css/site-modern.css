@@ -30,6 +30,8 @@
 .site-tab--home:hover{background:#eddcff}
 .site-tab--data{color:#2456a6!important;background:#eaf2ff;border-color:#b9d0ff}
 .site-tab--data:hover{background:#dce9ff}
+.site-tab--algorithm{color:#9a4d08!important;background:#fff2df;border-color:#f3c78d}
+.site-tab--algorithm:hover{background:#ffe6bf}
 .site-tab--ai{color:#18734b!important;background:#e5f8ed;border-color:#a8e2c0}
 .site-tab--ai:hover{background:#d3f2df}
 @media(max-width:600px){
