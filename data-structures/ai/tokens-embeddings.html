@@ -1,0 +1,29 @@
+---
+layout: default
+title: "1. Tokens &amp; Embeddings — From Text to Vectors"
+permalink: /data-structures/ai/tokens-embeddings/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="AI chapters"><a href="/data-structures/ai/">Book Home</a><a href="/data-structures/ai/tokens-embeddings/">1. Tokens &amp; embeddings</a><a href="/data-structures/ai/transformers-attention/">2. Transformers &amp; attention</a><a href="/data-structures/ai/vector-search-rag/">3. Vector search &amp; RAG</a><a href="/data-structures/ai/training-inference/">4. Training &amp; inference</a><a href="/data-structures/ai/agents-production/">5. Agents &amp; production</a></nav>
+<h1>1. Tokens &amp; Embeddings — From Text to Vectors</h1>
+
+<p class="lead">Language models do not directly process words as humans see them. Text is tokenized into integer IDs, then mapped to vectors that a neural network can transform.</p>
+<h2>1. Tokenization</h2><p>A tokenizer splits text into units from a finite vocabulary. A token may be a whole word, a word fragment, punctuation, or a whitespace-associated unit. The exact split depends on the tokenizer.</p>
+<pre><code>text = "unbelievable!"
+# Illustrative only; actual token IDs depend on the tokenizer:
+tokens = ["un", "believ", "able", "!"]
+token_ids = [41, 812, 207, 9]</code></pre>
+<p>Token IDs are category labels, not numerical meanings: ID 812 is not “twice” ID 406. A vocabulary maps token strings to IDs, often using tables or specialized tokenization algorithms.</p>
+<h2>2. Embedding lookup</h2><p>An embedding table is a matrix with one learned vector per token ID. Looking up an ID selects a row. The vector dimension is a model design choice, and its coordinates are learned jointly with the rest of the model.</p>
+<pre><code># Conceptual shape:
+# token_ids: [batch, sequence_length]
+# embedding_table: [vocabulary_size, hidden_size]
+# embedded: [batch, sequence_length, hidden_size]
+embedded = embedding_table[token_ids]</code></pre>
+<h2>3. Position and context</h2><p>Token embeddings alone do not encode sequence order. Transformer models add positional information or otherwise encode position so the model can distinguish “dog bites person” from “person bites dog”. Contextual representations then change as tokens interact through layers.</p>
+<h2>4. Tokens are not characters</h2><ul><li>One word can be split into multiple tokens.</li><li>Different languages can have different token efficiency.</li><li>Spaces, punctuation, and formatting can affect tokenization.</li><li>Context windows are measured in tokens, not simply words or characters.</li></ul>
+<h2>5. Why it matters in practice</h2><p>Token count affects prompt limits, latency, and usage cost. When building retrieval systems, chunk by token budget as well as semantic boundaries. For multilingual content, test the actual tokenizer rather than estimating from character count.</p>
+
+<div class="prev-next"><a href="/data-structures/ai/">← AI Structure Home</a><a href="/algorithms/">Explore Algorithms →</a></div>
+</div>
