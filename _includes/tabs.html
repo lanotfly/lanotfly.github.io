@@ -28,6 +28,11 @@
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
+  <section id="podcast-episode-panel" class="podcast-episode-panel" aria-label="Podcast episodes" hidden>
+    <div class="podcast-episode-panel__heading"><div><div class="podcast-episode-panel__eyebrow">PODCAST EPISODES</div><h2 id="podcast-panel-title" class="podcast-episode-panel__title">Choose an episode</h2></div><button id="podcast-panel-close" class="podcast-episode-panel__close" type="button">Close</button></div>
+    <p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p>
+    <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
+  </section>
   <audio id="podcast-audio" preload="none" playsinline hidden></audio>
 </div>
 <script>
@@ -234,6 +239,29 @@
     }
   };
   var activeId=null;
+  var panel=document.getElementById('podcast-episode-panel');
+  var panelTitle=document.getElementById('podcast-panel-title');
+  var panelStatus=document.getElementById('podcast-panel-status');
+  var episodeList=document.getElementById('podcast-episode-list');
+  var closePanel=document.getElementById('podcast-panel-close');
+  function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;}
+  if(closePanel)closePanel.addEventListener('click',function(){if(panel)panel.hidden=true;});
+  function renderEpisodeList(){
+    if(!episodeList)return;
+    episodeList.textContent='';
+    episodeQueue.forEach(function(episode,index){
+      var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
+      var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
+      if(index===episodeIndex)choose.classList.add('is-current');
+      choose.setAttribute('aria-current',index===episodeIndex?'true':'false');
+      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=index===episodeIndex?'▶':String(index+1);
+      var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
+      choose.appendChild(number);choose.appendChild(title);
+      choose.addEventListener('click',function(){if(activeId){playEpisodeAt(index);}});
+      row.appendChild(choose);episodeList.appendChild(row);
+    });
+    if(panelStatus)panelStatus.textContent=episodeQueue.length?'Choose an episode. Playback continues to older episodes automatically.':'No episodes found.';
+  }
   function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
@@ -309,6 +337,7 @@
     }
     episodeIndex=index;
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
+    renderEpisodeList();
     audio.src=episode.url;
     audio.dataset.episodeTitle=episode.title;
     setMetadata(show,episode.title||show.title);
@@ -324,18 +353,14 @@
     var button=document.getElementById(id),show=shows[id];
     if(!button)return;
     button.addEventListener('click',function(){
-      if(activeId===id&&!audio.paused){audio.pause();return;}
-      if(activeId===id&&audio.paused&&audio.src){stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){window.location.href=show.apple;});return;}
-      stopOtherAudio();
-      activeId=id;
-      episodeQueue=[];
-      episodeIndex=-1;
+      if(activeId===id&&!audio.paused){showPanel(show);audio.pause();return;}
+      if(activeId===id&&audio.paused&&audio.src){showPanel(show);renderEpisodeList();stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){window.location.href=show.apple;});return;}
+      stopOtherAudio();activeId=id;episodeQueue=[];episodeIndex=-1;showPanel(show);
+      if(episodeList)episodeList.textContent='';
+      if(panelStatus)panelStatus.textContent='Loading episodes…';
       button.classList.add('is-loading');
-      fetchEpisodes(show).then(function(episodes){
-        episodeQueue=episodes;
-        playEpisodeAt(0);
-      }).catch(function(){
-        /* If the feed blocks browser access or iOS blocks playback, use the official Apple Podcasts page. */
+      fetchEpisodes(show).then(function(episodes){episodeQueue=episodes;renderEpisodeList();playEpisodeAt(0);}).catch(function(){
+        if(panelStatus)panelStatus.textContent='Could not load the episode list. Opening the podcast page instead…';
         window.location.href=show.apple;
       }).finally(function(){button.classList.remove('is-loading');});
     });
@@ -351,7 +376,7 @@
   audio.addEventListener('ended',function(){
     /* Automatically continue with the next older episode when one finishes. */
     if(activeId&&episodeIndex+1<episodeQueue.length){playEpisodeAt(episodeIndex+1);}
-    else if(activeId){paint(activeId,false);}
+    else if(activeId){paint(activeId,false);if(panelStatus)panelStatus.textContent='You reached the oldest episode available in this feed.';}
   });
   audio.addEventListener('error',function(){if(activeId)paint(activeId,false);});
 })();
