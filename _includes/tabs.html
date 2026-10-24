@@ -136,7 +136,17 @@
 
     document.title = doc.title;
     if (push) history.pushState({ libraryPage: true }, '', url.href);
-    runInsertedScripts(currentInner);
+    newNodes.forEach(function(insertedNode){
+      if (insertedNode.nodeType !== 1) return;
+      if (insertedNode.tagName === 'SCRIPT') {
+        var freshScript = document.createElement('script');
+        Array.from(insertedNode.attributes).forEach(function(attr){ freshScript.setAttribute(attr.name, attr.value); });
+        freshScript.textContent = insertedNode.textContent;
+        insertedNode.replaceWith(freshScript);
+      } else {
+        runInsertedScripts(insertedNode);
+      }
+    });
     if (url.hash) {
       var target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
       if (target) target.scrollIntoView();
