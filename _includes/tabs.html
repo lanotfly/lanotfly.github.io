@@ -3,7 +3,7 @@
     <div class="site-tab-links">
       <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4">
         <span class="radio-dot" aria-hidden="true"></span>
-        <span id="radio4-label">BBC ▶</span>
+        <span id="radio4-label">BBC</span>
       </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
@@ -26,7 +26,7 @@
     toggle.setAttribute('aria-pressed',String(playing));
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
     toggle.classList.toggle('is-playing',playing);
-    label.textContent=playing?'BBC ❚❚':'BBC ▶';
+    label.textContent='BBC';
   }
   toggle.addEventListener('click',function(){
     if(!audio.paused){
@@ -50,6 +50,21 @@
 (function(){
   if (window.__librarySoftNavigationInstalled) return;
   window.__librarySoftNavigationInstalled = true;
+
+  function updatePrimaryActive(pathname){
+    var links = document.querySelectorAll('.site-tab-links .site-tab');
+    links.forEach(function(link){
+      var href = link.getAttribute('href') || '';
+      var active = false;
+      if (href === '/algorithms/') active = pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0;
+      else if (href === '/data-structures/ai/') active = pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0;
+      else if (href === '/data-structures/') active = pathname === '/data-structures/' || (pathname.indexOf('/data-structures/') === 0 && pathname.indexOf('/data-structures/ai/') !== 0);
+      else if (href === '/home/') active = pathname === '/home/' || pathname === '/';
+      link.classList.toggle('is-active', active);
+      if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+    });
+  }
+  updatePrimaryActive(window.location.pathname);
 
   function sameOriginPageLink(link){
     if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
@@ -117,6 +132,7 @@
 
     document.title = doc.title;
     if (push) history.pushState({ libraryPage: true }, '', url.href);
+    updatePrimaryActive(url.pathname);
     newNodes.forEach(function(insertedNode){
       if (insertedNode.nodeType !== 1) return;
       if (insertedNode.tagName === 'SCRIPT') {
