@@ -376,6 +376,10 @@
       return;
     }
     episodeIndex=index;
+    if(progressWrap)progressWrap.hidden=true;
+    if(progressSlider)progressSlider.value='0';
+    if(currentTimeLabel)currentTimeLabel.textContent='0:00';
+    if(durationLabel)durationLabel.textContent='0:00';
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
     renderEpisodeList();
     audio.src=episode.url;
