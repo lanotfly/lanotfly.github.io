@@ -13,6 +13,10 @@
         <span class="tbs-radio-icon" aria-hidden="true"><span class="tbs-radio-icon__letters">TBS</span><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5v13L19 12z" fill="currentColor"/></svg></span>
         <span class="tbs-radio-label">TBS Radio</span>
       </button>
+      <button class="site-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-expanded="false" aria-controls="nhk-radio-panel" aria-label="Show NHK Radio live player" title="NHK Radio Live">
+        <span class="nhk-radio-icon" aria-hidden="true">NHK</span>
+        <span class="nhk-radio-label">NHK Radio</span>
+      </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
       <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
@@ -29,6 +33,16 @@
     <iframe title="TBS Radio official YouTube live stream" src="https://www.youtube.com/embed/live_stream?channel=UCtK2jtkcUh59o3RdfinlZ4Q" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <p class="tbs-radio-fallback"><a href="https://radiko.jp/#!/live/TBS" target="_blank" rel="noopener noreferrer">Open full TBS Radio live broadcast on official radiko</a></p>
     <p class="tbs-radio-fallback"><a href="https://www.youtube.com/channel/UCtK2jtkcUh59o3RdfinlZ4Q" target="_blank" rel="noopener noreferrer">Browse official TBS Radio YouTube channel</a></p>
+  </section>
+  <section id="nhk-radio-panel" class="nhk-radio-panel" aria-label="NHK Radio live player" hidden>
+    <div class="nhk-radio-panel__heading">
+      <strong>NHK Radio — らじる★らじる</strong>
+      <button id="nhk-radio-close" class="nhk-radio-close" type="button" aria-label="Close NHK Radio player">Close</button>
+    </div>
+    <p class="nhk-radio-note">Trying the official NHK Radio page inside this panel. If NHK blocks embedded playback, open the official player using the link below. This site does not proxy or extract NHK's audio stream.</p>
+    <iframe title="NHK official らじる★らじる radio page" src="https://www.nhk.or.jp/radio/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media"></iframe>
+    <p class="nhk-radio-fallback"><a href="https://www.nhk.or.jp/radio/" target="_blank" rel="noopener noreferrer">Open official NHK らじる★らじる player</a></p>
+    <p class="nhk-radio-fallback"><a href="https://www.nhk.or.jp/gogaku/" target="_blank" rel="noopener noreferrer">Open NHK language-learning audio (らじる★らじる ゴガク)</a></p>
   </section>
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
@@ -91,6 +105,23 @@
   var toggle=document.getElementById('tbs-radio-toggle');
   var panel=document.getElementById('tbs-radio-panel');
   var close=document.getElementById('tbs-radio-close');
+  if(!toggle||!panel||!close||toggle.dataset.bound==='true')return;
+  toggle.dataset.bound='true';
+  function setOpen(open){
+    panel.hidden=!open;
+    toggle.setAttribute('aria-expanded',String(open));
+    toggle.classList.toggle('is-open',open);
+    if(open) panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  toggle.addEventListener('click',function(){setOpen(panel.hidden);});
+  close.addEventListener('click',function(){setOpen(false);});
+})();
+
+/* Expand/collapse the NHK official radio page inline. */
+(function(){
+  var toggle=document.getElementById('nhk-radio-toggle');
+  var panel=document.getElementById('nhk-radio-panel');
+  var close=document.getElementById('nhk-radio-close');
   if(!toggle||!panel||!close||toggle.dataset.bound==='true')return;
   toggle.dataset.bound='true';
   function setOpen(open){
