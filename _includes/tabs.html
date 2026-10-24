@@ -227,6 +227,7 @@
       title:'The Bite Size Japanese Podcast',
       artist:'Layla from Bite Size Japanese',
       feed:'https://anchor.fm/s/463a19c0/podcast/rss',
+      proxyFeed:true,
       apple:'https://podcasts.apple.com/jp/podcast/the-bite-size-japanese-podcast/id1588405417?l=en-US',
       artwork:'https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/3c/2c/7f/3c2c7f52-ef6a-4f20-89b9-40d2b7a61c85/mza_16673831214975369420.jpg/600x600bb.jpg'
     },
@@ -355,7 +356,7 @@
     if(!button)return;
     button.addEventListener('click',function(){
       if(activeId===id&&!audio.paused){showPanel(show);audio.pause();return;}
-      if(activeId===id&&audio.paused&&audio.src){showPanel(show);renderEpisodeList();stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){window.location.href=show.apple;});return;}
+      if(activeId===id&&audio.paused&&audio.src){showPanel(show);renderEpisodeList();stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){if(panelStatus)panelStatus.textContent='Playback was blocked by the browser. Tap the episode again or open the podcast in Apple Podcasts.';});return;}
       stopOtherAudio();activeId=id;episodeQueue=[];episodeIndex=-1;showPanel(show);
       if(episodeList)episodeList.textContent='';
       if(panelStatus)panelStatus.textContent='Loading episodes…';
