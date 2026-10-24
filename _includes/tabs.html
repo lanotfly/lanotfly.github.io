@@ -9,10 +9,6 @@
         </span>
         <span class="radio4-sr-label" id="radio4-label">Play Radio 4</span>
       </button>
-      <button class="site-tab site-tab--tbs-radio" id="tbs-radio-toggle" type="button" aria-expanded="false" aria-controls="tbs-radio-panel" aria-label="Show TBS Radio live player" title="TBS Radio Live">
-        <span class="tbs-radio-icon" aria-hidden="true"><span class="tbs-radio-icon__letters">TBS</span><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5v13L19 12z" fill="currentColor"/></svg></span>
-        <span class="tbs-radio-label">TBS Radio</span>
-      </button>
       <button class="site-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1">
         <span class="nhk-radio-icon" aria-hidden="true">NHK</span>
         <span class="nhk-radio-label">NHK Radio</span>
@@ -24,16 +20,6 @@
       <a class="site-tab site-tab--kubernetes" href="/kubernetes/">Kubernetes</a>
     </div>
   </nav>
-  <section id="tbs-radio-panel" class="tbs-radio-panel" aria-label="TBS Radio live player" hidden>
-    <div class="tbs-radio-panel__heading">
-      <strong>TBS Radio — Live</strong>
-      <button id="tbs-radio-close" class="tbs-radio-close" type="button" aria-label="Close TBS Radio player">Close</button>
-    </div>
-    <p class="tbs-radio-note">This is the official TBS Radio YouTube live player. It plays only when TBS Radio has a compatible live stream active on its official channel; it is not a guaranteed 24-hour simulcast. Some music and commercials may be omitted for rights reasons. If no live stream is available, use the official radiko link below.</p>
-    <iframe title="TBS Radio official YouTube live stream" src="https://www.youtube.com/embed/live_stream?channel=UCtK2jtkcUh59o3RdfinlZ4Q" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <p class="tbs-radio-fallback"><a href="https://radiko.jp/#!/live/TBS" target="_blank" rel="noopener noreferrer">Open full TBS Radio live broadcast on official radiko</a></p>
-    <p class="tbs-radio-fallback"><a href="https://www.youtube.com/channel/UCtK2jtkcUh59o3RdfinlZ4Q" target="_blank" rel="noopener noreferrer">Browse official TBS Radio YouTube channel</a></p>
-  </section>
   <audio id="nhk-radio-audio" preload="none" playsinline hidden>
     <source src="https://simul2.drdi.st.nhk/live/3/joined/master.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
@@ -93,22 +79,6 @@
 })();
 </script>
 <script>
-/* Expand/collapse the TBS official live player inline, without navigating away. */
-(function(){
-  var toggle=document.getElementById('tbs-radio-toggle');
-  var panel=document.getElementById('tbs-radio-panel');
-  var close=document.getElementById('tbs-radio-close');
-  if(!toggle||!panel||!close||toggle.dataset.bound==='true')return;
-  toggle.dataset.bound='true';
-  function setOpen(open){
-    panel.hidden=!open;
-    toggle.setAttribute('aria-expanded',String(open));
-    toggle.classList.toggle('is-open',open);
-    if(open) panel.scrollIntoView({behavior:'smooth',block:'nearest'});
-  }
-  toggle.addEventListener('click',function(){setOpen(panel.hidden);});
-  close.addEventListener('click',function(){setOpen(false);});
-})();
 
 /* Play NHK Radio 1 directly from the official live stream; button toggles play/pause. */
 (function(){
