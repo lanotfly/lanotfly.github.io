@@ -440,9 +440,9 @@
 
 
 /* Radio station artwork: preserve the full BBC Radio 4 lockup and show NHK branding. */
-.radio4-icon-image{width:52px!important;height:25px!important;object-fit:contain!important;border-radius:3px!important}
+.radio4-icon-image{width:27px!important;height:27px!important;object-fit:contain!important;border-radius:4px!important}
 .nhk-radio-icon-image{display:block;flex:0 0 auto;width:25px;height:25px;object-fit:contain;border-radius:4px}
 @media(max-width:700px){
-  .radio4-icon-image{width:43px!important;height:22px!important}
+  .radio4-icon-image{width:25px!important;height:25px!important}
   .nhk-radio-icon-image{width:23px;height:23px}
 }
