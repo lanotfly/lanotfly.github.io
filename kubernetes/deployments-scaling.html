@@ -10,6 +10,13 @@ permalink: /kubernetes/deployments-scaling/
 </nav>
 <h1>Deployments, ReplicaSets, and scaling</h1>
 <p class="lead">Declare the desired number of replicas and let Kubernetes reconcile the running workload toward that state.</p>
+<figure class="diagram official-diagram">
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener noreferrer" aria-label="Open official Kubernetes documentation for this topic">
+<img src="https://kubernetes.io/images/docs/components-of-kubernetes.svg" alt="Official Kubernetes cluster architecture showing the control plane and worker nodes; use the linked official documentation for topic-specific details" loading="lazy" style="display:block;width:100%;height:auto;max-width:100%;cursor:zoom-in">
+</a>
+<figcaption>Official Kubernetes architecture for context. This chapter's topic-specific explanation is complemented by the <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener noreferrer">official Kubernetes documentation</a>.</figcaption>
+</figure>
+
 
 <h2>1. The controller chain</h2>
 <p>A Deployment manages a ReplicaSet; the ReplicaSet maintains the requested number of matching Pods. You normally update the Deployment rather than creating ReplicaSets or Pods manually.</p>
