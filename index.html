@@ -1,23 +1,45 @@
 ---
-layout: default
+layout: none
 ---
-<link rel="stylesheet" href="/data-structures/wiki.css">
-<div class="wiki-wrap home-page" id="top">
-  <p class="eyebrow">A practical learning hub</p>
-  <h1>Learn the structures behind software and AI</h1>
-  <p class="lead">Explore the building blocks of algorithms and modern AI through clear diagrams, practical explanations, and Python examples.</p>
-  <div class="cards home-cards">
-    <section class="card home-card">
-      <p class="eyebrow">01 · Computer science</p>
-      <h2><a href="/data-structures/">Data Structure</a></h2>
-      <p>Learn arrays, hash tables, linked lists, trees, heaps, graphs, and more. Each chapter includes visual explanations, complexity notes, Python code, and interview practice.</p>
-      <p class="home-link"><a href="/data-structures/">Explore data structures →</a></p>
-    </section>
-    <section class="card home-card">
-      <p class="eyebrow">02 · Artificial intelligence</p>
-      <h2><a href="/data-structures/ai/">AI Structure</a></h2>
-      <p>Understand tokens, embeddings, neural networks, attention, retrieval-augmented generation (RAG), and agents—and how data structures power them.</p>
-      <p class="home-link"><a href="/data-structures/ai/">Explore AI foundations →</a></p>
-    </section>
-  </div>
-</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fc">
+  <title>Personal Library</title>
+  <style>
+    :root{color-scheme:light;--ink:#17233b;--muted:#62708a;--line:#dce4f1;--blue:#3b6fd4;--wash:#f5f7fc}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top,#eaf1ff 0,transparent 58%),var(--wash);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+    main{width:min(100%,420px);background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:22px;padding:clamp(26px,6vw,38px);box-shadow:0 18px 55px rgba(35,59,105,.09)}
+    .mark{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:#eaf1ff;color:var(--blue);font-size:25px;margin-bottom:24px}
+    .eyebrow{margin:0 0 8px;color:var(--blue);font-size:.75rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(1.8rem,7vw,2.2rem);letter-spacing:-.04em;line-height:1.1}
+    .intro{margin:13px 0 28px;color:var(--muted);line-height:1.65;font-size:.96rem}
+    label{display:block;margin:0 0 8px;font-size:.88rem;font-weight:650}
+    input{width:100%;height:50px;border:1px solid #cbd6e8;border-radius:11px;padding:0 14px;font:inherit;color:var(--ink);background:#fff;outline:none}
+    input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,111,212,.13)}
+    button{width:100%;height:49px;margin-top:13px;border:0;border-radius:11px;background:var(--blue);color:white;font:inherit;font-weight:700;cursor:pointer}
+    button:disabled{opacity:.65;cursor:wait}
+    #gate-message{min-height:1.5em;margin:14px 0 0;font-size:.88rem;color:var(--muted);line-height:1.5}
+    .foot{margin:26px 0 0;padding-top:17px;border-top:1px solid #edf0f6;color:#7a879d;font-size:.77rem;text-align:center}
+  </style>
+</head>
+<body>
+  <main aria-labelledby="page-title">
+    <div class="mark" aria-hidden="true">▤</div>
+    <p class="eyebrow">A private space</p>
+    <h1 id="page-title">Personal Library</h1>
+    <p class="intro">A quiet place for notes, data structures, and AI foundations. Enter your passcode to continue.</p>
+    <form id="library-gate-form">
+      <label for="passcode">Passcode</label>
+      <input id="passcode" name="passcode" type="password" placeholder="Enter your passcode" autocomplete="current-password" autocapitalize="none" spellcheck="false" required autofocus>
+      <button id="unlock-button" type="submit">Unlock library</button>
+      <p id="gate-message" role="status" aria-live="polite"></p>
+    </form>
+    <p class="foot">Personal Library · Learning notes and references</p>
+  </main>
+  <script src="/assets/js/library-gate.js" defer></script>
+</body>
+</html>
