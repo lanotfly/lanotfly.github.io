@@ -407,53 +407,17 @@
 }
 
 
-/* Radio marquee: keep the rounded rectangle fixed; move the light dots along its perimeter. */
+/* Slow clockwise marquee: the SVG path stays fixed while individual lights travel around it. */
 .site-nav-shell .site-tab-links .site-tab--radio,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio{
-  position:relative;
-  isolation:isolate;
-  overflow:visible;
-}
-.site-nav-shell .site-tab-links .site-tab--radio.is-playing,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{
-  border-color:transparent!important;
-}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio{position:relative;isolation:isolate;overflow:visible}
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing{border-color:#bca8d6!important}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{border-color:#7899c4!important}
 .site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  border-radius:11px;
-  padding:2px;
-  pointer-events:none;
-  z-index:2;
-  /* The gradient itself stays fixed in shape; only its background position advances. */
-  background-size:300% 300%;
-  background-position:0% 50%;
-  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
-  -webkit-mask-composite:xor;
-  mask-composite:exclude;
-  animation:radio-marquee-lights 1.6s linear infinite;
-}
-.site-nav-shell .site-tab-links .site-tab--radio.is-playing::after{
-  background-image:repeating-linear-gradient(90deg,
-    transparent 0 8px,
-    #705493 8px 11px,
-    #c7b5e0 11px 13px,
-    transparent 13px 20px);
-}
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{
-  background-image:repeating-linear-gradient(90deg,
-    transparent 0 8px,
-    #183e70 8px 11px,
-    #9dbbe2 11px 13px,
-    transparent 13px 20px);
-}
-@keyframes radio-marquee-lights{
-  0%{background-position:0% 50%}
-  100%{background-position:100% 50%}
-}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{content:none!important;display:none!important}
+.site-nav-shell .site-tab-links .radio-marquee{display:none;position:absolute;inset:-2px;width:calc(100% + 4px);height:calc(100% + 4px);overflow:visible;pointer-events:none;z-index:5}
+.site-nav-shell .site-tab-links .is-playing .radio-marquee{display:block}
+.site-nav-shell .site-tab-links .site-tab--radio .radio-marquee__light{fill:#c7b5e0}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio .radio-marquee__light{fill:#9dbbe2}
 @media(prefers-reduced-motion:reduce){
- .site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
- .site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{animation:none}
+ .site-nav-shell .site-tab-links .radio-marquee{display:none!important}
 }
