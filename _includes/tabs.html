@@ -264,19 +264,23 @@
     });
     Object.keys(shows).forEach(function(id){if(id!==activeId)paint(id,false);});
   }
+  var episodeQueue=[];
+  var episodeIndex=-1;
   function parseRss(xmlText){
     var xml=new DOMParser().parseFromString(xmlText,'text/xml');
     if(xml.querySelector('parsererror'))throw new Error('Invalid RSS feed');
-    var item=xml.querySelector('item');
-    if(!item)throw new Error('No episodes in RSS feed');
-    var enclosure=item.querySelector('enclosure[url]');
-    var episodeTitle=item.querySelector('title');
-    if(!enclosure)throw new Error('No playable episode found');
-    return {url:enclosure.getAttribute('url'),title:episodeTitle?episodeTitle.textContent.trim():''};
+    var items=Array.from(xml.querySelectorAll('item'));
+    var episodes=items.map(function(item){
+      var enclosure=item.querySelector('enclosure[url]');
+      var episodeTitle=item.querySelector('title');
+      if(!enclosure)return null;
+      return {url:enclosure.getAttribute('url'),title:episodeTitle?episodeTitle.textContent.trim():''};
+    }).filter(function(episode){return !!episode;});
+    if(!episodes.length)throw new Error('No playable episodes found');
+    return episodes;
   }
-  function latestEpisode(show){
-    /* Try the original RSS feed first. Some hosts, including Acast in some browsers,
-       do not allow cross-origin RSS reads, so retry through a public RSS-to-JSON service. */
+  function fetchEpisodes(show){
+    /* Load the feed's episode list, newest first, so playback can continue backwards. */
     return fetch(show.feed,{cache:'no-store'}).then(function(response){
       if(!response.ok)throw new Error('RSS feed unavailable');
       return response.text();
@@ -288,12 +292,32 @@
         return response.json();
       }).then(function(data){
         if(!data||data.status!=='ok'||!Array.isArray(data.items)||!data.items.length)throw new Error('No episodes in RSS proxy response');
-        var item=data.items[0];
-        var enclosure=item.enclosure;
-        var mediaUrl=typeof enclosure==='string'?enclosure:(enclosure&&(enclosure.link||enclosure.url))||item.link;
-        if(!mediaUrl)throw new Error('No playable episode in RSS proxy response');
-        return {url:mediaUrl,title:item.title||show.title};
+        var episodes=data.items.map(function(item){
+          var enclosure=item.enclosure;
+          var mediaUrl=typeof enclosure==='string'?enclosure:(enclosure&&(enclosure.link||enclosure.url))||item.link;
+          return mediaUrl?{url:mediaUrl,title:item.title||show.title}:null;
+        }).filter(function(episode){return !!episode;});
+        if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
+        return episodes;
       });
+    });
+  }
+  function playEpisodeAt(index){
+    if(index<0||index>=episodeQueue.length){
+      if(activeId)paint(activeId,false);
+      return;
+    }
+    episodeIndex=index;
+    var show=shows[activeId],episode=episodeQueue[episodeIndex];
+    audio.src=episode.url;
+    audio.dataset.episodeTitle=episode.title;
+    setMetadata(show,episode.title||show.title);
+    audio.play().then(function(){
+      paint(activeId,true);
+      setMetadata(show,episode.title||show.title);
+    }).catch(function(){
+      paint(activeId,false);
+      window.location.href=show.apple;
     });
   }
   Object.keys(shows).forEach(function(id){
@@ -304,12 +328,12 @@
       if(activeId===id&&audio.paused&&audio.src){stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){window.location.href=show.apple;});return;}
       stopOtherAudio();
       activeId=id;
+      episodeQueue=[];
+      episodeIndex=-1;
       button.classList.add('is-loading');
-      latestEpisode(show).then(function(episode){
-        audio.src=episode.url;
-        audio.dataset.episodeTitle=episode.title;
-        setMetadata(show,episode.title||show.title);
-        return audio.play().then(function(){paint(id,true);setMetadata(show,episode.title||show.title);});
+      fetchEpisodes(show).then(function(episodes){
+        episodeQueue=episodes;
+        playEpisodeAt(0);
       }).catch(function(){
         /* If the feed blocks browser access or iOS blocks playback, use the official Apple Podcasts page. */
         window.location.href=show.apple;
@@ -324,7 +348,11 @@
       if((!bbc||bbc.paused)&&(!nhk||nhk.paused)){try{navigator.mediaSession.playbackState='paused';}catch(_){}}
     }
   });
-  audio.addEventListener('ended',function(){if(activeId)paint(activeId,false);});
+  audio.addEventListener('ended',function(){
+    /* Automatically continue with the next older episode when one finishes. */
+    if(activeId&&episodeIndex+1<episodeQueue.length){playEpisodeAt(episodeIndex+1);}
+    else if(activeId){paint(activeId,false);}
+  });
   audio.addEventListener('error',function(){if(activeId)paint(activeId,false);});
 })();
 
