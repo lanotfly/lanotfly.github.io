@@ -159,3 +159,32 @@
 .wiki-wrap .wiki-nav a{background:transparent!important;color:inherit!important;border:1px dashed #aab4c3!important;font-weight:400!important;box-shadow:none!important}
 .wiki-wrap .wiki-nav a:hover{background:transparent!important;border-style:solid!important;border-color:#5878a8!important}
 .wiki-wrap .wiki-nav a.current,.wiki-wrap .wiki-nav a.current:hover{background:transparent!important;color:inherit!important;border:2px solid #315fbd!important;font-weight:400!important;box-shadow:none!important}
+
+/* Improve lesson readability: use near-black text for the actual learning content. */
+.wiki-wrap{
+  color:#202124!important;
+}
+.wiki-wrap h1,
+.wiki-wrap h2,
+.wiki-wrap h3,
+.wiki-wrap h4,
+.wiki-wrap h5,
+.wiki-wrap h6{
+  color:#171717!important;
+}
+.wiki-wrap p,
+.wiki-wrap li,
+.wiki-wrap dd,
+.wiki-wrap dt,
+.wiki-wrap blockquote,
+.wiki-wrap td,
+.wiki-wrap th,
+.wiki-wrap .lead,
+.wiki-wrap .card p{
+  color:#202124!important;
+}
+.wiki-wrap figcaption,
+.wiki-wrap .diagram-zoom-hint{
+  color:#424242!important;
+}
+
