@@ -27,7 +27,7 @@
 
       if (actualHash === expectedHash) {
         message.textContent = "Welcome back. Opening your library…";
-        window.location.replace("/data-structures/");
+        window.location.replace("/library/");
         return;
       }
 
