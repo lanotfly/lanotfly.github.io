@@ -13,6 +13,7 @@
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
       <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
       <a class="site-tab site-tab--ai" href="/data-structures/ai/">AI Structure</a>
+      <a class="site-tab site-tab--kubernetes" href="/kubernetes/">Kubernetes</a>
     </div>
   </nav>
   <audio id="radio4-audio" preload="none" playsinline hidden>
@@ -63,6 +64,7 @@
       if (href === '/algorithms/') active = pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0;
       else if (href === '/data-structures/ai/') active = pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0;
       else if (href === '/data-structures/') active = pathname === '/data-structures/' || (pathname.indexOf('/data-structures/') === 0 && pathname.indexOf('/data-structures/ai/') !== 0);
+      else if (href === '/kubernetes/') active = pathname === '/kubernetes/' || pathname.indexOf('/kubernetes/') === 0;
       else if (href === '/home/') active = pathname === '/home/' || pathname === '/';
       link.classList.toggle('is-active', active);
       if (active) {
@@ -95,11 +97,13 @@
   var lastPageKeys = {
     data: 'library_last_page_data_structure',
     algorithm: 'library_last_page_algorithm',
-    ai: 'library_last_page_ai'
+    ai: 'library_last_page_ai',
+    kubernetes: 'library_last_page_kubernetes'
   };
   function sectionForPath(pathname){
     if (pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0) return 'algorithm';
     if (pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0) return 'ai';
+    if (pathname === '/kubernetes/' || pathname.indexOf('/kubernetes/') === 0) return 'kubernetes';
     if (pathname === '/data-structures/' || pathname.indexOf('/data-structures/') === 0) return 'data';
     return null;
   }
@@ -121,7 +125,8 @@
     if (!link || !link.classList) return null;
     var targetSection = link.classList.contains('site-tab--data') ? 'data' :
       (link.classList.contains('site-tab--algorithm') ? 'algorithm' :
-      (link.classList.contains('site-tab--ai') ? 'ai' : null));
+      (link.classList.contains('site-tab--ai') ? 'ai' :
+      (link.classList.contains('site-tab--kubernetes') ? 'kubernetes' : null)));
     if (!targetSection) return null;
     var currentSection = sectionForPath(currentPath);
     if (currentSection === targetSection) return currentPath;
