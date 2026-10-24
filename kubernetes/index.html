@@ -1,0 +1,28 @@
+---
+layout: default
+title: "Kubernetes — From Pods to Production"
+permalink: /kubernetes/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Kubernetes chapters">
+<a href="/kubernetes/" class="current">Overview</a><a href="/kubernetes/pods/">1. Pods</a><a href="/kubernetes/deployments-scaling/">2. Deployments</a><a href="/kubernetes/services-networking/">3. Services</a><a href="/kubernetes/config-secrets/">4. Configuration</a><a href="/kubernetes/storage/">5. Storage</a><a href="/kubernetes/health-resources/">6. Health checks</a><a href="/kubernetes/security-rbac/">7. Security</a><a href="/kubernetes/troubleshooting/">8. Troubleshooting</a>
+</nav>
+<h1>Kubernetes — From Pods to Production</h1>
+<p class="lead">A visual, practical guide to the Kubernetes objects and operating practices used to run containerized applications. Start with Pods, then follow how workloads are deployed, exposed, configured, monitored, and secured.</p>
+<figure class="diagram"><svg viewBox="0 0 620 230" role="img" aria-label="Kubernetes control plane reconciles desired state across worker nodes"><rect x="90" y="12" width="440" height="48" rx="9" fill="#e7f5f5" stroke="#17858b" stroke-width="2"/><text x="310" y="32" text-anchor="middle" font-size="14" fill="#07575d">Control plane</text><text x="310" y="48" text-anchor="middle" font-size="11" fill="#202124">API server · scheduler · controllers</text><path d="M310 60 V85 M304 78 L310 86 L316 78" fill="none" stroke="#17858b" stroke-width="2"/><rect x="18" y="88" width="280" height="126" rx="10" fill="#f8fbff" stroke="#9bb9dc"/><rect x="322" y="88" width="280" height="126" rx="10" fill="#f8fbff" stroke="#9bb9dc"/><text x="158" y="111" text-anchor="middle" font-size="13" fill="#202124">Worker node A</text><text x="462" y="111" text-anchor="middle" font-size="13" fill="#202124">Worker node B</text><g fill="#fff" stroke="#17858b"><rect x="35" y="126" width="112" height="54" rx="7"/><rect x="164" y="126" width="112" height="54" rx="7"/><rect x="340" y="126" width="112" height="54" rx="7"/><rect x="469" y="126" width="112" height="54" rx="7"/></g><g fill="#202124" font-size="12" text-anchor="middle"><text x="91" y="157">Pod</text><text x="220" y="157">Pod</text><text x="396" y="157">Pod</text><text x="525" y="157">Pod</text></g></svg><figcaption>Kubernetes controllers continuously reconcile the observed cluster state with the desired state declared through the API.</figcaption></figure>
+<h2>Chapters</h2>
+<div class="cards">
+<section class="card"><h3><a href="/kubernetes/pods/">Pods</a></h3><p>A Pod wraps one or more tightly coupled containers and gives them a shared network identity and storage context.</p><p class="home-link"><a href="/kubernetes/pods/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/deployments-scaling/">Deployments</a></h3><p>Declare the desired number of replicas and let Kubernetes reconcile the running workload toward that state.</p><p class="home-link"><a href="/kubernetes/deployments-scaling/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/services-networking/">Services</a></h3><p>A Service provides a stable virtual endpoint for a changing set of Pods, selected by labels.</p><p class="home-link"><a href="/kubernetes/services-networking/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/config-secrets/">Configuration</a></h3><p>Separate application configuration from container images while controlling how sensitive values are stored and exposed.</p><p class="home-link"><a href="/kubernetes/config-secrets/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/storage/">Storage</a></h3><p>Choose storage that matches the lifecycle and access needs of the application, from temporary scratch space to durable data.</p><p class="home-link"><a href="/kubernetes/storage/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/health-resources/">Health checks</a></h3><p>Tell Kubernetes when a container is alive, ready for traffic, or should be restarted—and reserve resources predictably.</p><p class="home-link"><a href="/kubernetes/health-resources/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/security-rbac/">Security</a></h3><p>Reduce the blast radius by granting least privilege, restricting workload capabilities, and controlling communication.</p><p class="home-link"><a href="/kubernetes/security-rbac/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/kubernetes/troubleshooting/">Troubleshooting</a></h3><p>Use a consistent path from symptom to evidence: workload state, events, logs, dependencies, and cluster capacity.</p><p class="home-link"><a href="/kubernetes/troubleshooting/">Open chapter →</a></p></section>
+</div>
+<h2>Learning path</h2>
+<ol><li>Understand Pods and how Deployments keep the desired number of replicas running.</li><li>Expose workloads with Services and configure them safely with ConfigMaps and Secrets.</li><li>Plan storage, health probes, resource requests, and autoscaling.</li><li>Apply least-privilege access, workload hardening, network controls, and a repeatable troubleshooting process.</li></ol>
+<p><strong>Security note:</strong> this learning section is protected by the site's existing password gate. That gate is a client-side access barrier for the static site, not strong server-side authorization.</p>
+</div>
