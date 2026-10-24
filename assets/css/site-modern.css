@@ -153,3 +153,15 @@
  .site-tab-links{justify-content:flex-start;gap:8px}
  .site-nav-shell .site-tab-links .site-tab{min-height:38px;padding:8px 13px}
 }
+
+
+/* Clear active state for the current learning area. */
+.site-nav-shell .site-tab.is-active,
+.site-nav-shell .site-tab.is-active:hover{
+  color:#fff!important;
+  background:#315fbd!important;
+  border-color:#244b99!important;
+  box-shadow:0 2px 8px rgba(36,75,153,.2);
+}
+.site-nav-shell .site-tab--radio.is-active{color:#a61b2b!important;background:#fff0f1!important;border-color:#f2b9c0!important}
+.site-nav-shell .site-tab--radio.is-active.is-playing{color:#fff!important;background:#b42336!important;border-color:#b42336!important}
