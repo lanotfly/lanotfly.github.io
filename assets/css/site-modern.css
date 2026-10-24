@@ -415,12 +415,23 @@
 .site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
 .site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{
   content:"";position:absolute;inset:-2px;border-radius:11px;padding:2px;pointer-events:none;z-index:2;
-  background:conic-gradient(from 0deg,transparent 0deg 245deg,#705493 285deg,#b8a3d7 325deg,transparent 360deg);
+  /* Many small "Christmas-light" dots travel around a fixed rectangular border. */
+  background:repeating-conic-gradient(from 0deg,
+    transparent 0deg 7deg,
+    #705493 7deg 9deg,
+    #c7b5e0 9deg 11deg,
+    transparent 11deg 18deg);
   -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;
   animation:radio-outline-spin 1.8s linear infinite;
 }
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{background:conic-gradient(from 0deg,transparent 0deg 245deg,#183e70 285deg,#8ab0e3 325deg,transparent 360deg)}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{
+  background:repeating-conic-gradient(from 0deg,
+    transparent 0deg 7deg,
+    #183e70 7deg 9deg,
+    #9dbbe2 9deg 11deg,
+    transparent 11deg 18deg);
+}
 @keyframes radio-outline-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){
  .site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
