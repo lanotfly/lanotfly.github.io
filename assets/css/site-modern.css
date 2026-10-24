@@ -307,3 +307,15 @@
  .radio4-icon__play,.radio4-icon__pause{width:11px!important;height:11px!important}
  .radio4-sr-label{font-size:10.5px!important}
 }
+
+
+/* Kubernetes navigation tab: keep the same outline-only visual language. */
+.site-nav-shell .site-tab-links .site-tab--kubernetes:not(.is-active){color:#0f6b72!important;border-color:#9dd9dc!important}
+.site-nav-shell .site-tab-links .site-tab--kubernetes.is-active,
+.site-nav-shell .site-tab-links .site-tab--kubernetes.is-active:hover{color:#07575d!important;background:transparent!important;border-color:#07575d!important;border-style:solid!important;border-width:2px!important;box-shadow:none!important}
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links .site-tab--algorithm,
+ .site-nav-shell .site-tab-links .site-tab--ai,
+ .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 2!important}
+ .site-nav-shell .site-tab-links .site-tab--kubernetes{font-size:10.5px!important;letter-spacing:-.03em}
+}
