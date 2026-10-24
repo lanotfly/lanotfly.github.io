@@ -228,6 +228,7 @@
       title:"Luke's English Podcast",
       artist:'Luke Thompson',
       feed:'https://feeds.acast.com/public/shows/62b0ada25c7ea10012f541cb',
+      proxyFeed:true,
       apple:'https://podcasts.apple.com/jp/podcast/lukes-english-podcast-learn-british-english-with-luke/id312059190?l=en-US',
       artwork:'https://teacherluke.co.uk/wp-content/uploads/2012/03/LEP-Logo-3000x3000.jpg'
     }
@@ -263,19 +264,36 @@
     });
     Object.keys(shows).forEach(function(id){if(id!==activeId)paint(id,false);});
   }
-  function latestEpisode(feed){
-    return fetch(feed,{cache:'no-store'}).then(function(response){
+  function parseRss(xmlText){
+    var xml=new DOMParser().parseFromString(xmlText,'text/xml');
+    if(xml.querySelector('parsererror'))throw new Error('Invalid RSS feed');
+    var item=xml.querySelector('item');
+    if(!item)throw new Error('No episodes in RSS feed');
+    var enclosure=item.querySelector('enclosure[url]');
+    var episodeTitle=item.querySelector('title');
+    if(!enclosure)throw new Error('No playable episode found');
+    return {url:enclosure.getAttribute('url'),title:episodeTitle?episodeTitle.textContent.trim():''};
+  }
+  function latestEpisode(show){
+    /* Try the original RSS feed first. Some hosts, including Acast in some browsers,
+       do not allow cross-origin RSS reads, so retry through a public RSS-to-JSON service. */
+    return fetch(show.feed,{cache:'no-store'}).then(function(response){
       if(!response.ok)throw new Error('RSS feed unavailable');
       return response.text();
-    }).then(function(xmlText){
-      var xml=new DOMParser().parseFromString(xmlText,'text/xml');
-      if(xml.querySelector('parsererror'))throw new Error('Invalid RSS feed');
-      var item=xml.querySelector('item');
-      if(!item)throw new Error('No episodes in RSS feed');
-      var enclosure=item.querySelector('enclosure[url]');
-      var episodeTitle=item.querySelector('title');
-      if(!enclosure)throw new Error('No playable episode found');
-      return {url:enclosure.getAttribute('url'),title:episodeTitle?episodeTitle.textContent.trim():''};
+    }).then(parseRss).catch(function(directError){
+      if(!show.proxyFeed)throw directError;
+      var proxyUrl='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(show.feed);
+      return fetch(proxyUrl,{cache:'no-store'}).then(function(response){
+        if(!response.ok)throw new Error('RSS proxy unavailable');
+        return response.json();
+      }).then(function(data){
+        if(!data||data.status!=='ok'||!Array.isArray(data.items)||!data.items.length)throw new Error('No episodes in RSS proxy response');
+        var item=data.items[0];
+        var enclosure=item.enclosure;
+        var mediaUrl=typeof enclosure==='string'?enclosure:(enclosure&&(enclosure.link||enclosure.url))||item.link;
+        if(!mediaUrl)throw new Error('No playable episode in RSS proxy response');
+        return {url:mediaUrl,title:item.title||show.title};
+      });
     });
   }
   Object.keys(shows).forEach(function(id){
@@ -287,7 +305,7 @@
       stopOtherAudio();
       activeId=id;
       button.classList.add('is-loading');
-      latestEpisode(show.feed).then(function(episode){
+      latestEpisode(show).then(function(episode){
         audio.src=episode.url;
         audio.dataset.episodeTitle=episode.title;
         setMetadata(show,episode.title||show.title);
