@@ -1,0 +1,46 @@
+---
+layout: default
+title: "1. Array Patterns — Two Pointers, Sliding Window &amp; Prefix Sum"
+permalink: /algorithms/array-patterns/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="Algorithm chapters"><a href="/algorithms/">Book Home</a><a href="/algorithms/array-patterns/">1. Array patterns</a><a href="/algorithms/search-traversal/">2. Search &amp; traversal</a><a href="/algorithms/recursion-backtracking/">3. Recursion &amp; backtracking</a><a href="/algorithms/greedy-dp/">4. Greedy &amp; DP</a><a href="/algorithms/graph-algorithms/">5. Graph algorithms</a><a href="/algorithms/complexity-practice/">6. Complexity &amp; practice</a></nav>
+<h1>1. Array Patterns — Two Pointers, Sliding Window &amp; Prefix Sum</h1>
+
+<p class="lead">Array and string problems become easier when you recognize the invariant: what the pointers mean, which elements belong to the current window, or what a prefix total represents.</p>
+<h2>1. Two pointers</h2><p>Use two indices when order or the two ends of a sequence provide useful information. For a sorted pair-sum problem, moving the left pointer right increases the sum; moving the right pointer left decreases it.</p>
+<pre><code>def two_sum_sorted(nums: list[int], target: int) -> list[int]:
+    left, right = 0, len(nums) - 1
+    while left &lt; right:
+        total = nums[left] + nums[right]
+        if total == target:
+            return [left, right]
+        if total &lt; target:
+            left += 1
+        else:
+            right -= 1
+    return []</code></pre>
+<p><strong>Complexity:</strong> O(n) time and O(1) extra space. Correctness depends on sorted order. On an unsorted array, use a hash map or sort a copy if index requirements allow it.</p>
+<h2>2. Sliding window</h2><p>A sliding window represents a contiguous range <code>[left, right]</code>. Expand right to include new data, then move left until the invariant becomes true again. Each pointer moves at most n times, so many window algorithms are O(n).</p>
+<pre><code>def longest_unique_substring(s: str) -&gt; int:
+    last_seen = {}
+    left = best = 0
+    for right, ch in enumerate(s):
+        if ch in last_seen and last_seen[ch] &gt;= left:
+            left = last_seen[ch] + 1
+        last_seen[ch] = right
+        best = max(best, right - left + 1)
+    return best</code></pre>
+<p>This pattern fits contiguous substrings and subarrays—not arbitrary subsets. Before coding, state exactly what makes the window valid.</p>
+<h2>3. Prefix sums</h2><p>Define <code>prefix[i]</code> as the sum of elements before index i. Then the sum of the half-open range <code>[l, r)</code> is <code>prefix[r] - prefix[l]</code>. Precomputation costs O(n); each range query is O(1).</p>
+<pre><code>def range_sums(nums):
+    prefix = [0]
+    for x in nums:
+        prefix.append(prefix[-1] + x)
+    return lambda left, right: prefix[right] - prefix[left]</code></pre>
+<p>For “subarray sum equals k”, store how often each prefix sum has appeared. At current sum s, each earlier prefix equal to <code>s-k</code> identifies a valid subarray.</p>
+<h2>4. How to choose</h2><table><thead><tr><th>Clue</th><th>Likely pattern</th><th>Watch out</th></tr></thead><tbody><tr><td>Sorted values, pair from ends</td><td>Two pointers</td><td>Sorting may change original indices</td></tr><tr><td>Longest/shortest contiguous range</td><td>Sliding window</td><td>Some negative-number problems cannot use a simple shrinking rule</td></tr><tr><td>Many range-sum queries</td><td>Prefix sum</td><td>Use a clear inclusive/half-open convention</td></tr><tr><td>Need quick membership or complement</td><td>Hash map / set</td><td>Expected O(1), not a universal worst-case guarantee</td></tr></tbody></table>
+<h2>Practice</h2><ul><li>Two Sum II — sorted input</li><li>Longest Substring Without Repeating Characters</li><li>Minimum Size Subarray Sum</li><li>Subarray Sum Equals K</li><li>Product of Array Except Self</li></ul>
+<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data-structures/">Explore Data Structure →</a></div>
+</div>
