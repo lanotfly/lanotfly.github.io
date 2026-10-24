@@ -333,34 +333,39 @@
     if(!episodes.length)throw new Error('No playable episodes found');
     return episodes;
   }
+  function parseProxyEpisodes(data,show){
+    if(!data||data.status!=='ok'||!Array.isArray(data.items)||!data.items.length)throw new Error('No episodes in RSS proxy response');
+    var episodes=data.items.map(function(item){
+      var enclosure=item.enclosure;
+      var mediaUrl=typeof enclosure==='string'?enclosure:
+        (enclosure&&(enclosure.link||enclosure.url||enclosure.href||enclosure.src))||
+        item.enclosure_url||item.enclosureUrl||item.audio_url||item.audioUrl||item.audio;
+      /* Never use item.link: it is usually the episode webpage, not the audio file. */
+      var declaredAudio=enclosure&&typeof enclosure==='object'&&enclosure.type&&/^audio\//i.test(enclosure.type);
+      if(mediaUrl&&!/\.(mp3|m4a|aac|mp4|ogg|opus)(\?|#|$)/i.test(mediaUrl)&&!/\.m3u8(\?|#|$)/i.test(mediaUrl)&&!declaredAudio)mediaUrl=null;
+      return mediaUrl?{url:mediaUrl,title:item.title||show.title}:null;
+    }).filter(function(episode){return !!episode;});
+    if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
+    return episodes;
+  }
   function fetchEpisodes(show){
-    /* Load the feed's episode list, newest first, so playback can continue backwards. */
+    /* Try direct RSS first, then two independent CORS-friendly fallbacks. */
     return fetch(show.feed,{cache:'no-store'}).then(function(response){
       if(!response.ok)throw new Error('RSS feed unavailable');
       return response.text();
-    }).then(parseRss).catch(function(directError){
-      if(!show.proxyFeed)throw directError;
+    }).then(parseRss).catch(function(){
+      if(!show.proxyFeed)throw new Error('RSS feed unavailable');
       var proxyUrl='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(show.feed);
       return fetch(proxyUrl,{cache:'no-store'}).then(function(response){
-        if(!response.ok)throw new Error('RSS proxy unavailable');
+        if(!response.ok)throw new Error('RSS JSON proxy unavailable');
         return response.json();
-      }).then(function(data){
-        if(!data||data.status!=='ok'||!Array.isArray(data.items)||!data.items.length)throw new Error('No episodes in RSS proxy response');
-        var episodes=data.items.map(function(item){
-          var enclosure=item.enclosure;
-          var mediaUrl=typeof enclosure==='string'?enclosure:
-            (enclosure&&(enclosure.link||enclosure.url||enclosure.href))||
-            item.enclosure_url||item.enclosureUrl||item.audio;
-          /* item.link is usually an episode webpage, not an audio file. Never try to play it as audio. */
-          if(mediaUrl&&!/\.(mp3|m4a|aac|mp4|ogg|opus)(\?|#|$)/i.test(mediaUrl)&&!/\.m3u8(\?|#|$)/i.test(mediaUrl)){
-            if(enclosure&&typeof enclosure==='object'&&enclosure.type&&/^audio\//i.test(enclosure.type)){
-              /* Some feeds use extensionless CDN URLs; the declared audio MIME type makes these valid. */
-            } else { mediaUrl=null; }
-          }
-          return mediaUrl?{url:mediaUrl,title:item.title||show.title}:null;
-        }).filter(function(episode){return !!episode;});
-        if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
-        return episodes;
+      }).then(function(data){return parseProxyEpisodes(data,show);}).catch(function(){
+        /* AllOrigins returns the original XML, allowing the same native RSS parser to be used. */
+        var rawUrl='https://api.allorigins.win/raw?url='+encodeURIComponent(show.feed);
+        return fetch(rawUrl,{cache:'no-store'}).then(function(response){
+          if(!response.ok)throw new Error('RSS fallback unavailable');
+          return response.text();
+        }).then(parseRss);
       });
     });
   }
