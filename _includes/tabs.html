@@ -238,6 +238,7 @@
       title:"Luke's English Podcast",
       artist:'Luke Thompson',
       feed:'https://feeds.acast.com/public/shows/62b0ada25c7ea10012f541cb',
+      archive:'https://teacherluke.co.uk/episodelist/',
       proxyFeed:true,
       apple:'https://podcasts.apple.com/jp/podcast/lukes-english-podcast-learn-british-english-with-luke/id312059190?l=en-US',
       artwork:'https://teacherluke.co.uk/wp-content/uploads/2012/03/LEP-Logo-3000x3000.jpg'
@@ -340,7 +341,6 @@
       var mediaUrl=typeof enclosure==='string'?enclosure:
         (enclosure&&(enclosure.link||enclosure.url||enclosure.href||enclosure.src))||
         item.enclosure_url||item.enclosureUrl||item.audio_url||item.audioUrl||item.audio;
-      /* Never use item.link: it is usually the episode webpage, not the audio file. */
       var declaredAudio=enclosure&&typeof enclosure==='object'&&enclosure.type&&/^audio\//i.test(enclosure.type);
       if(mediaUrl&&!/\.(mp3|m4a|aac|mp4|ogg|opus)(\?|#|$)/i.test(mediaUrl)&&!/\.m3u8(\?|#|$)/i.test(mediaUrl)&&!declaredAudio)mediaUrl=null;
       return mediaUrl?{url:mediaUrl,title:item.title||show.title}:null;
@@ -348,8 +348,30 @@
     if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
     return episodes;
   }
+  function fetchViaAllOrigins(url){
+    return fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url),{cache:'no-store'})
+      .then(function(response){if(!response.ok)throw new Error('Proxy request failed');return response.text();});
+  }
+  function fetchOfficialArchive(show){
+    if(!show.archive)throw new Error('No official archive configured');
+    return fetchViaAllOrigins(show.archive).then(function(html){
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      var seen={};
+      var episodes=Array.from(doc.querySelectorAll('a[href]')).map(function(link){
+        var url=link.href;
+        var title=(link.textContent||'').replace(/\s+/g,' ').trim();
+        if(!/^https?:\/\/(www\.)?teacherluke\.co\.uk\/\d{4}\/\d{2}\/\d{2}\//i.test(url))return null;
+        if(!title||title.length<8||/download audio|get the pdf|read more|comments/i.test(title))return null;
+        if(seen[url])return null;
+        seen[url]=true;
+        return {url:null,pageUrl:url,title:title};
+      }).filter(function(item){return !!item;});
+      if(!episodes.length)throw new Error('No episodes found in official archive');
+      return episodes;
+    });
+  }
   function fetchEpisodes(show){
-    /* Try direct RSS first, then two independent CORS-friendly fallbacks. */
+    /* The Acast RSS currently may contain no playable enclosures. Fall back to Luke's official archive. */
     return fetch(show.feed,{cache:'no-store'}).then(function(response){
       if(!response.ok)throw new Error('RSS feed unavailable');
       return response.text();
@@ -360,13 +382,26 @@
         if(!response.ok)throw new Error('RSS JSON proxy unavailable');
         return response.json();
       }).then(function(data){return parseProxyEpisodes(data,show);}).catch(function(){
-        /* AllOrigins returns the original XML, allowing the same native RSS parser to be used. */
-        var rawUrl='https://api.allorigins.win/raw?url='+encodeURIComponent(show.feed);
-        return fetch(rawUrl,{cache:'no-store'}).then(function(response){
-          if(!response.ok)throw new Error('RSS fallback unavailable');
-          return response.text();
-        }).then(parseRss);
+        return fetchViaAllOrigins(show.feed).then(parseRss).catch(function(){
+          return fetchOfficialArchive(show);
+        });
       });
+    });
+  }
+  function resolveEpisodeAudio(episode){
+    if(episode.url)return Promise.resolve(episode.url);
+    if(!episode.pageUrl)return Promise.reject(new Error('No episode URL'));
+    return fetchViaAllOrigins(episode.pageUrl).then(function(html){
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      var candidates=[];
+      doc.querySelectorAll('audio[src],audio source[src],a[href],meta[property="og:audio"],meta[property="og:audio:secure_url"]').forEach(function(node){
+        var url=node.getAttribute('src')||node.getAttribute('href')||node.getAttribute('content')||'';
+        if(!/^https?:\/\//i.test(url))return;
+        if(/\.(mp3|m4a|aac|mp4|ogg|opus)(\?|#|$)/i.test(url)||/acast\.com\/.*(audio|episode|media)/i.test(url))candidates.push(url);
+      });
+      var unique=candidates.filter(function(url,index){return candidates.indexOf(url)===index;});
+      if(!unique.length)throw new Error('No direct audio link on episode page');
+      return unique[0];
     });
   }
   function playEpisodeAt(index){
@@ -381,16 +416,31 @@
     if(durationLabel)durationLabel.textContent='0:00';
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
     renderEpisodeList();
-    audio.src=episode.url;
-    audio.load();
-    audio.dataset.episodeTitle=episode.title;
-    setMetadata(show,episode.title||show.title);
-    audio.play().then(function(){
+    if(panelStatus)panelStatus.textContent='Loading audio…';
+    resolveEpisodeAudio(episode).then(function(audioUrl){
+      episode.url=audioUrl;
+      audio.src=audioUrl;
+      audio.load();
+      audio.dataset.episodeTitle=episode.title;
+      setMetadata(show,episode.title||show.title);
+      return audio.play();
+    }).then(function(){
       paint(activeId,true);
       setMetadata(show,episode.title||show.title);
+      if(panelStatus)panelStatus.textContent='Playing. Playback continues to older episodes automatically.';
     }).catch(function(){
       paint(activeId,false);
-      if(panelStatus)panelStatus.textContent='Playback was blocked by the browser. Tap an episode again or open the podcast in Apple Podcasts.';
+      if(panelStatus){
+        panelStatus.textContent='This episode could not be played directly. Open the official episode page instead.';
+        var link=document.createElement('a');
+        link.href=episode.pageUrl||show.apple;
+        link.target='_blank';
+        link.rel='noopener noreferrer';
+        link.textContent='Open episode';
+        link.className='podcast-episode-choice';
+        panelStatus.appendChild(document.createTextNode(' '));
+        panelStatus.appendChild(link);
+      }
     });
   }
   Object.keys(shows).forEach(function(id){
