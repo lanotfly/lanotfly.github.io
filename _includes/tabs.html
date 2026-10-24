@@ -34,16 +34,9 @@
     <p class="tbs-radio-fallback"><a href="https://radiko.jp/#!/live/TBS" target="_blank" rel="noopener noreferrer">Open full TBS Radio live broadcast on official radiko</a></p>
     <p class="tbs-radio-fallback"><a href="https://www.youtube.com/channel/UCtK2jtkcUh59o3RdfinlZ4Q" target="_blank" rel="noopener noreferrer">Browse official TBS Radio YouTube channel</a></p>
   </section>
-  <section id="nhk-radio-panel" class="nhk-radio-panel" aria-label="NHK Radio live player" hidden>
-    <div class="nhk-radio-panel__heading">
-      <strong>NHK Radio — らじる★らじる</strong>
-      <button id="nhk-radio-close" class="nhk-radio-close" type="button" aria-label="Close NHK Radio player">Close</button>
-    </div>
-    <p class="nhk-radio-note">Trying the official NHK Radio page inside this panel. If NHK blocks embedded playback, open the official player using the link below. This site does not proxy or extract NHK's audio stream.</p>
-    <iframe title="NHK official らじる★らじる radio page" src="https://www.nhk.or.jp/radio/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media"></iframe>
-    <p class="nhk-radio-fallback"><a href="https://www.nhk.or.jp/radio/" target="_blank" rel="noopener noreferrer">Open official NHK らじる★らじる player</a></p>
-    <p class="nhk-radio-fallback"><a href="https://www.nhk.or.jp/gogaku/" target="_blank" rel="noopener noreferrer">Open NHK language-learning audio (らじる★らじる ゴガク)</a></p>
-  </section>
+  <audio id="nhk-radio-audio" preload="none" playsinline hidden>
+    <source src="https://simul2.drdi.st.nhk/live/3/joined/master.m3u8" type="application/vnd.apple.mpegurl">
+  </audio>
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
@@ -117,21 +110,41 @@
   close.addEventListener('click',function(){setOpen(false);});
 })();
 
-/* Expand/collapse the NHK official radio page inline. */
+/* Play NHK Radio 1 directly from the official live stream; button toggles play/pause. */
 (function(){
   var toggle=document.getElementById('nhk-radio-toggle');
-  var panel=document.getElementById('nhk-radio-panel');
-  var close=document.getElementById('nhk-radio-close');
-  if(!toggle||!panel||!close||toggle.dataset.bound==='true')return;
-  toggle.dataset.bound='true';
-  function setOpen(open){
-    panel.hidden=!open;
-    toggle.setAttribute('aria-expanded',String(open));
-    toggle.classList.toggle('is-open',open);
-    if(open) panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  var audio=document.getElementById('nhk-radio-audio');
+  if(!toggle||!audio||toggle.dataset.audioBound==='true')return;
+  toggle.dataset.audioBound='true';
+  function paint(playing){
+    toggle.setAttribute('aria-pressed',String(playing));
+    toggle.setAttribute('aria-label',playing?'Pause NHK Radio 1':'Play NHK Radio 1');
+    toggle.title=playing?'Pause NHK Radio 1':'Play NHK Radio 1';
+    toggle.classList.toggle('is-playing',playing);
+    var label=toggle.querySelector('.nhk-radio-label');
+    if(label) label.textContent=playing?'NHK Radio 1 · Playing':'NHK Radio';
+    if('mediaSession' in navigator){
+      try{
+        navigator.mediaSession.playbackState=playing?'playing':'paused';
+        if(typeof MediaMetadata!=='undefined') navigator.mediaSession.metadata=new MediaMetadata({
+          title:'NHK Radio 1',
+          artist:'NHK らじる★らじる',
+          album:'NHK Radio 1 — Live'
+        });
+        navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){paint(false);});});
+        navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
+      }catch(_){}
+    }
   }
-  toggle.addEventListener('click',function(){setOpen(panel.hidden);});
-  close.addEventListener('click',function(){setOpen(false);});
+  toggle.addEventListener('click',function(){
+    if(!audio.paused){audio.pause();return;}
+    var result=audio.play();
+    if(result&&typeof result.catch==='function')result.catch(function(){paint(false);});
+  });
+  audio.addEventListener('play',function(){paint(true);});
+  audio.addEventListener('pause',function(){paint(false);});
+  audio.addEventListener('ended',function(){paint(false);});
+  audio.addEventListener('error',function(){paint(false);});
 })();
 
 /* Keep the shared navigation and its audio element alive between library pages. */
