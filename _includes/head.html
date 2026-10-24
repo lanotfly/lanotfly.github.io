@@ -8,6 +8,11 @@
     (function () {
       try {
         if (sessionStorage.getItem("library_access_granted") !== "1") {
+          var requestedPath = window.location.pathname + window.location.search + window.location.hash;
+          if (requestedPath && requestedPath !== "/") {
+            sessionStorage.setItem("library_return_to", requestedPath);
+            sessionStorage.setItem("library_return_to_at", String(Date.now()));
+          }
           window.location.replace("/");
         }
       } catch (error) {
