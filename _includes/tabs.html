@@ -36,7 +36,6 @@
     <div class="podcast-progress" id="podcast-progress-wrap" hidden>
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
-      <button id="podcast-test-next" class="podcast-episode-panel__close" type="button">Test next episode</button>
     </div>
     <p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
@@ -254,7 +253,6 @@
   var progressSlider=document.getElementById('podcast-progress');
   var currentTimeLabel=document.getElementById('podcast-current-time');
   var durationLabel=document.getElementById('podcast-duration');
-  var testNextButton=document.getElementById('podcast-test-next');
   function formatTime(seconds){
     if(!Number.isFinite(seconds)||seconds<0)return '0:00';
     seconds=Math.floor(seconds);
@@ -270,10 +268,6 @@
   }
   if(progressSlider)progressSlider.addEventListener('input',function(){
     if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progressSlider.value)/1000)*audio.duration;
-  });
-  if(testNextButton)testNextButton.addEventListener('click',function(){
-    if(activeId&&episodeIndex+1<episodeQueue.length)playEpisodeAt(episodeIndex+1);
-    else if(panelStatus)panelStatus.textContent='No older episode is available in the loaded list.';
   });
   ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,updateProgress);});
   function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;}
