@@ -1,0 +1,76 @@
+---
+layout: default
+title: "Algorithms & LeetCode Patterns"
+permalink: /algorithms/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="Algorithm topics">
+<a href="#overview" class="current">Overview</a><a href="#linear">Array patterns</a><a href="#search">Search &amp; traversal</a><a href="#recursion">Recursion</a><a href="#optimization">Optimization</a><a href="#practice">Practice plan</a>
+</nav>
+<h1>Algorithms &amp; LeetCode Patterns</h1>
+<p class="lead">Most interview questions are variations on a smaller set of ideas. The goal is not to memorize hundreds of solutions; learn to recognize the shape of a problem, choose a pattern, and explain its time and space complexity.</p>
+<h2 id="overview">A quick pattern map</h2>
+<div class="cards">
+<section class="card"><h3>Two pointers</h3><p><strong>Signal:</strong> sorted array, pair sum, palindrome, or comparing both ends.</p><p><strong>Idea:</strong> move one or both pointers according to a condition, often avoiding a nested loop.</p><p><strong>Typical cost:</strong> O(n) time, O(1) extra space.</p><p><strong>Practice:</strong> Two Sum II, Valid Palindrome, Container With Most Water, 3Sum.</p></section>
+<section class="card"><h3>Sliding window</h3><p><strong>Signal:</strong> a contiguous substring/subarray and a condition about its contents.</p><p><strong>Idea:</strong> expand the right edge; shrink the left edge when the window becomes invalid.</p><p><strong>Typical cost:</strong> often O(n) time because each pointer advances at most n times.</p><p><strong>Practice:</strong> Longest Substring Without Repeating Characters, Minimum Size Subarray Sum, Permutation in String.</p></section>
+<section class="card"><h3>Hash map / set</h3><p><strong>Signal:</strong> count frequencies, detect duplicates, or ask whether a value has appeared before.</p><p><strong>Idea:</strong> trade O(n) extra memory for expected O(1) membership or lookup.</p><p><strong>Practice:</strong> Two Sum, Group Anagrams, Longest Consecutive Sequence, Top K Frequent Elements.</p></section>
+<section class="card"><h3>Prefix sum</h3><p><strong>Signal:</strong> many range-sum queries, subarrays that sum to k, or cumulative totals.</p><p><strong>Idea:</strong> store cumulative values; combine prefix sums to derive a range or use a map of previously seen sums.</p><p><strong>Practice:</strong> Range Sum Query, Subarray Sum Equals K, Product of Array Except Self (related prefix/suffix idea).</p></section>
+</div>
+<h2 id="linear">1. Array and string patterns</h2>
+<h3>Two pointers — converge or move together</h3>
+<figure class="diagram"><svg viewBox="0 0 620 150" role="img" aria-label="Two pointers move inward across a sorted array"><g font-family="system-ui,sans-serif" text-anchor="middle"><text x="310" y="20" font-size="13" fill="#334155">Sorted values · move pointers based on the sum</text><g stroke="#cbd5e1"><rect x="40" y="45" width="58" height="42" rx="6" fill="#dbeafe"/><rect x="101" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="162" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="223" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="284" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="345" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="406" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="467" y="45" width="58" height="42" rx="6" fill="#e0e7ff"/><rect x="528" y="45" width="58" height="42" rx="6" fill="#fee2e2"/></g><g font-size="15" fill="#172554"><text x="69" y="71">1</text><text x="130" y="71">2</text><text x="191" y="71">4</text><text x="252" y="71">6</text><text x="313" y="71">8</text><text x="374" y="71">9</text><text x="435" y="71">11</text><text x="496" y="71">14</text><text x="557" y="71">17</text></g><path d="M69 105 V119 H557 V105" fill="none" stroke="#2563eb" stroke-width="2"/><text x="69" y="140" font-size="12" fill="#1d4ed8">left →</text><text x="557" y="140" font-size="12" fill="#b91c1c">← right</text></g></svg><figcaption>For a sorted pair-sum problem: sum too small → move left forward; sum too large → move right backward.</figcaption></figure>
+<pre><code>def two_sum_sorted(nums: list[int], target: int) -> list[int]:
+    left, right = 0, len(nums) - 1
+    while left &lt; right:
+        total = nums[left] + nums[right]
+        if total == target:
+            return [left, right]
+        if total &lt; target:
+            left += 1
+        else:
+            right -= 1
+    return []</code></pre>
+<p><strong>Why it works:</strong> sorted order lets each comparison eliminate an entire set of impossible pairs. On an unsorted array, sorting may change the original indices and adds O(n log n) time.</p>
+<h3>Sliding window — maintain a valid range</h3>
+<figure class="diagram"><svg viewBox="0 0 620 132" role="img" aria-label="Sliding window highlights a contiguous substring"><g font-family="system-ui,sans-serif" text-anchor="middle"><text x="310" y="18" font-size="13" fill="#334155">Example string: A B C A D</text><rect x="150" y="32" width="320" height="48" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><g font-size="17" fill="#14532d"><text x="85" y="62">A</text><text x="150" y="62">B</text><text x="230" y="62">C</text><text x="310" y="62">A</text><text x="390" y="62">D</text><text x="485" y="62">E</text></g><g stroke="#16a34a" stroke-width="2"><path d="M150 87 V99 H470 V87" fill="none"/></g><text x="310" y="119" font-size="12" fill="#166534">window grows right; left edge advances when needed</text></g></svg><figcaption>Sliding windows are for contiguous ranges, not arbitrary subsets. The invariant is the condition the current window must maintain.</figcaption></figure>
+<pre><code>def longest_unique_substring(s: str) -&gt; int:
+    last_seen = {}
+    left = best = 0
+    for right, char in enumerate(s):
+        if char in last_seen and last_seen[char] &gt;= left:
+            left = last_seen[char] + 1
+        last_seen[char] = right
+        best = max(best, right - left + 1)
+    return best</code></pre>
+<h2 id="search">2. Search, traversal, and ordering</h2>
+<div class="cards">
+<section class="card"><h3>Binary search</h3><p>Use when the search space is sorted or a monotonic yes/no condition exists. Halve the candidate range each step: O(log n) time.</p><p><strong>Practice:</strong> Binary Search, Search in Rotated Sorted Array, Find Minimum in Rotated Sorted Array, Koko Eating Bananas (“binary search on answer”).</p></section>
+<section class="card"><h3>BFS — breadth-first search</h3><p>Use a queue to visit nodes level by level. Finds shortest path by number of edges in an unweighted graph. O(V + E).</p><p><strong>Practice:</strong> Binary Tree Level Order Traversal, Rotting Oranges, Word Ladder.</p></section>
+<section class="card"><h3>DFS — depth-first search</h3><p>Use recursion or an explicit stack to explore a path deeply before backtracking. Useful for connected components, reachability, and tree paths. O(V + E).</p><p><strong>Practice:</strong> Number of Islands, Clone Graph, Path Sum, Course Schedule (with cycle detection).</p></section>
+<section class="card"><h3>Sorting</h3><p>Sorting often simplifies a problem by creating order, enabling two pointers, or grouping equal values. Comparison sorting is typically O(n log n).</p><p><strong>Practice:</strong> Merge Intervals, Meeting Rooms, Sort Colors, Largest Number.</p></section>
+</div>
+<h2 id="recursion">3. Recursion, backtracking, and divide &amp; conquer</h2>
+<h3>Recursion</h3><p>A function solves a smaller version of the same problem. Every recursive solution needs a base case and progress toward it. Space complexity includes the call stack, often O(depth).</p>
+<pre><code>def factorial(n: int) -&gt; int:
+    if n &lt;= 1:             # base case
+        return 1
+    return n * factorial(n - 1)  # smaller subproblem</code></pre>
+<h3>Backtracking</h3><p>Build a candidate, explore it, then undo the choice. Use when you need to enumerate combinations, permutations, paths, or valid configurations. The number of candidates can grow exponentially.</p><p><strong>Practice:</strong> Subsets, Permutations, Combination Sum, N-Queens, Word Search.</p>
+<h3>Divide and conquer</h3><p>Split the input into smaller subproblems, solve each, then combine the results. Merge sort is the classic example: O(n log n) time and O(n) auxiliary space.</p>
+<h2 id="optimization">4. Greedy and dynamic programming</h2>
+<div class="cards">
+<section class="card"><h3>Greedy</h3><p>Choose the best-looking local option at each step. Greedy is correct only when the problem has a proof-friendly property (such as an exchange argument or matroid structure); local choices do not always produce a global optimum.</p><p><strong>Practice:</strong> Jump Game, Gas Station, Non-overlapping Intervals, Partition Labels.</p></section>
+<section class="card"><h3>Dynamic programming (DP)</h3><p>Use when subproblems overlap and a recurrence combines their answers. Define the state, transition, base case, and evaluation order before coding. Memoization is top-down; tabulation is bottom-up.</p><p><strong>Practice:</strong> Climbing Stairs, House Robber, Coin Change, Longest Increasing Subsequence, Edit Distance.</p></section>
+<section class="card"><h3>Monotonic stack / queue</h3><p>Maintain elements in increasing or decreasing order to answer “next greater/smaller” or sliding-window maximum questions in linear time.</p><p><strong>Practice:</strong> Daily Temperatures, Largest Rectangle in Histogram, Next Greater Element, Sliding Window Maximum.</p></section>
+<section class="card"><h3>Heap / priority queue</h3><p>Repeatedly access the current minimum or maximum without fully sorting all items. Useful for top-K, scheduling, and merging sorted streams.</p><p><strong>Practice:</strong> Kth Largest Element, Top K Frequent Elements, Find Median from Data Stream, Merge K Sorted Lists.</p></section>
+</div>
+<h2>5. Graph-specific patterns</h2>
+<ul><li><strong>Topological sort:</strong> order tasks with dependencies in a directed acyclic graph. Practice: Course Schedule, Alien Dictionary.</li><li><strong>Union-Find:</strong> efficiently track connected components as edges are added. Practice: Number of Provinces, Redundant Connection.</li><li><strong>Dijkstra:</strong> shortest paths with non-negative edge weights, usually with a min-heap. Practice: Network Delay Time, Path With Minimum Effort.</li><li><strong>Trie:</strong> prefix-based lookup for dictionaries and autocomplete. Practice: Implement Trie, Word Search II.</li></ul>
+<h2>6. Complexity quick reference</h2>
+<table><thead><tr><th>Pattern</th><th>Typical time</th><th>Extra space</th><th>Key caveat</th></tr></thead><tbody><tr><td>Two pointers</td><td>O(n)</td><td>O(1)</td><td>Often relies on sorted order or a useful invariant</td></tr><tr><td>Sliding window</td><td>O(n)</td><td>O(k) or O(1)</td><td>Works naturally for contiguous ranges; shrinking rules matter</td></tr><tr><td>Binary search</td><td>O(log n)</td><td>O(1)</td><td>Needs sorted data or a monotonic predicate</td></tr><tr><td>BFS / DFS</td><td>O(V + E)</td><td>O(V)</td><td>Track visited nodes to avoid revisiting cycles</td></tr><tr><td>Sorting</td><td>O(n log n)</td><td>Algorithm-dependent</td><td>Can simplify the rest of the problem</td></tr><tr><td>Backtracking</td><td>Often exponential</td><td>O(depth)</td><td>Prune impossible branches early</td></tr><tr><td>Dynamic programming</td><td>states × transitions</td><td>number of states</td><td>State definition and recurrence are the hard part</td></tr><tr><td>Greedy</td><td>Often O(n) or O(n log n)</td><td>Often O(1)–O(n)</td><td>Must justify why local choices are globally optimal</td></tr></tbody></table>
+<h2 id="practice">7. A practical LeetCode study order</h2>
+<ol><li>Arrays, strings, hash maps, and sets.</li><li>Two pointers, sliding window, prefix sums, and sorting.</li><li>Binary search, linked lists, stacks, queues, and monotonic stacks.</li><li>Trees: DFS, BFS, BST properties, recursion.</li><li>Heaps, intervals, graphs, topological sort, and union-find.</li><li>Backtracking, greedy, and dynamic programming.</li></ol>
+<p>For each problem: explain the brute-force approach first, identify the bottleneck, name the pattern, state the invariant, then give time and space complexity. Revisit missed problems after a few days rather than only increasing the problem count.</p>
+<div class="prev-next"><a href="/data-structures/">← Data Structure</a><a href="/data-structures/ai/">AI Structure →</a></div>
+</div>
