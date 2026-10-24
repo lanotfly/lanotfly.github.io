@@ -399,3 +399,49 @@
   .tbs-radio-icon{width:24px;height:23px}
   .tbs-radio-label{font-size:10.5px!important}
 }
+
+
+/* Inline TBS Radio player: stay on the user's library page. */
+.site-nav-shell .site-tab-links .site-tab--tbs-radio{
+  appearance:none;
+  cursor:pointer;
+  font-family:inherit;
+}
+.site-nav-shell .site-tab-links .site-tab--tbs-radio.is-open{
+  border-color:#174b82!important;
+  box-shadow:0 0 0 2px rgba(23,75,130,.12)!important;
+}
+.tbs-radio-panel{
+  margin:10px 0 16px;
+  padding:14px;
+  border:1px solid #b9cce5;
+  border-radius:12px;
+  background:#f7fbff;
+  box-sizing:border-box;
+}
+.tbs-radio-panel[hidden]{display:none}
+.tbs-radio-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#174b82}
+.tbs-radio-close{
+  border:1px solid #b9cce5;
+  border-radius:7px;
+  background:#fff;
+  color:#174b82;
+  padding:6px 11px;
+  min-height:34px;
+  cursor:pointer;
+  font:600 13px system-ui,sans-serif;
+}
+.tbs-radio-note,.tbs-radio-fallback{font-size:.88rem;color:#4d5d70;margin:.65em 0}
+.tbs-radio-panel iframe{
+  display:block;
+  width:100%;
+  height:560px;
+  border:1px solid #d8e3ef;
+  border-radius:8px;
+  background:#fff;
+}
+.tbs-radio-fallback a{color:#174b82;font-weight:650}
+@media(max-width:700px){
+  .tbs-radio-panel{padding:10px;margin:8px 0 12px}
+  .tbs-radio-panel iframe{height:65vh;min-height:420px}
+}
