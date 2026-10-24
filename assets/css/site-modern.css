@@ -459,3 +459,29 @@
 .site-nav-shell .site-tab-links .site-tab--radio.is-playing:hover{
   background:rgba(112,84,147,.04)!important;
 }
+
+
+/* Consistent radio states: transparent while idle, softly tinted only while playing. */
+.site-nav-shell .site-tab-links .site-tab--radio:not(.is-playing),
+.site-nav-shell .site-tab-links .site-tab--nhk-radio:not(.is-playing){
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio:not(.is-playing):hover,
+.site-nav-shell .site-tab-links .site-tab--nhk-radio:not(.is-playing):hover{
+  background:rgba(112,84,147,.04)!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing{
+  background:#f1ebf8!important;
+  color:#62458a!important;
+  border-color:#8e76ad!important;
+  border-style:solid!important;
+  box-shadow:0 0 0 2px rgba(112,84,147,.08)!important;
+}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{
+  background:#edf4fc!important;
+  color:#183e70!important;
+  border-color:#7899c4!important;
+  border-style:solid!important;
+  box-shadow:0 0 0 2px rgba(24,62,112,.07)!important;
+}
