@@ -13,10 +13,14 @@
             sessionStorage.setItem("library_return_to", requestedPath);
             sessionStorage.setItem("library_return_to_at", String(Date.now()));
           }
-          window.location.replace("/");
+          window.location.replace("/?return_to=" + encodeURIComponent(requestedPath));
+          } else {
+            window.location.replace("/");
+          }
         }
       } catch (error) {
-        window.location.replace("/");
+        var fallbackPath = window.location.pathname + window.location.search + window.location.hash;
+        window.location.replace(fallbackPath && fallbackPath !== "/" ? "/?return_to=" + encodeURIComponent(fallbackPath) : "/");
       }
     })();
   </script>
