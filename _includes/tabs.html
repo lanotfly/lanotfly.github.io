@@ -1,9 +1,9 @@
 <div class="site-nav-shell">
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
-      <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4" title="BBC Radio 4">
-        <img class="radio4-icon-image" src="/assets/images/bbc-radio-4.svg?v=20261024-4" alt="" aria-hidden="true">
-        <span class="radio4-sr-label" id="radio4-label">BBC Radio 4</span>
+      <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio" title="BBC Radio">
+        <img class="radio4-icon-image" src="/assets/images/bbc-radio-4.svg?v=20261024-5" alt="" aria-hidden="true">
+        <span class="radio4-sr-label" id="radio4-label">BBC Radio</span>
       </button>
       <button class="site-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1">
         <img class="nhk-radio-icon-image" src="/assets/images/nhk-radio.svg" alt="" aria-hidden="true">
@@ -34,11 +34,11 @@
   function setRadioMetadata(){
     if (!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: 'BBC Radio 4',
-      artist: 'BBC Radio 4',
-      album: 'BBC Radio 4 — Live',
+      title: 'BBC Radio',
+      artist: 'BBC Radio',
+      album: 'BBC Radio — Live',
       artwork: [
-        { src: 'https://lanotfly.github.io/assets/images/bbc-radio-4-now-playing.png?v=20261024-4', sizes: '64x64', type: 'image/png' }
+        { src: 'https://lanotfly.github.io/assets/images/bbc-radio-4-now-playing.png?v=20261024-5', sizes: '64x64', type: 'image/png' }
       ]
     });
     try {
@@ -48,9 +48,9 @@
   }
   function paint(playing){
     toggle.setAttribute('aria-pressed',String(playing));
-    toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
+    toggle.setAttribute('aria-label',playing?'Pause BBC Radio':'Play BBC Radio');
     toggle.classList.toggle('is-playing',playing);
-    label.textContent='BBC Radio 4';
+    label.textContent='BBC Radio';
     if ('mediaSession' in navigator) {
       /* A pause event from BBC must not mark NHK as paused if NHK is now playing. */
       var nhkAudio=document.getElementById('nhk-radio-audio');
