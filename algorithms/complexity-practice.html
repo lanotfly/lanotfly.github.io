@@ -1,0 +1,18 @@
+---
+layout: default
+title: "6. Complexity &amp; Interview Practice — Analyze Before Optimizing"
+permalink: /algorithms/complexity-practice/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap">
+<nav class="wiki-nav" aria-label="Algorithm chapters"><a href="/algorithms/">Book Home</a><a href="/algorithms/array-patterns/">1. Array patterns</a><a href="/algorithms/search-traversal/">2. Search &amp; traversal</a><a href="/algorithms/recursion-backtracking/">3. Recursion &amp; backtracking</a><a href="/algorithms/greedy-dp/">4. Greedy &amp; DP</a><a href="/algorithms/graph-algorithms/">5. Graph algorithms</a><a href="/algorithms/complexity-practice/">6. Complexity &amp; practice</a></nav>
+<h1>6. Complexity &amp; Interview Practice — Analyze Before Optimizing</h1>
+
+<p class="lead">Big-O describes how resource use grows with input size. It is a model for comparing approaches, not an exact prediction of wall-clock time.</p>
+<h2>1. Complexity quick reference</h2><table><thead><tr><th>Complexity</th><th>Typical shape</th><th>Example</th></tr></thead><tbody><tr><td>O(1)</td><td>Constant work</td><td>Array index access</td></tr><tr><td>O(log n)</td><td>Repeatedly halve search space</td><td>Binary search</td></tr><tr><td>O(n)</td><td>One pass</td><td>Scan array</td></tr><tr><td>O(n log n)</td><td>Divide and combine / comparison sort</td><td>Merge sort</td></tr><tr><td>O(n²)</td><td>All pairs</td><td>Nested loop over n items</td></tr><tr><td>O(2ⁿ), O(n!)</td><td>Enumerate subsets or permutations</td><td>Many brute-force searches</td></tr></tbody></table>
+<h2>2. Time and space</h2><p>State time and auxiliary space separately. A recursive algorithm may have O(n) stack space even if it allocates no explicit array. Output storage is often excluded from auxiliary space, but say which convention you are using.</p>
+<h2>3. Interview explanation framework</h2><ol><li>Restate the input, output, and constraints.</li><li>Give a simple brute-force approach and its cost.</li><li>Identify the bottleneck and select a pattern.</li><li>State the invariant or correctness argument.</li><li>Walk through one normal example and one edge case.</li><li>Analyze time and space; mention assumptions.</li><li>Test empty input, duplicates, boundary values, and large inputs.</li></ol>
+<h2>4. Suggested learning sequence</h2><p>Start with arrays, strings, hash maps, two pointers, sliding windows, and prefix sums. Then learn binary search, stacks and queues, linked lists, trees, heaps, graphs, backtracking, greedy, and DP. Revisit missed problems after several days to test recall.</p>
+<h2>5. SRE-oriented examples</h2><ul><li>Use hash maps to aggregate log events by status code.</li><li>Use heaps to maintain top-K latency or error contributors.</li><li>Use graphs to model service dependencies and impact propagation.</li><li>Use sliding windows for rolling error rates and latency summaries.</li><li>Use binary search on a monotonic threshold when tuning capacity or finding a first failing version.</li></ul>
+<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data-structures/">Explore Data Structure →</a></div>
+</div>
