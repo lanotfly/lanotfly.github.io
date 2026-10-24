@@ -1,9 +1,13 @@
 <div class="site-nav-shell">
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
-      <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4">
-        <span class="radio-dot" aria-hidden="true"></span>
-        <span id="radio4-label">BBC</span>
+      <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4" title="BBC Radio 4">
+        <span class="radio4-icon" aria-hidden="true">
+          <span class="radio4-icon__number">4</span>
+          <svg class="radio4-icon__play" viewBox="0 0 24 24" focusable="false"><path d="M8 5.5v13L19 12z" fill="currentColor"/></svg>
+          <svg class="radio4-icon__pause" viewBox="0 0 24 24" focusable="false"><path d="M7 5h4v14H7zM14 5h4v14h-4z" fill="currentColor"/></svg>
+        </span>
+        <span class="radio4-sr-label" id="radio4-label">Play Radio 4</span>
       </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
@@ -26,7 +30,7 @@
     toggle.setAttribute('aria-pressed',String(playing));
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
     toggle.classList.toggle('is-playing',playing);
-    label.textContent='BBC';
+    label.textContent=playing?'Pause Radio 4':'Play Radio 4';
   }
   toggle.addEventListener('click',function(){
     if(!audio.paused){
