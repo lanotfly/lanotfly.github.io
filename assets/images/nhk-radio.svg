@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="76" fill="#183e70"/>
+  <g fill="#fff" font-family="Arial,Helvetica,sans-serif" font-weight="800" text-anchor="middle">
+    <text x="256" y="250" font-size="150" letter-spacing="-8">NHK</text>
+    <path d="M110 300H402" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+    <text x="256" y="380" font-size="65" letter-spacing="5">RADIO</text>
+  </g>
+</svg>
