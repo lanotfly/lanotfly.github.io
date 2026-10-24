@@ -52,10 +52,14 @@
     toggle.classList.toggle('is-playing',playing);
     label.textContent='BBC Radio 4';
     if ('mediaSession' in navigator) {
-      try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch (_) {}
+      /* A pause event from BBC must not mark NHK as paused if NHK is now playing. */
+      var nhkAudio=document.getElementById('nhk-radio-audio');
+      if (playing || !nhkAudio || nhkAudio.paused) {
+        try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch (_) {}
+      }
     }
   }
-  setRadioMetadata();
+  /* Do not claim the iPhone Now Playing session until BBC actually starts. */
   toggle.addEventListener('click',function(){
     if(!audio.paused){
       audio.pause();
@@ -98,7 +102,9 @@
     if(label) label.textContent='NHK Radio';
     if('mediaSession' in navigator){
       try{
-        navigator.mediaSession.playbackState=playing?'playing':'paused';
+        /* A pause event from NHK must not mark BBC as paused if BBC is now playing. */
+        var bbcAudio=document.getElementById('radio4-audio');
+        if(playing || !bbcAudio || bbcAudio.paused) navigator.mediaSession.playbackState=playing?'playing':'paused';
         if(typeof MediaMetadata!=='undefined') navigator.mediaSession.metadata=new MediaMetadata({
           title:'NHK Radio 1',
           artist:'NHK らじる★らじる',
