@@ -12,8 +12,7 @@
           if (requestedPath && requestedPath !== "/") {
             sessionStorage.setItem("library_return_to", requestedPath);
             sessionStorage.setItem("library_return_to_at", String(Date.now()));
-          }
-          window.location.replace("/?return_to=" + encodeURIComponent(requestedPath));
+            window.location.replace("/?return_to=" + encodeURIComponent(requestedPath));
           } else {
             window.location.replace("/");
           }
