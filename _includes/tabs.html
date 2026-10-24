@@ -9,6 +9,12 @@
         <img class="nhk-radio-icon-image" src="/assets/images/nhk-radio.svg" alt="" aria-hidden="true">
         <span class="nhk-radio-label">NHK Radio</span>
       </button>
+      <button class="site-tab site-tab--podcast" id="bite-size-toggle" type="button" aria-pressed="false" aria-label="Play latest Bite Size Japanese episode" title="Play latest Bite Size Japanese episode">
+        <span aria-hidden="true">JP</span><span class="podcast-button-label">Bite Size JP</span>
+      </button>
+      <button class="site-tab site-tab--podcast" id="lukes-english-toggle" type="button" aria-pressed="false" aria-label="Play latest Luke's English Podcast episode" title="Play latest Luke's English Podcast episode">
+        <span aria-hidden="true">EN</span><span class="podcast-button-label">Luke's English</span>
+      </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
       <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
@@ -22,6 +28,7 @@
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
+  <audio id="podcast-audio" preload="none" playsinline hidden></audio>
 </div>
 <script>
 /* One hidden audio element lives in the shared header; the button is the only player UI. */
@@ -201,6 +208,106 @@
   nhk.addEventListener('play',function(){if(!bbc.paused)bbc.pause();syncAfterEvents();});
   bbc.addEventListener('pause',syncAfterEvents);
   nhk.addEventListener('pause',syncAfterEvents);
+})();
+
+
+/* Podcast buttons: play the newest episode from each public RSS feed, using one shared audio element. */
+(function(){
+  var audio=document.getElementById('podcast-audio');
+  if(!audio || window.__libraryPodcastsInstalled)return;
+  window.__libraryPodcastsInstalled=true;
+  var shows={
+    'bite-size-toggle':{
+      title:'The Bite Size Japanese Podcast',
+      artist:'Layla from Bite Size Japanese',
+      feed:'https://anchor.fm/s/463a19c0/podcast/rss',
+      apple:'https://podcasts.apple.com/jp/podcast/the-bite-size-japanese-podcast/id1588405417?l=en-US',
+      artwork:'https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/3c/2c/7f/3c2c7f52-ef6a-4f20-89b9-40d2b7a61c85/mza_16673831214975369420.jpg/600x600bb.jpg'
+    },
+    'lukes-english-toggle':{
+      title:"Luke's English Podcast",
+      artist:'Luke Thompson',
+      feed:'https://feeds.acast.com/public/shows/62b0ada25c7ea10012f541cb',
+      apple:'https://podcasts.apple.com/jp/podcast/lukes-english-podcast-learn-british-english-with-luke/id312059190?l=en-US',
+      artwork:'https://teacherluke.co.uk/wp-content/uploads/2012/03/LEP-Logo-3000x3000.jpg'
+    }
+  };
+  var activeId=null;
+  function paint(id,playing){
+    var button=document.getElementById(id);
+    if(!button)return;
+    button.setAttribute('aria-pressed',String(playing));
+    button.classList.toggle('is-playing',playing);
+    var show=shows[id];
+    button.setAttribute('aria-label',(playing?'Pause ':'Play latest episode: ')+show.title);
+    button.title=(playing?'Pause ':'Play latest episode: ')+show.title;
+  }
+  function setMetadata(show,episode){
+    if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
+    try{
+      navigator.mediaSession.metadata=new MediaMetadata({
+        title:episode||show.title,
+        artist:show.artist,
+        album:show.title,
+        artwork:[{src:show.artwork,sizes:'600x600',type:'image/jpeg'}]
+      });
+      navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){});});
+      navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
+      navigator.mediaSession.playbackState='playing';
+    }catch(_){}
+  }
+  function stopOtherAudio(){
+    ['radio4-audio','nhk-radio-audio'].forEach(function(id){
+      var other=document.getElementById(id);
+      if(other&&!other.paused)other.pause();
+    });
+    Object.keys(shows).forEach(function(id){if(id!==activeId)paint(id,false);});
+  }
+  function latestEpisode(feed){
+    return fetch(feed,{cache:'no-store'}).then(function(response){
+      if(!response.ok)throw new Error('RSS feed unavailable');
+      return response.text();
+    }).then(function(xmlText){
+      var xml=new DOMParser().parseFromString(xmlText,'text/xml');
+      if(xml.querySelector('parsererror'))throw new Error('Invalid RSS feed');
+      var item=xml.querySelector('item');
+      if(!item)throw new Error('No episodes in RSS feed');
+      var enclosure=item.querySelector('enclosure[url]');
+      var episodeTitle=item.querySelector('title');
+      if(!enclosure)throw new Error('No playable episode found');
+      return {url:enclosure.getAttribute('url'),title:episodeTitle?episodeTitle.textContent.trim():''};
+    });
+  }
+  Object.keys(shows).forEach(function(id){
+    var button=document.getElementById(id),show=shows[id];
+    if(!button)return;
+    button.addEventListener('click',function(){
+      if(activeId===id&&!audio.paused){audio.pause();return;}
+      if(activeId===id&&audio.paused&&audio.src){stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){window.location.href=show.apple;});return;}
+      stopOtherAudio();
+      activeId=id;
+      button.classList.add('is-loading');
+      latestEpisode(show.feed).then(function(episode){
+        audio.src=episode.url;
+        audio.dataset.episodeTitle=episode.title;
+        setMetadata(show,episode.title||show.title);
+        return audio.play().then(function(){paint(id,true);setMetadata(show,episode.title||show.title);});
+      }).catch(function(){
+        /* If the feed blocks browser access or iOS blocks playback, use the official Apple Podcasts page. */
+        window.location.href=show.apple;
+      }).finally(function(){button.classList.remove('is-loading');});
+    });
+  });
+  audio.addEventListener('play',function(){if(activeId)paint(activeId,true);});
+  audio.addEventListener('pause',function(){
+    Object.keys(shows).forEach(function(id){paint(id,false);});
+    if('mediaSession' in navigator){
+      var bbc=document.getElementById('radio4-audio'),nhk=document.getElementById('nhk-radio-audio');
+      if((!bbc||bbc.paused)&&(!nhk||nhk.paused)){try{navigator.mediaSession.playbackState='paused';}catch(_){}}
+    }
+  });
+  audio.addEventListener('ended',function(){if(activeId)paint(activeId,false);});
+  audio.addEventListener('error',function(){if(activeId)paint(activeId,false);});
 })();
 
 /* Keep the shared navigation and its audio element alive between library pages. */
