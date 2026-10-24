@@ -80,7 +80,13 @@
       paint(false);
       return;
     }
+    /* Stop the other station first, before claiming the iOS Now Playing session. */
+    var nhkAudio=document.getElementById('nhk-radio-audio');
+    if(nhkAudio && !nhkAudio.paused) nhkAudio.pause();
     setRadioMetadata();
+    /* Stop BBC first, then start NHK from this user gesture. */
+    var bbcAudio=document.getElementById('radio4-audio');
+    if(bbcAudio && !bbcAudio.paused) bbcAudio.pause();
     var result=audio.play();
     if(result&&typeof result.then==='function'){
       result.then(function(){
