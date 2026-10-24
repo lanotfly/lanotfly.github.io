@@ -159,7 +159,23 @@
   if(!bbc||!nhk||window.__radioMutualExclusionInstalled)return;
   window.__radioMutualExclusionInstalled=true;
   bbc.addEventListener('play',function(){if(!nhk.paused)nhk.pause();});
-  nhk.addEventListener('play',function(){if(!bbc.paused)bbc.pause();});
+  nhk.addEventListener('play',function(){
+    if(!bbc.paused)bbc.pause();
+    /* Re-assert NHK as the active Now Playing session after BBC's pause event fires. */
+    if('mediaSession' in navigator){
+      try{
+        navigator.mediaSession.playbackState='playing';
+        if(typeof MediaMetadata!=='undefined') navigator.mediaSession.metadata=new MediaMetadata({
+          title:'NHK Radio 1',
+          artist:'NHK らじる★らじる',
+          album:'NHK Radio 1 — Live',
+          artwork:[{src:'https://lanotfly.github.io/assets/images/nhk-radio-square.png?v=20261024-2',sizes:'64x64',type:'image/png'}]
+        });
+        navigator.mediaSession.setActionHandler('play',function(){nhk.play().catch(function(){});});
+        navigator.mediaSession.setActionHandler('pause',function(){nhk.pause();});
+      }catch(_){}
+    }
+  });
 })();
 
 /* Keep the shared navigation and its audio element alive between library pages. */
