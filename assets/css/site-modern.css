@@ -446,3 +446,16 @@
   .radio4-icon-image{width:25px!important;height:25px!important}
   .nhk-radio-icon-image{width:23px;height:23px}
 }
+
+/* BBC Radio: when playing, use the same quiet outline-only indicator as NHK. */
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing{
+  color:#62458a!important;
+  background:transparent!important;
+  border-color:#8e76ad!important;
+  border-style:solid!important;
+  border-width:1.5px!important;
+  box-shadow:0 0 0 2px rgba(112,84,147,.08)!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing:hover{
+  background:rgba(112,84,147,.04)!important;
+}
