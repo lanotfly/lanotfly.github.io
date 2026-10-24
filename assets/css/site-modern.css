@@ -197,3 +197,81 @@
 .site-nav-shell .radio4-topbar .radio4-panel__heading{color:#62458a}
 .site-nav-shell .radio4-topbar .radio4-close{border-color:#d6c7e8;color:#62458a}
 .site-nav-shell .radio4-topbar .radio4-fallback a{color:#62458a}
+
+
+/* Square Radio 4-inspired player tile: play when idle, pause while playing. */
+.site-nav-shell .site-tab-links .site-tab--radio{
+  width:44px!important;
+  min-width:44px!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:3px!important;
+  gap:0!important;
+  border:1px solid #d6c7e8!important;
+  border-radius:7px!important;
+  background:#f3eef9!important;
+  color:#62458a!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio:hover{
+  background:#e9def5!important;
+  border-color:#bca8d6!important;
+}
+.radio4-icon{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  overflow:hidden;
+  border-radius:3px;
+  background:#62458a;
+  color:#fff;
+  line-height:1;
+}
+.radio4-icon__number{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:25px;
+  font-weight:700;
+  line-height:1;
+  transform:translateY(-1px);
+}
+.radio4-icon__play,.radio4-icon__pause{
+  position:absolute;
+  right:1px;
+  bottom:1px;
+  width:15px;
+  height:15px;
+  padding:1px;
+  box-sizing:border-box;
+  color:#62458a;
+  background:#fff;
+  border-radius:2px;
+}
+.radio4-icon__pause{display:none}
+.site-tab--radio.is-playing .radio4-icon{background:#4d3868}
+.site-tab--radio.is-playing .radio4-icon__play{display:none}
+.site-tab--radio.is-playing .radio4-icon__pause{display:block;color:#4d3868}
+.radio4-sr-label{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links .site-tab--radio{
+    width:40px!important;
+    min-width:40px!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:2px!important;
+  }
+  .radio4-icon{width:29px;height:29px}
+  .radio4-icon__number{font-size:23px}
+}
