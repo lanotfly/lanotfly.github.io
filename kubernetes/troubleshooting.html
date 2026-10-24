@@ -10,6 +10,13 @@ permalink: /kubernetes/troubleshooting/
 </nav>
 <h1>Kubernetes troubleshooting workflow</h1>
 <p class="lead">Use a consistent path from symptom to evidence: workload state, events, logs, dependencies, and cluster capacity.</p>
+<figure class="diagram official-diagram">
+<a href="https://kubernetes.io/docs/tasks/debug/" target="_blank" rel="noopener noreferrer" aria-label="Open official Kubernetes documentation for this topic">
+<img src="https://kubernetes.io/images/docs/components-of-kubernetes.svg" alt="Official Kubernetes cluster architecture showing the control plane and worker nodes; use the linked official documentation for topic-specific details" loading="lazy" style="display:block;width:100%;height:auto;max-width:100%;cursor:zoom-in">
+</a>
+<figcaption>Official Kubernetes architecture for context. This chapter's topic-specific explanation is complemented by the <a href="https://kubernetes.io/docs/tasks/debug/" target="_blank" rel="noopener noreferrer">official Kubernetes documentation</a>.</figcaption>
+</figure>
+
 
 <h2>1. Start with the symptom</h2>
 <p>Identify the affected scope first: one container, one Pod, one Deployment, one node, one namespace, or the whole cluster. Record when it started and what changed recently.</p>
