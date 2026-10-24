@@ -4,10 +4,24 @@
       <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4" title="BBC Radio 4">
         <span class="radio4-icon" aria-hidden="true"><span class="radio4-icon__number">4</span></span>
         <span class="radio4-sr-label" id="radio4-label">BBC Radio 4</span>
+        <svg class="radio-marquee" viewBox="0 0 100 44" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path id="bbc-radio-marquee-path" d="M 9,2 H 91 Q 98,2 98,9 V 35 Q 98,42 91,42 H 9 Q 2,42 2,35 V 9 Q 2,2 9,2" fill="none"/>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" repeatCount="indefinite" rotate="0"><mpath href="#bbc-radio-marquee-path" xlink:href="#bbc-radio-marquee-path"/></animateMotion></circle>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" begin="-1.75s" repeatCount="indefinite" rotate="0"><mpath href="#bbc-radio-marquee-path" xlink:href="#bbc-radio-marquee-path"/></animateMotion></circle>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" begin="-3.5s" repeatCount="indefinite" rotate="0"><mpath href="#bbc-radio-marquee-path" xlink:href="#bbc-radio-marquee-path"/></animateMotion></circle>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" begin="-5.25s" repeatCount="indefinite" rotate="0"><mpath href="#bbc-radio-marquee-path" xlink:href="#bbc-radio-marquee-path"/></animateMotion></circle>
+        </svg>
       </button>
       <button class="site-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1">
         <span class="nhk-radio-icon" aria-hidden="true">NHK</span>
         <span class="nhk-radio-label">NHK Radio</span>
+        <svg class="radio-marquee" viewBox="0 0 100 44" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path id="nhk-radio-marquee-path" d="M 9,2 H 91 Q 98,2 98,9 V 35 Q 98,42 91,42 H 9 Q 2,42 2,35 V 9 Q 2,2 9,2" fill="none"/>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" repeatCount="indefinite" rotate="0"><mpath href="#nhk-radio-marquee-path" xlink:href="#nhk-radio-marquee-path"/></animateMotion></circle>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" begin="-1.75s" repeatCount="indefinite" rotate="0"><mpath href="#nhk-radio-marquee-path" xlink:href="#nhk-radio-marquee-path"/></animateMotion></circle>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" begin="-3.5s" repeatCount="indefinite" rotate="0"><mpath href="#nhk-radio-marquee-path" xlink:href="#nhk-radio-marquee-path"/></animateMotion></circle>
+          <circle r="1.7" class="radio-marquee__light"><animateMotion dur="7s" begin="-5.25s" repeatCount="indefinite" rotate="0"><mpath href="#nhk-radio-marquee-path" xlink:href="#nhk-radio-marquee-path"/></animateMotion></circle>
+        </svg>
       </button>
       <a class="site-tab site-tab--home" href="/home/">Home</a>
       <a class="site-tab site-tab--data" href="/data-structures/">Data Structure</a>
