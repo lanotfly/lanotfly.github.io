@@ -10,6 +10,13 @@ permalink: /kubernetes/storage/
 </nav>
 <h1>Volumes, PersistentVolumes, and claims</h1>
 <p class="lead">Choose storage that matches the lifecycle and access needs of the application, from temporary scratch space to durable data.</p>
+<figure class="diagram official-diagram">
+<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank" rel="noopener noreferrer" aria-label="Open official Kubernetes documentation for this topic">
+<img src="https://kubernetes.io/images/docs/components-of-kubernetes.svg" alt="Official Kubernetes cluster architecture showing the control plane and worker nodes; use the linked official documentation for topic-specific details" loading="lazy" style="display:block;width:100%;height:auto;max-width:100%;cursor:zoom-in">
+</a>
+<figcaption>Official Kubernetes architecture for context. This chapter's topic-specific explanation is complemented by the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank" rel="noopener noreferrer">official Kubernetes documentation</a>.</figcaption>
+</figure>
+
 
 <h2>1. Storage concepts</h2>
 <ul><li><strong>emptyDir:</strong> temporary space tied to a Pod's lifetime.</li><li><strong>PersistentVolume (PV):</strong> a cluster storage resource.</li><li><strong>PersistentVolumeClaim (PVC):</strong> a workload's request for storage capacity and access mode.</li><li><strong>StorageClass:</strong> defines a class of storage and can enable dynamic provisioning.</li></ul>
