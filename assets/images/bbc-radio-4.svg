@@ -1,9 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="72" fill="#111111"/>
-  <g fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-weight="700" text-anchor="middle">
-    <text x="256" y="190" font-size="88" letter-spacing="8">BBC</text>
-    <path d="M91 218H421V226H91Z" fill="#ffffff"/>
-    <text x="256" y="304" font-size="64">RADIO</text>
-    <text x="256" y="416" font-size="154">4</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="220" viewBox="0 0 512 220">
+  <rect width="512" height="220" rx="18" fill="#fff"/>
+  <g transform="translate(20 34)">
+    <g fill="#111">
+      <rect x="0" y="0" width="54" height="46" rx="2"/>
+      <rect x="59" y="0" width="54" height="46" rx="2"/>
+      <rect x="118" y="0" width="54" height="46" rx="2"/>
+    </g>
+    <g fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="800" text-anchor="middle">
+      <text x="27" y="34">B</text><text x="86" y="34">B</text><text x="145" y="34">C</text>
+    </g>
+    <text x="2" y="116" fill="#111" font-family="Arial,Helvetica,sans-serif" font-size="59" font-weight="800" letter-spacing="-2">RADIO</text>
+    <circle cx="255" cy="75" r="73" fill="#173b68"/>
+    <text x="255" y="103" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="91" font-weight="700" text-anchor="middle">4</text>
   </g>
 </svg>
