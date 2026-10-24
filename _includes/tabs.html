@@ -323,7 +323,15 @@
         if(!data||data.status!=='ok'||!Array.isArray(data.items)||!data.items.length)throw new Error('No episodes in RSS proxy response');
         var episodes=data.items.map(function(item){
           var enclosure=item.enclosure;
-          var mediaUrl=typeof enclosure==='string'?enclosure:(enclosure&&(enclosure.link||enclosure.url))||item.link;
+          var mediaUrl=typeof enclosure==='string'?enclosure:
+            (enclosure&&(enclosure.link||enclosure.url||enclosure.href))||
+            item.enclosure_url||item.enclosureUrl||item.audio;
+          /* item.link is usually an episode webpage, not an audio file. Never try to play it as audio. */
+          if(mediaUrl&&!/\.(mp3|m4a|aac|mp4|ogg|opus)(\?|#|$)/i.test(mediaUrl)&&!/\.m3u8(\?|#|$)/i.test(mediaUrl)){
+            if(enclosure&&typeof enclosure==='object'&&enclosure.type&&/^audio\//i.test(enclosure.type)){
+              /* Some feeds use extensionless CDN URLs; the declared audio MIME type makes these valid. */
+            } else { mediaUrl=null; }
+          }
           return mediaUrl?{url:mediaUrl,title:item.title||show.title}:null;
         }).filter(function(episode){return !!episode;});
         if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
@@ -340,6 +348,7 @@
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
     renderEpisodeList();
     audio.src=episode.url;
+    audio.load();
     audio.dataset.episodeTitle=episode.title;
     setMetadata(show,episode.title||show.title);
     audio.play().then(function(){
