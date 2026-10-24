@@ -10,6 +10,13 @@ permalink: /kubernetes/security-rbac/
 </nav>
 <h1>Kubernetes security: RBAC, Pod hardening, and network controls</h1>
 <p class="lead">Reduce the blast radius by granting least privilege, restricting workload capabilities, and controlling communication.</p>
+<figure class="diagram official-diagram">
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/" target="_blank" rel="noopener noreferrer" aria-label="Open official Kubernetes documentation for this topic">
+<img src="https://kubernetes.io/images/docs/components-of-kubernetes.svg" alt="Official Kubernetes cluster architecture showing the control plane and worker nodes; use the linked official documentation for topic-specific details" loading="lazy" style="display:block;width:100%;height:auto;max-width:100%;cursor:zoom-in">
+</a>
+<figcaption>Official Kubernetes architecture for context. This chapter's topic-specific explanation is complemented by the <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/" target="_blank" rel="noopener noreferrer">official Kubernetes documentation</a>.</figcaption>
+</figure>
+
 
 <h2>1. Start with least privilege</h2>
 <p>Use Role and RoleBinding for namespace-scoped permissions where possible. ClusterRole and ClusterRoleBinding grant broader cluster-level permissions and should be used only when necessary.</p>
