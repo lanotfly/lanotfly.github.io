@@ -1,0 +1,45 @@
+---
+layout: default
+title: "Deployments, ReplicaSets, and scaling"
+permalink: /kubernetes/deployments-scaling/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Kubernetes chapters">
+<a href="/kubernetes/">Overview</a><a href="/kubernetes/pods/">1. Pods</a><a href="/kubernetes/deployments-scaling/" class="current">2. Deployments</a><a href="/kubernetes/services-networking/">3. Services</a><a href="/kubernetes/config-secrets/">4. Configuration</a><a href="/kubernetes/storage/">5. Storage</a><a href="/kubernetes/health-resources/">6. Health checks</a><a href="/kubernetes/security-rbac/">7. Security</a><a href="/kubernetes/troubleshooting/">8. Troubleshooting</a>
+</nav>
+<h1>Deployments, ReplicaSets, and scaling</h1>
+<p class="lead">Declare the desired number of replicas and let Kubernetes reconcile the running workload toward that state.</p>
+
+<h2>1. The controller chain</h2>
+<p>A Deployment manages a ReplicaSet; the ReplicaSet maintains the requested number of matching Pods. You normally update the Deployment rather than creating ReplicaSets or Pods manually.</p>
+<figure class="diagram"><svg viewBox="0 0 560 190" role="img" aria-label="Deployment manages ReplicaSet which manages three Pods"><rect x="170" y="10" width="220" height="42" rx="8" fill="#e7f5f5" stroke="#17858b"/><text x="280" y="36" text-anchor="middle" font-size="14" fill="#202124">Deployment</text><path d="M280 52 V75" stroke="#17858b" stroke-width="2"/><path d="M274 69 L280 77 L286 69" fill="none" stroke="#17858b" stroke-width="2"/><rect x="170" y="78" width="220" height="42" rx="8" fill="#fff" stroke="#17858b"/><text x="280" y="104" text-anchor="middle" font-size="14" fill="#202124">ReplicaSet · replicas: 3</text><path d="M280 120 V138 M100 138 H460 M100 138 V151 M280 138 V151 M460 138 V151" stroke="#17858b" stroke-width="2" fill="none"/><g fill="#e7f5f5" stroke="#17858b"><rect x="42" y="151" width="116" height="30" rx="6"/><rect x="222" y="151" width="116" height="30" rx="6"/><rect x="402" y="151" width="116" height="30" rx="6"/></g><g fill="#202124" font-size="12" text-anchor="middle"><text x="100" y="170">Pod 1</text><text x="280" y="170">Pod 2</text><text x="460" y="170">Pod 3</text></g></svg><figcaption>The controller loop continuously compares desired state with observed state.</figcaption></figure>
+<h2>2. Deployment example</h2>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 80</code></pre>
+<h2>3. Rollouts and scaling</h2>
+<pre><code>kubectl apply -f deployment.yaml
+kubectl rollout status deployment/web
+kubectl rollout history deployment/web
+kubectl rollout undo deployment/web
+kubectl scale deployment/web --replicas=5</code></pre>
+<ul><li>Readiness determines whether a Pod should receive Service traffic.</li><li>Rolling updates replace Pods gradually; tune maxSurge and maxUnavailable to balance capacity and availability.</li><li>Horizontal Pod Autoscaler adjusts replicas based on configured metrics; it does not create node capacity by itself.</li></ul>
+<div class="prev-next"><a href="/kubernetes/pods/">← Pods</a><a href="/kubernetes/services-networking/">Services & networking →</a></div>
+</div>
