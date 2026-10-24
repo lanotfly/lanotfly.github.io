@@ -407,17 +407,33 @@
 }
 
 
-/* Slow clockwise marquee: the SVG path stays fixed while individual lights travel around it. */
+/* Quiet radio playing indicator: dashed when idle, solid while playing. */
 .site-nav-shell .site-tab-links .site-tab--radio,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio{position:relative;isolation:isolate;overflow:visible}
-.site-nav-shell .site-tab-links .site-tab--radio.is-playing{border-color:#bca8d6!important}
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{border-color:#7899c4!important}
-.site-nav-shell .site-tab-links .site-tab--radio.is-playing::after,
-.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing::after{content:none!important;display:none!important}
-.site-nav-shell .site-tab-links .radio-marquee{display:none;position:absolute;inset:-2px;width:calc(100% + 4px);height:calc(100% + 4px);overflow:visible;pointer-events:none;z-index:5}
-.site-nav-shell .site-tab-links .is-playing .radio-marquee{display:block}
-.site-nav-shell .site-tab-links .site-tab--radio .radio-marquee__light{fill:#c7b5e0}
-.site-nav-shell .site-tab-links .site-tab--nhk-radio .radio-marquee__light{fill:#9dbbe2}
-@media(prefers-reduced-motion:reduce){
- .site-nav-shell .site-tab-links .radio-marquee{display:none!important}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio{
+  position:relative;
+  border-style:dashed!important;
+  transition:border-style 0s, border-color .2s ease, background-color .2s ease;
+}
+.site-nav-shell .site-tab-links .site-tab--radio.is-playing{
+  border-style:solid!important;
+  border-width:1.5px!important;
+  border-color:#8e76ad!important;
+  box-shadow:0 0 0 2px rgba(112,84,147,.08)!important;
+}
+.site-nav-shell .site-tab-links .site-tab--nhk-radio.is-playing{
+  border-style:solid!important;
+  border-width:1.5px!important;
+  border-color:#7899c4!important;
+  box-shadow:0 0 0 2px rgba(24,62,112,.07)!important;
+}
+.radio4-icon-image{
+  display:block;
+  flex:0 0 auto;
+  width:27px;
+  height:27px;
+  object-fit:contain;
+  border-radius:4px;
+}
+@media(max-width:700px){
+  .radio4-icon-image{width:25px;height:25px}
 }
