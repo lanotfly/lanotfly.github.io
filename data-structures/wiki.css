@@ -118,3 +118,11 @@
 .home-card--ai .eyebrow{color:#087f5b}
 .home-page .home-card h2 a{text-decoration:none}
 .home-page .home-card h2 a:hover{text-decoration:underline}
+
+/* Keep previous/next lesson buttons side by side on phones */
+@media(max-width:700px){
+ .wiki-wrap .prev-next{display:flex;flex-direction:row;justify-content:space-between;align-items:stretch;gap:10px;width:100%}
+ .wiki-wrap .prev-next>a,.wiki-wrap .prev-next>span{flex:1 1 0;min-width:0;max-width:50%;box-sizing:border-box}
+ .wiki-wrap .prev-next>a{display:flex;align-items:center;min-height:44px;padding:8px 10px;border:1px solid #d7e3f8;border-radius:8px;background:#f7faff;overflow-wrap:anywhere;font-size:.9rem}
+ .wiki-wrap .prev-next>a:last-child{text-align:right;justify-content:flex-end}
+}
