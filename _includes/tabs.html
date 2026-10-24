@@ -1,6 +1,6 @@
 <div class="site-nav-shell">
   <div class="radio4-topbar">
-    <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false">
+    <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio 4">
       <span class="radio-dot" aria-hidden="true"></span>
       <span class="radio-live-badge">LIVE</span>
       <span id="radio4-label">BBC Radio 4 ▶</span>
@@ -14,31 +14,24 @@
       <a class="site-tab site-tab--ai" href="/data-structures/ai/">AI Structure</a>
     </div>
   </nav>
-  <section id="radio4-panel" class="radio4-panel" hidden aria-label="BBC Radio 4 player">
-    <div class="radio4-panel__heading"><strong>BBC Radio 4 · Live English listening</strong><span id="radio4-status" role="status">Ready to play</span></div>
-    <audio id="radio4-audio" controls preload="none" playsinline>
-      <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
-    </audio>
-    <p class="radio4-note">Tap the red BBC Radio 4 button to play or pause. If your browser cannot play the stream, use the official BBC player below.</p>
-    <p class="radio4-fallback"><a href="https://www.bbc.com/audio/play/live/bbc_radio_fourfm" target="_blank" rel="noopener noreferrer">Open BBC Radio 4 on BBC.com ↗</a></p>
-  </section>
+  <audio id="radio4-audio" preload="none" playsinline hidden>
+    <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
+  </audio>
 </div>
 <script>
+/* One hidden audio element lives in the shared header; the button is the only player UI. */
 (function(){
   var toggle=document.getElementById('radio4-toggle');
-  var panel=document.getElementById('radio4-panel');
   var audio=document.getElementById('radio4-audio');
   var label=document.getElementById('radio4-label');
-  var status=document.getElementById('radio4-status');
-  if(!toggle||!panel||!audio||!label||!status)return;
+  if(!toggle||!audio||!label)return;
   function paint(playing){
     toggle.setAttribute('aria-pressed',String(playing));
+    toggle.setAttribute('aria-label',playing?'Pause BBC Radio 4':'Play BBC Radio 4');
     toggle.classList.toggle('is-playing',playing);
     label.textContent=playing?'BBC Radio 4 ❚❚':'BBC Radio 4 ▶';
-    status.textContent=playing?'Playing live':'Ready to play';
   }
   toggle.addEventListener('click',function(){
-    panel.hidden=false;
     if(!audio.paused){
       audio.pause();
       paint(false);
@@ -46,20 +39,17 @@
     }
     var result=audio.play();
     if(result&&typeof result.catch==='function'){
-      result.catch(function(){
-        paint(false);
-        status.textContent='Stream not supported here — use BBC.com below';
-      });
+      result.catch(function(){paint(false);});
     }
   });
-  audio.addEventListener('play',function(){panel.hidden=false;paint(true);});
+  audio.addEventListener('play',function(){paint(true);});
   audio.addEventListener('pause',function(){paint(false);});
-  audio.addEventListener('error',function(){status.textContent='Stream unavailable in this browser — use BBC.com below';paint(false);});
+  audio.addEventListener('ended',function(){paint(false);});
+  audio.addEventListener('error',function(){paint(false);});
 })();
-
 </script>
 <script>
-/* Keep the shared header and audio element alive while navigating between library pages. */
+/* Keep the shared navigation and its audio element alive between library pages. */
 (function(){
   if (window.__librarySoftNavigationInstalled) return;
   window.__librarySoftNavigationInstalled = true;
@@ -68,9 +58,7 @@
     if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
     var url;
     try { url = new URL(link.href, window.location.href); } catch (_) { return false; }
-    if (url.origin !== window.location.origin) return false;
-    if (!/^https?:$/.test(url.protocol)) return false;
-    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return false;
+    if (url.origin !== window.location.origin || !/^https?:$/.test(url.protocol)) return false;
     if (link.getAttribute('rel') === 'external') return false;
     return true;
   }
@@ -87,27 +75,24 @@
   async function navigate(url, push){
     var response = await fetch(url.href, { credentials: 'same-origin' });
     if (!response.ok) throw new Error('Navigation failed: ' + response.status);
-    var html = await response.text();
-    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var doc = new DOMParser().parseFromString(await response.text(), 'text/html');
     var currentInner = document.querySelector('.content-wrapper__inner');
     var nextInner = doc.querySelector('.content-wrapper__inner');
-    if (!currentInner || !nextInner || !nextInner.querySelector('.site-nav-shell')) {
+    if (!currentInner || !nextInner) { window.location.href = url.href; return; }
+
+    var currentNav = currentInner.querySelector('.site-nav-shell');
+    var nextNav = nextInner.querySelector('.site-nav-shell');
+    var rules = Array.from(currentInner.children).filter(function(el){ return el.tagName === 'HR'; });
+    var nextRules = Array.from(nextInner.children).filter(function(el){ return el.tagName === 'HR'; });
+    if (!currentNav || !nextNav || rules.length < 2 || nextRules.length < 2) {
       window.location.href = url.href;
       return;
     }
 
-    var currentNav = currentInner.querySelector('.site-nav-shell');
-    var currentFooter = currentInner.querySelector('.footer') || currentInner.querySelector('footer');
-    var nextNav = nextInner.querySelector('.site-nav-shell');
-    var nextFooter = nextInner.querySelector('.footer') || nextInner.querySelector('footer');
-    if (!currentNav || !nextNav) { window.location.href = url.href; return; }
-
-    var currentTopRule = currentNav.nextElementSibling && currentNav.nextElementSibling.tagName === 'HR' ? currentNav.nextElementSibling : null;
-    var currentBottomRule = currentFooter && currentFooter.previousElementSibling && currentFooter.previousElementSibling.tagName === 'HR' ? currentFooter.previousElementSibling : null;
-    var nextTopRule = nextNav.nextElementSibling && nextNav.nextElementSibling.tagName === 'HR' ? nextNav.nextElementSibling : null;
-    var nextBottomRule = nextFooter && nextFooter.previousElementSibling && nextFooter.previousElementSibling.tagName === 'HR' ? nextFooter.previousElementSibling : null;
-    if (!currentTopRule || !currentBottomRule || !nextTopRule || !nextBottomRule) { window.location.href = url.href; return; }
-
+    var currentTopRule = rules[0];
+    var currentBottomRule = rules[rules.length - 1];
+    var nextTopRule = nextRules[0];
+    var nextBottomRule = nextRules[nextRules.length - 1];
     var newNodes = [];
     var node = nextTopRule.nextSibling;
     while (node && node !== nextBottomRule) {
@@ -123,7 +108,6 @@
     }
     newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, currentBottomRule); });
 
-    /* Update page-specific stylesheet links without touching the persistent player. */
     document.querySelectorAll('link[data-library-page-style="true"]').forEach(function(link){ link.remove(); });
     doc.querySelectorAll('link[rel="stylesheet"]').forEach(function(link){
       var href = link.href;
