@@ -126,3 +126,30 @@
  .wiki-wrap .prev-next>a{display:flex;align-items:center;min-height:44px;padding:8px 10px;border:1px solid #d7e3f8;border-radius:8px;background:#f7faff;overflow-wrap:anywhere;font-size:.9rem}
  .wiki-wrap .prev-next>a:last-child{text-align:right;justify-content:flex-end}
 }
+
+
+/* Calm chapter selection: dotted when idle, solid and slightly thicker when selected. */
+.wiki-wrap .wiki-nav a{
+  border:1px dashed #9aa9bd;
+  background:transparent;
+  color:inherit;
+  font-weight:400;
+  box-shadow:none;
+}
+.wiki-wrap .wiki-nav a:hover{
+  border-style:solid;
+  border-color:#5878a8;
+  background:transparent;
+}
+.wiki-wrap .wiki-nav a.current,
+.wiki-wrap .wiki-nav a.current:hover{
+  background:transparent!important;
+  color:inherit!important;
+  border:2px solid #315fbd!important;
+  font-weight:400!important;
+  box-shadow:none!important;
+}
+.wiki-wrap .wiki-nav a:focus-visible{
+  outline:2px solid #7194d1;
+  outline-offset:2px;
+}
