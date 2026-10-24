@@ -1,10 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="36" fill="#050505"/>
-  <g font-family="Arial,Helvetica,sans-serif" font-weight="800" text-anchor="middle">
-    <rect x="42" y="48" width="92" height="78" fill="#fff"/><rect x="139" y="48" width="92" height="78" fill="#fff"/><rect x="236" y="48" width="92" height="78" fill="#fff"/>
-    <g fill="#050505" font-size="60"><text x="88" y="106">B</text><text x="185" y="106">B</text><text x="282" y="106">C</text></g>
-    <text x="218" y="220" fill="#fff" font-size="72" letter-spacing="-2">RADIO</text>
-    <circle cx="374" cy="354" r="96" fill="#173b68"/>
-    <text x="374" y="392" fill="#fff" font-size="112">4</text>
+  <rect width="512" height="512" fill="#000"/>
+  <g fill="#fff" text-anchor="middle" font-family="Arial,Helvetica,sans-serif">
+    <text x="256" y="220" font-size="112" font-weight="800" letter-spacing="2">BBC</text>
+    <text x="256" y="316" font-size="88" font-weight="400">Radio</text>
   </g>
 </svg>
