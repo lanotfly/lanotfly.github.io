@@ -319,3 +319,6 @@
  .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 2!important}
  .site-nav-shell .site-tab-links .site-tab--kubernetes{font-size:10.5px!important;letter-spacing:-.03em}
 }
+
+.home-card--kubernetes{border-top:4px solid #17858b;background:linear-gradient(180deg,#eafafa 0%,#fff 58%)}
+.home-card--kubernetes .eyebrow{color:#07575d}
