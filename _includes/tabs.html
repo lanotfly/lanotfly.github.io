@@ -92,7 +92,7 @@
     toggle.title=playing?'Pause NHK Radio 1':'Play NHK Radio 1';
     toggle.classList.toggle('is-playing',playing);
     var label=toggle.querySelector('.nhk-radio-label');
-    if(label) label.textContent=playing?'NHK Radio 1 · Playing':'NHK Radio';
+    if(label) label.textContent='NHK Radio';
     if('mediaSession' in navigator){
       try{
         navigator.mediaSession.playbackState=playing?'playing':'paused';
