@@ -9,7 +9,17 @@
   ];
   var cache = {};
   var root = document.getElementById('library-news-panel');
-  if (!root) return;
+  var mainToggle = document.getElementById('library-news-toggle');
+  if (!root || !mainToggle) return;
+  var initialized = false;
+  function initializeFeeds() { if (initialized) return; initialized = true; feeds.forEach(renderFeed); }
+  mainToggle.addEventListener('click', function () {
+    var open = mainToggle.getAttribute('aria-expanded') !== 'true';
+    mainToggle.setAttribute('aria-expanded', String(open));
+    root.hidden = !open;
+    mainToggle.classList.toggle('is-open', open);
+    if (open) initializeFeeds();
+  });
   function clean(value) {
     var box = document.createElement('div');
     box.innerHTML = String(value || '');
@@ -67,6 +77,7 @@
     var mark = document.createElement('span'); mark.className = 'library-news-chevron'; mark.setAttribute('aria-hidden', 'true'); mark.textContent = '+';
     button.appendChild(title); button.appendChild(mark);
     var detail = document.createElement('div'); detail.className = 'library-news-detail'; detail.hidden = true;
+    var fullTitle = document.createElement('h3'); fullTitle.className = 'library-news-full-title'; fullTitle.textContent = item.title; detail.appendChild(fullTitle);
     if (item.date) { var date = document.createElement('p'); date.className = 'library-news-date'; date.textContent = item.date; detail.appendChild(date); }
     var summary = document.createElement('p'); summary.className = 'library-news-summary';
     summary.textContent = item.summary || (lang === 'ja' ? '概要はRSSで配信されていません。' : 'No summary was provided in the RSS feed.');
@@ -100,6 +111,5 @@
       var open = toggle.getAttribute('aria-expanded') !== 'true'; toggle.setAttribute('aria-expanded', String(open)); body.hidden = !open;
       var mark = toggle.querySelector('.library-news-column__mark'); if (mark) mark.textContent = open ? '−' : '+';
     });
-    renderFeed(feed);
   });
 })();
