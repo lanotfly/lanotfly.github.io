@@ -18,11 +18,47 @@
   var loaded = false;
   var pendingAutoplay = false;
   var filters = { bbc: 'unplayed', chronicle: 'unplayed' };
+  var lastSavedAt = { bbc: 0, chronicle: 0 };
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
   function audioFor(feedId) { return document.getElementById('news-' + feedId + '-audio'); }
+  function episodeIdentity(episode) { return String(episode.audioUrl || episode.link || episode.title || '').toLowerCase(); }
   function storageKey(feed, episode) {
-    return 'personal-library-news-played:' + feed.id + ':' + String(episode.link || episode.title).toLowerCase();
+    return 'personal-library-news-played:' + feed.id + ':' + episodeIdentity(episode);
+  }
+  function positionKey(feed, episode) { return 'personal-library-news-position:' + feed.id + ':' + episodeIdentity(episode); }
+  function selectedEpisodeKey(feed) { return 'personal-library-news-last-episode:' + feed.id; }
+  function savePosition(feed, force) {
+    var audio = audioFor(feed.id);
+    var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
+    if (!audio || !episode || !Number.isFinite(audio.currentTime) || audio.currentTime < 0) return;
+    var now = Date.now();
+    if (!force && now - lastSavedAt[feed.id] < 4000) return;
+    lastSavedAt[feed.id] = now;
+    try {
+      if (audio.ended || audio.currentTime < 2) localStorage.removeItem(positionKey(feed, episode));
+      else localStorage.setItem(positionKey(feed, episode), String(audio.currentTime));
+      localStorage.setItem(selectedEpisodeKey(feed), episodeIdentity(episode));
+    } catch (_) {}
+  }
+  function formatClock(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+    seconds = Math.floor(seconds);
+    var h = Math.floor(seconds / 3600), m = Math.floor((seconds % 3600) / 60), s = seconds % 60;
+    return h ? h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') : m + ':' + String(s).padStart(2, '0');
+  }
+  function updateProgress(feed) {
+    var audio = audioFor(feed.id), wrap = root.querySelector('[data-news-progress="' + feed.id + '"]');
+    var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
+    var currentLabel = root.querySelector('[data-news-current-time="' + feed.id + '"]');
+    var totalLabel = root.querySelector('[data-news-total-time="' + feed.id + '"]');
+    var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
+    if (!wrap || !audio || !episode) { if (wrap) wrap.hidden = true; return; }
+    wrap.hidden = false;
+    var duration = Number.isFinite(audio.duration) ? audio.duration : parseDuration(episode.duration);
+    if (slider && document.activeElement !== slider) slider.value = duration > 0 ? String(Math.round(Math.min(1, audio.currentTime / duration) * 1000)) : '0';
+    if (currentLabel) currentLabel.textContent = formatClock(audio.currentTime || 0);
+    if (totalLabel) totalLabel.textContent = duration > 0 ? formatClock(duration) : '--:--';
   }
   function isPlayed(feed, episode) {
     try { return localStorage.getItem(storageKey(feed, episode)) === '1'; } catch (_) { return false; }
@@ -161,7 +197,9 @@
       if (otherAudio && !otherAudio.paused) otherAudio.pause();
     });
     current = { feed: feed.id, index: index };
+    try { localStorage.setItem(selectedEpisodeKey(feed), episodeIdentity(episode)); } catch (_) {}
     audio.src = episode.audioUrl;
+    audio.dataset.restoreSrc = '';
     audio.dataset.episodeTitle = episode.title || feed.title;
     audio.dataset.episodeArtist = feed.title;
     audio.dataset.episodeArtwork = (root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '';
@@ -177,7 +215,11 @@
   function playDefaultEpisode(feedId) {
     var feed = getFeed(feedId);
     var all = episodesByFeed[feed.id] || [];
-    if (all.length) playEpisode(feed, 0);
+    if (!all.length) return;
+    var identity = '';
+    try { identity = localStorage.getItem(selectedEpisodeKey(feed)) || ''; } catch (_) {}
+    var remembered = identity ? all.findIndex(function (episode) { return episodeIdentity(episode) === identity; }) : -1;
+    playEpisode(feed, remembered >= 0 ? remembered : 0);
   }
   function render(feed) {
     var list = root.querySelector('[data-news-list="' + feed.id + '"]');
@@ -236,19 +278,18 @@
       date.className = 'podcast-episode-date';
       date.textContent = dateLabel(episode.date || episode.published || episode.pubDate, feed.language);
       if (date.textContent) meta.appendChild(date);
+      var played = isPlayed(feed, episode);
       var state = document.createElement('span');
       state.className = 'podcast-episode-state';
-      var played = isPlayed(feed, episode);
       state.textContent = played ? '✓ Played' : '○ Unplayed';
-      meta.appendChild(state);
       textWrap.appendChild(title);
       textWrap.appendChild(meta);
       var duration = document.createElement('span');
       duration.className = 'podcast-episode-duration';
       duration.textContent = formatDuration(episode.duration);
+      if (duration.textContent) textWrap.appendChild(duration);
       button.appendChild(number);
       button.appendChild(textWrap);
-      if (duration.textContent) button.appendChild(duration);
       button.addEventListener('click', function () {
         var targetAudio = audioFor(feed.id);
         if (current.feed === feed.id && current.index === index && !targetAudio.paused) {
@@ -259,10 +300,11 @@
         playEpisode(feed, index);
       });
       row.appendChild(button);
+      row.appendChild(state);
       list.appendChild(row);
     });
   }
-  function renderAll() { feeds.forEach(render); }
+  function renderAll() { feeds.forEach(function (feed) { render(feed); updateProgress(feed); }); }
 
   mainToggle.addEventListener('click', function () {
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
@@ -299,23 +341,44 @@
   }, true);
 
   feeds.forEach(function (feed) {
+    var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
+    if (slider) {
+      slider.addEventListener('input', function () {
+        var audio = audioFor(feed.id);
+        var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
+        var duration = audio && Number.isFinite(audio.duration) ? audio.duration : (episode ? parseDuration(episode.duration) : 0);
+        if (audio && duration > 0) { audio.currentTime = duration * (Number(slider.value) / 1000); updateProgress(feed); }
+      });
+      slider.addEventListener('change', function () { savePosition(feed, true); });
+    }
     var audio = audioFor(feed.id);
     if (!audio) return;
     audio.addEventListener('play', renderAll);
-    audio.addEventListener('pause', renderAll);
+    audio.addEventListener('pause', function () { savePosition(feed, true); renderAll(); });
+    audio.addEventListener('timeupdate', function () { savePosition(feed, false); updateProgress(feed); });
+    audio.addEventListener('seeking', function () { updateProgress(feed); });
     audio.addEventListener('ended', function () {
+      savePosition(feed, true);
       var episode = (episodesByFeed[feed.id] || [])[current.index];
       if (current.feed === feed.id && episode) setPlayed(feed, episode, true);
       renderAll();
     });
     audio.addEventListener('loadedmetadata', function () {
       var episode = (episodesByFeed[feed.id] || [])[current.index];
+      if (current.feed === feed.id && episode && audio.dataset.restoreSrc !== episode.audioUrl) {
+        audio.dataset.restoreSrc = episode.audioUrl;
+        var savedPosition = 0;
+        try { savedPosition = Number(localStorage.getItem(positionKey(feed, episode)) || 0); } catch (_) {}
+        if (savedPosition > 0 && Number.isFinite(audio.duration) && savedPosition < audio.duration - 5) audio.currentTime = savedPosition;
+      }
       if (current.feed === feed.id && episode && !episode.duration && Number.isFinite(audio.duration)) {
         episode.duration = Math.floor(audio.duration);
         renderAll();
       }
     });
   });
+
+  window.addEventListener('pagehide', function () { feeds.forEach(function (feed) { savePosition(feed, true); }); });
 
   fetch('/assets/data/news.json?v=20261025-20', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('Unable to load News cache');
