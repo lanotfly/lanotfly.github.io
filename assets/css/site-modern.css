@@ -1178,3 +1178,24 @@ html,body{max-width:100%;overflow-x:clip}
 .news-podcast-list-toggle.is-collapsed .podcast-list-toggle-line--bottom{transform:translateY(-3px);}
 .news-podcast-list-toggle:hover{background:#f8f4fc!important;border-color:#b9a4d0!important;}
 @media(max-width:480px){.podcast-episode-panel__tools .podcast-episode-count{font-size:10px!important}.podcast-episode-panel__tools .podcast-panel-filter{font-size:11px!important;padding:5px 6px!important}.podcast-episode-list .podcast-episode-choice>.podcast-episode-state{font-size:9px!important;max-width:78px!important}}
+
+
+/* Podcast and KJV share the same soft-purple playlist components. */
+.site-nav-shell .site-tab-links .site-tab--niv>img[data-audio-identity-icon]{display:inline-block;width:1.35em;height:1.35em;object-fit:contain;flex:0 0 auto;vertical-align:middle}
+.site-nav-shell .site-tab-links .site-tab--niv>span:first-child{display:none!important}
+.site-nav-shell .site-tab-links .site-tab--niv:hover{background:#f8f4fc!important;border-color:#b9a4d0!important;color:#50386a!important}
+.site-nav-shell .site-tab-links .site-tab--niv[aria-expanded="true"]{border:2px solid #9581b3!important;background:#f2ecf8!important;color:#50386a!important}
+.niv-bible-panel{background:#fcfaff!important;border-color:#d8cde6!important;color:#30263b!important}
+.niv-bible-panel__title{color:#3f2e54!important}
+.niv-bible-book-select{border-color:#cbbbdc!important;color:#62458a!important;background:#fff!important}
+.niv-bible-progress{accent-color:#6d548b!important}
+.niv-bible-queue-tools{display:flex!important;margin:10px 0 8px!important}
+.niv-bible-queue-frame{position:relative;width:100%;height:min(250px,38vh);min-height:190px;margin:0;overflow:visible}
+.niv-bible-queue{display:flex!important;flex-direction:column!important;gap:5px!important;height:100%!important;max-height:100%!important;margin:0!important;padding:1px 0!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;scrollbar-width:thin;list-style:none}
+.niv-bible-queue .podcast-episode-row{flex:0 0 auto!important}
+.niv-bible-queue .podcast-episode-choice{display:flex!important;min-height:42px!important}
+.niv-bible-queue .podcast-episode-meta{display:flex;gap:8px;align-items:center;color:#6c6077;font-size:10px}
+.niv-bible-queue .podcast-episode-date:empty{display:none}
+.niv-bible-queue .podcast-episode-duration{margin-left:auto;white-space:nowrap;font-size:10px;color:#6c6077}
+.site-nav-shell .site-tab-links .site-nav-row-divider--wiki-bottom{flex:0 0 100%;grid-column:1/-1;width:100%;height:0;min-height:0;margin:2px 0 0;border:0;border-top:1px solid #d8cde6;background:none;display:block}
+@media(max-width:700px){.niv-bible-queue-frame{height:min(250px,38vh);min-height:190px}.niv-bible-queue .podcast-episode-choice{min-height:44px!important}}
