@@ -143,6 +143,10 @@
   });
   function renderEpisodeList(){episodeListModule.render();}
   setEpisodePanelMode('collapsed');
+  /* Re-render with the IndexedDB-backed played-state cache once migration finishes. */
+  if(window.LibraryPodcastStorage&&window.LibraryPodcastStorage.ready){
+    window.LibraryPodcastStorage.ready.then(function(){renderEpisodeList();});
+  }
   function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
