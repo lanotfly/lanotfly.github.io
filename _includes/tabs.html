@@ -332,11 +332,11 @@
     row.style.setProperty('--podcast-swipe-distance',(dx<0?'-':'')+'100%');
     window.setTimeout(function(){toggleEpisodePlayed(episode);},240);
   }
-  function renderEpisodeList(){
+  function renderEpisodeList(requestedMode){
     if(!episodeList)return;
-    /* Read the live control value on every render; this avoids stale filter state on mobile Safari. */
-    var selectedMode=listModeSelect ? listModeSelect.value : episodeListMode;
-    if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='all';
+    /* Keep the filter state in JS; Safari select values can be stale during rapid UI updates. */
+    var selectedMode=requestedMode||episodeListMode;
+    if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='unplayed';
     episodeListMode=selectedMode;
     episodeList.textContent='';
     var playedCount=episodeQueue.filter(function(episode){return isEpisodePlayed(episode);}).length;
@@ -386,11 +386,22 @@
       else panelStatus.textContent=visibleEpisodes.length+' '+(selectedMode==='all'?'episodes':selectedMode==='played'?'played episodes':'unplayed episodes')+'. Swipe an episode left or right to toggle Played/Unplayed; status is saved on this device.';
     }
   }
-  if(listModeSelect)listModeSelect.addEventListener('change',function(){
-    var requestedMode=listModeSelect.value;
-    episodeListMode=['unplayed','played','all'].indexOf(requestedMode)>=0 ? requestedMode : 'all';
-    renderEpisodeList();
-  });
+  if(listModeSelect){
+    listModeSelect.addEventListener('change',function(){
+      var option=listModeSelect.options[listModeSelect.selectedIndex];
+      var requestedMode=option?option.getAttribute('value'):'unplayed';
+      episodeListMode=['unplayed','played','all'].indexOf(requestedMode)>=0?requestedMode:'unplayed';
+      renderEpisodeList(episodeListMode);
+    });
+    listModeSelect.addEventListener('input',function(){
+      var option=listModeSelect.options[listModeSelect.selectedIndex];
+      var requestedMode=option?option.getAttribute('value'):'unplayed';
+      if(['unplayed','played','all'].indexOf(requestedMode)>=0){
+        episodeListMode=requestedMode;
+        renderEpisodeList(episodeListMode);
+      }
+    });
+  }
     function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
