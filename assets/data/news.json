@@ -1,9 +1,14 @@
 {
-  "english": [],
-  "japanese": [],
+  "bbc": [],
+  "guardian": [],
+  "nhk": [],
+  "chronicle": [],
   "sources": {
-    "english": "The Guardian · Today in Focus",
-    "japanese": "NHK ラジオニュース"
+    "bbc": "BBC Global News Podcast",
+    "guardian": "The Guardian · Today in Focus",
+    "nhk": "NHK ラジオニュース",
+    "chronicle": "Chronicle · News Connect"
   },
-  "updatedAt": "2026-10-25T09:01:50+00:00"
+  "feedStatus": {},
+  "updatedAt": null
 }
