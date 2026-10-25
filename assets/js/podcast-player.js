@@ -70,15 +70,15 @@
   window.addEventListener('pagehide',savePlaybackProgress);
   var panelContent=document.getElementById('podcast-episode-panel-content');
   function showPanel(show,episodeTitle){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=episodeTitle||audio.dataset.episodeTitle||'';if(panelArtwork){panelArtwork.src=show.artwork||'';panelArtwork.alt=show.title?show.title+' artwork':'';panelArtwork.hidden=!show.artwork;}}
-  /* Three panel states: full list, current episode plus three below, and header only. */
-  var episodePanelMode='full';
+  /* Two panel states: collapsed header or expanded five-episode queue. */
+  var episodePanelMode='collapsed';
   function setEpisodePanelMode(mode){
     episodePanelMode=mode;
     var collapsed=mode==='collapsed';
     if(panelContent)panelContent.hidden=collapsed;
     if(closePanel){
-      var nextMode=mode==='full'?'compact':(mode==='compact'?'collapsed':'full');
-      var nextLabel=nextMode==='full'?'Show full podcast list':(nextMode==='compact'?'Show compact podcast list':'Hide podcast list');
+      var nextMode=mode==='collapsed'?'full':'collapsed';
+      var nextLabel=nextMode==='full'?'Collapse podcast list':'Expand podcast list';
       closePanel.setAttribute('aria-expanded',String(!collapsed));
       closePanel.setAttribute('aria-label',nextLabel);
       closePanel.title=nextLabel;
@@ -92,7 +92,7 @@
     renderEpisodeList();
   }
   if(closePanel)closePanel.addEventListener('click',function(){
-    setEpisodePanelMode(episodePanelMode==='full'?'compact':(episodePanelMode==='compact'?'collapsed':'full'));
+    setEpisodePanelMode(episodePanelMode==='collapsed'?'full':'collapsed');
   });
   var episodeListMode='unplayed';
   var listModeSelect=document.getElementById('podcast-list-mode');
