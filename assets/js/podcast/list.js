@@ -85,6 +85,15 @@
       episodeList.textContent='';
       var queue=config.getQueue(),currentIndex=config.getIndex();
       var mode=config.getListMode(),panelMode=config.getPanelMode();
+      /* Keep the filter totals visible, matching the News podcast filter. */
+      if(listModeSelect){
+        var playedTotal=queue.filter(function(episode){return config.isPlayed(episode);}).length;
+        var filterTotals={all:queue.length,played:playedTotal,unplayed:queue.length-playedTotal};
+        Array.prototype.forEach.call(listModeSelect.options,function(option){
+          var label=option.value==='all'?'All episodes':option.value==='played'?'Played':'Unplayed';
+          if(['all','played','unplayed'].indexOf(option.value)>=0)option.textContent=label+' ('+filterTotals[option.value]+')';
+        });
+      }
       var visibleEpisodes=queue.map(function(episode,index){
         return {episode:episode,index:index,played:config.isPlayed(episode)};
       }).filter(function(item){
