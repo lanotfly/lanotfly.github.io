@@ -21,7 +21,7 @@ class TextOnly(HTMLParser):
     def handle_data(self, value):
         self.parts.append(value)
     def result(self):
-        return re.sub(r"\\s+", " ", " ".join(self.parts)).strip()
+        return re.sub(r"\s+", " ", " ".join(self.parts)).strip()
 
 def local_name(tag):
     return tag.rsplit("}", 1)[-1].split(":")[-1].lower()
@@ -32,7 +32,7 @@ def plain_text(value):
         parser.feed(html.unescape(value or ""))
         return parser.result()
     except Exception:
-        return re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
+        return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
 
 def child_text(node, names):
     wanted = {name.lower() for name in names}
@@ -152,7 +152,7 @@ def main():
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-        file.write("\\n")
+        file.write("\n")
 
 if __name__ == "__main__":
     main()
