@@ -316,8 +316,11 @@
   }
   function selectedEpisodeMode(){
     if(!listModeSelect)return episodeListMode;
+    /* On iOS Safari the select.value can briefly lag behind selectedIndex. */
     var option=listModeSelect.options&&listModeSelect.selectedIndex>=0?listModeSelect.options[listModeSelect.selectedIndex]:null;
-    return normalizeEpisodeMode(listModeSelect.value)||normalizeEpisodeMode(option&&option.textContent)||episodeListMode;
+    return normalizeEpisodeMode(option&&option.value)||
+      normalizeEpisodeMode(option&&option.textContent)||
+      normalizeEpisodeMode(listModeSelect.value)||episodeListMode;
   }
   function episodeStorageKey(episode){
     return 'personal-library-played:'+activeId+':'+(episode.url||episode.pageUrl||episode.title||'unknown');
@@ -403,13 +406,17 @@
     }
   }
   if(listModeSelect){
-    listModeSelect.addEventListener('change',function(){
+    function applySelectedEpisodeMode(){
       var option=listModeSelect.options&&listModeSelect.selectedIndex>=0?listModeSelect.options[listModeSelect.selectedIndex]:null;
-      var requestedMode=normalizeEpisodeMode(listModeSelect.value)||normalizeEpisodeMode(option&&option.textContent);
-      if(!requestedMode)requestedMode='all';
+      /* Prefer the selected option itself, not a possibly stale iOS select.value. */
+      var requestedMode=normalizeEpisodeMode(option&&option.value)||
+        normalizeEpisodeMode(option&&option.textContent)||
+        normalizeEpisodeMode(listModeSelect.value)||'all';
       episodeListMode=requestedMode;
       renderEpisodeList(requestedMode);
-    });
+    }
+    listModeSelect.addEventListener('change',applySelectedEpisodeMode);
+    listModeSelect.addEventListener('input',applySelectedEpisodeMode);
   }
     function paint(id,playing){
     var button=document.getElementById(id);
