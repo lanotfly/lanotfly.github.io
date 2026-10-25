@@ -77,7 +77,7 @@
     function normalize(value){
       if(typeof value!=='string')return '';
       if(value.indexOf('//')===0)value='https:'+value;
-      return /^https?:\\/\\//i.test(value)&&/\\.(mp3|m4a|aac|mp4)(\\?|#|$)/i.test(value)?value:'';
+      return /^https?:\/\//i.test(value)&&/\.(mp3|m4a|aac|mp4)(\?|#|$)/i.test(value)?value:'';
     }
     function scan(value,depth){
       if(!value||depth>8)return '';
