@@ -37,7 +37,7 @@
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
     </div>
-    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><button id="podcast-show-all" class="podcast-panel-filter" type="button" aria-pressed="false">Show all episodes</button></div>
+    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="unplayed">Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
   </section>
 <script>
@@ -272,8 +272,8 @@
   ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,updateProgress);});
   function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;}
   if(closePanel)closePanel.addEventListener('click',function(){if(panel)panel.hidden=true;});
-  var showAllEpisodes=false;
-  var showAllButton=document.getElementById('podcast-show-all');
+  var episodeListMode='unplayed';
+  var listModeSelect=document.getElementById('podcast-list-mode');
   function episodeStorageKey(episode){
     return 'personal-library-played:'+activeId+':'+(episode.url||episode.pageUrl||episode.title||'unknown');
   }
@@ -286,9 +286,14 @@
   function renderEpisodeList(){
     if(!episodeList)return;
     episodeList.textContent='';
-    var unplayedCount=episodeQueue.filter(function(episode){return !isEpisodePlayed(episode);}).length;
+    var playedCount=episodeQueue.filter(function(episode){return isEpisodePlayed(episode);}).length;
+    var unplayedCount=episodeQueue.length-playedCount;
+    var visibleCount=0;
     episodeQueue.forEach(function(episode,index){
-      if(!showAllEpisodes&&isEpisodePlayed(episode))return;
+      var played=isEpisodePlayed(episode);
+      if(episodeListMode==='unplayed'&&played)return;
+      if(episodeListMode==='played'&&!played)return;
+      visibleCount++;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
       var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
       if(index===episodeIndex)choose.classList.add('is-current');
@@ -299,22 +304,19 @@
       choose.addEventListener('click',function(){if(activeId){playEpisodeAt(index);}});
       row.appendChild(choose);episodeList.appendChild(row);
     });
-    if(showAllButton){
-      showAllButton.hidden=episodeQueue.length===0;
-      showAllButton.textContent=showAllEpisodes?'Show unplayed only':'Show all episodes';
-      showAllButton.setAttribute('aria-pressed',String(showAllEpisodes));
-    }
+    if(listModeSelect)listModeSelect.value=episodeListMode;
     if(panelStatus){
       if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
-      else if(!showAllEpisodes&&unplayedCount===0)panelStatus.textContent='You’ve finished every episode in this list. Choose “Show all episodes” to replay one.';
-      else panelStatus.textContent=showAllEpisodes?episodeQueue.length+' episodes. Finished episodes are remembered on this device.':' '+unplayedCount+' unplayed episode'+(unplayedCount===1?'':'s')+'. Finished episodes are remembered on this device.';
+      else if(visibleCount===0&&episodeListMode==='played')panelStatus.textContent='No finished episodes yet.';
+      else if(visibleCount===0&&episodeListMode==='unplayed')panelStatus.textContent='You’ve finished every episode in this list.';
+      else panelStatus.textContent=visibleCount+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Finished episodes are remembered on this device.';
     }
   }
-  if(showAllButton)showAllButton.addEventListener('click',function(){
-    showAllEpisodes=!showAllEpisodes;
+  if(listModeSelect)listModeSelect.addEventListener('change',function(){
+    episodeListMode=listModeSelect.value;
     renderEpisodeList();
   });
-  function paint(id,playing){
+    function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
     button.setAttribute('aria-pressed',String(playing));
