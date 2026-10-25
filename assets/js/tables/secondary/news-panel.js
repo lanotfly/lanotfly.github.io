@@ -301,12 +301,8 @@
     stopAllNews(true);
   }, true);
 
-  /* News is an overlay: close it when the user switches to any other navigation tab. */
-  document.addEventListener('click', function (event) {
-    var tab = event.target.closest && event.target.closest('.site-tab-links .site-tab');
-    if (!tab || tab === mainToggle || root.hidden) return;
-    setNewsOpen(false);
-  });
+  /* Keep News audio alive when wiki navigation uses soft navigation.
+     The navigation module preserves this panel and its audio element in place. */
 
   feeds.forEach(function (feed) {
     var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
