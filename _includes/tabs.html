@@ -9,7 +9,7 @@
         <img class="nhk-radio-icon-image" src="/assets/images/nhk-radio.svg" alt="" aria-hidden="true">
         <span class="nhk-radio-label">NHK Radio</span>
       </button>
-      <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Open KJV Audio Bible chapter list" title="KJV Audio Bible"><span aria-hidden="true">KJV</span><span class="niv-button-label">KJV Audio</span></button>
+      <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span aria-hidden="true">KJV</span><span class="niv-button-label">KJV Audio</span></button>
       <button class="site-tab site-tab--podcast" id="bite-size-toggle" type="button" aria-pressed="false" aria-label="Play latest Bite Size Japanese episode" title="Play latest Bite Size Japanese episode">
         <span aria-hidden="true">JP</span><span class="podcast-button-label">Bite Size JP</span>
       </button>
@@ -43,22 +43,18 @@
     </div>
   </section>
 
-  <section id="niv-bible-panel" class="niv-bible-panel" aria-label="KJV Audio Bible chapters" hidden>
+  <section id="niv-bible-panel" class="niv-bible-panel" aria-label="KJV Audio Bible player" hidden>
     <div class="niv-bible-panel__heading">
-      <div><p class="niv-bible-panel__eyebrow">PUBLIC-DOMAIN TRANSLATION</p><h2 class="niv-bible-panel__title">KJV Audio Bible</h2></div>
+      <div><p class="niv-bible-panel__eyebrow">PODCAST-STYLE AUDIO</p><h2 id="niv-bible-now-playing" class="niv-bible-panel__title">KJV Audio Bible</h2></div>
     </div>
-    <p class="niv-bible-panel__note">Choose a chapter to play in this page. The player supports seeking and continues to the next chapter automatically.</p>
-    <audio id="niv-bible-audio" class="kjv-audio-player" controls preload="none" playsinline></audio>
     <div class="niv-bible-panel__filters">
-      <label for="niv-testament-select">Testament
-        <select id="niv-testament-select"><option value="old">Old Testament</option><option value="new">New Testament</option></select>
-      </label>
       <label for="niv-book-select">Book
         <select id="niv-book-select"></select>
       </label>
-      <span id="niv-chapter-count" class="niv-chapter-count" aria-live="polite"></span>
+      <label for="niv-chapter-select">Chapter
+        <select id="niv-chapter-select"></select>
+      </label>
     </div>
-    <div id="niv-chapter-list" class="niv-chapter-list" aria-label="Chapter numbers"></div>
-    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite">Choose a chapter to listen.</p>
-    <p class="niv-bible-panel__note">Audio source: <a href="https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/" target="_blank" rel="noopener noreferrer">KJV chapter MP3 archive</a>.</p>
+    <audio id="niv-bible-audio" class="kjv-audio-player" preload="none" playsinline></audio>
+    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite">Tap KJV Audio to start listening.</p>
   </section>
