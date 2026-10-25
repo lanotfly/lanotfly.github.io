@@ -1,12 +1,12 @@
 ---
 layout: default
 title: "Services, DNS, and network traffic"
-permalink: /kubernetes/services-networking/
+permalink: /cloud/services-networking/
 ---
 <link rel="stylesheet" href="/data-structures/wiki.css">
 <div class="wiki-wrap" id="top">
-<nav class="wiki-nav" aria-label="Kubernetes chapters">
-<a href="/kubernetes/">Overview</a><a href="/kubernetes/pods/">1. Pods</a><a href="/kubernetes/deployments-scaling/">2. Deployments</a><a href="/kubernetes/services-networking/" class="current">3. Services</a><a href="/kubernetes/config-secrets/">4. Configuration</a><a href="/kubernetes/storage/">5. Storage</a><a href="/kubernetes/health-resources/">6. Health checks</a><a href="/kubernetes/security-rbac/">7. Security</a><a href="/kubernetes/troubleshooting/">8. Troubleshooting</a>
+<nav class="wiki-nav" aria-label="Cloud chapters">
+<a href="/cloud/">Overview</a><a href="/cloud/pods/">1. Pods</a><a href="/cloud/deployments-scaling/">2. Deployments</a><a href="/cloud/services-networking/" class="current">3. Services</a><a href="/cloud/config-secrets/">4. Configuration</a><a href="/cloud/storage/">5. Storage</a><a href="/cloud/health-resources/">6. Health checks</a><a href="/cloud/security-rbac/">7. Security</a><a href="/cloud/troubleshooting/">8. Troubleshooting</a>
 </nav>
 <h1>Services, DNS, and network traffic</h1>
 <p class="lead">A Service provides a stable virtual endpoint for a changing set of Pods, selected by labels.</p>
@@ -42,5 +42,5 @@ kubectl describe service web
 kubectl get pods -l app=web --show-labels
 kubectl run curl --rm -it --image=curlimages/curl -- sh</code></pre>
 <p>Check selectors, targetPort, readiness, DNS, NetworkPolicy, and whether the application actually listens on the expected interface and port.</p>
-<div class="prev-next"><a href="/kubernetes/deployments-scaling/">← Deployments & scaling</a><a href="/kubernetes/config-secrets/">ConfigMap & Secret →</a></div>
+<div class="prev-next"><a href="/cloud/deployments-scaling/">← Deployments & scaling</a><a href="/cloud/config-secrets/">ConfigMap & Secret →</a></div>
 </div>

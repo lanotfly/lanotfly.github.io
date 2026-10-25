@@ -1,12 +1,12 @@
 ---
 layout: default
 title: "Volumes, PersistentVolumes, and claims"
-permalink: /kubernetes/storage/
+permalink: /cloud/storage/
 ---
 <link rel="stylesheet" href="/data-structures/wiki.css">
 <div class="wiki-wrap" id="top">
-<nav class="wiki-nav" aria-label="Kubernetes chapters">
-<a href="/kubernetes/">Overview</a><a href="/kubernetes/pods/">1. Pods</a><a href="/kubernetes/deployments-scaling/">2. Deployments</a><a href="/kubernetes/services-networking/">3. Services</a><a href="/kubernetes/config-secrets/">4. Configuration</a><a href="/kubernetes/storage/" class="current">5. Storage</a><a href="/kubernetes/health-resources/">6. Health checks</a><a href="/kubernetes/security-rbac/">7. Security</a><a href="/kubernetes/troubleshooting/">8. Troubleshooting</a>
+<nav class="wiki-nav" aria-label="Cloud chapters">
+<a href="/cloud/">Overview</a><a href="/cloud/pods/">1. Pods</a><a href="/cloud/deployments-scaling/">2. Deployments</a><a href="/cloud/services-networking/">3. Services</a><a href="/cloud/config-secrets/">4. Configuration</a><a href="/cloud/storage/" class="current">5. Storage</a><a href="/cloud/health-resources/">6. Health checks</a><a href="/cloud/security-rbac/">7. Security</a><a href="/cloud/troubleshooting/">8. Troubleshooting</a>
 </nav>
 <h1>Volumes, PersistentVolumes, and claims</h1>
 <p class="lead">Choose storage that matches the lifecycle and access needs of the application, from temporary scratch space to durable data.</p>
@@ -34,5 +34,5 @@ spec:
 kubectl describe pvc app-data
 kubectl describe pod &lt;pod-name&gt;</code></pre>
 <p>Look for Pending claims, unavailable StorageClasses, access-mode mismatches, zone constraints, mount errors, and filesystem permissions. Verify backups and restore procedures separately from the existence of a PVC.</p>
-<div class="prev-next"><a href="/kubernetes/config-secrets/">← ConfigMap & Secret</a><a href="/kubernetes/health-resources/">Probes & resources →</a></div>
+<div class="prev-next"><a href="/cloud/config-secrets/">← ConfigMap & Secret</a><a href="/cloud/health-resources/">Probes & resources →</a></div>
 </div>

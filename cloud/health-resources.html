@@ -1,12 +1,12 @@
 ---
 layout: default
 title: "Health probes, requests, limits, and autoscaling"
-permalink: /kubernetes/health-resources/
+permalink: /cloud/health-resources/
 ---
 <link rel="stylesheet" href="/data-structures/wiki.css">
 <div class="wiki-wrap" id="top">
-<nav class="wiki-nav" aria-label="Kubernetes chapters">
-<a href="/kubernetes/">Overview</a><a href="/kubernetes/pods/">1. Pods</a><a href="/kubernetes/deployments-scaling/">2. Deployments</a><a href="/kubernetes/services-networking/">3. Services</a><a href="/kubernetes/config-secrets/">4. Configuration</a><a href="/kubernetes/storage/">5. Storage</a><a href="/kubernetes/health-resources/" class="current">6. Health checks</a><a href="/kubernetes/security-rbac/">7. Security</a><a href="/kubernetes/troubleshooting/">8. Troubleshooting</a>
+<nav class="wiki-nav" aria-label="Cloud chapters">
+<a href="/cloud/">Overview</a><a href="/cloud/pods/">1. Pods</a><a href="/cloud/deployments-scaling/">2. Deployments</a><a href="/cloud/services-networking/">3. Services</a><a href="/cloud/config-secrets/">4. Configuration</a><a href="/cloud/storage/">5. Storage</a><a href="/cloud/health-resources/" class="current">6. Health checks</a><a href="/cloud/security-rbac/">7. Security</a><a href="/cloud/troubleshooting/">8. Troubleshooting</a>
 </nav>
 <h1>Health probes, requests, limits, and autoscaling</h1>
 <p class="lead">Tell Kubernetes when a container is alive, ready for traffic, or should be restarted—and reserve resources predictably.</p>
@@ -47,5 +47,5 @@ livenessProbe:
 kubectl describe pod &lt;pod-name&gt;
 kubectl get events --sort-by=.lastTimestamp
 kubectl rollout status deployment/&lt;name&gt;</code></pre>
-<div class="prev-next"><a href="/kubernetes/storage/">← Persistent storage</a><a href="/kubernetes/security-rbac/">Security & RBAC →</a></div>
+<div class="prev-next"><a href="/cloud/storage/">← Persistent storage</a><a href="/cloud/security-rbac/">Security & RBAC →</a></div>
 </div>

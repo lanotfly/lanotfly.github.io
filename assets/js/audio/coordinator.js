@@ -1,7 +1,7 @@
 (function(window,document){
   'use strict';
   if(window.LibraryAudioCoordinator)return;
-  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio'};
+  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio',newsBbc:'news-bbc-audio',newsChronicle:'news-chronicle-audio'};
   function getAudio(name){return document.getElementById(audioIds[name]);}
   var buttonsBySource={
     radio4:['radio4-toggle'],
@@ -29,6 +29,8 @@
     });
     Object.keys(audioIds).forEach(function(name){
       if(name===target)return;
+      /* News is listening-first: changing to another audio source stops News,\n         but switching into News must not pause its own two feed elements. */
+      if(target==='news'&&name.indexOf('news')===0)return;
       var audio=getAudio(name);
       if(audio&&!audio.paused){try{audio.pause();}catch(_){}}
     });
