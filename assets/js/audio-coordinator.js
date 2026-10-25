@@ -3,8 +3,28 @@
   if(window.LibraryAudioCoordinator)return;
   var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio'};
   function getAudio(name){return document.getElementById(audioIds[name]);}
+  var buttonsBySource={
+    radio4:['radio4-toggle'],
+    nhk:['nhk-radio-toggle'],
+    podcast:['bite-size-toggle','lukes-english-toggle'],
+    bible:['niv-bible-toggle']
+  };
+  function clearButtonState(button){
+    if(!button)return;
+    button.setAttribute('aria-pressed','false');
+    button.classList.remove('is-playing','is-selected');
+    if(button.id==='radio4-toggle'){
+      ['background-color','color','border-color','border-style','box-shadow'].forEach(function(property){
+        button.style.removeProperty(property);
+      });
+    }
+  }
   function switchTo(target){
-    /* Pause every outgoing source synchronously before the new source is played. */
+    /* Clear stale selected/playing UI first, then stop outgoing audio before new playback. */
+    Object.keys(buttonsBySource).forEach(function(source){
+      if(source===target)return;
+      buttonsBySource[source].forEach(function(id){clearButtonState(document.getElementById(id));});
+    });
     Object.keys(audioIds).forEach(function(name){
       if(name===target)return;
       var audio=getAudio(name);
