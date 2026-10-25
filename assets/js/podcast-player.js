@@ -60,6 +60,13 @@
     if(eventName==='timeupdate')savePlaybackProgress();
     updateProgress();
   });});
+  ['play','pause','ended'].forEach(function(eventName){
+    audio.addEventListener(eventName,function(){
+      if(episodeListModule&&episodeListModule.setCurrent&&episodeIndex>=0){
+        episodeListModule.setCurrent(episodeIndex,eventName==='play'&&!audio.paused&&!audio.ended);
+      }
+    });
+  });
   window.addEventListener('pagehide',savePlaybackProgress);
   var panelContent=document.getElementById('podcast-episode-panel-content');
   function showPanel(show,episodeTitle){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=episodeTitle||audio.dataset.episodeTitle||'';if(panelArtwork){panelArtwork.src=show.artwork||'';panelArtwork.alt=show.title?show.title+' artwork':'';panelArtwork.hidden=!show.artwork;}}
