@@ -13,11 +13,21 @@
   if (!root || !mainToggle) return;
   var initialized = false;
   function initializeFeeds() { if (initialized) return; initialized = true; feeds.forEach(renderFeed); }
-  mainToggle.addEventListener('click', function () {
-    var open = mainToggle.getAttribute('aria-expanded') !== 'true';
+  function setNewsOpen(open) {
     mainToggle.setAttribute('aria-expanded', String(open));
     root.hidden = !open;
     mainToggle.classList.toggle('is-open', open);
+    var inner = document.querySelector('.content-wrapper__inner');
+    if (inner) inner.classList.toggle('news-panel-open', open);
+  }
+  mainToggle.addEventListener('click', function () {
+    setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
+  });
+  /* News is a standalone text view: switching to any other navigation tab closes it. */
+  document.addEventListener('click', function (event) {
+    var tab = event.target.closest && event.target.closest('.site-tab');
+    if (!tab || tab === mainToggle || root.hidden) return;
+    setNewsOpen(false);
   });
   /* Fetch headlines in the background as soon as the page loads, so opening News feels instant. */
   initializeFeeds();
