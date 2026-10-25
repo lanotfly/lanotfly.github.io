@@ -326,7 +326,7 @@
     button.addEventListener('click',function(){
       if(activeId===id&&!audio.paused){showPanel(show);audio.pause();return;}
       if(activeId===id&&audio.paused&&audio.src){showPanel(show);renderEpisodeList();stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){if(panelStatus)panelStatus.textContent='Playback was blocked by the browser. Tap the episode again or open the podcast in Apple Podcasts.';});return;}
-      stopOtherAudio();activeId=id;Object.keys(shows).forEach(function(otherId){paint(otherId,false);});paint(id,false);episodeQueue=[];episodeIndex=-1;episodeListMode='unplayed';if(listModeSelect)listModeSelect.value='unplayed';showPanel(show);
+      stopOtherAudio();activeId=id;Object.keys(shows).forEach(function(otherId){paint(otherId,false);});paint(id,false);episodeQueue=[];episodeIndex=-1;episodeListMode='unplayed';if(listModeSelect)listModeSelect.value='unplayed';showPanel(show);setEpisodePanelMode('full');
       if(episodeList)episodeList.textContent='';
       if(panelStatus)panelStatus.textContent='Loading episodes…';
       button.classList.add('is-loading');
