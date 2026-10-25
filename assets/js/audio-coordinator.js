@@ -19,7 +19,9 @@
       });
     }
   }
+  var activeTarget=null;
   function switchTo(target){
+    activeTarget=target;
     /* Clear stale selected/playing UI first, then stop outgoing audio before new playback. */
     Object.keys(buttonsBySource).forEach(function(source){
       if(source===target)return;
@@ -42,6 +44,6 @@
     }
     return true;
   }
-  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio};
+  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;}};
   window.__prepareRadioPlayback=function(target){switchTo(target||'radio4');};
 })(window,document);
