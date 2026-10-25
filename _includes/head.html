@@ -36,8 +36,11 @@
 	<meta property="og:title" content="{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}">
 	<meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
-	<link rel="icon" type="image/png" href="/assets/images/favicon.png" />
-	<link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/your-library-icon.svg?v=20261025-1">
+  <link rel="shortcut icon" href="/assets/images/your-library-icon.svg?v=20261025-1" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/images/your-library-icon.svg?v=20261025-1">
+  <link rel="manifest" href="/your-library.webmanifest">
 
 	<link rel="stylesheet" href="{{ " /css/main.css " | prepend: site.baseurl }}">
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -47,6 +50,6 @@
 	  " | prepend: site.baseurl | prepend: site.url }}">
 	<!--  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 -->
-  <link rel="stylesheet" href="/assets/css/site-modern.css?v=20261025-10">
+  <link rel="stylesheet" href="/assets/css/site-modern.css?v=20261025-11">
   <script defer src="/assets/js/diagram-zoom.js"></script>
 </head>
