@@ -782,3 +782,7 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .library-news-attribution{margin:12px 2px 0;color:#8a94a3;font-size:10px;line-height:1.5}
 .library-news-attribution a{color:#687994;text-decoration:underline}
 @media(max-width:600px){.library-news-panel{margin:12px 0 18px;padding:9px;border-radius:12px}.library-news-columns{gap:10px}.library-news-column__heading{min-height:42px;padding:9px 10px;font-size:13px}.library-news-status{margin:9px 11px;font-size:12px}.library-news-headline{gap:6px;padding:10px 11px;font-size:16px;line-height:1.55}.library-news-chevron{flex-basis:12px;font-size:14px}.library-news-detail{padding:0 10px 12px;font-size:16px}.library-news-attribution{font-size:10px}}
+
+
+/* Podcast episode preview: keep five-row lists compact without trapping vertical page scrolling. */
+.podcast-episode-list{max-height:none!important;overflow:visible!important;overflow-y:visible!important;overscroll-behavior:auto}
