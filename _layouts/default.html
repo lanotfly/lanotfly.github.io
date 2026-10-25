@@ -8,37 +8,41 @@
         <div class="content-wrapper__inner">
             {% include tabs.html %}
             <section id="library-news-panel" class="library-news-panel" aria-label="News podcasts" hidden>
-              <section class="podcast-episode-panel news-podcast-panel" aria-label="BBC Global News Podcast">
-                <div class="podcast-episode-panel__heading">
-                  <div class="podcast-episode-panel__identity">
-                    <img data-news-artwork="bbc" class="podcast-episode-panel__artwork" src="" alt="BBC Global News Podcast artwork" loading="lazy">
-                    <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">BBC · ENGLISH</span><h2 class="podcast-episode-panel__title">Global News Podcast</h2></div>
-                  </div>
-                </div>
-                <audio id="news-bbc-audio" preload="none" playsinline hidden></audio>
-                <div class="podcast-episode-panel__tools">
-                  <div class="podcast-episode-count" data-news-count="bbc" aria-live="polite">Loading episodes…</div>
-                  <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="bbc" aria-label="BBC episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
-                </div>
-                <p class="podcast-episode-panel__status" data-news-status="bbc" aria-live="polite"></p>
-                <div class="podcast-episode-list news-podcast-episode-list" data-news-list="bbc" role="list"></div>
-              </section>
-              <section class="podcast-episode-panel news-podcast-panel" aria-label="Chronicle News Connect">
-                <div class="podcast-episode-panel__heading">
-                  <div class="podcast-episode-panel__identity">
-                    <img data-news-artwork="chronicle" class="podcast-episode-panel__artwork" src="" alt="Chronicle News Connect artwork" loading="lazy">
-                    <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">CHRONICLE · 日本語</span><h2 class="podcast-episode-panel__title">News Connect</h2></div>
-                  </div>
-                </div>
-                <audio id="news-chronicle-audio" preload="none" playsinline hidden></audio>
-                <div class="podcast-episode-panel__tools">
-                  <div class="podcast-episode-count" data-news-count="chronicle" aria-live="polite">最新エピソードを読み込み中…</div>
-                  <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="chronicle" aria-label="Chronicle episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
-                </div>
-                <p class="podcast-episode-panel__status" data-news-status="chronicle" aria-live="polite"></p>
-                <div class="podcast-episode-list news-podcast-episode-list" data-news-list="chronicle" role="list"></div>
-              </section>
-            </section>
+  <div class="news-secondary-tabs" role="tablist" aria-label="News podcast sources">
+    <button type="button" class="news-secondary-tab is-active" role="tab" aria-selected="true" aria-controls="news-feed-panel-bbc" data-news-tab="bbc">BBC Global News</button>
+    <button type="button" class="news-secondary-tab" role="tab" aria-selected="false" aria-controls="news-feed-panel-chronicle" data-news-tab="chronicle">Local News · Chronicle</button>
+  </div>
+  <section id="news-feed-panel-bbc" class="podcast-episode-panel news-podcast-panel" data-news-feed-panel="bbc" role="tabpanel" aria-label="BBC Global News Podcast">
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img data-news-artwork="bbc" class="podcast-episode-panel__artwork" src="" alt="BBC Global News Podcast artwork" loading="lazy">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">BBC · ENGLISH</span><h2 class="podcast-episode-panel__title">Global News Podcast</h2></div>
+      </div>
+    </div>
+    <audio id="news-bbc-audio" preload="none" playsinline hidden></audio>
+    <div class="podcast-episode-panel__tools">
+      <div class="podcast-episode-count" data-news-count="bbc" aria-live="polite">Loading episodes…</div>
+      <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="bbc" aria-label="BBC episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
+    </div>
+    <p class="podcast-episode-panel__status" data-news-status="bbc" aria-live="polite"></p>
+    <div class="podcast-episode-list news-podcast-episode-list" data-news-list="bbc" role="list"></div>
+  </section>
+  <section id="news-feed-panel-chronicle" class="podcast-episode-panel news-podcast-panel" data-news-feed-panel="chronicle" role="tabpanel" aria-label="Chronicle News Connect" hidden>
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img data-news-artwork="chronicle" class="podcast-episode-panel__artwork" src="" alt="Chronicle News Connect artwork" loading="lazy">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">CHRONICLE · 日本語</span><h2 class="podcast-episode-panel__title">News Connect</h2></div>
+      </div>
+    </div>
+    <audio id="news-chronicle-audio" preload="none" playsinline hidden></audio>
+    <div class="podcast-episode-panel__tools">
+      <div class="podcast-episode-count" data-news-count="chronicle" aria-live="polite">最新エピソードを読み込み中…</div>
+      <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="chronicle" aria-label="Chronicle episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
+    </div>
+    <p class="podcast-episode-panel__status" data-news-status="chronicle" aria-live="polite"></p>
+    <div class="podcast-episode-list news-podcast-episode-list" data-news-list="chronicle" role="list"></div>
+  </section>
+</section>
             <hr class="post-list__divider" />
             {{ content }}
             <hr class="post-list__divider" />
