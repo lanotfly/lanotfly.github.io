@@ -158,7 +158,7 @@
             row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');choose.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
             window.setTimeout(function(){
               var markPlayed=!config.isPlayed(episode);
-              config.setPlayed(episode,markPlayed);render();
+              config.setPlayed(episode,markPlayed);if(config.onChange)config.onChange();render();
               if(panelStatus)panelStatus.textContent=(markPlayed?'Marked as played: ':'Marked as unplayed: ')+(episode.title||'Episode');
             },170);
           }else{row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';choose.style.removeProperty('--podcast-swipe-distance');}
