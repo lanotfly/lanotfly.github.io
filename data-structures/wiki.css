@@ -188,3 +188,14 @@
   color:#424242!important;
 }
 
+
+
+/* Mobile: tables stay inside the page; tap a table to open a pinch-zoom view. */
+.wiki-wrap table{width:100%;max-width:100%;table-layout:fixed;white-space:normal;overflow-wrap:anywhere;word-break:normal;box-sizing:border-box}
+.wiki-wrap th,.wiki-wrap td{min-width:0;max-width:100%;overflow-wrap:anywhere;word-break:normal;white-space:normal;box-sizing:border-box}
+.wiki-wrap pre{max-width:100%;overflow-x:auto;overflow-wrap:anywhere;white-space:pre-wrap;word-break:break-word}
+.wiki-wrap pre code{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+.wiki-wrap table{cursor:zoom-in}
+@media(max-width:700px){.wiki-wrap table{font-size:13px;line-height:1.4}.wiki-wrap th,.wiki-wrap td{padding:6px 5px}.wiki-wrap pre{font-size:12px;padding:10px}}
+html,body{max-width:100%;overflow-x:clip}
+.content-wrapper,.content-wrapper__inner,.wiki-wrap{min-width:0;max-width:100%;box-sizing:border-box}
