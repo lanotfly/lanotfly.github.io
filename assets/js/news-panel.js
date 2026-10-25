@@ -18,8 +18,9 @@
     mainToggle.setAttribute('aria-expanded', String(open));
     root.hidden = !open;
     mainToggle.classList.toggle('is-open', open);
-    if (open) initializeFeeds();
   });
+  /* Fetch headlines in the background as soon as the page loads, so opening News feels instant. */
+  initializeFeeds();
   function clean(value) {
     var box = document.createElement('div');
     box.innerHTML = String(value || '');
