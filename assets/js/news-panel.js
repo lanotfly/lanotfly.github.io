@@ -23,7 +23,7 @@
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
   function audioFor(feedId) { return document.getElementById('news-' + feedId + '-audio'); }
-  function episodeIdentity(episode) { return String(episode.audioUrl || episode.link || episode.title || '').toLowerCase(); }
+  function episodeIdentity(episode) { return String(episode.link || episode.title || episode.audioUrl || '').toLowerCase(); }
   function storageKey(feed, episode) {
     return 'personal-library-news-played:' + feed.id + ':' + episodeIdentity(episode);
   }
