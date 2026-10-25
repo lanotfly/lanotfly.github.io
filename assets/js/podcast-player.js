@@ -44,7 +44,7 @@
   }
   function updateProgress(){
     var duration=audio.duration,current=audio.currentTime||0;
-    if(progressWrap)progressWrap.hidden=!(Number.isFinite(duration)&&duration>0);
+    if(progressWrap&&Number.isFinite(duration)&&duration>0)progressWrap.hidden=false;
     if(progressSlider&&Number.isFinite(duration)&&duration>0&&!progressSlider.matches(':active'))progressSlider.value=String(Math.round(current/duration*1000));
     if(currentTimeLabel)currentTimeLabel.textContent=formatTime(current);
     if(durationLabel)durationLabel.textContent=formatTime(duration);
@@ -277,10 +277,7 @@
       return;
     }
     episodeIndex=index;
-    if(progressWrap)progressWrap.hidden=true;
-    if(progressSlider)progressSlider.value='0';
-    if(currentTimeLabel)currentTimeLabel.textContent='0:00';
-    if(durationLabel)durationLabel.textContent='0:00';
+    /* Keep the existing progress UI mounted while the next episode loads to avoid list/player flicker. */
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
     renderEpisodeList();
     if(panelStatus)panelStatus.textContent='Loading audio…';
