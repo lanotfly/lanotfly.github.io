@@ -122,10 +122,9 @@
           var cachedDuration=durationCache[durationIdentity(episode)];
           if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
         }
-        if(duration.textContent)textWrap.appendChild(duration);
-        textWrap.insertBefore(title,textWrap.firstChild);
-        if(meta.textContent)textWrap.insertBefore(meta,duration.textContent?duration:null);
-        /* Played/Unplayed is shown by the shared filter above the list, not repeated on every row. */
+        if(duration.textContent)meta.appendChild(duration);
+        textWrap.appendChild(title);
+        if(meta.childNodes.length)textWrap.appendChild(meta);
         choose.appendChild(number);choose.appendChild(textWrap);
         var touchStartX=null,touchStartY=null,swipeHandled=false;
         choose.addEventListener('click',function(event){
@@ -166,7 +165,11 @@
         row.addEventListener('touchcancel',function(){
           touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
         },{passive:true});
-        row.appendChild(choose);episodeList.appendChild(row);
+        var state=document.createElement('span');
+        state.className='podcast-episode-state'+(played?' is-played':' is-unplayed');
+        state.textContent=played?'✓ Played':'○ Unplayed';
+        state.setAttribute('aria-label',played?'Played':'Unplayed');
+        row.appendChild(choose);row.appendChild(state);episodeList.appendChild(row);
         if(durationObserver&&!duration.textContent&&episode.url)durationObserver.observe(row);
         else if(!duration.textContent&&episode.url)requestDuration(episode,duration);
       });
