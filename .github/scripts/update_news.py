@@ -2,7 +2,6 @@
 """Fetch public RSS feeds and publish same-origin JSON for the GitHub Pages news panel."""
 import json
 import os
-import tempfile
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -82,7 +81,6 @@ def main():
             print(f"WARNING: {key} feed failed: {exc}")
             if not data.get(key):
                 data[key] = []
-    data["updatedAt"] = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
