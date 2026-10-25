@@ -27,11 +27,14 @@
         const vb=clone.viewBox&&clone.viewBox.baseVal;
         if(vb&&vb.width&&vb.height){const maxW=window.innerWidth-32,maxH=window.innerHeight-90;const fit=Math.min(maxW/vb.width,maxH/vb.height);clone.style.width=(vb.width*fit)+"px";clone.style.height=(vb.height*fit)+"px";}
         else {clone.style.maxWidth="calc(100vw - 32px)";clone.style.maxHeight="calc(100vh - 90px)";}
+      }else if(clone.tagName.toLowerCase()==="table"){
+        clone.style.width="max-content";clone.style.maxWidth="none";clone.style.tableLayout="auto";clone.style.whiteSpace="nowrap";clone.style.borderCollapse="collapse";
+        clone.querySelectorAll("th,td").forEach(function(cell){cell.style.whiteSpace="nowrap";cell.style.overflowWrap="normal";cell.style.wordBreak="normal";cell.style.padding="10px 12px";cell.style.fontSize="16px";});
       }else{clone.style.maxWidth="calc(100vw - 32px)";clone.style.maxHeight="calc(100vh - 90px)";}
       stage.replaceChildren(clone);reset();overlay.classList.add("is-open");document.body.style.overflow="hidden";close.focus();
     }
     document.addEventListener("click",function(e){
-      const trigger=e.target.closest(".wiki-wrap .diagram svg, .wiki-wrap svg.ai-illustration, .wiki-wrap figure img");
+      const trigger=e.target.closest(".wiki-wrap .diagram svg, .wiki-wrap svg.ai-illustration, .wiki-wrap figure img, .wiki-wrap table");
       if(!trigger || overlay.contains(trigger))return;
       if(e.target.closest("a"))return;
       show(trigger);
