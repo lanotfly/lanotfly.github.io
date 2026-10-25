@@ -199,3 +199,6 @@
 @media(max-width:700px){.wiki-wrap table{font-size:13px;line-height:1.4}.wiki-wrap th,.wiki-wrap td{padding:6px 5px}.wiki-wrap pre{font-size:12px;padding:10px}}
 html,body{max-width:100%;overflow-x:clip}
 .content-wrapper,.content-wrapper__inner,.wiki-wrap{min-width:0;max-width:100%;box-sizing:border-box}
+
+/* Override the earlier mobile overflow table rule: never require sideways page/table scrolling. */
+@media(max-width:700px){.wiki-wrap table{display:table!important;overflow-x:visible!important;-webkit-overflow-scrolling:auto!important;white-space:normal!important}}
