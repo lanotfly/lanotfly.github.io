@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch four podcast RSS feeds and publish a same-origin JSON cache for GitHub Pages."""
+"""Fetch the two News podcast RSS feeds and publish a same-origin JSON cache."""
 import html
 import json
 import os
@@ -98,6 +98,8 @@ def read_feed(feed):
         payload = response.read()
     root = ET.fromstring(payload)
     artwork = feed_artwork(root)
+    if feed["source"] == "BBC Global News Podcast" and artwork.startswith("http://"):
+        artwork = "https://" + artwork[len("http://"):]
     items = []
     for node in root.iter():
         if local_name(node.tag) not in ("item", "entry"):
@@ -105,6 +107,11 @@ def read_feed(feed):
         title = plain_text(child_text(node, {"title"}))
         link = item_link(node)
         audio_url = item_audio(node)
+        if feed["source"] == "BBC Global News Podcast":
+            if link.startswith("http://"):
+                link = "https://" + link[len("http://"):]
+            if audio_url.startswith("http://"):
+                audio_url = "https://" + audio_url[len("http://"):]
         summary = plain_text(child_text(node, {"encoded", "content", "description", "summary"}))
         date = child_text(node, {"pubdate", "published", "updated", "date"})
         if title and link:
