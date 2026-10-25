@@ -3,7 +3,7 @@
   if(window.LibraryPodcastList)return;
   function create(config){
     var episodeList=config.listElement||document.getElementById('podcast-episode-list');
-    if(episodeList&&episodeList.parentNode&&!episodeList.parentNode.classList.contains('podcast-episode-scroll-frame')){
+    if(episodeList&&episodeList.parentNode&&(!config.listElement||config.wrapInScrollFrame===true)&&!episodeList.parentNode.classList.contains('podcast-episode-scroll-frame')){
       var scrollFrame=document.createElement('div');scrollFrame.className='podcast-episode-scroll-frame';
       episodeList.parentNode.insertBefore(scrollFrame,episodeList);scrollFrame.appendChild(episodeList);
       ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');scrollFrame.appendChild(edge);});
