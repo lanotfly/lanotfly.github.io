@@ -6,10 +6,10 @@
 
   var feeds=[
     {id:'english',title:'English News',source:'BBC News',url:'https://feeds.bbci.co.uk/news/rss.xml',lang:'en'},
-    {id:'japanese',title:'Japanese News',source:'Yahoo!ニュース',url:'https://news.yahoo.co.jp/rss/topics/domestic.xml',lang:'ja'}
+    {id:'japanese',title:'Japanese News',source:'BBC News Japanese',url:'https://feeds.bbci.co.uk/japanese/rss.xml',lang:'ja'}
   ];
   var cache={};
-  var proxy='https://api.allorigins.win/raw?url=';
+  var proxy='https://proxy.cors.dev/';
   var root=document.getElementById('library-news-panel');
   if(!root)return;
 
@@ -38,7 +38,7 @@
   }
   function fetchFeed(feed){
     if(cache[feed.id])return Promise.resolve(cache[feed.id]);
-    var url=proxy+encodeURIComponent(feed.url);
+    var url=proxy+feed.url;
     return fetch(url,{cache:'no-store'}).then(function(response){
       if(!response.ok)throw new Error('RSS proxy returned '+response.status);
       return response.text();
