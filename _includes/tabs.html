@@ -381,7 +381,12 @@
           row.classList.remove('is-swiping-left','is-swiping-right');
           row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');
           row.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
-          window.setTimeout(function(){toggleEpisodePlayed(episode);},170);
+          window.setTimeout(function(){
+            var markPlayed=dx<0;
+            setEpisodePlayed(episode,markPlayed);
+            renderEpisodeList();
+            if(panelStatus)panelStatus.textContent=(markPlayed?'Marked as played: ':'Marked as unplayed: ')+(episode.title||'Episode');
+          },170);
         }else{
           row.classList.remove('is-swiping-left','is-swiping-right');
           row.style.transform='';
