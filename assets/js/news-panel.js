@@ -251,6 +251,7 @@
         getActiveId: function () { return feed.id; },
         isPlayed: function (episode) { return isPlayed(feed, episode); },
         setPlayed: function (episode, played) { setPlayed(feed, episode, played); },
+        onChange: function () { syncFilterOptions(feed); },
         isPlaying: function () {
           var audio = audioFor(feed.id);
           return current.feed === feed.id && !!audio && !audio.paused && !audio.ended;
