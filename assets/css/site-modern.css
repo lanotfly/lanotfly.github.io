@@ -1199,3 +1199,16 @@ html,body{max-width:100%;overflow-x:clip}
 .niv-bible-queue .podcast-episode-duration{margin-left:auto;white-space:nowrap;font-size:10px;color:#6c6077}
 .site-nav-shell .site-tab-links .site-nav-row-divider--wiki-bottom{flex:0 0 100%;grid-column:1/-1;width:100%;height:0;min-height:0;margin:2px 0 0;border:0;border-top:1px solid #d8cde6;background:none;display:block}
 @media(max-width:700px){.niv-bible-queue-frame{height:min(250px,38vh);min-height:190px}.niv-bible-queue .podcast-episode-choice{min-height:44px!important}}
+
+
+/* KJV chapter-list collapse control mirrors the podcast list toggle. */
+.niv-bible-panel__heading{display:flex;align-items:center;gap:8px}
+.niv-bible-book-select{margin-left:auto}
+.niv-bible-queue-toggle{display:inline-flex;flex:0 0 36px;align-items:center;justify-content:center;width:36px;height:36px;min-width:36px;min-height:36px;padding:5px;border:1px solid #cbbbdc;border-radius:50%;background:#fff;color:#62458a;cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.niv-bible-queue-toggle:hover,.niv-bible-queue-toggle:focus-visible{background:#f2ecf8;border-color:#9581b3;outline:none}
+.niv-bible-queue-toggle:focus-visible{box-shadow:0 0 0 3px rgba(98,69,138,.16)}
+.niv-bible-queue-toggle .podcast-list-toggle-line{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;transition:transform .15s ease}
+.niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--top{transform:translateY(3px)}
+.niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--bottom{transform:translateY(-3px)}
+.niv-bible-queue-tools[hidden],.niv-bible-queue-frame[hidden]{display:none!important}
+@media(max-width:700px){.niv-bible-queue-toggle{width:34px;height:34px;min-width:34px;min-height:34px;flex-basis:34px}.niv-bible-book-select{max-width:42%}}
