@@ -38,12 +38,21 @@
     if (!items.length) throw new Error('RSS-to-JSON contained no usable items');
     return items;
   }
+  function cachedItems(data, feed) {
+    if (!data || !Array.isArray(data[feed.id])) throw new Error('No cached news items');
+    var items = data[feed.id].map(function (item) {
+      return { title: clean(item.title), summary: clean(item.summary || item.description || item.content), link: item.link || '', date: clean(item.date || item.pubDate), source: item.source || feed.source };
+    }).filter(function (item) { return item.title && /^https?:\/\//i.test(item.link); }).slice(0, 5);
+    if (!items.length) throw new Error('Cached feed is empty');
+    return items;
+  }
   function getText(url) { return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }); }
   function getJson(url) { return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
   function fetchFeed(feed) {
     if (cache[feed.id]) return Promise.resolve(cache[feed.id]);
     var encoded = encodeURIComponent(feed.url);
     var attempts = [
+      function () { return getJson('/assets/data/news.json?v=20261025-1').then(function (data) { return cachedItems(data, feed); }); },
       function () { return getJson('https://api.rss2json.com/v1/api.json?rss_url=' + encoded).then(function (data) { return jsonItems(data, feed); }); },
       function () { return getText('https://api.allorigins.win/raw?url=' + encoded).then(function (xml) { return xmlItems(xml, feed); }); },
       function () { return getText('https://corsproxy.io/?url=' + encoded).then(function (xml) { return xmlItems(xml, feed); }); }
