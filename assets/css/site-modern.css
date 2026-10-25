@@ -786,3 +786,18 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 
 /* Podcast episode preview: keep five-row lists compact without trapping vertical page scrolling. */
 .podcast-episode-list{max-height:none!important;overflow:visible!important;overflow-y:visible!important;overscroll-behavior:auto}
+
+
+/* News typography: match the main knowledge text, with readable near-black content. */
+.library-news-headline,.library-news-item.is-open .library-news-headline{color:#222!important;font-size:16px!important;font-weight:400!important}
+.library-news-detail,.library-news-summary{color:#222!important;font-size:16px!important;line-height:1.65!important}
+.library-news-date{color:#68707c!important;font-size:12px!important}
+.library-news-original{display:none!important}
+
+/* Podcast: five-row viewport with internal scrolling only in the middle 80%; side gutters let the page scroll. */
+.podcast-episode-scroll-frame{position:relative;width:100%;height:min(250px,40vh);min-height:190px;overflow:visible}
+#podcast-episode-list{height:100%!important;max-height:100%!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;scrollbar-width:thin}
+.podcast-episode-scroll-edge{position:absolute;z-index:5;top:0;bottom:0;width:10%;background:transparent;touch-action:pan-y;pointer-events:auto}
+.podcast-episode-scroll-edge--left{left:0}
+.podcast-episode-scroll-edge--right{right:0}
+@media(max-width:700px){.podcast-episode-scroll-frame{height:min(250px,38vh);min-height:190px}}
