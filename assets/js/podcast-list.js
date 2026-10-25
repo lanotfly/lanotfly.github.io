@@ -48,10 +48,11 @@
           else if(/^\d+(?::\d{1,2}){1,2}$/.test(durationText)){var durationParts=durationText.split(':').map(Number);durationSeconds=durationParts.length===3?durationParts[0]*3600+durationParts[1]*60+durationParts[2]:durationParts[0]*60+durationParts[1];}
           if(durationSeconds>0){var durationHours=Math.floor(durationSeconds/3600),durationMinutes=Math.floor((durationSeconds%3600)/60),durationRemainder=Math.floor(durationSeconds%60);duration.textContent=durationHours?durationHours+':'+String(durationMinutes).padStart(2,'0')+':'+String(durationRemainder).padStart(2,'0'):durationMinutes+':'+String(durationRemainder).padStart(2,'0');}
         }
+        var meta=document.createElement('span');meta.className='podcast-episode-meta';
         var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
-        choose.appendChild(number);choose.appendChild(title);
-        if(duration.textContent)choose.appendChild(duration);
-        choose.appendChild(state);
+        meta.appendChild(state);
+        if(duration.textContent)meta.appendChild(duration);
+        choose.appendChild(number);choose.appendChild(title);choose.appendChild(meta);
         var touchStartX=null,touchStartY=null,swipeHandled=false;
         choose.addEventListener('click',function(event){
           if(swipeHandled){event.preventDefault();event.stopImmediatePropagation();swipeHandled=false;return;}
