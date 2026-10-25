@@ -42,42 +42,6 @@
       }
     });
   }
-  function installWikiSecondaryMenu(){
-    var links=document.querySelector('.site-tab-links');
-    if(!links||links.querySelector('.wiki-secondary-tabs'))return;
-    var categories=Array.from(links.querySelectorAll('.site-tab--data,.site-tab--algorithm,.site-tab--ai,.site-tab--linux,.site-tab--cloud,.site-nav-row-divider--wiki-bottom'));
-    if(!categories.length)return;
-    var menu=document.createElement('div');
-    menu.className='wiki-secondary-tabs';
-    menu.id='wiki-secondary-tabs';
-    menu.setAttribute('aria-label','Wiki sections');
-    var toggle=document.createElement('button');
-    toggle.type='button';
-    toggle.className='site-tab site-tab--wiki';
-    toggle.id='wiki-secondary-toggle';
-    toggle.setAttribute('aria-controls','wiki-secondary-tabs');
-    toggle.setAttribute('aria-expanded','false');
-    toggle.textContent='Wiki';
-    var first=categories[0];
-    links.insertBefore(toggle,first);
-    links.insertBefore(menu,first);
-    categories.forEach(function(item){menu.appendChild(item);});
-    function setOpen(open){
-      menu.hidden=!open;
-      toggle.setAttribute('aria-expanded',String(open));
-      toggle.classList.toggle('is-open',open);
-    }
-    toggle.addEventListener('click',function(){setOpen(menu.hidden);});
-    links.addEventListener('click',function(event){
-      if(event.target.closest('#radio4-toggle,#nhk-radio-toggle,#niv-bible-toggle,#bite-size-toggle,#lukes-english-toggle,#library-news-toggle')){
-        setOpen(false);
-      }
-      if(event.target.closest('.wiki-secondary-tabs .site-tab'))setOpen(true);
-    });
-    window.LibrarySetWikiMenuOpen=setOpen;
-    setOpen(!!sectionForPath(window.location.pathname));
-  }
-  installWikiSecondaryMenu();
   updatePrimaryActive(window.location.pathname);
   /* Let the News overlay temporarily clear the underlying wiki selection. */
   window.LibraryUpdatePrimaryActive = updatePrimaryActive;
@@ -199,7 +163,6 @@
     document.title = doc.title;
     if (push) history.pushState({ libraryPage: true }, '', url.href);
     updatePrimaryActive(url.pathname);
-    if(window.LibrarySetWikiMenuOpen)window.LibrarySetWikiMenuOpen(!!sectionForPath(url.pathname));
     rememberPage(url.pathname);
     newNodes.forEach(function(insertedNode){
       if (insertedNode.nodeType !== 1) return;
