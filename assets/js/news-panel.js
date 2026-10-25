@@ -264,10 +264,7 @@
         },
         playEpisodeAt: function (index) { playEpisode(feed, index); },
         formatCount: function (matching, total, mode) {
-          var label = feed.language === 'ja' ? '件' : 'episodes';
-          return feed.language === 'ja'
-            ? '全 ' + total + ' 件 · 表示 ' + matching + ' 件'
-            : total + ' episodes · Showing ' + matching;
+          return total + ' episodes · Showing ' + matching;
         }
       });
     });
@@ -294,10 +291,22 @@
   createListModules();
   /* If any non-News player starts, stop News and remove its selected row. */
   document.addEventListener('play', function (event) {
-    var audio = event.target;
-    if (!audio || audio.tagName !== 'AUDIO' || !audio.id || audio.id.indexOf('news-') === 0) return;
+    var media = event.target;
+    if (!media || (media.tagName !== 'AUDIO' && media.tagName !== 'VIDEO')) return;
+    if (media.tagName === 'VIDEO') {
+      if (!root.hidden) setNewsOpen(false);
+      return;
+    }
+    if (!media.id || media.id.indexOf('news-') === 0) return;
     stopAllNews(true);
   }, true);
+
+  /* News is an overlay: close it when the user switches to any other navigation tab. */
+  document.addEventListener('click', function (event) {
+    var tab = event.target.closest && event.target.closest('.site-tab-links .site-tab');
+    if (!tab || tab === mainToggle || root.hidden) return;
+    setNewsOpen(false);
+  });
 
   feeds.forEach(function (feed) {
     var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
