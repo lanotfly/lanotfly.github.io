@@ -28,67 +28,62 @@
   var lastKey='library_kjv_last_chapter';
   var queueList=null;
   var queueFrame=null;
-  var durationCache={};
-  var durationRequestQueue=[];
-  var durationRequestsActive=0;
-  var durationObserver=null;
-  var durationStorageKey='library_kjv_chapter_durations_v1';
-  try{durationCache=JSON.parse(localStorage.getItem(durationStorageKey)||'{}')||{};}catch(_){durationCache={};}
-  function formatChapterDuration(seconds){if(!isFinite(seconds)||seconds<=0)return '';seconds=Math.floor(seconds);var hours=Math.floor(seconds/3600),minutes=Math.floor((seconds%3600)/60);if(hours)return hours+'h'+(minutes?' '+minutes+'m':'');return Math.max(1,minutes)+'m';}
-  function saveDurationCache(){try{localStorage.setItem(durationStorageKey,JSON.stringify(durationCache));}catch(_){}}
-  function durationCacheKey(book,chapter){return book+'+'+chapter;}
-  function updateDurationLabel(book,chapter,seconds){var row=queueList&&queueList.querySelector('[data-book="'+book+'"][data-chapter="'+chapter+'"]');if(row){var label=row.querySelector('.queue-duration');if(label)label.textContent=formatChapterDuration(seconds);}}
-  function pumpDurationRequests(){while(durationRequestsActive<2&&durationRequestQueue.length){(function(task){durationRequestsActive++;var probe=document.createElement('audio'),done=false,timer=window.setTimeout(function(){finish(0);},12000);function finish(seconds){if(done)return;done=true;window.clearTimeout(timer);probe.onloadedmetadata=null;probe.onerror=null;try{probe.removeAttribute('src');probe.load();}catch(_){}if(seconds>0){durationCache[durationCacheKey(task.book,task.chapter)]=Math.floor(seconds);saveDurationCache();updateDurationLabel(task.book,task.chapter,seconds);}durationRequestsActive--;pumpDurationRequests();}probe.preload='metadata';probe.onloadedmetadata=function(){finish(probe.duration);};probe.onerror=function(){finish(0);};probe.src=chapterUrl(task.book,task.chapter);probe.load();})(durationRequestQueue.shift());}}
-  function requestChapterDuration(book,chapter){var key=durationCacheKey(book,chapter);if(durationCache[key]){updateDurationLabel(book,chapter,durationCache[key]);return;}if(durationRequestQueue.some(function(task){return task.book===book&&task.chapter===chapter;}))return;durationRequestQueue.push({book:book,chapter:chapter});pumpDurationRequests();}
-  if('IntersectionObserver' in window){durationObserver=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var row=entry.target;requestChapterDuration(row.dataset.book,row.dataset.chapter);durationObserver.unobserve(row);}});},{root:null,rootMargin:'80px 0px',threshold:0.01});}
+  var queueModule=null;
   var current={book:'GEN',chapter:1,index:0};
   if(!button||!panel||!bookSelect||!audio)return;
-  function renderQueue(){
-    if(!queueList)return;
-    if(durationObserver)durationObserver.disconnect();
-    queueList.textContent='';
-    var currentBook=getBook(current.book)||books[0];
-    for(var chapter=1;chapter<=currentBook[2];chapter++){
-      var item={book:currentBook[1],chapter:chapter,index:current.index,title:currentBook[0]+' '+chapter};
-      var row=document.createElement('li');
-      var choice=document.createElement('button');
-      choice.type='button';
-      choice.className='niv-bible-queue-item'+(chapter===current.chapter?' is-current':'');
-      choice.setAttribute('aria-current',chapter===current.chapter?'true':'false');
-      var position=document.createElement('span');
-      position.className='queue-position';
-      position.textContent=chapter===current.chapter?'▶':String(chapter);
-      row.dataset.book=item.book;row.dataset.chapter=String(chapter);
-      var label=document.createElement('span');
-      label.className='queue-title';
-      label.textContent=item.title+(chapter===current.chapter?' · Current':'');
-      var duration=document.createElement('span');duration.className='queue-duration';duration.setAttribute('aria-label','Chapter duration');
-      var savedDuration=durationCache[durationCacheKey(item.book,chapter)];if(savedDuration)duration.textContent=formatChapterDuration(savedDuration);
-      choice.appendChild(position);choice.appendChild(label);choice.appendChild(duration);
-      choice.addEventListener('click',(function(target){return function(){toggleChapter(target.book,target.chapter);};})(item));
-      row.appendChild(choice);queueList.appendChild(row);
-      if(durationObserver)durationObserver.observe(row);
-    }
-    var currentRow=queueList.querySelector('.niv-bible-queue-item.is-current');
-    if(currentRow){queueList.scrollTop=currentRow.offsetTop;}
-    updateQueuePlaybackState();
-  }
+  function renderQueue(){if(queueModule)queueModule.render();}
   function installQueue(){
     var anchor=document.querySelector('.niv-bible-progress-wrap');
     if(!anchor||queueList)return;
-    queueFrame=document.createElement('div');
-    queueFrame.className='niv-bible-queue-frame';
-    queueFrame.setAttribute('aria-label','KJV chapters, chapters in canonical order; current chapter shown first');
-    queueList=document.createElement('ol');
-    queueList.id='niv-bible-queue';queueList.className='niv-bible-queue';
-    queueList.setAttribute('aria-label','KJV chapters in canonical order');
-    queueFrame.appendChild(queueList);
-    ['left','right'].forEach(function(side){
-      var edge=document.createElement('div');
-      edge.className='niv-bible-queue-scroll-edge niv-bible-queue-scroll-edge--'+side;
-      edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);
+    var tools=document.createElement('div');
+    tools.className='podcast-episode-panel__tools niv-bible-queue-tools';
+    var count=document.createElement('div');
+    count.className='podcast-episode-count';
+    count.id='niv-bible-episode-count';
+    count.setAttribute('aria-live','polite');
+    var filterLabel=document.createElement('label');
+    filterLabel.className='podcast-panel-filter-label';
+    var filter=document.createElement('select');
+    filter.className='podcast-panel-filter';
+    filter.id='niv-bible-list-mode';
+    filter.setAttribute('aria-label','Chapter filter');
+    [['unplayed','Unplayed'],['played','Played'],['all','All chapters']].forEach(function(data){
+      var option=document.createElement('option');option.value=data[0];option.textContent=data[1];if(data[0]==='unplayed')option.selected=true;filter.appendChild(option);
     });
-    anchor.parentNode.insertBefore(queueFrame,anchor.nextSibling);
+    filterLabel.appendChild(filter);tools.appendChild(count);tools.appendChild(filterLabel);
+    queueFrame=document.createElement('div');
+    queueFrame.className='podcast-episode-scroll-frame niv-bible-queue-frame';
+    queueFrame.setAttribute('aria-label','KJV chapter playlist');
+    queueList=document.createElement('div');
+    queueList.id='niv-bible-queue';
+    queueList.className='podcast-episode-list niv-bible-queue';
+    queueList.setAttribute('role','list');
+    queueFrame.appendChild(queueList);
+    ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);});
+    anchor.parentNode.insertBefore(tools,anchor.nextSibling);
+    anchor.parentNode.insertBefore(queueFrame,tools.nextSibling);
+    queueModule=window.LibraryPodcastList.create({
+      listElement:queueList,
+      countElement:count,
+      filterElement:filter,
+      statusElement:status,
+      getQueue:function(){
+        var book=getBook(current.book)||books[0],queue=[];
+        for(var chapter=1;chapter<=book[2];chapter++)queue.push({title:book[0]+' '+chapter,url:chapterUrl(book[1],chapter),duration:'',book:book[1],chapter:chapter});
+        return queue;
+      },
+      getIndex:function(){return Number(current.chapter)-1;},
+      getListMode:function(){return filter.value||'unplayed';},
+      setListMode:function(mode){filter.value=mode;},
+      getPanelMode:function(){return 'full';},
+      getActiveId:function(){return 'kjv-'+current.book;},
+      isPlayed:function(item){try{return localStorage.getItem('library_kjv_played:'+item.book+':'+item.chapter)==='1';}catch(_){return false;}},
+      setPlayed:function(item,played){try{var key='library_kjv_played:'+item.book+':'+item.chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);}catch(_){}},
+      isPlaying:function(){return !audio.paused&&!audio.ended;},
+      toggleCurrentEpisode:function(){toggleChapter(current.book,current.chapter);},
+      playEpisodeAt:function(index){playChapter(current.book,index+1,true);},
+      onChange:function(){if(queueModule)queueModule.render();}
+    });
     renderQueue();
   }
   function savedChapter(){try{return JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){return null;}}
@@ -124,22 +119,7 @@
       navigator.mediaSession.playbackState=audio.paused?'paused':'playing';
     }catch(_){}
   }
-  function updateQueuePlaybackState(){
-    if(!queueList)return;
-    Array.prototype.forEach.call(queueList.querySelectorAll('li'),function(row){
-      var choice=row.querySelector('.niv-bible-queue-item');
-      var position=row.querySelector('.queue-position');
-      if(!choice||!position)return;
-      var isCurrent=row.dataset.book===current.book&&Number(row.dataset.chapter)===Number(current.chapter);
-      var isPlaying=isCurrent&&!audio.paused&&audio.dataset.chapterTitle===((getBook(current.book)||books[0])[0]+' '+current.chapter);
-      choice.classList.toggle('is-current',isCurrent);
-      choice.classList.toggle('is-playing',isPlaying);
-      choice.setAttribute('aria-current',isCurrent?'true':'false');
-      choice.setAttribute('aria-pressed',String(isPlaying));
-      choice.setAttribute('aria-label',(isPlaying?'Pause chapter: ':'Play chapter: ')+(getBook(row.dataset.book)||books[0])[0]+' '+row.dataset.chapter);
-      position.textContent=isCurrent?(isPlaying?'Ⅱ':'▶'):row.dataset.chapter;
-    });
-  }
+  function updateQueuePlaybackState(){if(queueModule)queueModule.render();}
   function toggleChapter(bookCode,chapter){
     var book=getBook(bookCode);if(!book)return;
     chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
@@ -247,11 +227,10 @@
     if(audio.currentTime>0&&isFinite(audio.currentTime))remember(current.book,current.chapter,audio.currentTime);
     updateProgress();
   });
-  function cacheCurrentChapterDuration(){if(isFinite(audio.duration)&&audio.duration>0){durationCache[durationCacheKey(current.book,current.chapter)]=Math.floor(audio.duration);saveDurationCache();updateDurationLabel(current.book,current.chapter,audio.duration);}}
-  audio.addEventListener('loadedmetadata',function(){updateProgress();cacheCurrentChapterDuration();});
-  audio.addEventListener('durationchange',function(){updateProgress();cacheCurrentChapterDuration();});
+  audio.addEventListener('loadedmetadata',updateProgress);
+  audio.addEventListener('durationchange',updateProgress);
   if(progress){progress.addEventListener('input',function(){if(isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progress.value)/1000)*audio.duration;});}
-  audio.addEventListener('ended',nextChapter);
+  audio.addEventListener('ended',function(){try{localStorage.setItem('library_kjv_played:'+current.book+':'+current.chapter,'1');}catch(_){}if(queueModule)queueModule.render();nextChapter();});
   audio.addEventListener('error',function(){setStatus('');paint();});
   paint();
 })(window,document);
