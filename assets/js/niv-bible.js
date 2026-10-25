@@ -103,18 +103,20 @@
     remember(bookCode,chapter);paintCurrent();
     var url=chapterUrl(bookCode,chapter);
     setStatus('Opening official NIV audio: '+book[0]+' '+chapter+'…');
-    /* Open synchronously from the tap so iOS Safari does not block the new tab
-       after an asynchronous audio API request. Bible.com owns the licensed player. */
-    var opened=window.open(url,'_blank','noopener,noreferrer');
-    if(!opened){
-      setStatus('Your browser blocked the new tab. Tap the link below to play this chapter on Bible.com.');
-      var fallback=document.createElement('a');
-      fallback.href=url;fallback.target='_blank';fallback.rel='noopener noreferrer';
-      fallback.className='niv-bible-fallback';fallback.textContent='Play '+book[0]+' '+chapter+' on Bible.com';
-      if(status){status.textContent='';status.appendChild(fallback);}
-      return;
+    /* Load the official chapter reader inside this page first. Some browsers or
+       site policies may refuse framing; the visible fallback link remains available. */
+    var frame=document.getElementById('niv-bible-frame');
+    var fallback=document.getElementById('niv-bible-fallback');
+    if(frame){
+      frame.hidden=false;
+      frame.title='Official NIV audio reader: '+book[0]+' '+chapter;
+      frame.src=url;
+      if(fallback){fallback.href=url;fallback.hidden=false;}
+      setStatus('Loaded '+book[0]+' '+chapter+' below. Tap Play in the embedded reader. If it does not appear, use “Open chapter on Bible.com”.');
+    }else{
+      setStatus('The embedded reader is unavailable. Use “Open chapter on Bible.com”.');
+      if(fallback){fallback.href=url;fallback.hidden=false;}
     }
-    setStatus('Opened '+book[0]+' '+chapter+' in Bible.com. Use its audio player to listen.');
   }
   testament.addEventListener('change',function(){populateBooks(null);});
   bookSelect.addEventListener('change',renderChapters);
