@@ -345,32 +345,58 @@
       var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
       var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
       choose.appendChild(number);choose.appendChild(title);choose.appendChild(state);
-      choose.addEventListener('click',function(){if(activeId)playEpisodeAt(index);});
-      var touchStartX=null,touchStartY=null,ignoreClickUntil=0;
+      var touchStartX=null,touchStartY=null,lastDx=0,swipeHandled=false;
       choose.addEventListener('click',function(event){
-        if(Date.now()<ignoreClickUntil){event.preventDefault();event.stopImmediatePropagation();}
-      },true);
+        if(swipeHandled){event.preventDefault();event.stopImmediatePropagation();swipeHandled=false;return;}
+        if(activeId)playEpisodeAt(index);
+      });
       row.addEventListener('touchstart',function(event){
         if(!event.changedTouches||!event.changedTouches.length)return;
         touchStartX=event.changedTouches[0].clientX;touchStartY=event.changedTouches[0].clientY;
+        lastDx=0;swipeHandled=false;
+        row.classList.remove('is-swiping-left','is-swiping-right','is-swiping');
+        row.style.transform='';
       },{passive:true});
+      row.addEventListener('touchmove',function(event){
+        if(touchStartX===null||!event.touches||!event.touches.length)return;
+        var dx=event.touches[0].clientX-touchStartX;
+        var dy=event.touches[0].clientY-touchStartY;
+        if(Math.abs(dx)>18&&Math.abs(dx)>Math.abs(dy)*1.25){
+          lastDx=dx;
+          row.classList.toggle('is-swiping-left',dx<0);
+          row.classList.toggle('is-swiping-right',dx>0);
+          row.style.setProperty('--podcast-swipe-distance',dx+'px');
+          row.style.transform='translateX('+dx+'px)';
+          if(event.cancelable)event.preventDefault();
+        }
+      },{passive:false});
       row.addEventListener('touchend',function(event){
         if(touchStartX===null||!event.changedTouches||!event.changedTouches.length)return;
         var dx=event.changedTouches[0].clientX-touchStartX;
         var dy=event.changedTouches[0].clientY-touchStartY;
         touchStartX=null;touchStartY=null;
-        if(Math.abs(dx)>=55&&Math.abs(dx)>Math.abs(dy)*1.3){
-          event.preventDefault();
-          ignoreClickUntil=Date.now()+650;
-          toggleEpisodePlayed(episode);
+        if(Math.abs(dx)>=58&&Math.abs(dx)>Math.abs(dy)*1.25){
+          swipeHandled=true;
+          row.classList.add('is-swiping');
+          row.classList.remove('is-swiping-left','is-swiping-right');
+          row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');
+          row.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
+          window.setTimeout(function(){toggleEpisodePlayed(episode);},170);
+        }else{
+          row.classList.remove('is-swiping-left','is-swiping-right');
+          row.style.transform='';
+          row.style.removeProperty('--podcast-swipe-distance');
         }
-      },{passive:false});
+      },{passive:true});
+      row.addEventListener('touchcancel',function(){
+        touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');row.style.transform='';
+      },{passive:true});
       row.appendChild(choose);episodeList.appendChild(row);
     });
     if(listModeSelect&&listModeSelect.value!==episodeListMode)listModeSelect.value=episodeListMode;
     if(panelStatus){
       if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
-      else panelStatus.textContent=visibleEpisodes.length+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Swipe an episode left or right to mark Played/Unplayed.';
+      else panelStatus.textContent=visibleEpisodes.length+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Swipe left to mark Played; swipe right to mark Unplayed.';
     }
   }
   if(listModeSelect)listModeSelect.addEventListener('change',function(){
@@ -615,30 +641,58 @@
   audio.addEventListener('error',function(){if(activeId)paint(activeId,false);});
 })();
 
-/* Allow a deliberate pull-down from the top of the page to reload it for testing. */
+/* Pull-to-refresh for the installed iOS Home Screen web app and Safari. */
 (function(){
   if(window.__libraryPullToRefreshInstalled)return;
   window.__libraryPullToRefreshInstalled=true;
-  var startX=0,startY=0,tracking=false;
+  var startX=0,startY=0,tracking=false,indicator=null;
+  function atTop(){return (window.scrollY||document.documentElement.scrollTop||0)<=2;}
+  function getIndicator(){
+    if(indicator)return indicator;
+    indicator=document.createElement('div');
+    indicator.className='library-pull-refresh';
+    indicator.setAttribute('aria-live','polite');
+    indicator.textContent='↓ Pull to refresh';
+    document.body.appendChild(indicator);
+    return indicator;
+  }
+  function reset(){
+    tracking=false;
+    if(indicator){indicator.classList.remove('is-pulling','is-ready');indicator.textContent='↓ Pull to refresh';}
+  }
   document.addEventListener('touchstart',function(event){
-    if(!event.touches||event.touches.length!==1)return;
+    if(!event.touches||event.touches.length!==1||!atTop())return;
     var target=event.target;
-    if(target&&target.closest&&target.closest('#podcast-episode-list, input, select, textarea, button, a'))return;
-    if((window.scrollY||document.documentElement.scrollTop||0)>0)return;
-    startX=event.touches[0].clientX;
-    startY=event.touches[0].clientY;
-    tracking=true;
+    if(target&&target.closest&&target.closest('#podcast-episode-list, input, select, textarea, button, a, audio'))return;
+    startX=event.touches[0].clientX;startY=event.touches[0].clientY;tracking=true;
   },{passive:true});
+  document.addEventListener('touchmove',function(event){
+    if(!tracking||!event.touches||!event.touches.length)return;
+    var dx=event.touches[0].clientX-startX,dy=event.touches[0].clientY-startY;
+    if(Math.abs(dx)>Math.max(25,dy*0.7)){reset();return;}
+    if(dy>12&&atTop()){
+      var el=getIndicator();
+      el.classList.add('is-pulling');
+      el.classList.toggle('is-ready',dy>=90);
+      el.textContent=dy>=90?'↻ Release to refresh':'↓ Pull to refresh';
+      el.style.setProperty('--pull-distance',Math.min(58,Math.max(0,dy*.45))+'px');
+      if(event.cancelable)event.preventDefault();
+    }
+  },{passive:false});
   document.addEventListener('touchend',function(event){
     if(!tracking||!event.changedTouches||!event.changedTouches.length)return;
+    var dx=event.changedTouches[0].clientX-startX,dy=event.changedTouches[0].clientY-startY;
     tracking=false;
-    var dx=event.changedTouches[0].clientX-startX;
-    var dy=event.changedTouches[0].clientY-startY;
-    if(dy>110&&dy>Math.abs(dx)*1.4&&(window.scrollY||document.documentElement.scrollTop||0)<=2){
+    if(dy>=90&&dy>Math.abs(dx)*1.4&&atTop()){
+      var el=getIndicator();
+      el.classList.add('is-pulling','is-ready');
+      el.textContent='↻ Refreshing…';
       window.location.reload();
+      return;
     }
+    reset();
   },{passive:true});
-  document.addEventListener('touchcancel',function(){tracking=false;},{passive:true});
+  document.addEventListener('touchcancel',reset,{passive:true});
 })();
  
 /* Keep the shared navigation and its audio element alive between library pages. */
