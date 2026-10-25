@@ -307,6 +307,18 @@
   });
   var episodeListMode='unplayed';
   var listModeSelect=document.getElementById('podcast-list-mode');
+  function normalizeEpisodeMode(value){
+    var mode=String(value==null?'':value).trim().toLowerCase().replace(/[ _]+/g,'-');
+    if(mode==='all'||mode==='all-episodes'||mode==='all-episode'||mode==='allepisodes'||mode==='all-episode-list'||mode==='全部'||mode==='所有节目')return 'all';
+    if(mode==='played'||mode==='finished'||mode==='completed'||mode==='played-episodes')return 'played';
+    if(mode==='unplayed'||mode==='unplayed-episodes'||mode==='not-played'||mode==='unfinished')return 'unplayed';
+    return null;
+  }
+  function selectedEpisodeMode(){
+    if(!listModeSelect)return episodeListMode;
+    var option=listModeSelect.options&&listModeSelect.selectedIndex>=0?listModeSelect.options[listModeSelect.selectedIndex]:null;
+    return normalizeEpisodeMode(listModeSelect.value)||normalizeEpisodeMode(option&&option.textContent)||episodeListMode;
+  }
   function episodeStorageKey(episode){
     return 'personal-library-played:'+activeId+':'+(episode.url||episode.pageUrl||episode.title||'unknown');
   }
@@ -337,9 +349,11 @@
     /* Keep the filter state in JS; Safari select values can be stale during rapid UI updates. */
     /* The native select is the source of truth. On iOS Safari, input events can fire
        before the picker has committed its new value; read it on change and on redraw. */
-    var selectedMode=requestedMode||(listModeSelect?listModeSelect.value:episodeListMode);
-    if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='unplayed';
+    var selectedMode=normalizeEpisodeMode(requestedMode)||selectedEpisodeMode();
+    /* Unknown picker values should never accidentally filter every episode away. */
+    if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='all';
     episodeListMode=selectedMode;
+    if(listModeSelect&&listModeSelect.value!==selectedMode)listModeSelect.value=selectedMode;
     episodeList.textContent='';
     var playedCount=episodeQueue.filter(function(episode){return isEpisodePlayed(episode);}).length;
     var unplayedCount=episodeQueue.length-playedCount;
@@ -390,8 +404,9 @@
   }
   if(listModeSelect){
     listModeSelect.addEventListener('change',function(){
-      var requestedMode=listModeSelect.value;
-      if(['unplayed','played','all'].indexOf(requestedMode)<0)requestedMode='unplayed';
+      var option=listModeSelect.options&&listModeSelect.selectedIndex>=0?listModeSelect.options[listModeSelect.selectedIndex]:null;
+      var requestedMode=normalizeEpisodeMode(listModeSelect.value)||normalizeEpisodeMode(option&&option.textContent);
+      if(!requestedMode)requestedMode='all';
       episodeListMode=requestedMode;
       renderEpisodeList(requestedMode);
     });
