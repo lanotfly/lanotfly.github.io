@@ -37,7 +37,7 @@
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
     </div>
-    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="unplayed">Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
+    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="all" selected>All episodes</option><option value="unplayed">Unplayed</option><option value="played">Played</option></select></label></div>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
     </div>
   </section>
@@ -305,7 +305,7 @@
   if(closePanel)closePanel.addEventListener('click',function(){
     setPanelCollapsed(closePanel.getAttribute('aria-expanded')==='true');
   });
-  var episodeListMode='unplayed';
+  var episodeListMode='all';
   var listModeSelect=document.getElementById('podcast-list-mode');
   function normalizeEpisodeMode(value){
     var mode=String(value==null?'':value).trim().toLowerCase().replace(/[ _]+/g,'-');
@@ -352,7 +352,7 @@
     /* Keep the filter state in JS; Safari select values can be stale during rapid UI updates. */
     /* The native select is the source of truth. On iOS Safari, input events can fire
        before the picker has committed its new value; read it on change and on redraw. */
-    var selectedMode=normalizeEpisodeMode(requestedMode)||selectedEpisodeMode();
+    var selectedMode=normalizeEpisodeMode(requestedMode)||episodeListMode||'all';
     /* Unknown picker values should never accidentally filter every episode away. */
     if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='all';
     episodeListMode=selectedMode;
