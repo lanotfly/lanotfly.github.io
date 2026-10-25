@@ -7,38 +7,34 @@
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
             {% include tabs.html %}
-            <section id="library-news-panel" class="library-news-panel" aria-label="Four news podcasts" hidden>
-              <div class="library-news-columns">
-                <section class="library-news-column" aria-label="BBC Global News Podcast">
-                  <h2 class="library-news-column__heading library-news-column__heading--english">BBC Global News Podcast</h2>
-                  <div>
-                    <p class="library-news-status" data-news-status="bbc" aria-live="polite">Loading latest episodes…</p>
-                    <ol class="library-news-list" data-news-list="bbc"></ol>
-                  </div>
-                </section>
-                <section class="library-news-column" aria-label="The Guardian Today in Focus">
-                  <h2 class="library-news-column__heading library-news-column__heading--english">The Guardian · Today in Focus</h2>
-                  <div>
-                    <p class="library-news-status" data-news-status="guardian" aria-live="polite">Loading latest episodes…</p>
-                    <ol class="library-news-list" data-news-list="guardian"></ol>
-                  </div>
-                </section>
-                <section class="library-news-column" aria-label="NHK Radio News">
-                  <h2 class="library-news-column__heading library-news-column__heading--japanese">NHK ラジオニュース</h2>
-                  <div>
-                    <p class="library-news-status" data-news-status="nhk" aria-live="polite">ニュースを読み込み中…</p>
-                    <ol class="library-news-list" data-news-list="nhk"></ol>
-                  </div>
-                </section>
-                <section class="library-news-column" aria-label="Chronicle News Connect">
-                  <h2 class="library-news-column__heading library-news-column__heading--japanese">Chronicle · News Connect</h2>
-                  <div>
-                    <p class="library-news-status" data-news-status="chronicle" aria-live="polite">ニュースを読み込み中…</p>
-                    <ol class="library-news-list" data-news-list="chronicle"></ol>
-                  </div>
-                </section>
+            <section id="library-news-panel" class="library-news-panel" aria-label="News podcasts" hidden>
+              <div class="library-news-grid">
+                <article class="news-podcast-card" data-news-card="bbc" aria-label="BBC Global News Podcast">
+                  <div class="news-podcast-card__top"><div class="news-podcast-card__art news-podcast-card__art--bbc" aria-hidden="true">BBC</div><div class="news-podcast-card__identity"><h2>Global News Podcast</h2><p>BBC · English</p><p class="news-podcast-status" data-news-status="bbc" aria-live="polite">Loading episodes…</p></div></div>
+                  <audio class="news-podcast-audio" data-news-audio="bbc" controls preload="none" playsinline></audio>
+                  <div class="news-podcast-card__tools"><strong data-news-count="bbc">Latest 5 episodes</strong><select data-news-filter="bbc" aria-label="Filter BBC episodes"><option value="unplayed">Unplayed</option><option value="played">Played</option><option value="all" selected>All episodes</option></select></div>
+                  <ol class="news-podcast-episodes" data-news-list="bbc"></ol>
+                </article>
+                <article class="news-podcast-card" data-news-card="guardian" aria-label="The Guardian Today in Focus">
+                  <div class="news-podcast-card__top"><div class="news-podcast-card__art news-podcast-card__art--guardian" aria-hidden="true">G</div><div class="news-podcast-card__identity"><h2>Today in Focus</h2><p>The Guardian · English</p><p class="news-podcast-status" data-news-status="guardian" aria-live="polite">Loading episodes…</p></div></div>
+                  <audio class="news-podcast-audio" data-news-audio="guardian" controls preload="none" playsinline></audio>
+                  <div class="news-podcast-card__tools"><strong data-news-count="guardian">Latest 5 episodes</strong><select data-news-filter="guardian" aria-label="Filter Guardian episodes"><option value="unplayed">Unplayed</option><option value="played">Played</option><option value="all" selected>All episodes</option></select></div>
+                  <ol class="news-podcast-episodes" data-news-list="guardian"></ol>
+                </article>
+                <article class="news-podcast-card" data-news-card="nhk" aria-label="NHK Radio News">
+                  <div class="news-podcast-card__top"><div class="news-podcast-card__art news-podcast-card__art--nhk" aria-hidden="true">NHK</div><div class="news-podcast-card__identity"><h2>ラジオニュース</h2><p>NHK · 日本語</p><p class="news-podcast-status" data-news-status="nhk" aria-live="polite">ニュースを読み込み中…</p></div></div>
+                  <audio class="news-podcast-audio" data-news-audio="nhk" controls preload="none" playsinline></audio>
+                  <div class="news-podcast-card__tools"><strong data-news-count="nhk">最新 5 件</strong><select data-news-filter="nhk" aria-label="NHK episode filter"><option value="unplayed">未再生</option><option value="played">再生済み</option><option value="all" selected>すべて</option></select></div>
+                  <ol class="news-podcast-episodes" data-news-list="nhk"></ol>
+                </article>
+                <article class="news-podcast-card" data-news-card="chronicle" aria-label="Chronicle News Connect">
+                  <div class="news-podcast-card__top"><div class="news-podcast-card__art news-podcast-card__art--chronicle" aria-hidden="true">C</div><div class="news-podcast-card__identity"><h2>News Connect</h2><p>Chronicle · 日本語</p><p class="news-podcast-status" data-news-status="chronicle" aria-live="polite">ニュースを読み込み中…</p></div></div>
+                  <audio class="news-podcast-audio" data-news-audio="chronicle" controls preload="none" playsinline></audio>
+                  <div class="news-podcast-card__tools"><strong data-news-count="chronicle">最新 5 件</strong><select data-news-filter="chronicle" aria-label="Chronicle episode filter"><option value="unplayed">未再生</option><option value="played">再生済み</option><option value="all" selected>すべて</option></select></div>
+                  <ol class="news-podcast-episodes" data-news-list="chronicle"></ol>
+                </article>
               </div>
-              <p class="library-news-attribution">Latest five episodes per source. Each RSS feed is checked independently by GitHub Actions.</p>
+              <p class="library-news-attribution">Each card keeps its own Played / Unplayed / All episodes filter. Episode history is saved on this device.</p>
             </section>
             <hr class="post-list__divider" />
             {{ content }}
