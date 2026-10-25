@@ -54,8 +54,6 @@
   }
   function installIcons(){
     var icons=[
-      ['radio4-toggle',sources.radio4.artwork],
-      ['nhk-radio-toggle',sources.nhk.artwork],
       ['niv-bible-toggle',sources.kjv.artwork],
       ['bite-size-toggle','https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/11682128/11682128-1664416592998-35f37c3752d35.jpg'],
       ['lukes-english-toggle','https://i.podnews.network/r/t/150/584554-ad074a45.jpeg']
