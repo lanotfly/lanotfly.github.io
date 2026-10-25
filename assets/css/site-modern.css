@@ -758,7 +758,7 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 
 /* Bilingual RSS news panel: independent from the audio and podcast players. */
 .library-news-panel{margin:14px 0 22px;padding:14px;border:1px solid #dce4ee;border-radius:14px;background:#fff;box-shadow:0 5px 18px rgba(33,53,87,.045)}
-.library-news-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.library-news-columns{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
 .library-news-column{min-width:0;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;background:#fff}
 .library-news-column__heading{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:42px;padding:10px 12px;border:0;text-align:left;font:750 13px/1.3 system-ui,-apple-system,sans-serif;cursor:pointer}
 .library-news-column__heading--english{background:#edf3ff;color:#294f91}
@@ -781,4 +781,4 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .library-news-retry{padding:3px 8px;border:1px solid #cbd6e5;border-radius:6px;background:#fff;color:#315fa8;font:650 11px system-ui;cursor:pointer}
 .library-news-attribution{margin:12px 2px 0;color:#8a94a3;font-size:10px;line-height:1.5}
 .library-news-attribution a{color:#687994;text-decoration:underline}
-@media(max-width:600px){.library-news-panel{margin:12px 0 18px;padding:9px;border-radius:12px}.library-news-columns{gap:8px}.library-news-column__heading{min-height:40px;padding:8px 7px;font-size:11px}.library-news-status{margin:8px;font-size:10px}.library-news-headline{gap:4px;padding:9px 7px;font-size:11px;line-height:1.45}.library-news-chevron{flex-basis:12px;font-size:14px}.library-news-detail{padding:0 7px 10px;font-size:11px}.library-news-attribution{font-size:9px}}
+@media(max-width:600px){.library-news-panel{margin:12px 0 18px;padding:9px;border-radius:12px}.library-news-columns{gap:10px}.library-news-column__heading{min-height:42px;padding:9px 10px;font-size:13px}.library-news-status{margin:8px;font-size:10px}.library-news-headline{gap:4px;padding:9px 7px;font-size:11px;line-height:1.45}.library-news-chevron{flex-basis:12px;font-size:14px}.library-news-detail{padding:0 7px 10px;font-size:11px}.library-news-attribution{font-size:9px}}
