@@ -45,6 +45,21 @@ def child_text(node, names):
                 return value
     return ""
 
+def item_audio(node):
+    """Return the RSS enclosure URL, kept separate from the episode page link."""
+    for child in list(node):
+        if local_name(child.tag) == "enclosure":
+            media_url = child.attrib.get("url", "").strip()
+            if media_url.startswith(("http://", "https://")):
+                return media_url
+    # Atom feeds may use a rel=enclosure link instead of an RSS enclosure element.
+    for child in list(node):
+        if local_name(child.tag) == "link" and child.attrib.get("rel", "").lower() == "enclosure":
+            media_url = child.attrib.get("href", "").strip()
+            if media_url.startswith(("http://", "https://")):
+                return media_url
+    return ""
+
 def item_link(node):
     for attr, value in node.attrib.items():
         if local_name(attr) in ("about", "href", "link") and value.strip().startswith(("http://", "https://")):
@@ -76,10 +91,11 @@ def read_feed(feed):
             continue
         title = plain_text(child_text(node, {"title"}))
         link = item_link(node)
+        audio_url = item_audio(node)
         summary = plain_text(child_text(node, {"encoded", "content", "description", "summary"}))
         date = child_text(node, {"pubdate", "published", "updated", "date"})
         if title and link:
-            items.append({"title": title, "summary": summary, "link": link, "date": date, "source": feed["source"]})
+            items.append({"title": title, "summary": summary, "link": link, "audioUrl": audio_url, "date": date, "source": feed["source"]})
         if len(items) >= 5:
             break
     if not items:
