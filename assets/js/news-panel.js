@@ -135,9 +135,17 @@
   function fetchFeed(feed) {
     if (cache[feed.id]) return Promise.resolve(cache[feed.id]);
     return getJson('/assets/data/news.json?v=20261025-4').then(function (data) {
-      var items = cachedItems(data, feed);
-      cache[feed.id] = items;
-      return items;
+      try {
+        var items = cachedItems(data, feed);
+        cache[feed.id] = items;
+        return items;
+      } catch (error) {
+        var state = data && data.feedStatus && data.feedStatus[feed.id];
+        if (state && state.ok === false) {
+          throw new Error('RSS refresh failed: ' + (state.error || 'see GitHub Actions logs'));
+        }
+        throw error;
+      }
     });
   }
 
@@ -194,8 +202,9 @@
       status.textContent = feed.lang === 'ja' ?
         '最新' + items.length + '件 · ' + feed.source :
         'Latest ' + items.length + ' · ' + feed.source;
-    }).catch(function () {
-      status.textContent = feed.lang === 'ja' ? 'ニュースを読み込めませんでした。' : 'Could not load the latest news.';
+    }).catch(function (error) {
+      status.textContent = (feed.lang === 'ja' ? 'ニュースを読み込めませんでした。' : 'Could not load the latest news.') +
+        (error && error.message && error.message.indexOf('RSS refresh failed:') === 0 ? ' · ' + error.message : '');
       var retry = document.createElement('button');
       retry.type = 'button';
       retry.className = 'library-news-retry';
