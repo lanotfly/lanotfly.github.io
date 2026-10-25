@@ -107,24 +107,26 @@
         choose.setAttribute('aria-pressed',String(isPlaying));
         choose.setAttribute('aria-label',(isCurrent?(isPlaying?'Pause episode: ':'Play episode: '):'Play episode: ')+(episode.title||('Episode '+(index+1))));
         var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=isCurrent?(isPlaying?'Ⅱ':'▶'):String(index+1);
+        var textWrap=document.createElement('span');textWrap.className='podcast-episode-text';
         var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
-        var duration=document.createElement('span');duration.className='podcast-episode-duration';
-        duration.textContent=formatDuration(episode.duration);
-        if(!duration.textContent){
-          var cachedDuration=durationCache[durationIdentity(episode)];
-          if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
-        }
         var meta=document.createElement('span');meta.className='podcast-episode-meta';
         var publishedText=episode.published||episode.pubDate||episode.date||'';
         var dateLabel=document.createElement('span');dateLabel.className='podcast-episode-date';
         var parsedDate=publishedText?new Date(publishedText):null;
         if(parsedDate&&Number.isFinite(parsedDate.getTime()))dateLabel.textContent=parsedDate.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
         else dateLabel.textContent='';
-        var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
         if(dateLabel.textContent)meta.appendChild(dateLabel);
-        meta.appendChild(state);
-        if(duration.textContent)meta.appendChild(duration);
-        choose.appendChild(number);choose.appendChild(title);choose.appendChild(meta);
+        var duration=document.createElement('span');duration.className='podcast-episode-duration';
+        duration.textContent=formatDuration(episode.duration);
+        if(!duration.textContent){
+          var cachedDuration=durationCache[durationIdentity(episode)];
+          if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
+        }
+        if(duration.textContent)textWrap.appendChild(duration);
+        textWrap.insertBefore(title,textWrap.firstChild);
+        if(meta.textContent)textWrap.insertBefore(meta,duration.textContent?duration:null);
+        var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
+        choose.appendChild(number);choose.appendChild(textWrap);
         var touchStartX=null,touchStartY=null,swipeHandled=false;
         choose.addEventListener('click',function(event){
           if(swipeHandled){event.preventDefault();event.stopImmediatePropagation();swipeHandled=false;return;}
@@ -164,7 +166,7 @@
         row.addEventListener('touchcancel',function(){
           touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
         },{passive:true});
-        row.appendChild(choose);episodeList.appendChild(row);
+        row.appendChild(choose);row.appendChild(state);episodeList.appendChild(row);
         if(durationObserver&&!duration.textContent&&episode.url)durationObserver.observe(row);
         else if(!duration.textContent&&episode.url)requestDuration(episode,duration);
       });
