@@ -157,23 +157,23 @@
     "bbc": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:07:28+00:00"
+      "checkedAt": "2026-10-25T09:08:00+00:00"
     },
     "guardian": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:07:29+00:00"
+      "checkedAt": "2026-10-25T09:08:00+00:00"
     },
     "nhk": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:07:29+00:00"
+      "checkedAt": "2026-10-25T09:08:00+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:07:29+00:00"
+      "checkedAt": "2026-10-25T09:08:01+00:00"
     }
   },
-  "updatedAt": "2026-10-25T09:07:30+00:00"
+  "updatedAt": "2026-10-25T09:08:01+00:00"
 }
