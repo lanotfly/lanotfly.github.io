@@ -514,7 +514,7 @@
       if(!isEpisodePlayed(episodeQueue[i])){nextIndex=i;break;}
     }
     if(nextIndex>=0)playEpisodeAt(nextIndex);
-    else{paint(activeId,false);if(panelStatus)panelStatus.textContent='No unplayed older episodes remain. Choose “Show all episodes” to replay one.';}
+    else{paint(activeId,false);if(panelStatus)panelStatus.textContent='No unplayed older episodes remain. Choose “All episodes” in the list filter to replay one.';}
   });
   audio.addEventListener('error',function(){if(activeId)paint(activeId,false);});
 })();
