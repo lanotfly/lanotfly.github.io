@@ -74,12 +74,21 @@
   function findAudioUrl(data){
     if(!data||typeof data!=='object')return '';
     var preferred=['format_mp3_64k','format_mp3_32k','format_mp3_128k','mp3','url','audio_url'];
+    function normalize(value){
+      if(typeof value!=='string')return '';
+      if(value.indexOf('//')===0)value='https:'+value;
+      return /^https?:\\/\\//i.test(value)&&/\\.(mp3|m4a|aac|mp4)(\\?|#|$)/i.test(value)?value:'';
+    }
     function scan(value,depth){
-      if(!value||depth>7)return '';
-      if(typeof value==='string'&&/^https?:\/\//i.test(value)&&/\.(mp3|m4a|aac|mp4)(\?|#|$)/i.test(value))return value;
-      if(Array.isArray(value)){for(var i=0;i<value.length;i++){var found=scan(value[i],depth+1);if(found)return found;}return '';}
+      if(!value||depth>8)return '';
+      var direct=normalize(value);
+      if(direct)return direct;
+      if(Array.isArray(value)){
+        for(var i=0;i<value.length;i++){var found=scan(value[i],depth+1);if(found)return found;}
+        return '';
+      }
       if(typeof value==='object'){
-        for(var p=0;p<preferred.length;p++)if(typeof value[preferred[p]]==='string'){var candidate=value[preferred[p]];if(/^https?:\/\//i.test(candidate))return candidate;}
+        for(var p=0;p<preferred.length;p++){var candidate=normalize(value[preferred[p]]);if(candidate)return candidate;}
         var keys=Object.keys(value);
         for(var j=0;j<keys.length;j++){var result=scan(value[keys[j]],depth+1);if(result)return result;}
       }
