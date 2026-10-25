@@ -924,3 +924,13 @@ html,body{max-width:100%;overflow-x:clip}
 .content-wrapper__inner.news-panel-open > hr.post-list__divider:first-of-type ~ *{
   display:none!important;
 }
+
+
+/* Match the KJV player's inner gutter to the more comfortable podcast panel spacing. */
+.niv-bible-panel{padding:14px!important}
+.niv-bible-queue{padding:3px 5px!important}
+.niv-bible-queue-item{padding-left:9px!important;padding-right:9px!important}
+@media(max-width:700px){
+  .niv-bible-panel{padding:12px!important}
+  .niv-bible-queue{padding:3px 4px!important}
+}
