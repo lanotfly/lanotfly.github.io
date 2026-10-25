@@ -370,12 +370,10 @@
     visibleEpisodes.forEach(function(item){
       var episode=item.episode,index=item.index,played=item.played;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
-      var isCurrent=index===episodeIndex&&activeId&&!played&&!audio.paused&&audio.dataset.episodeTitle===(episode.title||'');
-      if(isCurrent)row.classList.add('is-current');
+      /* Keep playback highlighting out of episode-list rendering while debugging list visibility. */
       var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
-      if(isCurrent)choose.classList.add('is-current');
-      choose.setAttribute('aria-current',isCurrent?'true':'false');
-      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=isCurrent?'▶':String(index+1);
+      choose.setAttribute('aria-current','false');
+      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=String(index+1);
       var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
       var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';state.setAttribute('aria-label',played?'Played':'Unplayed');
       choose.appendChild(number);choose.appendChild(title);choose.appendChild(state);
