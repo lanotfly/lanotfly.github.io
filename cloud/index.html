@@ -1,0 +1,33 @@
+---
+layout: default
+title: "Cloud — From Pods to Production"
+permalink: /cloud/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Cloud chapters">
+<a href="/cloud/" class="current">Overview</a><a href="/cloud/pods/">1. Pods</a><a href="/cloud/deployments-scaling/">2. Deployments</a><a href="/cloud/services-networking/">3. Services</a><a href="/cloud/config-secrets/">4. Configuration</a><a href="/cloud/storage/">5. Storage</a><a href="/cloud/health-resources/">6. Health checks</a><a href="/cloud/security-rbac/">7. Security</a><a href="/cloud/troubleshooting/">8. Troubleshooting</a>
+</nav>
+<h1>Cloud — From Pods to Production</h1>
+<p class="lead">A visual, practical guide to the Cloud objects and operating practices used to run containerized applications. Start with Pods, then follow how workloads are deployed, exposed, configured, monitored, and secured.</p>
+<figure class="diagram official-diagram">
+<a href="https://cloud.io/docs/concepts/overview/components/" target="_blank" rel="noopener noreferrer" aria-label="Open the official Cloud components documentation">
+<img src="https://cloud.io/images/docs/components-of-cloud.svg" alt="Official Cloud architecture diagram showing control-plane components and worker-node components" loading="lazy" style="display:block;width:100%;height:auto;max-width:100%;cursor:zoom-in">
+</a>
+<figcaption>Official Cloud components diagram. The control plane manages the cluster; worker nodes run Pods and their containers. Tap the diagram to open the official documentation. Source: <a href="https://cloud.io/docs/concepts/overview/components/" target="_blank" rel="noopener noreferrer">Cloud documentation</a>.</figcaption>
+</figure>
+<h2>Chapters</h2>
+<div class="cards">
+<section class="card"><h3><a href="/cloud/pods/">Pods</a></h3><p>A Pod wraps one or more tightly coupled containers and gives them a shared network identity and storage context.</p><p class="home-link"><a href="/cloud/pods/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/deployments-scaling/">Deployments</a></h3><p>Declare the desired number of replicas and let Cloud reconcile the running workload toward that state.</p><p class="home-link"><a href="/cloud/deployments-scaling/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/services-networking/">Services</a></h3><p>A Service provides a stable virtual endpoint for a changing set of Pods, selected by labels.</p><p class="home-link"><a href="/cloud/services-networking/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/config-secrets/">Configuration</a></h3><p>Separate application configuration from container images while controlling how sensitive values are stored and exposed.</p><p class="home-link"><a href="/cloud/config-secrets/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/storage/">Storage</a></h3><p>Choose storage that matches the lifecycle and access needs of the application, from temporary scratch space to durable data.</p><p class="home-link"><a href="/cloud/storage/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/health-resources/">Health checks</a></h3><p>Tell Cloud when a container is alive, ready for traffic, or should be restarted—and reserve resources predictably.</p><p class="home-link"><a href="/cloud/health-resources/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/security-rbac/">Security</a></h3><p>Reduce the blast radius by granting least privilege, restricting workload capabilities, and controlling communication.</p><p class="home-link"><a href="/cloud/security-rbac/">Open chapter →</a></p></section>
+<section class="card"><h3><a href="/cloud/troubleshooting/">Troubleshooting</a></h3><p>Use a consistent path from symptom to evidence: workload state, events, logs, dependencies, and cluster capacity.</p><p class="home-link"><a href="/cloud/troubleshooting/">Open chapter →</a></p></section>
+</div>
+<h2>Learning path</h2>
+<ol><li>Understand Pods and how Deployments keep the desired number of replicas running.</li><li>Expose workloads with Services and configure them safely with ConfigMaps and Secrets.</li><li>Plan storage, health probes, resource requests, and autoscaling.</li><li>Apply least-privilege access, workload hardening, network controls, and a repeatable troubleshooting process.</li></ol>
+<p><strong>Security note:</strong> this learning section is protected by the site's existing password gate. That gate is a client-side access barrier for the static site, not strong server-side authorization.</p>
+</div>
