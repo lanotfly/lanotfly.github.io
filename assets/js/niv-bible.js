@@ -26,67 +26,114 @@
   var chapterList=document.getElementById('niv-chapter-list');
   var count=document.getElementById('niv-chapter-count');
   var status=document.getElementById('niv-bible-status');
+  var audio=document.getElementById('niv-bible-audio');
   var lastKey='library_niv_last_chapter';
-  if(!button||!panel||!testament||!bookSelect||!chapterList)return;
+  var current={book:null,chapter:0,index:0};
+  var busy=false;
+  if(!button||!panel||!testament||!bookSelect||!chapterList||!audio)return;
 
+  function savedChapter(){try{return JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){return null;}}
+  function remember(book,chapter){try{localStorage.setItem(lastKey,JSON.stringify({book:book,chapter:chapter}));}catch(_){}}
   function visibleBooks(){return books.filter(function(book,index){return testament.value==='old'?index<39:index>=39;});}
-  function populateBooks(preferredCode){
-    var list=visibleBooks();
-    bookSelect.textContent='';
-    list.forEach(function(book){
-      var option=document.createElement('option');option.value=book[1];option.textContent=book[0];bookSelect.appendChild(option);
+  function getBook(code){return books.find(function(book){return book[1]===code;});}
+  function chapterUrl(book,chapter){return 'https://www.bible.com/audio-bible/111/'+book+'.'+chapter+'.NIV';}
+  function setStatus(message){if(status)status.textContent=message;}
+  function paintCurrent(){
+    chapterList.querySelectorAll('.niv-chapter-button').forEach(function(node){
+      var active=node.dataset.book===current.book&&Number(node.dataset.chapter)===current.chapter;
+      node.classList.toggle('is-current',active);
+      node.setAttribute('aria-current',active?'true':'false');
+      node.textContent=String(node.dataset.chapter)+(active?(audio.paused?'  ▶':'  ▮▮'):'');
     });
+  }
+  function populateBooks(preferredCode){
+    var list=visibleBooks();bookSelect.textContent='';
+    list.forEach(function(book){var option=document.createElement('option');option.value=book[1];option.textContent=book[0];bookSelect.appendChild(option);});
     var wanted=list.find(function(book){return book[1]===preferredCode;});
     if(wanted)bookSelect.value=wanted[1];
     renderChapters();
   }
   function renderChapters(){
-    var book=books.find(function(item){return item[1]===bookSelect.value;});
-    chapterList.textContent='';
+    var book=getBook(bookSelect.value);chapterList.textContent='';
     if(!book)return;
-    var saved=null;
-    try{saved=JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){}
+    var saved=savedChapter();
     for(var chapter=1;chapter<=book[2];chapter++){
-      var link=document.createElement('a');
-      link.className='niv-chapter-button';
-      link.href='https://www.bible.com/audio-bible/111/'+book[1]+'.'+chapter+'.NIV';
-      link.target='_blank';link.rel='noopener noreferrer';
-      link.textContent=String(chapter);
-      link.setAttribute('aria-label','Listen to NIV '+book[0]+' chapter '+chapter+' on Bible.com');
+      var link=document.createElement('button');
+      link.type='button';link.className='niv-chapter-button';link.dataset.book=book[1];link.dataset.chapter=String(chapter);
+      link.textContent=String(chapter);link.setAttribute('aria-label','Play NIV '+book[0]+' chapter '+chapter);
       if(saved&&saved.book===book[1]&&saved.chapter===chapter)link.classList.add('is-last-listened');
       link.addEventListener('click',function(selectedBook,selectedChapter){
-        return function(){
-          if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
-          try{localStorage.setItem(lastKey,JSON.stringify({book:selectedBook[1],chapter:selectedChapter}));}catch(_){}
-          if(status)status.textContent='Opened '+selectedBook[0]+' '+selectedChapter+' in the official NIV audio reader.';
-        };
-      }(book,chapter));
+        return function(){playChapter(selectedBook,selectedChapter);};
+      }(book[1],chapter));
       chapterList.appendChild(link);
     }
     if(count)count.textContent=book[0]+' · '+book[2]+' chapters';
-    if(status)status.textContent='Choose a chapter to open the official NIV audio player.';
+    paintCurrent();
+    setStatus('Tap a chapter to play NIV audio here. Playback continues to the next chapter when available.');
+  }
+  function findAudioUrl(data){
+    if(!data||typeof data!=='object')return '';
+    var preferred=['format_mp3_64k','format_mp3_32k','format_mp3_128k','mp3','url','audio_url'];
+    function scan(value,depth){
+      if(!value||depth>7)return '';
+      if(typeof value==='string'&&/^https?:\/\//i.test(value)&&/\.(mp3|m4a|aac|mp4)(\?|#|$)/i.test(value))return value;
+      if(Array.isArray(value)){for(var i=0;i<value.length;i++){var found=scan(value[i],depth+1);if(found)return found;}return '';}
+      if(typeof value==='object'){
+        for(var p=0;p<preferred.length;p++)if(typeof value[preferred[p]]==='string'){var candidate=value[preferred[p]];if(/^https?:\/\//i.test(candidate))return candidate;}
+        var keys=Object.keys(value);
+        for(var j=0;j<keys.length;j++){var result=scan(value[keys[j]],depth+1);if(result)return result;}
+      }
+      return '';
+    }
+    return scan(data,0);
+  }
+  function playChapter(bookCode,chapter){
+    var book=getBook(bookCode);if(!book||busy)return;
+    if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
+    current={book:bookCode,chapter:chapter,index:books.findIndex(function(item){return item[1]===bookCode;})};
+    remember(bookCode,chapter);paintCurrent();busy=true;
+    setStatus('Loading NIV audio: '+book[0]+' '+chapter+'…');
+    var endpoint='https://audio-bible.youversionapi.com/3.1/chapter.json?reference='+encodeURIComponent(bookCode+'.'+chapter)+'&version_id=111';
+    fetch(endpoint,{mode:'cors',cache:'no-store'}).then(function(response){
+      if(!response.ok)throw new Error('Audio service returned '+response.status);
+      return response.json();
+    }).then(function(data){
+      var url=findAudioUrl(data);
+      if(!url)throw new Error('No direct audio URL was returned for this chapter');
+      audio.pause();audio.src=url;audio.dataset.book=bookCode;audio.dataset.chapter=String(chapter);
+      audio.load();
+      if('mediaSession' in navigator&&window.MediaMetadata){
+        try{navigator.mediaSession.metadata=new MediaMetadata({title:book[0]+' '+chapter,artist:'NIV Audio Bible',album:'New International Version'});}catch(_){}
+      }
+      return audio.play();
+    }).then(function(){
+      busy=false;paintCurrent();setStatus('Playing NIV · '+book[0]+' '+chapter);
+    }).catch(function(){
+      busy=false;
+      setStatus('Direct playback was blocked by the audio service or browser. Open this chapter on Bible.com instead.');
+      var fallback=document.createElement('a');fallback.href=chapterUrl(bookCode,chapter);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='niv-bible-fallback';fallback.textContent='Open '+book[0]+' '+chapter+' on Bible.com';
+      if(status){status.appendChild(document.createTextNode(' '));status.appendChild(fallback);}
+    });
   }
   testament.addEventListener('change',function(){populateBooks(null);});
   bookSelect.addEventListener('change',renderChapters);
   button.addEventListener('click',function(){
     var willOpen=panel.hidden;
     if(willOpen&&window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
-    panel.hidden=!willOpen;
-    button.setAttribute('aria-expanded',String(willOpen));
-    if(willOpen){
-      try{
-        var saved=JSON.parse(localStorage.getItem(lastKey)||'null');
-        if(saved){
-          testament.value=books.findIndex(function(book){return book[1]===saved.book;})<39?'old':'new';
-          populateBooks(saved.book);
-          return;
-        }
-      }catch(_){}
-      populateBooks(bookSelect.value||'GEN');
-    }
+    panel.hidden=!willOpen;button.setAttribute('aria-expanded',String(willOpen));
+    if(willOpen){var saved=savedChapter();if(saved){testament.value=books.findIndex(function(book){return book[1]===saved.book;})<39?'old':'new';populateBooks(saved.book);}else populateBooks(bookSelect.value||'GEN');}
   });
-  var saved=null;
-  try{saved=JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){}
+  audio.addEventListener('play',function(){busy=false;paintCurrent();});
+  audio.addEventListener('pause',function(){paintCurrent();});
+  audio.addEventListener('error',function(){busy=false;paintCurrent();});
+  audio.addEventListener('ended',function(){
+    var book=getBook(current.book);
+    if(!book)return;
+    if(current.chapter<book[2])playChapter(current.book,current.chapter+1);
+    else if(current.index+1<books.length)playChapter(books[current.index+1][1],1);
+    else setStatus('NIV Audio Bible finished.');
+  });
+  var saved=savedChapter();
   testament.value=saved&&books.findIndex(function(book){return book[1]===saved.book;})>=39?'new':'old';
   populateBooks(saved?saved.book:'GEN');
 })(window,document);
