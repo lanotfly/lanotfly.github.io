@@ -10,19 +10,17 @@
   window.__prepareRadioPlayback=prepareRadioPlayback;
   /* Keep iOS Lock Screen / Control Center metadata independent of the chapter title. */
   function setRadioMetadata(){
+    if(window.LibraryAudioIdentity){
+      window.LibraryAudioIdentity.setNowPlaying('radio4',audio,{
+        title:'BBC Radio',
+        artist:'BBC Radio',
+        album:'BBC Radio — Live',
+        artwork:window.LibraryAudioIdentity.getArtwork('radio4')
+      });
+      return;
+    }
     if (!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: 'BBC Radio',
-      artist: 'BBC Radio',
-      album: 'BBC Radio — Live',
-      artwork: [
-        { src: 'https://lanotfly.github.io/assets/images/bbc-radio-4-now-playing.png?v=20261024-6', sizes: '64x64', type: 'image/png' }
-      ]
-    });
-    try {
-      navigator.mediaSession.setActionHandler('play', function(){ prepareRadioPlayback(); audio.play().catch(function(){}); });
-      navigator.mediaSession.setActionHandler('pause', function(){ audio.pause(); });
-    } catch (_) {}
+    try { navigator.mediaSession.metadata = new MediaMetadata({title:'BBC Radio',artist:'BBC Radio',album:'BBC Radio — Live',artwork:[{src:'https://lanotfly.github.io/assets/images/bbc-radio-4-now-playing.png',sizes:'512x512',type:'image/png'}]}); } catch (_) {}
   }
   function paint(playing){
     toggle.setAttribute('aria-pressed',String(playing));
