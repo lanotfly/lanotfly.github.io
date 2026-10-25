@@ -29,7 +29,7 @@
   var current={book:'GEN',chapter:1,index:0};
   if(!button||!panel||!bookSelect||!chapterSelect||!audio)return;
   function savedChapter(){try{return JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){return null;}}
-  function remember(book,chapter){try{localStorage.setItem(lastKey,JSON.stringify({book:book,chapter:chapter}));}catch(_){}}
+  function remember(book,chapter,time){try{localStorage.setItem(lastKey,JSON.stringify({book:book,chapter:chapter,time:Math.max(0,Number(time)||0)}));}catch(_){}}
   function getBook(code){return books.find(function(book){return book[1]===code;});}
   function setStatus(message){if(status)status.textContent=message;}
   function chapterUrl(book,chapter){return 'https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/'+book+'+'+chapter+'.mp3';}
@@ -66,9 +66,11 @@
   function playChapter(bookCode,chapter,shouldPlay){
     var book=getBook(bookCode);if(!book)return;
     chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
+    var previousSaved=savedChapter();
+    var resumeTime=previousSaved&&previousSaved.book===bookCode&&Number(previousSaved.chapter)===chapter?Number(previousSaved.time)||0:0;
     if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
     current={book:bookCode,chapter:chapter,index:books.findIndex(function(item){return item[1]===bookCode;})};
-    remember(bookCode,chapter);
+    remember(bookCode,chapter,0);
     bookSelect.value=bookCode;
     populateChapters(chapter);
     if(title)title.textContent=book[0]+' · Chapter '+chapter;
@@ -78,6 +80,13 @@
     if(audio.src!==chapterUrl(bookCode,chapter)){
       audio.src=chapterUrl(bookCode,chapter);
       audio.load();
+      if(resumeTime>0){
+        var restoreProgress=function(){
+          audio.removeEventListener('loadedmetadata',restoreProgress);
+          try{audio.currentTime=Math.min(resumeTime,Math.max(0,(audio.duration||resumeTime)-1));}catch(_){}
+        };
+        audio.addEventListener('loadedmetadata',restoreProgress);
+      }
     }
     setMetadata(book[0],chapter);
     setStatus('Loading KJV · '+book[0]+' '+chapter+'…');
@@ -139,6 +148,9 @@
   chapterSelect.addEventListener('change',function(){playChapter(bookSelect.value,Number(chapterSelect.value),true);});
   audio.addEventListener('play',function(){setStatus('Playing KJV · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);setMetadata((getBook(current.book)||books[0])[0],current.chapter);paint();});
   audio.addEventListener('pause',function(){if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
+  audio.addEventListener('timeupdate',function(){
+    if(audio.currentTime>0&&isFinite(audio.currentTime))remember(current.book,current.chapter,audio.currentTime);
+  });
   audio.addEventListener('ended',nextChapter);
   audio.addEventListener('error',function(){setStatus('Could not load this chapter audio. Try again in a moment.');paint();});
   paint();
