@@ -139,6 +139,22 @@
       if (episode && episode.link) window.open(episode.link, '_blank', 'noopener');
       return;
     }
+    if (current.feed === feed.id && current.index === index && audio.src === episode.audioUrl) {
+      if (!audio.paused && !audio.ended) {
+        audio.pause();
+        renderAll();
+        return;
+      }
+      stopOtherAudio();
+      var resume = audio.play();
+      renderAll();
+      if (resume && resume.catch) resume.catch(function () {
+        var resumeStatus = root.querySelector('[data-news-status="' + feed.id + '"]');
+        if (resumeStatus) resumeStatus.textContent = 'Playback was blocked. Tap the episode again to resume.';
+        renderAll();
+      });
+      return;
+    }
     stopOtherAudio();
     feeds.filter(function (other) { return other.id !== feed.id; }).forEach(function (other) {
       var otherAudio = audioFor(other.id);
@@ -230,8 +246,9 @@
       var duration = document.createElement('span');
       duration.className = 'podcast-episode-duration';
       duration.textContent = formatDuration(episode.duration);
-      if (duration.textContent) button.appendChild(number), button.appendChild(textWrap), button.appendChild(duration);
-      else { button.appendChild(number); button.appendChild(textWrap); }
+      button.appendChild(number);
+      button.appendChild(textWrap);
+      if (duration.textContent) button.appendChild(duration);
       button.addEventListener('click', function () {
         var targetAudio = audioFor(feed.id);
         if (current.feed === feed.id && current.index === index && !targetAudio.paused) {
