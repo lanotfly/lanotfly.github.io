@@ -24,6 +24,7 @@
   var status=document.getElementById('niv-bible-status');
   var title=document.getElementById('niv-bible-now-playing');
   var audio=document.getElementById('niv-bible-audio');
+  var progress=document.getElementById('niv-bible-progress');
   var lastKey='library_kjv_last_chapter';
   var queueList=null;
   var queueFrame=null;
@@ -54,8 +55,8 @@
     if(currentRow){queueList.scrollTop=currentRow.offsetTop;}
   }
   function installQueue(){
-    var filters=document.querySelector('.niv-bible-panel__filters');
-    if(!filters||queueList)return;
+    var anchor=document.querySelector('.niv-bible-progress-wrap');
+    if(!anchor||queueList)return;
     queueFrame=document.createElement('div');
     queueFrame.className='niv-bible-queue-frame';
     queueFrame.setAttribute('aria-label','KJV chapters, chapters in canonical order; current chapter shown first');
@@ -68,13 +69,14 @@
       edge.className='niv-bible-queue-scroll-edge niv-bible-queue-scroll-edge--'+side;
       edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);
     });
-    filters.parentNode.insertBefore(queueFrame,filters.nextSibling);
+    anchor.parentNode.insertBefore(queueFrame,anchor.nextSibling);
     renderQueue();
   }
   function savedChapter(){try{return JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){return null;}}
   function remember(book,chapter,time){try{localStorage.setItem(lastKey,JSON.stringify({book:book,chapter:chapter,time:Math.max(0,Number(time)||0)}));}catch(_){}}
   function getBook(code){return books.find(function(book){return book[1]===code;});}
   function setStatus(message){if(status)status.textContent=message;}
+  function updateProgress(){if(!progress)return;var duration=audio.duration;if(isFinite(duration)&&duration>0){progress.value=String(Math.round((audio.currentTime/duration)*1000));progress.disabled=false;}else{progress.value='0';progress.disabled=true;}}
   function chapterUrl(book,chapter){return 'https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/'+book+'+'+chapter+'.mp3';}
   function setMetadata(book,chapter){
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
@@ -121,15 +123,16 @@
       }
     }
     setMetadata(book[0],chapter);
-    setStatus('Loading KJV · '+book[0]+' '+chapter+'…');
+    setStatus('');
+    updateProgress();
     paint();
     if(shouldPlay){
       audio.play().then(function(){
-        setStatus('Playing KJV · '+book[0]+' '+chapter);
+        setStatus('');
         if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='playing';}catch(_){}}
         paint();
       }).catch(function(){
-        setStatus('Ready: tap Play in the audio controls if playback did not start.');
+        setStatus('');
         paint();
       });
     }
@@ -165,11 +168,11 @@
     var selectedTitle=(getBook(selectedBook)||books[0])[0]+' '+selectedChapter;
     var sameSelection=audio.dataset.chapterTitle===selectedTitle;
     if(!audio.paused&&sameSelection){
-      audio.pause();setStatus('Paused · '+selectedTitle);paint();return;
+      audio.pause();setStatus('');paint();return;
     }
     if(sameSelection&&audio.src){
       if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
-      audio.play().then(function(){setStatus('Playing KJV · '+selectedTitle);paint();}).catch(function(){setStatus('Tap Play in the audio controls to start playback.');});
+      audio.play().then(function(){setStatus('');paint();}).catch(function(){setStatus('');});
     }else playChapter(selectedBook,selectedChapter,true);
   }
   button.addEventListener('click',togglePlayback);
@@ -178,8 +181,12 @@
   audio.addEventListener('pause',function(){if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
   audio.addEventListener('timeupdate',function(){
     if(audio.currentTime>0&&isFinite(audio.currentTime))remember(current.book,current.chapter,audio.currentTime);
+    updateProgress();
   });
+  audio.addEventListener('loadedmetadata',updateProgress);
+  audio.addEventListener('durationchange',updateProgress);
+  if(progress){progress.addEventListener('input',function(){if(isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progress.value)/1000)*audio.duration;});}
   audio.addEventListener('ended',nextChapter);
-  audio.addEventListener('error',function(){setStatus('Could not load this chapter audio. Try again in a moment.');paint();});
+  audio.addEventListener('error',function(){setStatus('');paint();});
   paint();
 })(window,document);
