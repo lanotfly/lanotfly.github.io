@@ -19,6 +19,19 @@
     mainToggle.classList.toggle('is-open', open);
     var inner = document.querySelector('.content-wrapper__inner');
     if (inner) inner.classList.toggle('news-panel-open', open);
+    /* News is a separate view, not a wiki subsection. While it is open,
+       clear the underlying wiki tab's selected border; restore it on close. */
+    if (open) {
+      document.querySelectorAll('.site-tab-links a.site-tab').forEach(function (link) {
+        link.classList.remove('is-active');
+        link.removeAttribute('aria-current');
+        ['color','background-color','border-color','border-style','border-width','box-shadow'].forEach(function (property) {
+          link.style.removeProperty(property);
+        });
+      });
+    } else if (typeof window.LibraryUpdatePrimaryActive === 'function') {
+      window.LibraryUpdatePrimaryActive(window.location.pathname);
+    }
   }
   mainToggle.addEventListener('click', function () {
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
