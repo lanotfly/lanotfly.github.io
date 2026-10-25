@@ -1,0 +1,83 @@
+---
+layout: default
+title: "Essential Linux commands"
+permalink: /linux/commands/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Linux chapters">
+<a href="/linux/">Overview</a><a href="/linux/filesystem/">1. Filesystem</a><a href="/linux/commands/" class="current">2. Commands</a>
+</nav>
+<h1>Essential Linux commands</h1>
+<p class="lead">A practical command reference for navigating a Linux host, inspecting files and logs, and diagnosing common SRE issues. Replace example paths and process names with values from your system.</p>
+<h2>1. Navigation and listing</h2>
+<table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>pwd</code></td><td>Print the current working directory.</td></tr>
+<tr><td><code>ls -lah</code></td><td>List files, including hidden files, with readable sizes and details.</td></tr>
+<tr><td><code>cd /var/log</code></td><td>Change to a directory.</td></tr>
+<tr><td><code>find /etc -name '*.conf'</code></td><td>Search recursively for files matching a name pattern.</td></tr>
+</tbody></table>
+<h2>2. Read files and inspect logs</h2>
+<pre><code>cat /etc/os-release
+less /var/log/syslog
+head -n 20 app.log
+tail -n 100 app.log
+tail -f app.log
+grep -n "ERROR" app.log
+grep -Rni "listen" /etc</code></pre>
+<ul><li><code>less</code> is usually better than <code>cat</code> for large files; press <code>q</code> to quit.</li><li><code>tail -f</code> follows new lines as they arrive. Press <code>Ctrl+C</code> to stop.</li><li><code>grep -Rni</code> searches recursively, ignores case, and prints line numbers.</li><li>Log locations differ: systemd-based hosts often support <code>journalctl</code> even if a traditional syslog file is absent.</li></ul>
+<h2>3. Create, copy, move, and remove files</h2>
+<pre><code>mkdir -p ~/lab/logs
+touch ~/lab/notes.txt
+cp source.txt backup.txt
+mv old-name.txt new-name.txt
+rm -i unwanted.txt</code></pre>
+<p><strong>Warning:</strong> file removal can be permanent. Check the current directory with <code>pwd</code> and verify the target with <code>ls</code> before removing anything. Avoid force options or broad paths unless you fully understand the effect.</p>
+<h2>4. Permissions and ownership</h2>
+<pre><code>ls -l script.sh
+chmod u+x script.sh
+chmod 640 config.txt
+chown app:app config.txt
+id
+whoami</code></pre>
+<p>Permissions describe read (<code>r</code>), write (<code>w</code>), and execute (<code>x</code>) access for owner, group, and others. <code>chmod 640</code> gives the owner read/write, the group read, and others no access. Use <code>sudo</code> only when elevated privileges are necessary.</p>
+<h2>5. Disk, memory, and CPU</h2>
+<pre><code>df -h
+du -sh /var/log
+free -h
+uptime
+top
+ps aux
+ps -ef</code></pre>
+<ul><li><code>df -h</code> reports filesystem space; <code>du</code> estimates space used by files/directories.</li><li><code>free -h</code> summarizes memory and swap; Linux may use otherwise-free memory for caches.</li><li><code>uptime</code> shows uptime and load averages; interpret load in the context of CPU count and I/O wait.</li><li><code>ps</code> is a snapshot; <code>top</code> is interactive.</li></ul>
+<h2>6. Processes and services</h2>
+<pre><code>pgrep -a nginx
+kill -TERM 1234
+systemctl status nginx
+systemctl restart nginx
+journalctl -u nginx --since "30 minutes ago"
+journalctl -u nginx -f</code></pre>
+<p>Service commands assume systemd and a service named <code>nginx</code>. Prefer a graceful <code>TERM</code> signal over force-killing a process. Before restarting a production service, check impact, current status, logs, and the applicable runbook.</p>
+<h2>7. Network troubleshooting</h2>
+<pre><code>ip addr
+ip route
+ss -lntup
+curl -I https://example.com
+curl -v https://example.com
+getent hosts example.com
+ssh user@server.example.com</code></pre>
+<ul><li><code>ip addr</code> shows interfaces and addresses; <code>ip route</code> shows routing.</li><li><code>ss -lntup</code> lists listening TCP/UDP sockets; showing process details may require elevated privileges.</li><li><code>curl -I</code> requests response headers; <code>curl -v</code> provides connection diagnostics.</li><li><code>getent hosts</code> checks name resolution through the system's configured name-service path.</li></ul>
+<h2>8. Help and command composition</h2>
+<pre><code>man find
+grep --help
+command -v python
+some-command > output.txt
+some-command >> output.txt
+some-command 2> error.txt
+some-command | grep "ERROR"
+echo $?</code></pre>
+<p><code>&gt;</code> overwrites output, <code>&gt;&gt;</code> appends, and <code>2&gt;</code> redirects standard error. A pipe (<code>|</code>) sends one command's standard output to another command. <code>$?</code> contains the most recent command's exit status; <code>0</code> conventionally means success.</p>
+<h2>Suggested SRE troubleshooting sequence</h2>
+<ol><li><strong>Confirm the symptom:</strong> capture the exact error, time, host, and affected service.</li><li><strong>Check capacity:</strong> <code>uptime</code>, <code>free -h</code>, <code>df -h</code>, and relevant <code>du</code> output.</li><li><strong>Check process and service state:</strong> <code>ps</code>, <code>systemctl status</code>, and <code>ss -lntup</code>.</li><li><strong>Read recent evidence:</strong> <code>journalctl</code>, application logs, and service events.</li><li><strong>Make one controlled change:</strong> follow the runbook, then verify health and record the result.</li></ol>
+<div class="prev-next"><a href="/linux/filesystem/">← Filesystem structure</a><a href="/linux/">Linux overview →</a></div>
+</div>
