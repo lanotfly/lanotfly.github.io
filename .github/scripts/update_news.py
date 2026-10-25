@@ -7,15 +7,16 @@ import re
 import urllib.request
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
+from datetime import datetime, timezone
 
 FEEDS = {
     "english": {
-        "source": "BBC Global News Podcast",
-        "url": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
+        "source": "The Guardian · Today in Focus",
+        "url": "https://www.theguardian.com/news/series/todayinfocus/podcast.xml",
     },
     "japanese": {
-        "source": "Chronicle · News Connect",
-        "url": "https://rss.listen.style/p/smbslbmi/rss",
+        "source": "NHK ラジオニュース",
+        "url": "https://www.nhk.or.jp/s-media/news/podcast/list/v1/all.xml",
     },
 }
 
@@ -28,7 +29,7 @@ class TextOnly(HTMLParser):
         self.parts.append(value)
 
     def result(self):
-        return re.sub(r"\\s+", " ", " ".join(self.parts)).strip()
+        return re.sub(r"\s+", " ", " ".join(self.parts)).strip()
 
 def local_name(tag):
     return tag.rsplit("}", 1)[-1].split(":")[-1].lower()
@@ -39,7 +40,7 @@ def plain_text(value):
         parser.feed(html.unescape(value or ""))
         return parser.result()
     except Exception:
-        return re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
+        return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
 
 def child_text(node, names):
     wanted = {name.lower() for name in names}
@@ -103,16 +104,15 @@ def main():
     for key, feed in FEEDS.items():
         try:
             data[key] = read_feed(feed)
-            print(f"Updated {key}: {len(data[key])} episodes")
+            print(f"Updated {key}: {len(data[key])} episodes from {feed['url']}")
         except Exception as exc:
             # Preserve the last good cache so a temporary feed outage does not blank News.
             print(f"WARNING: {key} refresh failed; keeping previous cache: {exc}")
-    from datetime import datetime, timezone
     data["updatedAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-        file.write("\\n")
+        file.write("\n")
 
 if __name__ == "__main__":
     main()
