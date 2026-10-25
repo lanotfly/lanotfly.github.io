@@ -87,7 +87,7 @@
         '<li><strong>Estimated storage per additional episode:</strong> '+formatBytes(result.averageEpisodeBytes)+'</li>'+
         '<li><strong>Estimated additional episodes before localStorage limit:</strong> about '+result.estimatedMore+' with a 10% reserve</li></ul>'+
         '<p class="storage-check__note">'+escapeText(warning)+'</p>'+
-        '<p class="storage-check__note">Important: the browser quota above covers the origin’s managed storage (typically IndexedDB and Cache storage); it is not an IndexedDB-only measurement and may not include localStorage consistently. The 5 MiB localStorage value is a common limit, not a live Safari quota. All figures are estimates. IndexedDB is available for larger structured data, but the current podcast played/history/progress code still uses localStorage; this check does not migrate those records.</p>';
+        '<p class="storage-check__note">Important: podcast played status, episode history, and playback progress now use IndexedDB when available. Existing matching localStorage records are migrated automatically and removed from localStorage after the IndexedDB transaction succeeds. The localStorage counts above show only records still left there (including unrelated site data and the duration cache). The browser quota covers origin storage overall, not IndexedDB alone; the 5 MiB localStorage value is a common limit, not a live Safari quota. All figures are estimates.</p>';
     }).catch(function(){panel.innerHTML+='<p class="storage-check__note">Could not read advanced storage estimates in this browser.</p>';});
   }
   function init(){
