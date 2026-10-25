@@ -10,7 +10,7 @@
       var audio=getAudio(name);
       if(audio&&!audio.paused){try{audio.pause();}catch(_){}}
     });
-    if(target==='radio4'||target==='nhk'){
+    if(target==='radio4'||target==='nhk'||target==='podcast'||target==='bible'){
       var panel=document.getElementById('podcast-episode-panel');
       if(panel)panel.hidden=true;
     }
