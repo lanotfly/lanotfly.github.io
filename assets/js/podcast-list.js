@@ -26,18 +26,25 @@
       }
       visibleEpisodes.forEach(function(item){
         var episode=item.episode,index=item.index,played=item.played;
+        var isCurrent=index===currentIndex;
+        var isPlaying=isCurrent&&config.isPlaying();
         var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
         var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
-        if(index===currentIndex)choose.classList.add('is-current');
-        choose.setAttribute('aria-current',index===currentIndex?'true':'false');
-        var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=index===currentIndex?'▶':String(index+1);
+        if(isCurrent)choose.classList.add('is-current');
+        if(isPlaying)choose.classList.add('is-playing');
+        choose.setAttribute('aria-current',isCurrent?'true':'false');
+        choose.setAttribute('aria-pressed',String(isPlaying));
+        choose.setAttribute('aria-label',(isCurrent?(isPlaying?'Pause episode: ':'Play episode: '):'Play episode: ')+(episode.title||('Episode '+(index+1))));
+        var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=isCurrent?(isPlaying?'Ⅱ':'▶'):String(index+1);
         var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
         var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
         choose.appendChild(number);choose.appendChild(title);choose.appendChild(state);
         var touchStartX=null,touchStartY=null,swipeHandled=false;
         choose.addEventListener('click',function(event){
           if(swipeHandled){event.preventDefault();event.stopImmediatePropagation();swipeHandled=false;return;}
-          if(config.getActiveId())config.playEpisodeAt(index);
+          if(!config.getActiveId())return;
+          if(index===config.getIndex())config.toggleCurrentEpisode();
+          else config.playEpisodeAt(index);
         });
         row.addEventListener('touchstart',function(event){
           if(!event.changedTouches||!event.changedTouches.length)return;
