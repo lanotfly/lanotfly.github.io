@@ -25,6 +25,9 @@
     }
   };
   var activeId=null;
+  /* Initialize queue state before the first render below. */
+  var episodeQueue=[];
+  var episodeIndex=-1;
   var panel=document.getElementById('podcast-episode-panel');
   var panelTitle=document.getElementById('podcast-panel-title');
   var panelArtwork=document.getElementById('podcast-panel-artwork');
@@ -167,8 +170,6 @@
     if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('podcast');
     Object.keys(shows).forEach(function(id){if(id!==activeId)paint(id,false);});
   }
-  var episodeQueue=[];
-  var episodeIndex=-1;
   function parseRss(xmlText){
     var xml=new DOMParser().parseFromString(xmlText,'text/xml');
     if(xml.querySelector('parsererror'))throw new Error('Invalid RSS feed');
