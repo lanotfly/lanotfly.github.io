@@ -21,7 +21,7 @@
       });
       if(panelMode==='compact'){
         var current=visibleEpisodes.find(function(item){return item.index===currentIndex;});
-        var following=visibleEpisodes.filter(function(item){return item.index>currentIndex;}).slice(0,3);
+        var following=visibleEpisodes.filter(function(item){return item.index>currentIndex;}).slice(0,4);
         visibleEpisodes=current?[current].concat(following):visibleEpisodes.slice(0,4);
       }
       visibleEpisodes.forEach(function(item){
