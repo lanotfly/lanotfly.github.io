@@ -19,10 +19,11 @@
         if(mode==='all')return true;
         return !item.played;
       });
-      if(panelMode!=='collapsed'){
+      /* "All" and "Played" are complete lists. Only the default upcoming queue is compact. */
+      if(panelMode!=='collapsed'&&mode==='unplayed'){
         var current=visibleEpisodes.find(function(item){return item.index===currentIndex;});
         var following=visibleEpisodes.filter(function(item){return item.index>currentIndex;}).slice(0,4);
-        visibleEpisodes=current?[current].concat(following):visibleEpisodes.slice(0,4);
+        visibleEpisodes=current?[current].concat(following):visibleEpisodes.slice(0,5);
       }
       visibleEpisodes.forEach(function(item){
         var episode=item.episode,index=item.index,played=item.played;
