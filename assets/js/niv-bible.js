@@ -18,18 +18,21 @@
     ['James','JAS',5],['1 Peter','1PE',5],['2 Peter','2PE',3],['1 John','1JN',5],['2 John','2JN',1],
     ['3 John','3JN',1],['Jude','JUD',1],['Revelation','REV',22]
   ];
-  var button=document.getElementById('niv-bible-toggle'),panel=document.getElementById('niv-bible-panel');
-  var testament=document.getElementById('niv-testament-select'),bookSelect=document.getElementById('niv-book-select');
-  var chapterList=document.getElementById('niv-chapter-list'),count=document.getElementById('niv-chapter-count');
-  var status=document.getElementById('niv-bible-status'),audio=document.getElementById('niv-bible-audio');
-  var lastKey='library_kjv_last_chapter',current={book:'GEN',chapter:1,index:0};
-  if(!button||!panel||!testament||!bookSelect||!chapterList||!audio)return;
+  var button=document.getElementById('niv-bible-toggle');
+  var panel=document.getElementById('niv-bible-panel');
+  var bookSelect=document.getElementById('niv-book-select');
+  var chapterSelect=document.getElementById('niv-chapter-select');
+  var status=document.getElementById('niv-bible-status');
+  var title=document.getElementById('niv-bible-now-playing');
+  var audio=document.getElementById('niv-bible-audio');
+  var lastKey='library_kjv_last_chapter';
+  var current={book:'GEN',chapter:1,index:0};
+  if(!button||!panel||!bookSelect||!chapterSelect||!audio)return;
   function savedChapter(){try{return JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){return null;}}
   function remember(book,chapter){try{localStorage.setItem(lastKey,JSON.stringify({book:book,chapter:chapter}));}catch(_){}}
-  function visibleBooks(){return books.filter(function(book,index){return testament.value==='old'?index<39:index>=39;});}
   function getBook(code){return books.find(function(book){return book[1]===code;});}
-  function chapterUrl(book,chapter){return 'https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/'+book+'+'+chapter+'.mp3';}
   function setStatus(message){if(status)status.textContent=message;}
+  function chapterUrl(book,chapter){return 'https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/'+book+'+'+chapter+'.mp3';}
   function setMetadata(book,chapter){
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
@@ -41,79 +44,96 @@
       navigator.mediaSession.playbackState=audio.paused?'paused':'playing';
     }catch(_){}
   }
-  function paintCurrent(){
-    chapterList.querySelectorAll('.niv-chapter-button').forEach(function(node){
-      var active=node.dataset.book===current.book&&Number(node.dataset.chapter)===current.chapter;
-      node.classList.toggle('is-current',active);
-      node.setAttribute('aria-current',active?'true':'false');
-      node.textContent=String(node.dataset.chapter)+(active?(audio.paused?'  ▶':'  ▮▮'):'');
-    });
-    if(button){button.classList.toggle('is-playing',!audio.paused);button.setAttribute('aria-pressed',String(!audio.paused));}
+  function paint(){
+    var playing=!audio.paused;
+    button.classList.toggle('is-playing',playing);
+    button.setAttribute('aria-pressed',String(playing));
+    button.setAttribute('aria-expanded',String(!panel.hidden));
+    button.setAttribute('aria-label',(playing?'Pause':'Play')+' KJV Audio Bible'+(current.book?' · '+(getBook(current.book)||books[0])[0]+' '+current.chapter:''));
+    button.title=(playing?'Pause':'Play')+' KJV Audio Bible';
   }
-  function populateBooks(preferredCode){
-    var list=visibleBooks();bookSelect.textContent='';
-    list.forEach(function(book){var option=document.createElement('option');option.value=book[1];option.textContent=book[0];bookSelect.appendChild(option);});
-    var wanted=list.find(function(book){return book[1]===preferredCode;});
-    if(wanted)bookSelect.value=wanted[1];
-    renderChapters();
-  }
-  function renderChapters(){
-    var book=getBook(bookSelect.value);chapterList.textContent='';
-    if(!book)return;
-    var saved=savedChapter();
-    for(var chapter=1;chapter<=book[2];chapter++){
-      var link=document.createElement('button');
-      link.type='button';link.className='niv-chapter-button';link.dataset.book=book[1];link.dataset.chapter=String(chapter);
-      link.textContent=String(chapter);link.setAttribute('aria-label','Play KJV '+book[0]+' chapter '+chapter);
-      if(saved&&saved.book===book[1]&&saved.chapter===chapter)link.classList.add('is-last-listened');
-      link.addEventListener('click',function(selectedBook,selectedChapter){return function(){playChapter(selectedBook,selectedChapter,true);};}(book[1],chapter));
-      chapterList.appendChild(link);
+  function populateChapters(preferredChapter){
+    var book=getBook(bookSelect.value)||books[0];
+    chapterSelect.textContent='';
+    for(var n=1;n<=book[2];n++){
+      var option=document.createElement('option');
+      option.value=String(n);option.textContent=String(n);
+      chapterSelect.appendChild(option);
     }
-    if(count)count.textContent=book[0]+' · '+book[2]+' chapters';
-    paintCurrent();
-    setStatus('Choose a chapter to play KJV audio here. Playback automatically continues to the next chapter.');
+    var chapter=Number(preferredChapter)||1;
+    chapterSelect.value=String(Math.min(Math.max(chapter,1),book[2]));
   }
-  function playChapter(bookCode,chapter,fromTap){
+  function playChapter(bookCode,chapter,shouldPlay){
     var book=getBook(bookCode);if(!book)return;
+    chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
     if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
     current={book:bookCode,chapter:chapter,index:books.findIndex(function(item){return item[1]===bookCode;})};
-    remember(bookCode,chapter);paintCurrent();
+    remember(bookCode,chapter);
+    bookSelect.value=bookCode;
+    populateChapters(chapter);
+    if(title)title.textContent=book[0]+' · Chapter '+chapter;
     audio.dataset.chapterTitle=book[0]+' '+chapter;
-    audio.src=chapterUrl(bookCode,chapter);
-    audio.load();
+    panel.hidden=false;
+    button.setAttribute('aria-expanded','true');
+    if(audio.src!==chapterUrl(bookCode,chapter)){
+      audio.src=chapterUrl(bookCode,chapter);
+      audio.load();
+    }
     setMetadata(book[0],chapter);
-    setStatus('Loading KJV audio: '+book[0]+' '+chapter+'…');
-    if(fromTap){
-      audio.play().then(function(){setStatus('Playing KJV · '+book[0]+' '+chapter);}).catch(function(){
-        setStatus('Tap Play in the audio controls to start '+book[0]+' '+chapter+'. If it fails, the audio host may be unavailable.');
+    setStatus('Loading KJV · '+book[0]+' '+chapter+'…');
+    paint();
+    if(shouldPlay){
+      audio.play().then(function(){
+        setStatus('Playing KJV · '+book[0]+' '+chapter);
+        if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='playing';}catch(_){}}
+        paint();
+      }).catch(function(){
+        setStatus('Ready: tap Play in the audio controls if playback did not start.');
+        paint();
       });
     }
   }
   function nextChapter(){
-    var book=getBook(current.book);
-    if(!book)return;
+    var book=getBook(current.book);if(!book)return;
     if(current.chapter<book[2])playChapter(current.book,current.chapter+1,true);
     else if(current.index+1<books.length)playChapter(books[current.index+1][1],1,true);
-    else setStatus('KJV Audio Bible finished.');
+    else {setStatus('KJV Audio Bible finished.');audio.pause();paint();}
   }
   function previousChapter(){
     if(current.chapter>1)playChapter(current.book,current.chapter-1,true);
     else if(current.index>0){var previous=books[current.index-1];playChapter(previous[1],previous[2],true);}
     else playChapter('GEN',1,true);
   }
-  testament.addEventListener('change',function(){populateBooks(null);});
-  bookSelect.addEventListener('change',renderChapters);
-  button.addEventListener('click',function(){
-    var willOpen=panel.hidden;
-    panel.hidden=!willOpen;button.setAttribute('aria-expanded',String(willOpen));
-    if(willOpen){var saved=savedChapter();if(saved){testament.value=books.findIndex(function(book){return book[1]===saved.book;})<39?'old':'new';populateBooks(saved.book);}else populateBooks(bookSelect.value||'GEN');}
-    else if(!audio.paused)audio.pause();
+  books.forEach(function(book){
+    var option=document.createElement('option');
+    option.value=book[1];option.textContent=book[0];
+    bookSelect.appendChild(option);
   });
-  audio.addEventListener('play',function(){paintCurrent();setMetadata(getBook(current.book).name||getBook(current.book)[0],current.chapter);setStatus('Playing KJV · '+getBook(current.book)[0]+' '+current.chapter);});
-  audio.addEventListener('pause',function(){paintCurrent();if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}});
-  audio.addEventListener('ended',nextChapter);
-  audio.addEventListener('error',function(){paintCurrent();setStatus('Could not load this chapter’s audio. Please try again shortly.');});
   var saved=savedChapter();
-  testament.value=saved&&books.findIndex(function(book){return book[1]===saved.book;})>=39?'new':'old';
-  populateBooks(saved?saved.book:'GEN');
+  var initialBook=saved&&getBook(saved.book)?saved.book:'GEN';
+  var initialChapter=saved&&getBook(saved.book)?saved.chapter:1;
+  bookSelect.value=initialBook;
+  populateChapters(initialChapter);
+  current={book:initialBook,chapter:initialChapter,index:books.findIndex(function(book){return book[1]===initialBook;})};
+  if(title)title.textContent=(getBook(initialBook)||books[0])[0]+' · Chapter '+initialChapter;
+  function togglePlayback(){
+    panel.hidden=false;
+    button.setAttribute('aria-expanded','true');
+    if(!audio.paused){audio.pause();setStatus('Paused · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);paint();return;}
+    if(audio.src&&audio.dataset.chapterTitle===((getBook(current.book)||books[0])[0]+' '+current.chapter)){
+      if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
+      audio.play().then(function(){setStatus('Playing KJV · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);paint();}).catch(function(){setStatus('Tap Play in the audio controls to start playback.');});
+    }else playChapter(current.book,current.chapter,true);
+  }
+  button.addEventListener('click',togglePlayback);
+  bookSelect.addEventListener('change',function(){
+    populateChapters(1);
+    if(title)title.textContent=(getBook(bookSelect.value)||books[0])[0]+' · Select chapter';
+  });
+  chapterSelect.addEventListener('change',function(){playChapter(bookSelect.value,Number(chapterSelect.value),true);});
+  audio.addEventListener('play',function(){setStatus('Playing KJV · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);setMetadata((getBook(current.book)||books[0])[0],current.chapter);paint();});
+  audio.addEventListener('pause',function(){if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
+  audio.addEventListener('ended',nextChapter);
+  audio.addEventListener('error',function(){setStatus('Could not load this chapter audio. Try again in a moment.');paint();});
+  paint();
 })(window,document);
