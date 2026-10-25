@@ -78,7 +78,7 @@
           var index=Number(row.dataset.episodeIndex),episode=config.getQueue()[index],element=row.querySelector('.podcast-episode-duration');
           if(episode&&element&&!element.textContent)requestDuration(episode,element);
         });
-      },{root:document.getElementById('podcast-episode-list'),rootMargin:'100px 0px'});
+      },{root:episodeList,rootMargin:'100px 0px'});
     }
     function render(){
       if(!episodeList)return;
