@@ -884,3 +884,9 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .niv-bible-queue-item{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding-left:7px;padding-right:7px;overflow:hidden}
 .niv-bible-queue-item .queue-position{flex:0 0 22px;min-width:0}
 .niv-bible-queue-item .queue-title{min-width:0;flex:1 1 auto;overflow-wrap:anywhere;word-break:normal}
+
+
+/* Slightly emphasize the podcast episode count and keep the single News label compact. */
+.podcast-episode-panel__tools .podcast-episode-count{font-size:14px!important;font-weight:750!important;line-height:1.35;letter-spacing:.01em}
+.site-nav-shell .site-tab-links .site-tab--news{gap:0!important}
+.site-tab--news .library-news-button-label{font-size:12px;font-weight:750;letter-spacing:.01em}
