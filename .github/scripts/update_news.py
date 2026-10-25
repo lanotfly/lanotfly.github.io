@@ -11,8 +11,6 @@ from datetime import datetime, timezone
 
 FEEDS = {
     "bbc": {"source": "BBC Global News Podcast", "url": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss"},
-    "guardian": {"source": "The Guardian · Today in Focus", "url": "https://www.theguardian.com/news/series/todayinfocus/podcast.xml"},
-    "nhk": {"source": "NHK ラジオニュース", "url": "https://www.nhk.or.jp/s-media/news/podcast/list/v1/all.xml"},
     "chronicle": {"source": "Chronicle · News Connect", "url": "https://rss.listen.style/p/smbslbmi/rss"},
 }
 
@@ -43,6 +41,20 @@ def child_text(node, names):
             value = "".join(child.itertext()).strip()
             if value:
                 return value
+    return ""
+
+def feed_artwork(root):
+    """Read the podcast's own artwork from feed metadata when available."""
+    channel = next((node for node in root.iter() if local_name(node.tag) == "channel"), root)
+    for node in channel.iter():
+        name = local_name(node.tag)
+        if name == "image":
+            for child in list(node):
+                if local_name(child.tag) == "url" and (child.text or "").strip().startswith(("http://", "https://")):
+                    return child.text.strip()
+            href = node.attrib.get("href", "").strip()
+            if href.startswith(("http://", "https://")):
+                return href
     return ""
 
 def item_audio(node):
@@ -85,6 +97,7 @@ def read_feed(feed):
     with urllib.request.urlopen(req, timeout=25) as response:
         payload = response.read()
     root = ET.fromstring(payload)
+    artwork = feed_artwork(root)
     items = []
     for node in root.iter():
         if local_name(node.tag) not in ("item", "entry"):
@@ -102,7 +115,7 @@ def read_feed(feed):
         item_nodes = [node for node in root.iter() if local_name(node.tag) in ("item", "entry")]
         sample_tags = [local_name(child.tag) for child in list(item_nodes[0])] if item_nodes else []
         raise ValueError(f"No usable RSS items found (root={local_name(root.tag)}, item_nodes={len(item_nodes)}, first_item_children={sample_tags})")
-    return items
+    return {"items": items, "artwork": artwork}
 
 def main():
     path = "assets/data/news.json"
@@ -111,14 +124,20 @@ def main():
             data = json.load(file)
     except (OSError, json.JSONDecodeError):
         data = {}
+    for key in ("guardian", "nhk"):
+        data.pop(key, None)
     for key in FEEDS:
         data.setdefault(key, [])
     data["sources"] = {key: feed["source"] for key, feed in FEEDS.items()}
+    data["artwork"] = data.get("artwork", {})
     data["feedStatus"] = {}
     for key, feed in FEEDS.items():
         checked = datetime.now(timezone.utc).isoformat(timespec="seconds")
         try:
-            data[key] = read_feed(feed)
+            result = read_feed(feed)
+            data[key] = result["items"]
+            if result["artwork"]:
+                data["artwork"][key] = result["artwork"]
             data["feedStatus"][key] = {"ok": True, "count": len(data[key]), "checkedAt": checked}
             print(f"OK {key}: {len(data[key])} episodes — {feed['url']}")
         except Exception as exc:
