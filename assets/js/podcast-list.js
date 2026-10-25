@@ -11,6 +11,75 @@
     var episodeCount=document.getElementById('podcast-episode-count');
     var panelStatus=document.getElementById('podcast-panel-status');
     var listModeSelect=document.getElementById('podcast-list-mode');
+    var durationCacheKey='personal-library-podcast-duration-cache-v1';
+    var durationCache={};
+    var durationProbeQueue=[];
+    var durationProbeActive=0;
+    var durationProbeRequested={};
+    var durationObserver=null;
+    try{durationCache=JSON.parse(localStorage.getItem(durationCacheKey)||'{}')||{};}catch(_){durationCache={};}
+    function durationIdentity(episode){return String(config.getActiveId()||'')+'|'+String(episode&&(episode.url||episode.pageUrl||episode.title)||'');}
+    function parseDuration(value){
+      if(value===undefined||value===null||value==='')return 0;
+      var raw=String(value).trim(),seconds=0;
+      if(/^\\d+(?:\\.\\d+)?$/.test(raw))seconds=Number(raw);
+      else if(/^\\d+(?::\\d{1,2}){1,2}$/.test(raw)){var parts=raw.split(':').map(Number);seconds=parts.length===3?parts[0]*3600+parts[1]*60+parts[2]:parts[0]*60+parts[1];}
+      else{var iso=raw.match(/^PT(?:(\\d+(?:\\.\\d+)?)H)?(?:(\\d+(?:\\.\\d+)?)M)?(?:(\\d+(?:\\.\\d+)?)S)?$/i);if(iso)seconds=Number(iso[1]||0)*3600+Number(iso[2]||0)*60+Number(iso[3]||0);}
+      return Number.isFinite(seconds)&&seconds>0?seconds:0;
+    }
+    function formatDuration(value){
+      var seconds=typeof value==='number'?value:parseDuration(value);
+      if(!seconds)return '';
+      var minutes=Math.max(1,Math.round(seconds/60)),hours=Math.floor(minutes/60),remainder=minutes%60;
+      return hours?hours+'h '+remainder+'m':minutes+'m';
+    }
+    function pumpDurationQueue(){
+      while(durationProbeActive<2&&durationProbeQueue.length){
+        var job=durationProbeQueue.shift();
+        if(!job.episode.url||job.element.isConnected===false)continue;
+        durationProbeActive++;
+        (function(task){
+          var audio=document.createElement('audio'),done=false,timer;
+          audio.preload='metadata';
+          function finish(seconds){
+            if(done)return;done=true;clearTimeout(timer);
+            audio.removeAttribute('src');try{audio.load();}catch(_){}
+            durationProbeActive--;
+            if(seconds>0){
+              durationCache[task.key]=Math.floor(seconds);
+              try{localStorage.setItem(durationCacheKey,JSON.stringify(durationCache));}catch(_){}
+              if(task.element.isConnected)task.element.textContent=formatDuration(seconds);
+            }
+            pumpDurationQueue();
+          }
+          audio.addEventListener('loadedmetadata',function(){finish(audio.duration);},{once:true});
+          audio.addEventListener('durationchange',function(){if(Number.isFinite(audio.duration)&&audio.duration>0)finish(audio.duration);},{once:true});
+          audio.addEventListener('error',function(){finish(0);},{once:true});
+          timer=setTimeout(function(){finish(0);},12000);
+          audio.src=task.episode.url;
+          try{audio.load();}catch(_){finish(0);}
+        })(job);
+      }
+    }
+    function requestDuration(episode,element){
+      var key=durationIdentity(episode);
+      if(durationCache[key]){element.textContent=formatDuration(durationCache[key]);return;}
+      if(!episode.url||durationProbeRequested[key])return;
+      durationProbeRequested[key]=true;
+      durationProbeQueue.push({episode:episode,element:element,key:key});
+      pumpDurationQueue();
+    }
+    if(typeof IntersectionObserver!=='undefined'){
+      durationObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting)return;
+          var row=entry.target;
+          durationObserver.unobserve(row);
+          var index=Number(row.dataset.episodeIndex),episode=config.getQueue()[index],element=row.querySelector('.podcast-episode-duration');
+          if(episode&&element&&!element.textContent)requestDuration(episode,element);
+        });
+      },{root:document.getElementById('podcast-episode-list'),rootMargin:'100px 0px'});
+    }
     function render(){
       if(!episodeList)return;
       episodeList.textContent='';
@@ -40,17 +109,10 @@
         var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=isCurrent?(isPlaying?'Ⅱ':'▶'):String(index+1);
         var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
         var duration=document.createElement('span');duration.className='podcast-episode-duration';
-        var rawDuration=episode.duration;
-        if(rawDuration!==undefined&&rawDuration!==null&&rawDuration!==''){
-          var durationText=String(rawDuration).trim();
-          var durationSeconds=0;
-          if(/^\d+(?:\.\d+)?$/.test(durationText))durationSeconds=Number(durationText);
-          else if(/^\d+(?::\d{1,2}){1,2}$/.test(durationText)){var durationParts=durationText.split(':').map(Number);durationSeconds=durationParts.length===3?durationParts[0]*3600+durationParts[1]*60+durationParts[2]:durationParts[0]*60+durationParts[1];}
-          else {
-            var iso=durationText.match(/^PT(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?$/i);
-            if(iso)durationSeconds=Number(iso[1]||0)*3600+Number(iso[2]||0)*60+Number(iso[3]||0);
-          }
-          if(durationSeconds>0){var durationHours=Math.floor(durationSeconds/3600),durationMinutes=Math.floor((durationSeconds%3600)/60),durationRemainder=Math.floor(durationSeconds%60);duration.textContent=durationHours?durationHours+':'+String(durationMinutes).padStart(2,'0')+':'+String(durationRemainder).padStart(2,'0'):durationMinutes+':'+String(durationRemainder).padStart(2,'0');}
+        duration.textContent=formatDuration(episode.duration);
+        if(!duration.textContent){
+          var cachedDuration=durationCache[durationIdentity(episode)];
+          if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
         }
         var meta=document.createElement('span');meta.className='podcast-episode-meta';
         var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
@@ -97,6 +159,8 @@
           touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
         },{passive:true});
         row.appendChild(choose);episodeList.appendChild(row);
+        if(durationObserver&&!duration.textContent&&episode.url)durationObserver.observe(row);
+        else if(!duration.textContent&&episode.url)requestDuration(episode,duration);
       });
       if(listModeSelect&&listModeSelect.value!==mode)listModeSelect.value=mode;
       /* The filter is self-explanatory; remove the redundant standalone label "List" if present. */
