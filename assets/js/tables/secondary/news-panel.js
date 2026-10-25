@@ -336,7 +336,18 @@
     }
     var audio = audioFor(feed.id);
     if (!audio) return;
-    audio.addEventListener('play', renderAll);
+    audio.addEventListener('play', function () {
+      var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
+      if (window.LibraryAudioIdentity && episode) {
+        window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'newsBbc' : 'newsChronicle', audio, {
+          title: episode.title || feed.title,
+          artist: feed.title,
+          album: feed.title,
+          artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '')
+        });
+      }
+      renderAll();
+    });
     audio.addEventListener('pause', function () { savePosition(feed, true); renderAll(); });
     audio.addEventListener('timeupdate', function () { savePosition(feed, false); updateProgress(feed); });
     audio.addEventListener('seeking', function () { updateProgress(feed); });
