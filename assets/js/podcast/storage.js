@@ -102,7 +102,7 @@
   }
   function applySavedProgress(audio,key){
     if(!audio||!key||audio.dataset.progressKey!==key||!Number.isFinite(audio.duration)||audio.duration<=0)return;
-    var saved=Number(cache[key]);
+    var saved=Number(cache[key]===undefined?safeLocalGet(key):cache[key]);
     if(Number.isFinite(saved)&&saved>0&&saved<audio.duration-2)audio.currentTime=saved;
   }
   function restoreProgress(audio){
@@ -136,7 +136,8 @@
     catch(_){finishReady();return;}
     request.onerror=function(){finishReady();};
     request.onsuccess=function(){
-      (request.result||[]).forEach(function(item){if(item&&typeof item.key==='string')cache[item.key]=item.value;});
+      var storedKeys=Object.create(null);
+      (request.result||[]).forEach(function(item){if(item&&typeof item.key==='string'){cache[item.key]=item.value;storedKeys[item.key]=true;}});
       var migrations=[];
       try{
         for(var i=0;i<localStorage.length;i++){
@@ -144,9 +145,9 @@
           if(!key||!(/^(personal-library-played:|personal-library-episode-history:|personal-library-progress:)/).test(key))continue;
           var raw=localStorage.getItem(key),value=raw;
           if(key.indexOf('personal-library-episode-history:')===0){try{value=raw?JSON.parse(raw):[];}catch(_){value=[];}}
-          if(cache[key]===undefined){
-            cache[key]=value;
-            migrations.push({key:key,value:value});
+          if(!storedKeys[key]){
+            if(cache[key]===undefined)cache[key]=value;
+            migrations.push({key:key,value:cache[key]});
           }
         }
       }catch(_){}
