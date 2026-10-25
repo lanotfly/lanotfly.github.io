@@ -28,7 +28,7 @@
         var episode=item.episode,index=item.index,played=item.played;
         var isCurrent=index===currentIndex;
         var isPlaying=isCurrent&&config.isPlaying();
-        var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
+        var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');row.dataset.episodeIndex=String(index);
         var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
         if(isCurrent)choose.classList.add('is-current');
         if(isPlaying)choose.classList.add('is-playing');
@@ -98,7 +98,23 @@
       config.setListMode(['unplayed','played','all'].indexOf(mode)>=0?mode:'unplayed');
       render();
     });
-    return {render:render};
+    function setCurrent(index,isPlaying){
+      if(!episodeList)return;
+      episodeList.querySelectorAll('.podcast-episode-row').forEach(function(row){
+        var current=Number(row.dataset.episodeIndex)===index;
+        var button=row.querySelector('.podcast-episode-choice');
+        if(!button)return;
+        button.classList.toggle('is-current',current);
+        button.classList.toggle('is-playing',current&&isPlaying);
+        button.setAttribute('aria-current',current?'true':'false');
+        button.setAttribute('aria-pressed',String(current&&isPlaying));
+        var number=button.querySelector('.podcast-episode-number');
+        var title=button.querySelector('.podcast-episode-name');
+        button.setAttribute('aria-label',(current?(isPlaying?'Pause episode: ':'Play episode: '):'Play episode: ')+(title?title.textContent:'Episode'));
+        if(number)number.textContent=current?(isPlaying?'Ⅱ':'▶'):String(Number(row.dataset.episodeIndex)+1);
+      });
+    }
+    return {render:render,setCurrent:setCurrent};
   }
   window.LibraryPodcastList={create:create};
 })(window,document);
