@@ -287,6 +287,9 @@
     /* Keep the existing progress UI mounted while the next episode loads to avoid list/player flicker. */
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
     if(episodeListModule&&episodeListModule.setCurrent)episodeListModule.setCurrent(episodeIndex,false);
+    /* Keep the progress control visible during source changes; update it in place
+       when metadata/timeupdate events arrive instead of hiding and recreating it. */
+    if(progressWrap)progressWrap.hidden=false;
     if(panelStatus)panelStatus.textContent='Loading audio…';
     resolveEpisodeAudio(episode).then(function(audioUrl){
       episode.url=audioUrl;
@@ -353,12 +356,16 @@
       showPanel(show,audio.dataset.episodeTitle||'');
       paint(activeId,true);
       setMetadata(show,audio.dataset.episodeTitle||show.title);
-      renderEpisodeList();
+      if(episodeListModule&&episodeListModule.setCurrent&&episodeIndex>=0){
+        episodeListModule.setCurrent(episodeIndex,true);
+      }
     }
   });
   audio.addEventListener('pause',function(){
     Object.keys(shows).forEach(function(id){paint(id,false);});
-    renderEpisodeList();
+    if(episodeListModule&&episodeListModule.setCurrent&&episodeIndex>=0){
+      episodeListModule.setCurrent(episodeIndex,false);
+    }
     if('mediaSession' in navigator){
       var bbc=document.getElementById('radio4-audio'),nhk=document.getElementById('nhk-radio-audio');
       if((!bbc||bbc.paused)&&(!nhk||nhk.paused)){try{navigator.mediaSession.playbackState='paused';}catch(_){}}
