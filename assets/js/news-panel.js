@@ -4,8 +4,8 @@
   if (window.__libraryNewsPanelInstalled) return;
   window.__libraryNewsPanelInstalled = true;
   var feeds = [
-    { id: 'english', source: 'BBC News', url: 'https://feeds.bbci.co.uk/news/rss.xml', lang: 'en' },
-    { id: 'japanese', source: 'NHKニュース', url: 'https://www.nhk.or.jp/rss/news/cat0.xml', lang: 'ja' }
+    { id: 'english', source: 'The Guardian', url: 'https://www.theguardian.com/international/rss', lang: 'en' },
+    { id: 'japanese', source: '朝日新聞デジタル', url: 'https://www.asahi.com/rss/asahi/newsheadlines.rdf', lang: 'ja' }
   ];
   var cache = {};
   var root = document.getElementById('library-news-panel');
