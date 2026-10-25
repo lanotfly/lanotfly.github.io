@@ -51,17 +51,17 @@
       row.appendChild(choice);queueList.appendChild(row);
     }
     var currentRow=queueList.querySelector('.niv-bible-queue-item.is-current');
-    if(currentRow){var rowTop=currentRow.offsetTop;var rowBottom=rowTop+currentRow.offsetHeight;var viewTop=queueList.scrollTop;var viewBottom=viewTop+queueList.clientHeight;if(rowTop<viewTop||rowBottom>viewBottom)queueList.scrollTop=Math.max(0,rowTop-queueList.clientHeight/2+currentRow.offsetHeight/2);}
+    if(currentRow){queueList.scrollTop=currentRow.offsetTop;}
   }
   function installQueue(){
     var filters=document.querySelector('.niv-bible-panel__filters');
     if(!filters||queueList)return;
     queueFrame=document.createElement('div');
     queueFrame.className='niv-bible-queue-frame';
-    queueFrame.setAttribute('aria-label','KJV chapters, current chapter first then earlier chapters');
+    queueFrame.setAttribute('aria-label','KJV chapters, chapters in canonical order; current chapter shown first');
     queueList=document.createElement('ol');
     queueList.id='niv-bible-queue';queueList.className='niv-bible-queue';
-    queueList.setAttribute('aria-label','Chapters in reverse order');
+    queueList.setAttribute('aria-label','KJV chapters in canonical order');
     queueFrame.appendChild(queueList);
     ['left','right'].forEach(function(side){
       var edge=document.createElement('div');
