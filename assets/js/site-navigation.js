@@ -11,7 +11,7 @@
       if (href === '/algorithms/') active = pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0;
       else if (href === '/data-structures/ai/') active = pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0;
       else if (href === '/data-structures/') active = pathname === '/data-structures/' || (pathname.indexOf('/data-structures/') === 0 && pathname.indexOf('/data-structures/ai/') !== 0);
-      else if (href === '/kubernetes/') active = pathname === '/kubernetes/' || pathname.indexOf('/kubernetes/') === 0;
+      else if (href === '/cloud/') active = pathname === '/cloud/' || pathname.indexOf('/cloud/') === 0;
       else if (href === '/home/') active = pathname === '/home/' || pathname === '/';
       link.classList.toggle('is-active', active);
       if (active) {
@@ -22,7 +22,7 @@
             link.classList.contains('site-tab--data') ? ['#1b407d','#1b407d'] :
             link.classList.contains('site-tab--algorithm') ? ['#824306','#824306'] :
             link.classList.contains('site-tab--ai') ? ['#115638','#115638'] :
-            link.classList.contains('site-tab--kubernetes') ? ['#07575d','#07575d'] : ['#46546a','#344052'];
+            link.classList.contains('site-tab--cloud') ? ['#07575d','#07575d'] : ['#46546a','#344052'];
           link.style.setProperty('color', activePalette[0], 'important');
           link.style.setProperty('background-color', 'transparent', 'important');
           link.style.setProperty('border-color', activePalette[1], 'important');
