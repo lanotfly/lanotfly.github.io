@@ -299,8 +299,17 @@
   function isEpisodePlayed(episode){
     try{return localStorage.getItem(episodeStorageKey(episode))==='1';}catch(_){return false;}
   }
-  function markEpisodePlayed(episode){
-    try{localStorage.setItem(episodeStorageKey(episode),'1');}catch(_){}
+  function setEpisodePlayed(episode,played){
+    try{
+      if(played)localStorage.setItem(episodeStorageKey(episode),'1');
+      else localStorage.removeItem(episodeStorageKey(episode));
+    }catch(_){}
+  }
+  function toggleEpisodePlayed(episode){
+    var nextPlayed=!isEpisodePlayed(episode);
+    setEpisodePlayed(episode,nextPlayed);
+    renderEpisodeList();
+    if(panelStatus)panelStatus.textContent=(nextPlayed?'Marked as played: ':'Marked as unplayed: ')+(episode.title||'Episode')+'. Swipe either direction to toggle again.';
   }
   function renderEpisodeList(){
     if(!episodeList)return;
@@ -314,13 +323,31 @@
       if(episodeListMode==='played'&&!played)return;
       visibleCount++;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
+      var isCurrent=index===episodeIndex&&activeId&& !audio.paused && audio.dataset.episodeTitle===(episode.title||'');
+      if(isCurrent)row.classList.add('is-current');
       var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
-      if(index===episodeIndex)choose.classList.add('is-current');
-      choose.setAttribute('aria-current',index===episodeIndex?'true':'false');
-      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=index===episodeIndex?'▶':String(index+1);
+      if(isCurrent)choose.classList.add('is-current');
+      choose.setAttribute('aria-current',isCurrent?'true':'false');
+      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=isCurrent?'▶':String(index+1);
       var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
-      choose.appendChild(number);choose.appendChild(title);
+      var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';state.setAttribute('aria-label',played?'Played':'Unplayed');
+      choose.appendChild(number);choose.appendChild(title);choose.appendChild(state);
       choose.addEventListener('click',function(){if(activeId){playEpisodeAt(index);}});
+      var touchStartX=null,touchStartY=null;
+      row.addEventListener('touchstart',function(event){
+        if(!event.changedTouches||!event.changedTouches.length)return;
+        touchStartX=event.changedTouches[0].clientX;touchStartY=event.changedTouches[0].clientY;
+      },{passive:true});
+      row.addEventListener('touchend',function(event){
+        if(touchStartX===null||!event.changedTouches||!event.changedTouches.length)return;
+        var dx=event.changedTouches[0].clientX-touchStartX;
+        var dy=event.changedTouches[0].clientY-touchStartY;
+        touchStartX=null;touchStartY=null;
+        if(Math.abs(dx)>=45&&Math.abs(dx)>Math.abs(dy)*1.25){
+          event.preventDefault();
+          toggleEpisodePlayed(episode);
+        }
+      },{passive:false});
       row.appendChild(choose);episodeList.appendChild(row);
     });
     if(listModeSelect)listModeSelect.value=episodeListMode;
@@ -525,10 +552,12 @@
       paint(activeId,true);
       var show=shows[activeId];
       setMetadata(show,audio.dataset.episodeTitle||show.title);
+      renderEpisodeList();
     }
   });
   audio.addEventListener('pause',function(){
     Object.keys(shows).forEach(function(id){paint(id,false);});
+    renderEpisodeList();
     if('mediaSession' in navigator){
       var bbc=document.getElementById('radio4-audio'),nhk=document.getElementById('nhk-radio-audio');
       if((!bbc||bbc.paused)&&(!nhk||nhk.paused)){try{navigator.mediaSession.playbackState='paused';}catch(_){}}
@@ -537,7 +566,7 @@
   audio.addEventListener('ended',function(){
     /* Mark an episode as finished only after it reaches the end, then skip older finished episodes. */
     if(!activeId||episodeIndex<0||episodeIndex>=episodeQueue.length)return;
-    markEpisodePlayed(episodeQueue[episodeIndex]);
+    setEpisodePlayed(episodeQueue[episodeIndex],true);
     renderEpisodeList();
     var nextIndex=-1;
     for(var i=episodeIndex+1;i<episodeQueue.length;i++){
