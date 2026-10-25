@@ -43,6 +43,8 @@
     });
   }
   updatePrimaryActive(window.location.pathname);
+  /* Let the News overlay temporarily clear the underlying wiki selection. */
+  window.LibraryUpdatePrimaryActive = updatePrimaryActive;
 
   /* Remember the last page visited in each learning area for tab-to-tab switching. */
   var lastPageKeys = {
