@@ -9,6 +9,7 @@
         <img class="nhk-radio-icon-image" src="/assets/images/nhk-radio.svg" alt="" aria-hidden="true">
         <span class="nhk-radio-label">NHK Radio</span>
       </button>
+      <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Open NIV Audio Bible chapter list" title="NIV Audio Bible"><span aria-hidden="true">NIV</span><span class="niv-button-label">Bible Audio</span></button>
       <button class="site-tab site-tab--podcast" id="bite-size-toggle" type="button" aria-pressed="false" aria-label="Play latest Bite Size Japanese episode" title="Play latest Bite Size Japanese episode">
         <span aria-hidden="true">JP</span><span class="podcast-button-label">Bite Size JP</span>
       </button>
@@ -42,3 +43,21 @@
     </div>
   </section>
 
+  <section id="niv-bible-panel" class="niv-bible-panel" aria-label="NIV Audio Bible chapters" hidden>
+    <div class="niv-bible-panel__heading">
+      <div><p class="niv-bible-panel__eyebrow">OFFICIAL AUDIO</p><h2 class="niv-bible-panel__title">NIV Audio Bible</h2></div>
+      <a class="niv-bible-official-link" href="https://www.bible.com/audio-bible-app-versions/111-niv-new-international-version" target="_blank" rel="noopener noreferrer">Open Bible.com</a>
+    </div>
+    <p class="niv-bible-panel__note">Choose a book and chapter. The official Bible.com audio reader opens in a new tab.</p>
+    <div class="niv-bible-panel__filters">
+      <label for="niv-testament-select">Testament
+        <select id="niv-testament-select"><option value="old">Old Testament</option><option value="new">New Testament</option></select>
+      </label>
+      <label for="niv-book-select">Book
+        <select id="niv-book-select"></select>
+      </label>
+      <span id="niv-chapter-count" class="niv-chapter-count" aria-live="polite"></span>
+    </div>
+    <div id="niv-chapter-list" class="niv-chapter-list" aria-label="Chapter numbers"></div>
+    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite">Choose a chapter to listen.</p>
+  </section>
