@@ -25,7 +25,11 @@
       <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="bbc" aria-label="BBC episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
     </div>
     <p class="podcast-episode-panel__status" data-news-status="bbc" aria-live="polite"></p>
-    <div class="podcast-episode-list news-podcast-episode-list" data-news-list="bbc" role="list"></div>
+    <div class="podcast-episode-scroll-frame news-podcast-episode-scroll-frame">
+      <div class="podcast-episode-list news-podcast-episode-list" data-news-list="bbc" role="list"></div>
+      <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div>
+      <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div>
+    </div>
   </section>
   <section id="news-feed-panel-chronicle" class="podcast-episode-panel news-podcast-panel" data-news-feed-panel="chronicle" role="tabpanel" aria-label="Chronicle News Connect" hidden>
     <div class="podcast-episode-panel__heading">
@@ -40,7 +44,11 @@
       <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="chronicle" aria-label="Chronicle episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
     </div>
     <p class="podcast-episode-panel__status" data-news-status="chronicle" aria-live="polite"></p>
-    <div class="podcast-episode-list news-podcast-episode-list" data-news-list="chronicle" role="list"></div>
+    <div class="podcast-episode-scroll-frame news-podcast-episode-scroll-frame">
+      <div class="podcast-episode-list news-podcast-episode-list" data-news-list="chronicle" role="list"></div>
+      <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div>
+      <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div>
+    </div>
   </section>
 </section>
             <hr class="post-list__divider" />
