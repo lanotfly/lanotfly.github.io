@@ -5,6 +5,8 @@ on:
     paths:
       - ".github/scripts/update_news.py"
       - ".github/workflows/update-news.yml"
+      - "assets/js/news-panel.js"
+      - "_layouts/default.html"
   schedule:
     - cron: "17,47 * * * *"
   workflow_dispatch:
