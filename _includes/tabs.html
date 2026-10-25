@@ -32,12 +32,12 @@
   <audio id="podcast-audio" preload="none" playsinline hidden></audio>
 </div>
   <section id="podcast-episode-panel" class="podcast-episode-panel" aria-label="Podcast episodes" hidden>
-    <div class="podcast-episode-panel__heading"><div><div class="podcast-episode-panel__eyebrow">PODCAST EPISODES</div><h2 id="podcast-panel-title" class="podcast-episode-panel__title">Choose an episode</h2></div><button id="podcast-panel-close" class="podcast-episode-panel__close" type="button" aria-expanded="true" aria-controls="podcast-episode-panel-content" aria-label="Collapse podcast list" title="Collapse podcast list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
+    <div class="podcast-episode-panel__heading"><div class="podcast-episode-panel__identity"><img id="podcast-panel-artwork" class="podcast-episode-panel__artwork" src="" alt="" loading="lazy"><div class="podcast-episode-panel__identity-text"><div class="podcast-episode-panel__eyebrow">NOW PLAYING PODCAST</div><h2 id="podcast-panel-title" class="podcast-episode-panel__title">Choose an episode</h2></div></div><button id="podcast-panel-close" class="podcast-episode-panel__close" type="button" aria-expanded="true" aria-controls="podcast-episode-panel-content" aria-label="Collapse podcast list" title="Collapse podcast list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
     <div id="podcast-episode-panel-content"><div class="podcast-progress" id="podcast-progress-wrap" hidden>
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
     </div>
-    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
+    <div class="podcast-episode-panel__tools"><div id="podcast-episode-count" class="podcast-episode-count" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label><p id="podcast-panel-status" class="podcast-episode-panel__status" aria-live="polite"></p></div>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
     </div>
   </section>
@@ -266,6 +266,8 @@
   var activeId=null;
   var panel=document.getElementById('podcast-episode-panel');
   var panelTitle=document.getElementById('podcast-panel-title');
+  var panelArtwork=document.getElementById('podcast-panel-artwork');
+  var episodeCount=document.getElementById('podcast-episode-count');
   var panelStatus=document.getElementById('podcast-panel-status');
   var episodeList=document.getElementById('podcast-episode-list');
   var closePanel=document.getElementById('podcast-panel-close');
@@ -291,7 +293,7 @@
   });
   ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,updateProgress);});
   var panelContent=document.getElementById('podcast-episode-panel-content');
-  function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;}
+  function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;if(panelArtwork){panelArtwork.src=show.artwork||'';panelArtwork.alt=show.title?show.title+' artwork':'';panelArtwork.hidden=!show.artwork;}}
   function setPanelCollapsed(collapsed){
     if(panelContent)panelContent.hidden=collapsed;
     if(closePanel){
@@ -399,9 +401,16 @@
       row.appendChild(choose);episodeList.appendChild(row);
     });
     if(listModeSelect&&listModeSelect.value!==episodeListMode)listModeSelect.value=episodeListMode;
+    if(episodeCount){
+      var count=visibleEpisodes.length;
+      episodeCount.textContent=count+' '+(count===1?'episode':'episodes');
+      if(!episodeQueue.length)episodeCount.textContent='No episodes';
+      else if(!count)episodeCount.textContent=episodeListMode==='played'?'0 played episodes':'0 unplayed episodes';
+    }
     if(panelStatus){
       if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
-      else panelStatus.textContent=visibleEpisodes.length+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Swipe left to mark Played; swipe right to mark Unplayed.';
+      else if(!visibleEpisodes.length)panelStatus.textContent=episodeListMode==='played'?'No played episodes yet.':'All episodes have been played.';
+      else panelStatus.textContent='';
     }
   }
   if(listModeSelect)listModeSelect.addEventListener('change',function(){
