@@ -125,7 +125,7 @@
         if(duration.textContent)textWrap.appendChild(duration);
         textWrap.insertBefore(title,textWrap.firstChild);
         if(meta.textContent)textWrap.insertBefore(meta,duration.textContent?duration:null);
-        var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
+        /* Played/Unplayed is shown by the shared filter above the list, not repeated on every row. */
         choose.appendChild(number);choose.appendChild(textWrap);
         var touchStartX=null,touchStartY=null,swipeHandled=false;
         choose.addEventListener('click',function(event){
@@ -166,7 +166,7 @@
         row.addEventListener('touchcancel',function(){
           touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
         },{passive:true});
-        row.appendChild(choose);row.appendChild(state);episodeList.appendChild(row);
+        row.appendChild(choose);episodeList.appendChild(row);
         if(durationObserver&&!duration.textContent&&episode.url)durationObserver.observe(row);
         else if(!duration.textContent&&episode.url)requestDuration(episode,duration);
       });
