@@ -1028,3 +1028,10 @@ html,body{max-width:100%;overflow-x:clip}
   .library-news-item__title{font-size:14px!important}
   .library-news-summary{font-size:13px!important;line-height:1.55!important}
 }
+
+
+/* Four-source RSS diagnostic: display each podcast as a full-width row. */
+.library-news-columns{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+.library-news-column{width:100%;min-width:0;padding:0!important;margin:0!important}
+.library-news-column__heading{font-size:16px!important}
+@media(max-width:700px){.library-news-columns{grid-template-columns:minmax(0,1fr)!important;gap:20px!important}}
