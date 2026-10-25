@@ -3,13 +3,13 @@
   'use strict';
   if(window.LibraryAudioIdentity)return;
   var root='/assets/images/';
-  var fallback=root+'audio-default.png';
+  var fallback=root+'your-library-icon.svg';
   var sources={
     radio4:{title:'BBC Radio',artist:'BBC Radio',album:'BBC Radio — Live',artwork:root+'bbc-radio-4-now-playing.png?v=20261025-1'},
     nhk:{title:'NHK Radio 1',artist:'NHK らじる★らじる',album:'NHK Radio 1 — Live',artwork:root+'nhk-radio-square.png?v=20261025-1'},
     newsBbc:{title:'Global News Podcast',artist:'BBC News',album:'BBC Global News Podcast',artwork:''},
     newsChronicle:{title:'News Connect',artist:'Chronicle',album:'Chronicle News Connect',artwork:''},
-    kjv:{title:'King James Version',artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:root+'kjv-audio.png'},
+    kjv:{title:'King James Version',artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:root+'your-library-icon.svg'},
     podcast:{title:'Podcast',artist:'Personal Library',album:'Personal Library Podcast',artwork:''}
   };
   var activeId=null;
