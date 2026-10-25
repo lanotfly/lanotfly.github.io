@@ -48,6 +48,14 @@
   var audio=document.getElementById('radio4-audio');
   var label=document.getElementById('radio4-label');
   if(!toggle||!audio||!label)return;
+  /* Stop podcast playback and hide its episode panel before any radio stream starts. */
+  function prepareRadioPlayback(){
+    var podcastAudio=document.getElementById('podcast-audio');
+    if(podcastAudio&&!podcastAudio.paused)podcastAudio.pause();
+    var podcastPanel=document.getElementById('podcast-episode-panel');
+    if(podcastPanel)podcastPanel.hidden=true;
+  }
+  window.__prepareRadioPlayback=prepareRadioPlayback;
   /* Keep iOS Lock Screen / Control Center metadata independent of the chapter title. */
   function setRadioMetadata(){
     if (!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
@@ -60,7 +68,7 @@
       ]
     });
     try {
-      navigator.mediaSession.setActionHandler('play', function(){ audio.play().catch(function(){}); });
+      navigator.mediaSession.setActionHandler('play', function(){ prepareRadioPlayback(); audio.play().catch(function(){}); });
       navigator.mediaSession.setActionHandler('pause', function(){ audio.pause(); });
     } catch (_) {}
   }
@@ -98,7 +106,8 @@
       paint(false);
       return;
     }
-    /* Stop the other station first, before claiming the iOS Now Playing session. */
+    /* Stop podcast playback and hide its list before claiming the Now Playing session. */
+    prepareRadioPlayback();
     var nhkAudio=document.getElementById('nhk-radio-audio');
     if(nhkAudio && !nhkAudio.paused) nhkAudio.pause();
     setRadioMetadata();
@@ -154,7 +163,7 @@
             {src:'https://lanotfly.github.io/assets/images/nhk-radio-square.png?v=20261024-2',sizes:'64x64',type:'image/png'}
           ]
         });
-        navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){paint(false);});});
+        navigator.mediaSession.setActionHandler('play',function(){if(window.__prepareRadioPlayback)window.__prepareRadioPlayback();audio.play().catch(function(){paint(false);});});
         navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
       }catch(_){}
     } else if('mediaSession' in navigator){
@@ -167,7 +176,8 @@
   }
   toggle.addEventListener('click',function(){
     if(!audio.paused){audio.pause();return;}
-    /* Stop BBC first, then start NHK from this user gesture. */
+    /* Stop podcast playback and hide its list before starting NHK. */
+    if(window.__prepareRadioPlayback)window.__prepareRadioPlayback();
     var bbcAudio=document.getElementById('radio4-audio');
     if(bbcAudio && !bbcAudio.paused) bbcAudio.pause();
     var result=audio.play();
@@ -210,7 +220,7 @@
           album:'NHK Radio 1 — Live',
           artwork:[{src:'https://lanotfly.github.io/assets/images/nhk-radio-square.png?v=20261024-2',sizes:'64x64',type:'image/png'}]
         }):null;
-        navigator.mediaSession.setActionHandler('play',function(){nhk.play().catch(function(){});});
+        navigator.mediaSession.setActionHandler('play',function(){if(window.__prepareRadioPlayback)window.__prepareRadioPlayback();nhk.play().catch(function(){});});
         navigator.mediaSession.setActionHandler('pause',function(){nhk.pause();});
         navigator.mediaSession.playbackState='playing';
       }else if(!bbc.paused){
@@ -220,7 +230,7 @@
           album:'BBC Radio — Live',
           artwork:[{src:'https://lanotfly.github.io/assets/images/bbc-radio-4-now-playing.png?v=20261024-6',sizes:'64x64',type:'image/png'}]
         }):null;
-        navigator.mediaSession.setActionHandler('play',function(){bbc.play().catch(function(){});});
+        navigator.mediaSession.setActionHandler('play',function(){if(window.__prepareRadioPlayback)window.__prepareRadioPlayback();bbc.play().catch(function(){});});
         navigator.mediaSession.setActionHandler('pause',function(){bbc.pause();});
         navigator.mediaSession.playbackState='playing';
       }else{
