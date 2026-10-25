@@ -46,6 +46,9 @@ def child_text(node, names):
     return ""
 
 def item_link(node):
+    for attr, value in node.attrib.items():
+        if local_name(attr) in ("about", "href", "link") and value.strip().startswith(("http://", "https://")):
+            return value.strip()
     for child in list(node):
         if local_name(child.tag) != "link":
             continue
@@ -73,7 +76,9 @@ def read_feed(feed):
         if len(items) >= 5:
             break
     if not items:
-        raise ValueError("No usable RSS items found")
+        item_nodes = [node for node in root.iter() if local_name(node.tag) in ("item", "entry")]
+        sample_tags = [local_name(child.tag) for child in list(item_nodes[0])] if item_nodes else []
+        raise ValueError(f"No usable RSS items found (root={local_name(root.tag)}, item_nodes={len(item_nodes)}, first_item_children={sample_tags})")
     return items
 
 def main():
