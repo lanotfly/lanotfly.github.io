@@ -359,6 +359,9 @@
     var visibleEpisodes=episodeQueue.map(function(episode,index){
       return {episode:episode,index:index,played:isEpisodePlayed(episode)};
     }).filter(function(item){
+      /* Always keep the current episode visible so its Played/Unplayed state can be changed,
+         even when it does not match the selected list filter. */
+      if(item.index===episodeIndex)return true;
       if(episodeListMode==='played')return item.played;
       if(episodeListMode==='all')return true;
       return !item.played;
