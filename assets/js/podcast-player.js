@@ -332,7 +332,8 @@
       if(panelStatus)panelStatus.textContent='Loading episodes…';
       button.classList.add('is-loading');
       fetchEpisodes(show).then(function(episodes){
-        episodeQueue=episodes;
+        /* Keep episodes previously seen on this device even if the publisher trims its RSS feed. */
+        episodeQueue=window.LibraryPodcastStorage.mergeEpisodeHistory(id,episodes);
         /* Start with the first Unplayed episode in the feed's original All episodes order.
            Skip episodes already marked Played instead of always replaying feed item zero. */
         episodeIndex=-1;
@@ -346,7 +347,17 @@
           panelStatus.textContent='No unplayed episodes remain. Choose “All episodes” to replay one.';
         }
       }).catch(function(){
-        if(panelStatus)panelStatus.textContent='Could not load episodes in this browser. Try again later, or open the podcast in Apple Podcasts.';
+        /* If RSS is temporarily unavailable, still show the locally saved episode archive. */
+        var saved=window.LibraryPodcastStorage.getEpisodeHistory(id);
+        if(saved.length){
+          episodeQueue=saved;
+          episodeIndex=-1;
+          for(var i=0;i<saved.length;i++){if(!isEpisodePlayed(saved[i])){episodeIndex=i;break;}}
+          renderEpisodeList();
+          if(panelStatus)panelStatus.textContent='Showing saved episode history; could not refresh the latest RSS feed.';
+        }else if(panelStatus){
+          panelStatus.textContent='Could not load episodes in this browser. Try again later, or open the podcast in Apple Podcasts.';
+        }
       }).finally(function(){button.classList.remove('is-loading');});
     });
   });
