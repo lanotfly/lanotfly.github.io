@@ -572,9 +572,10 @@
 .podcast-panel-filter[hidden]{display:none}
 .podcast-episode-list{display:flex;flex-direction:column;gap:5px;max-height:min(48vh,420px);overflow-y:auto;overscroll-behavior:contain}
 .podcast-episode-row{position:relative;margin:0;touch-action:pan-y;overflow:hidden;opacity:1;transform:translateX(0);max-height:160px;border-radius:8px;background:#dff5e6;transition:transform .18s cubic-bezier(.2,.7,.2,1),opacity .16s ease-out,max-height .18s ease-out,margin .18s ease-out;will-change:transform,opacity}
-.podcast-episode-row::before,.podcast-episode-row::after{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:6px;padding:0 14px;color:#17663a;font:700 12px system-ui,sans-serif;white-space:nowrap;pointer-events:none}
-.podcast-episode-row::before{content:"✓ Played";right:0;justify-content:flex-end}
-.podcast-episode-row::after{content:"↶ Unplayed";left:0;justify-content:flex-start}
+.podcast-episode-row::before,.podcast-episode-row::after{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:6px;padding:0 14px;color:#17663a;font:700 12px system-ui,sans-serif;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s ease}
+.podcast-episode-row::before{content:attr(data-swipe-label);right:0;justify-content:flex-end}
+.podcast-episode-row::after{content:attr(data-swipe-label);left:0;justify-content:flex-start}
+.podcast-episode-row.is-swiping-left::before,.podcast-episode-row.is-swiping-right::after{opacity:1}
 .podcast-episode-row.is-swiping-left .podcast-episode-choice,.podcast-episode-row.is-swiping-right .podcast-episode-choice{box-shadow:0 0 0 1px #8bcba3}
 .podcast-episode-row.is-swiping-left .podcast-episode-choice{border-color:#86c99d}
 .podcast-episode-row.is-swiping-right .podcast-episode-choice{border-color:#86c99d}
