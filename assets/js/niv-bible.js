@@ -172,7 +172,7 @@
     }else playChapter(selectedBook,selectedChapter,true);
   }
   button.addEventListener('click',togglePlayback);
-  bookSelect.addEventListener('change',function(){playChapter(bookSelect.value,1,true);});
+  bookSelect.addEventListener('change',function(){playChapter(bookSelect.value,1,false);});
   audio.addEventListener('play',function(){setStatus('Playing KJV · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);setMetadata((getBook(current.book)||books[0])[0],current.chapter);paint();});
   audio.addEventListener('pause',function(){if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
   audio.addEventListener('timeupdate',function(){
