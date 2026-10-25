@@ -113,7 +113,14 @@
       paint(true);
     }
   });
-  audio.addEventListener('play',function(){setRadioMetadata();paint(true);});
+  audio.addEventListener('play',function(){
+    /* A station and a podcast must never play simultaneously. */
+    var podcastAudio=document.getElementById('podcast-audio');
+    var nhkAudio=document.getElementById('nhk-radio-audio');
+    if(podcastAudio&&!podcastAudio.paused)podcastAudio.pause();
+    if(nhkAudio&&!nhkAudio.paused)nhkAudio.pause();
+    setRadioMetadata();paint(true);
+  });
   audio.addEventListener('pause',function(){paint(false);});
   audio.addEventListener('ended',function(){paint(false);});
   audio.addEventListener('error',function(){paint(false);});
@@ -169,7 +176,14 @@
       paint(true);
     }
   });
-  audio.addEventListener('play',function(){paint(true);});
+  audio.addEventListener('play',function(){
+    /* Pause the podcast and BBC before NHK owns playback. */
+    var podcastAudio=document.getElementById('podcast-audio');
+    var bbcAudio=document.getElementById('radio4-audio');
+    if(podcastAudio&&!podcastAudio.paused)podcastAudio.pause();
+    if(bbcAudio&&!bbcAudio.paused)bbcAudio.pause();
+    paint(true);
+  });
   audio.addEventListener('pause',function(){paint(false);});
   audio.addEventListener('ended',function(){paint(false);});
   audio.addEventListener('error',function(){paint(false);});
@@ -184,6 +198,9 @@
 
   function syncNowPlaying(){
     if(!('mediaSession' in navigator))return;
+    /* Radio pause events must not overwrite the podcast's active Now Playing session. */
+    var podcastAudio=document.getElementById('podcast-audio');
+    if(podcastAudio&&!podcastAudio.paused)return;
     try{
       if(!nhk.paused){
         navigator.mediaSession.metadata=typeof MediaMetadata!=='undefined'?new MediaMetadata({
@@ -232,7 +249,8 @@
       feed:'https://anchor.fm/s/463a19c0/podcast/rss',
       proxyFeed:true,
       apple:'https://podcasts.apple.com/jp/podcast/the-bite-size-japanese-podcast/id1588405417?l=en-US',
-      artwork:'https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/3c/2c/7f/3c2c7f52-ef6a-4f20-89b9-40d2b7a61c85/mza_16673831214975369420.jpg/600x600bb.jpg'
+      artwork:'https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/3c/2c/7f/3c2c7f52-ef6a-4f20-89b9-40d2b7a61c85/mza_16673831214975369420.jpg/600x600bb.jpg',
+      artworkSize:'600x600'
     },
     'lukes-english-toggle':{
       title:'Easy Natural English with Liam',
@@ -497,7 +515,18 @@
       }).finally(function(){button.classList.remove('is-loading');});
     });
   });
-  audio.addEventListener('play',function(){if(activeId)paint(activeId,true);});
+  audio.addEventListener('play',function(){
+    /* The shared podcast element also claims exclusive playback when started from iOS controls. */
+    ['radio4-audio','nhk-radio-audio'].forEach(function(id){
+      var station=document.getElementById(id);
+      if(station&&!station.paused)station.pause();
+    });
+    if(activeId){
+      paint(activeId,true);
+      var show=shows[activeId];
+      setMetadata(show,audio.dataset.episodeTitle||show.title);
+    }
+  });
   audio.addEventListener('pause',function(){
     Object.keys(shows).forEach(function(id){paint(id,false);});
     if('mediaSession' in navigator){
