@@ -1,0 +1,40 @@
+---
+layout: default
+title: "Linux — Filesystem and Command Line"
+permalink: /linux/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Linux chapters">
+<a href="/linux/" class="current">Overview</a><a href="/linux/filesystem/">1. Filesystem</a><a href="/linux/commands/">2. Commands</a>
+</nav>
+<p class="lead">A practical Linux guide for everyday terminal use and SRE work. Start by understanding where files live, then learn the commands that help you inspect and operate a system.</p>
+<h1>Linux fundamentals</h1>
+<div class="cards">
+<section class="card">
+<h2><a href="/linux/filesystem/">1. Linux filesystem structure</a></h2>
+<p>Learn the purpose of the main directories, including <code>/etc</code>, <code>/var</code>, <code>/usr</code>, <code>/home</code>, <code>/proc</code>, and <code>/sys</code>.</p>
+<p class="home-link"><a href="/linux/filesystem/">Open filesystem guide →</a></p>
+</section>
+<section class="card">
+<h2><a href="/linux/commands/">2. Essential Linux commands</a></h2>
+<p>Navigate directories, inspect files and logs, search text, check disk and memory usage, examine processes, and troubleshoot services.</p>
+<p class="home-link"><a href="/linux/commands/">Open command guide →</a></p>
+</section>
+</div>
+<h2>A simple mental model</h2>
+<ul>
+<li><strong>Everything starts at <code>/</code>:</strong> Linux organizes files and directories in one directory tree, even when storage devices are mounted underneath it.</li>
+<li><strong>Commands operate on paths and processes:</strong> learn the current directory, absolute versus relative paths, standard input/output, and exit status.</li>
+<li><strong>Inspect before changing:</strong> use read-only commands first; understand a command's target and options before deleting files or changing permissions.</li>
+</ul>
+<h2>Start here</h2>
+<pre><code>pwd
+ls -lah /
+cd /var/log
+less syslog
+df -h
+ps aux</code></pre>
+<p>Log filenames differ by distribution and service manager. If <code>/var/log/syslog</code> does not exist, inspect the directory or use <code>journalctl</code> on systems that use systemd.</p>
+<div class="prev-next"><span></span><a href="/linux/filesystem/">Filesystem structure →</a></div>
+</div>
