@@ -32,6 +32,8 @@
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
       navigator.mediaSession.metadata=new MediaMetadata(meta);
+      /* Clear transport actions from the previous source before installing this source's controls. */
+      try{navigator.mediaSession.setActionHandler('previoustrack',null);navigator.mediaSession.setActionHandler('nexttrack',null);}catch(_){}
       if(audio){
         navigator.mediaSession.setActionHandler('play',function(){if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo(id==='kjv'?'bible':id==='radio4'?'radio4':id==='nhk'?'nhk':id.indexOf('news')===0?'news':'podcast');audio.play().catch(function(){});});
         navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
