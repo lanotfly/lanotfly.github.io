@@ -59,6 +59,29 @@
     queueList.className='podcast-episode-list niv-bible-queue';
     queueList.setAttribute('role','list');
     queueFrame.appendChild(queueList);
+    var heading=panel.querySelector('.niv-bible-panel__heading');
+    var collapseButton=document.getElementById('niv-bible-queue-toggle');
+    if(!collapseButton&&heading){
+      collapseButton=document.createElement('button');
+      collapseButton.id='niv-bible-queue-toggle';
+      collapseButton.className='niv-bible-queue-toggle';
+      collapseButton.type='button';
+      collapseButton.setAttribute('aria-controls','niv-bible-queue');
+      collapseButton.setAttribute('aria-expanded','true');
+      collapseButton.setAttribute('aria-label','Collapse chapter list');
+      collapseButton.title='Collapse chapter list';
+      collapseButton.innerHTML='<svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg>';
+      bookSelect.insertAdjacentElement('afterend',collapseButton);
+      collapseButton.addEventListener('click',function(){
+        var collapsed=collapseButton.getAttribute('aria-expanded')==='true';
+        collapseButton.setAttribute('aria-expanded',String(!collapsed));
+        collapseButton.setAttribute('aria-label',collapsed?'Expand chapter list':'Collapse chapter list');
+        collapseButton.title=collapsed?'Expand chapter list':'Collapse chapter list';
+        collapseButton.classList.toggle('is-collapsed',collapsed);
+        if(queueFrame)queueFrame.hidden=collapsed;
+        if(tools)tools.hidden=collapsed;
+      });
+    }
     ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);});
     anchor.parentNode.insertBefore(tools,anchor.nextSibling);
     anchor.parentNode.insertBefore(queueFrame,tools.nextSibling);
@@ -111,7 +134,7 @@
     }
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
-      navigator.mediaSession.metadata=new MediaMetadata({title:chapterTitle,artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:[{src:'/assets/images/your-library-icon.svg',sizes:'512x512',type:'image/svg+xml'}]});
+      navigator.mediaSession.metadata=new MediaMetadata({title:chapterTitle,artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:[{src:'/assets/images/kjv-audio-lockscreen.png?v=20261025-1',sizes:'512x512',type:'image/png'}]});
       navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){});});
       navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
       navigator.mediaSession.setActionHandler('previoustrack',previousChapter);
