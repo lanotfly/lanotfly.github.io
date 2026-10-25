@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch podcast RSS feeds and publish same-origin JSON for the GitHub Pages News panel."""
+"""Fetch four podcast RSS feeds and publish a same-origin JSON cache for GitHub Pages."""
 import html
 import json
 import os
@@ -10,24 +10,18 @@ from html.parser import HTMLParser
 from datetime import datetime, timezone
 
 FEEDS = {
-    "english": {
-        "source": "The Guardian · Today in Focus",
-        "url": "https://www.theguardian.com/news/series/todayinfocus/podcast.xml",
-    },
-    "japanese": {
-        "source": "NHK ラジオニュース",
-        "url": "https://www.nhk.or.jp/s-media/news/podcast/list/v1/all.xml",
-    },
+    "bbc": {"source": "BBC Global News Podcast", "url": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss"},
+    "guardian": {"source": "The Guardian · Today in Focus", "url": "https://www.theguardian.com/news/series/todayinfocus/podcast.xml"},
+    "nhk": {"source": "NHK ラジオニュース", "url": "https://www.nhk.or.jp/s-media/news/podcast/list/v1/all.xml"},
+    "chronicle": {"source": "Chronicle · News Connect", "url": "https://rss.listen.style/p/smbslbmi/rss"},
 }
 
 class TextOnly(HTMLParser):
     def __init__(self):
         super().__init__()
         self.parts = []
-
     def handle_data(self, value):
         self.parts.append(value)
-
     def result(self):
         return re.sub(r"\s+", " ", " ".join(self.parts)).strip()
 
@@ -62,10 +56,7 @@ def item_link(node):
     return guid if guid.startswith(("http://", "https://")) else ""
 
 def read_feed(feed):
-    req = urllib.request.Request(
-        feed["url"],
-        headers={"User-Agent": "PersonalLibraryNewsFeed/1.0 (GitHub Actions; RSS reader)"},
-    )
+    req = urllib.request.Request(feed["url"], headers={"User-Agent": "PersonalLibraryNewsFeed/1.0 (GitHub Actions; RSS reader)"})
     with urllib.request.urlopen(req, timeout=25) as response:
         payload = response.read()
     root = ET.fromstring(payload)
@@ -78,17 +69,11 @@ def read_feed(feed):
         summary = plain_text(child_text(node, {"encoded", "content", "description", "summary"}))
         date = child_text(node, {"pubdate", "published", "updated", "date"})
         if title and link:
-            items.append({
-                "title": title,
-                "summary": summary,
-                "link": link,
-                "date": date,
-                "source": feed["source"],
-            })
+            items.append({"title": title, "summary": summary, "link": link, "date": date, "source": feed["source"]})
         if len(items) >= 5:
             break
     if not items:
-        raise ValueError("No usable RSS items found: " + feed["url"])
+        raise ValueError("No usable RSS items found")
     return items
 
 def main():
@@ -98,16 +83,19 @@ def main():
             data = json.load(file)
     except (OSError, json.JSONDecodeError):
         data = {}
-    data.setdefault("english", [])
-    data.setdefault("japanese", [])
+    for key in FEEDS:
+        data.setdefault(key, [])
     data["sources"] = {key: feed["source"] for key, feed in FEEDS.items()}
+    data["feedStatus"] = {}
     for key, feed in FEEDS.items():
+        checked = datetime.now(timezone.utc).isoformat(timespec="seconds")
         try:
             data[key] = read_feed(feed)
-            print(f"Updated {key}: {len(data[key])} episodes from {feed['url']}")
+            data["feedStatus"][key] = {"ok": True, "count": len(data[key]), "checkedAt": checked}
+            print(f"OK {key}: {len(data[key])} episodes — {feed['url']}")
         except Exception as exc:
-            # Preserve the last good cache so a temporary feed outage does not blank News.
-            print(f"WARNING: {key} refresh failed; keeping previous cache: {exc}")
+            data["feedStatus"][key] = {"ok": False, "error": str(exc), "checkedAt": checked}
+            print(f"FAILED {key}: {feed['url']} — {type(exc).__name__}: {exc}")
     data["updatedAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
