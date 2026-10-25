@@ -46,12 +46,12 @@
     data: 'library_last_page_data_structure',
     algorithm: 'library_last_page_algorithm',
     ai: 'library_last_page_ai',
-    kubernetes: 'library_last_page_kubernetes'
+    kubernetes: 'library_last_page_cloud'
   };
   function sectionForPath(pathname){
     if (pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0) return 'algorithm';
     if (pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0) return 'ai';
-    if (pathname === '/kubernetes/' || pathname.indexOf('/kubernetes/') === 0) return 'kubernetes';
+    if (pathname === '/cloud/' || pathname.indexOf('/cloud/') === 0) return 'kubernetes';
     if (pathname === '/data-structures/' || pathname.indexOf('/data-structures/') === 0) return 'data';
     return null;
   }
@@ -74,7 +74,7 @@
     var targetSection = link.classList.contains('site-tab--data') ? 'data' :
       (link.classList.contains('site-tab--algorithm') ? 'algorithm' :
       (link.classList.contains('site-tab--ai') ? 'ai' :
-      (link.classList.contains('site-tab--kubernetes') ? 'kubernetes' : null)));
+      (link.classList.contains('site-tab--cloud') ? 'kubernetes' : null)));
     if (!targetSection) return null;
     var currentSection = sectionForPath(currentPath);
     if (currentSection === targetSection) return currentPath;
