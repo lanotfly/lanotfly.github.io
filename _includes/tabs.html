@@ -358,7 +358,7 @@
   var listModeSelect=document.getElementById('podcast-list-mode');
   function episodeStorageKey(episode){
     /* Titles are stable across RSS refreshes; media URLs may be rotated by feeds/proxies. */
-    var title=String(episode&&(episode.title||episode.pageUrl)||'unknown').trim().toLowerCase().replace(/\\s+/g,' ');
+    var title=String(episode&&(episode.title||episode.pageUrl)||'unknown').trim().toLowerCase().replace(/\s+/g,' ');
     return 'personal-library-played:'+activeId+':title:'+encodeURIComponent(title);
   }
   function legacyEpisodeStorageKey(episode){
