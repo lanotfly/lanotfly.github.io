@@ -330,31 +330,60 @@
   window.addEventListener('pagehide',savePlaybackProgress);
   var panelContent=document.getElementById('podcast-episode-panel-content');
   function showPanel(show,episodeTitle){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=episodeTitle||audio.dataset.episodeTitle||'';if(panelArtwork){panelArtwork.src=show.artwork||'';panelArtwork.alt=show.title?show.title+' artwork':'';panelArtwork.hidden=!show.artwork;}}
-  function setPanelCollapsed(collapsed){
+  /* Three panel states: full list, current episode plus three below, and header only. */
+  var episodePanelMode='full';
+  function setEpisodePanelMode(mode){
+    episodePanelMode=mode;
+    var collapsed=mode==='collapsed';
     if(panelContent)panelContent.hidden=collapsed;
     if(closePanel){
+      var nextMode=mode==='full'?'compact':(mode==='compact'?'collapsed':'full');
+      var nextLabel=nextMode==='full'?'Show full podcast list':(nextMode==='compact'?'Show compact podcast list':'Hide podcast list');
       closePanel.setAttribute('aria-expanded',String(!collapsed));
-      closePanel.setAttribute('aria-label',collapsed?'Expand podcast list':'Collapse podcast list');
-      closePanel.title=collapsed?'Expand podcast list':'Collapse podcast list';
+      closePanel.setAttribute('aria-label',nextLabel);
+      closePanel.title=nextLabel;
       closePanel.classList.toggle('is-collapsed',collapsed);
+      closePanel.classList.toggle('is-compact',mode==='compact');
     }
-    if(panel)panel.classList.toggle('is-collapsed',collapsed);
+    if(panel){
+      panel.classList.toggle('is-collapsed',collapsed);
+      panel.classList.toggle('is-compact',mode==='compact');
+    }
+    renderEpisodeList();
   }
   if(closePanel)closePanel.addEventListener('click',function(){
-    setPanelCollapsed(closePanel.getAttribute('aria-expanded')==='true');
+    setEpisodePanelMode(episodePanelMode==='full'?'compact':(episodePanelMode==='compact'?'collapsed':'full'));
   });
   var episodeListMode='unplayed';
   var listModeSelect=document.getElementById('podcast-list-mode');
   function episodeStorageKey(episode){
-    return 'personal-library-played:'+activeId+':'+(episode.url||episode.pageUrl||episode.title||'unknown');
+    /* Titles are stable across RSS refreshes; media URLs may be rotated by feeds/proxies. */
+    var title=String(episode&&(episode.title||episode.pageUrl)||'unknown').trim().toLowerCase().replace(/\\s+/g,' ');
+    return 'personal-library-played:'+activeId+':title:'+encodeURIComponent(title);
+  }
+  function legacyEpisodeStorageKey(episode){
+    return 'personal-library-played:'+activeId+':'+(episode&&(episode.url||episode.pageUrl||episode.title)||'unknown');
   }
   function isEpisodePlayed(episode){
-    try{return localStorage.getItem(episodeStorageKey(episode))==='1';}catch(_){return false;}
+    try{
+      if(localStorage.getItem(episodeStorageKey(episode))==='1')return true;
+      /* Read and migrate existing Played flags saved by the older URL-based key. */
+      if(localStorage.getItem(legacyEpisodeStorageKey(episode))==='1'){
+        localStorage.setItem(episodeStorageKey(episode),'1');
+        return true;
+      }
+    }catch(_){}
+    return false;
   }
   function setEpisodePlayed(episode,played){
     try{
-      if(played)localStorage.setItem(episodeStorageKey(episode),'1');
-      else localStorage.removeItem(episodeStorageKey(episode));
+      if(played){
+        localStorage.setItem(episodeStorageKey(episode),'1');
+        localStorage.setItem(legacyEpisodeStorageKey(episode),'1');
+      }else{
+        localStorage.removeItem(episodeStorageKey(episode));
+        localStorage.removeItem(legacyEpisodeStorageKey(episode));
+      }
     }catch(_){}
   }
   function toggleEpisodePlayed(episode){
@@ -376,6 +405,11 @@
       if(episodeListMode==='all')return true;
       return !item.played;
     });
+    if(episodePanelMode==='compact'){
+      var current=visibleEpisodes.find(function(item){return item.index===episodeIndex;});
+      var following=visibleEpisodes.filter(function(item){return item.index>episodeIndex;}).slice(0,3);
+      visibleEpisodes=current?[current].concat(following):visibleEpisodes.slice(0,4);
+    }
     visibleEpisodes.forEach(function(item){
       var episode=item.episode,index=item.index,played=item.played;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
