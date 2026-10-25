@@ -588,6 +588,12 @@
 @media(max-width:700px){.podcast-episode-panel{margin:8px 0 12px;padding:11px}.podcast-episode-panel__title{font-size:14px}.podcast-episode-list{max-height:50vh}.podcast-episode-choice{min-height:44px;padding:8px;font-size:12px}.podcast-episode-state{font-size:9px;padding:3px 5px}}
 
 
+/* Hard override: keep the RSS episode rows visible even if another site style hides list children. */
+#podcast-episode-list{display:flex!important;flex-direction:column!important;gap:5px!important;visibility:visible!important;opacity:1!important;min-height:44px!important;height:auto!important;overflow-y:auto!important}
+#podcast-episode-list>.podcast-episode-row{display:block!important;visibility:visible!important;position:relative!important;opacity:1!important;transform:none!important;max-height:none!important;height:auto!important;overflow:visible!important;margin:0!important}
+#podcast-episode-list .podcast-episode-choice{display:flex!important;visibility:visible!important;opacity:1!important;min-height:44px!important;color:#3f3549!important;background:#fff!important}
+#podcast-episode-list .podcast-episode-name{display:block!important;visibility:visible!important;color:#3f3549!important}
+
 /* Podcast seek controls for checking automatic progression to older episodes. */
 .podcast-progress{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;margin:10px 0 12px;padding:10px;border:1px solid #e5ddec;border-radius:9px;background:#fff}
 .podcast-progress[hidden]{display:none!important}
