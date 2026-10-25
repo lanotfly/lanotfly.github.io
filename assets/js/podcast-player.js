@@ -39,18 +39,28 @@
   var progressSlider=document.getElementById('podcast-progress');
   var currentTimeLabel=document.getElementById('podcast-current-time');
   var durationLabel=document.getElementById('podcast-duration');
-  function formatTime(seconds){
-    if(!Number.isFinite(seconds)||seconds<0)return '0:00';
-    seconds=Math.floor(seconds);
-    var hours=Math.floor(seconds/3600),minutes=Math.floor((seconds%3600)/60),secs=seconds%60;
-    return hours?hours+':'+String(minutes).padStart(2,'0')+':'+String(secs).padStart(2,'0'):minutes+':'+String(secs).padStart(2,'0');
+  function formatTime(seconds,roundToMinute){
+    if(!Number.isFinite(seconds)||seconds<0)return '';
+    var minutes=Math.max(0,roundToMinute?Math.round(seconds/60):Math.floor(seconds/60));
+    var hours=Math.floor(minutes/60),remainder=minutes%60;
+    if(hours)return hours+'h'+(remainder?' '+remainder+'m':'');
+    return minutes+'m';
   }
   function updateProgress(){
     var duration=audio.duration,current=audio.currentTime||0;
-    if(progressWrap&&Number.isFinite(duration)&&duration>0)progressWrap.hidden=false;
-    if(progressSlider&&Number.isFinite(duration)&&duration>0&&!progressSlider.matches(':active'))progressSlider.value=String(Math.round(current/duration*1000));
-    if(currentTimeLabel)currentTimeLabel.textContent=formatTime(current);
-    if(durationLabel)durationLabel.textContent=formatTime(duration);
+    var hasDuration=Number.isFinite(duration)&&duration>0;
+    if(progressWrap)progressWrap.hidden=!audio.src;
+    if(progressSlider){
+      if(hasDuration){
+        if(!progressSlider.matches(':active'))progressSlider.value=String(Math.round(current/duration*1000));
+        progressSlider.disabled=false;
+      }else{
+        progressSlider.value='0';
+        progressSlider.disabled=true;
+      }
+    }
+    if(currentTimeLabel)currentTimeLabel.textContent=formatTime(current,false)||'0m';
+    if(durationLabel)durationLabel.textContent=hasDuration?(formatTime(duration,true)||'—'):'—';
   }
   if(progressSlider)progressSlider.addEventListener('input',function(){
     if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progressSlider.value)/1000)*audio.duration;
