@@ -31,7 +31,7 @@
         clone.style.width="max-content";clone.style.maxWidth="none";clone.style.tableLayout="auto";clone.style.whiteSpace="nowrap";clone.style.borderCollapse="collapse";
         clone.querySelectorAll("th,td").forEach(function(cell){cell.style.whiteSpace="nowrap";cell.style.overflowWrap="normal";cell.style.wordBreak="normal";cell.style.padding="10px 12px";cell.style.fontSize="16px";});
       }else{clone.style.maxWidth="calc(100vw - 32px)";clone.style.maxHeight="calc(100vh - 90px)";}
-      stage.replaceChildren(clone);reset();overlay.classList.add("is-open");document.body.style.overflow="hidden";close.focus();
+      stage.replaceChildren(clone);reset();if(clone.tagName.toLowerCase()==="table"){scale=Math.min(1,(window.innerWidth-32)/Math.max(1,clone.scrollWidth),(window.innerHeight-90)/Math.max(1,clone.scrollHeight));scale=Math.max(.25,scale);apply();}overlay.classList.add("is-open");document.body.style.overflow="hidden";close.focus();
     }
     document.addEventListener("click",function(e){
       const trigger=e.target.closest(".wiki-wrap .diagram svg, .wiki-wrap svg.ai-illustration, .wiki-wrap figure img, .wiki-wrap table");
@@ -54,15 +54,15 @@
       pointers.set(e.pointerId,point(e));
       if(pointers.size>=2){
         const pts=Array.from(pointers.values()).slice(0,2),d=distance(pts[0],pts[1]),mid=midpoint(pts[0],pts[1]);
-        if(startDistance>0){const next=Math.max(1,Math.min(6,startScale*d/startDistance));tx=startTx+(mid.x-startMid.x);ty=startTy+(mid.y-startMid.y);scale=next;apply()}
+        if(startDistance>0){const next=Math.max(.25,Math.min(6,startScale*d/startDistance));tx=startTx+(mid.x-startMid.x);ty=startTy+(mid.y-startMid.y);scale=next;apply()}
       }else if(scale>1.02&&lastPoint){
         const p=point(e);tx+=p.x-lastPoint.x;ty+=p.y-lastPoint.y;lastPoint=p;apply()
       }
     });
     function release(e){pointers.delete(e.pointerId);if(pointers.size<2)startDistance=0;if(pointers.size===1){lastPoint=Array.from(pointers.values())[0]}}
     overlay.addEventListener("pointerup",release);overlay.addEventListener("pointercancel",release);
-    overlay.addEventListener("wheel",function(e){e.preventDefault();scale=Math.max(1,Math.min(6,scale*(e.deltaY<0?1.15:.87)));apply()},{passive:false});
-    document.addEventListener("keydown",function(e){if(overlay.classList.contains("is-open")&&(e.key==="+"||e.key==="="||e.key==="-")){scale=Math.max(1,Math.min(6,scale*(e.key==="-"?.85:1.18)));apply()}});
+    overlay.addEventListener("wheel",function(e){e.preventDefault();scale=Math.max(.25,Math.min(6,scale*(e.deltaY<0?1.15:.87)));apply()},{passive:false});
+    document.addEventListener("keydown",function(e){if(overlay.classList.contains("is-open")&&(e.key==="+"||e.key==="="||e.key==="-")){scale=Math.max(.25,Math.min(6,scale*(e.key==="-"?.85:1.18)));apply()}});
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
