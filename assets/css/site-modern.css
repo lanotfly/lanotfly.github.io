@@ -826,3 +826,13 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .niv-bible-status{display:none!important}
 .niv-bible-queue-frame{margin-top:5px}
 @media(max-width:700px){.niv-bible-panel__title{font-size:15px}.niv-bible-book-select{max-width:46%;min-width:100px;font-size:13px}}
+
+
+/* Compact podcast player progress like KJV: a slim seek bar without elapsed/remaining labels. */
+#podcast-progress-wrap{display:block!important;margin:2px 0 8px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+#podcast-progress-wrap[hidden]{display:none!important}
+#podcast-progress{display:block;width:100%;height:12px;margin:0;accent-color:#6d548b;cursor:pointer}
+#podcast-progress-wrap .podcast-progress__times{display:none!important}
+.podcast-episode-duration{flex:0 0 auto;color:#777080;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.podcast-episode-state{margin-left:0!important}
+@media(max-width:700px){.podcast-episode-choice{gap:7px;padding:7px 8px}.podcast-episode-duration{font-size:10px}.podcast-episode-state{padding:3px 5px;font-size:9px}}
