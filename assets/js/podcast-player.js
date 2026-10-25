@@ -128,6 +128,7 @@
     playEpisodeAt:function(index){playEpisodeAt(index);}
   });
   function renderEpisodeList(){episodeListModule.render();}
+  setEpisodePanelMode('collapsed');
   function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
