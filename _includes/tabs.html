@@ -588,7 +588,7 @@
     }).then(function(){
       paint(activeId,true);
       setMetadata(show,episode.title||show.title);
-      if(panelStatus)panelStatus.textContent='Playing. Playback continues to older episodes automatically.';
+      if(panelStatus)panelStatus.textContent='';
     }).catch(function(){
       paint(activeId,false);
       if(panelStatus){
@@ -626,8 +626,9 @@
       if(station&&!station.paused)station.pause();
     });
     if(activeId){
-      paint(activeId,true);
       var show=shows[activeId];
+      showPanel(show);
+      paint(activeId,true);
       setMetadata(show,audio.dataset.episodeTitle||show.title);
       renderEpisodeList();
     }
