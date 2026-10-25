@@ -36,8 +36,80 @@
       "source": "BBC Global News Podcast"
     }
   ],
-  "guardian": [],
-  "nhk": [],
+  "guardian": [
+    {
+      "title": "‘Culture is stagnant, so politics is stuck’ – playwright James Graham | Radical Thinking",
+      "summary": "Are we doomscrolling our way into a democratic crisis? That’s what the playwright James Graham fears may be happening, as he suggests that our algorithms have led us into ‘a massive crisis of the new’ and are preventing us from imagining a different future. Help support our independent journalism at theguardian.com/infocus",
+      "link": "https://flex.acast.com/audio.guim.co.uk/2026/10/23-61486-20261025tifradicalgraham.mp3",
+      "date": "Sun, 25 Oct 2026 08:00:57 GMT",
+      "source": "The Guardian · Today in Focus"
+    },
+    {
+      "title": "Who will be the next James Bond? – The Latest",
+      "summary": "The search for the next James Bond may be in the final stages, with screen tests reportedly taking place this weekend. Callum Turner, Jack Lowden and Josh O’Connor are among the actors thought to be in the running for the role. So who is likely to emerge as the next 007? And what does the future look like for the Bond franchise now it’s in the hands of Amazon MGM Studios? Michael Safi speaks to film editor Catherine Shoard – watch on YouTube . Help support our independent journalism at theguardian.com/infocus",
+      "link": "https://flex.acast.com/audio.guim.co.uk/2026/10/23-59489-231026BONDCATHERINESHOARD.mp3",
+      "date": "Fri, 23 Oct 2026 16:33:10 GMT",
+      "source": "The Guardian · Today in Focus"
+    },
+    {
+      "title": "Brazil’s election and the battle for the Amazon",
+      "summary": "Our Latin America correspondent, Tom Phillips, heads to Roraima to hear what’s at stake for the rainforest and the communities that live there in the Brazilian presidential runoff on Sunday. Send your comments and questions to tif.questions@theguardian.com . Help support our independent journalism at theguardian.com/infocus",
+      "link": "https://flex.acast.com/audio.guim.co.uk/2026/10/22-66746-20261023tifbrazil.mp3",
+      "date": "Fri, 23 Oct 2026 02:00:56 GMT",
+      "source": "The Guardian · Today in Focus"
+    },
+    {
+      "title": "PHP: Pretty Huge Problem with the internet – The Latest",
+      "summary": "Websites around the world have been taken offline as governments and businesses scramble to fix a flaw in the computer language PHP. There are fears that hackers could exploit the vulnerability to steal data, take control of web servers and disrupt services. Millions of attempts have already been made to attack websites since the issue with the programming language was revealed, cybersecurity companies have said. Michael Safi speaks to global technology reporter Aisha Down – watch on YouTube . Help support our independent journalism at theguardian.com/infocus",
+      "link": "https://flex.acast.com/audio.guim.co.uk/2026/10/22-59639-221026PHPFLAWAISHADOWN.mp3",
+      "date": "Thu, 22 Oct 2026 16:39:57 GMT",
+      "source": "The Guardian · Today in Focus"
+    },
+    {
+      "title": "Are the Tories back?",
+      "summary": "Political correspondent Aletha Adu explores whether the Conservative party under Kemi Badenoch is about to become, once again, the UK’s leading party on the right. Send your comments and questions to tif.questions@theguardian.com . Help support our independent journalism at theguardian.com/infocus",
+      "link": "https://flex.acast.com/audio.guim.co.uk/2026/10/21-69285-20261022tifbadenoch.mp3",
+      "date": "Thu, 22 Oct 2026 02:00:02 GMT",
+      "source": "The Guardian · Today in Focus"
+    }
+  ],
+  "nhk": [
+    {
+      "title": "ニュース 2026年10月25日午後05時00分",
+      "summary": "",
+      "link": "https://www.nhk.or.jp/s-media/news/podcast/audio/b9f52c2564293474723c389de7e2feb0_64k.mp3",
+      "date": "Sun, 25 Oct 2026 17:05:00 +0900",
+      "source": "NHK ラジオニュース"
+    },
+    {
+      "title": "ニュース 2026年10月25日午後04時00分",
+      "summary": "",
+      "link": "https://www.nhk.or.jp/s-media/news/podcast/audio/1a84ceff88463749b55e2751ac2025ce_64k.mp3",
+      "date": "Sun, 25 Oct 2026 16:05:00 +0900",
+      "source": "NHK ラジオニュース"
+    },
+    {
+      "title": "ニュース 2026年10月25日午後03時00分",
+      "summary": "",
+      "link": "https://www.nhk.or.jp/s-media/news/podcast/audio/eed3e686159b03221adb107a6d7cb635_64k.mp3",
+      "date": "Sun, 25 Oct 2026 15:05:00 +0900",
+      "source": "NHK ラジオニュース"
+    },
+    {
+      "title": "ニュース 2026年10月25日午後02時00分",
+      "summary": "",
+      "link": "https://www.nhk.or.jp/s-media/news/podcast/audio/c39eef72d6b0d73f5dc42c5bdbdb53e3_64k.mp3",
+      "date": "Sun, 25 Oct 2026 14:05:00 +0900",
+      "source": "NHK ラジオニュース"
+    },
+    {
+      "title": "ニュース 2026年10月25日午後01時00分",
+      "summary": "",
+      "link": "https://www.nhk.or.jp/s-media/news/podcast/audio/53e9c4f6fe8a4bac6c030b01195377dd_64k.mp3",
+      "date": "Sun, 25 Oct 2026 13:05:00 +0900",
+      "source": "NHK ラジオニュース"
+    }
+  ],
   "chronicle": [
     {
       "title": "【ニュース小話 #237】PHPに重大な脆弱性。AIによってネット社会は揺らぐのか",
@@ -85,23 +157,23 @@
     "bbc": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:07:14+00:00"
+      "checkedAt": "2026-10-25T09:07:28+00:00"
     },
     "guardian": {
-      "ok": false,
-      "error": "No usable RSS items found (root=rss, item_nodes=297, first_item_children=['title', 'title', 'description', 'enclosure', 'pubdate', 'guid', 'duration', 'author', 'image', 'explicit', 'keywords', 'subtitle', 'summary'])",
-      "checkedAt": "2026-10-25T09:07:14+00:00"
+      "ok": true,
+      "count": 5,
+      "checkedAt": "2026-10-25T09:07:29+00:00"
     },
     "nhk": {
-      "ok": false,
-      "error": "No usable RSS items found (root=rss, item_nodes=166, first_item_children=['title', 'enclosure', 'pubdate', 'guid', 'description', 'duration'])",
-      "checkedAt": "2026-10-25T09:07:15+00:00"
+      "ok": true,
+      "count": 5,
+      "checkedAt": "2026-10-25T09:07:29+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:07:15+00:00"
+      "checkedAt": "2026-10-25T09:07:29+00:00"
     }
   },
-  "updatedAt": "2026-10-25T09:07:15+00:00"
+  "updatedAt": "2026-10-25T09:07:30+00:00"
 }
