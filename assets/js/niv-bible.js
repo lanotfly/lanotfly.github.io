@@ -26,7 +26,7 @@
   var title=document.getElementById('niv-bible-now-playing');
   var audio=document.getElementById('niv-bible-audio');
   var lastKey='library_kjv_last_chapter';
-  var queueExpanded=false;
+  var queueExpanded=true;
   var queueList=null;
   var queueToggle=null;
   var current={book:'GEN',chapter:1,index:0};
@@ -39,10 +39,17 @@
   function renderQueue(){
     if(!queueList)return;queueList.textContent='';
     for(var offset=0;offset<5;offset++){var item=chapterAtOffset(offset);if(!item)break;var row=document.createElement('li');var choice=document.createElement('button');choice.type='button';choice.className='niv-bible-queue-item'+(offset===0?' is-current':'');choice.setAttribute('aria-current',offset===0?'true':'false');var position=document.createElement('span');position.className='queue-position';position.textContent=offset===0?'▶':String(offset+1);var label=document.createElement('span');label.className='queue-title';label.textContent=item.title+(offset===0?' · Now playing':'');choice.appendChild(position);choice.appendChild(label);choice.addEventListener('click',function(target){return function(){playChapter(target.book,target.chapter,true);};}(item));row.appendChild(choice);queueList.appendChild(row);}
-    queueList.hidden=!queueExpanded;if(queueToggle){queueToggle.textContent=queueExpanded?'Collapse queue':'Expand queue';queueToggle.setAttribute('aria-expanded',String(queueExpanded));}
+    queueList.hidden=!queueExpanded;if(queueToggle){queueToggle.setAttribute('aria-expanded',String(queueExpanded));queueToggle.setAttribute('aria-label',queueExpanded?'Collapse KJV chapter queue':'Expand KJV chapter queue');queueToggle.title=queueExpanded?'Collapse chapter queue':'Expand chapter queue';queueToggle.classList.toggle('is-collapsed',!queueExpanded);}
   }
   function installQueue(){
-    var heading=document.querySelector('.niv-bible-panel__heading');if(!heading||queueList)return;var tools=document.createElement('div');tools.className='niv-bible-queue-tools';queueToggle=document.createElement('button');queueToggle.type='button';queueToggle.className='niv-bible-queue-toggle';queueToggle.addEventListener('click',function(){queueExpanded=!queueExpanded;renderQueue();});var label=document.createElement('span');label.textContent='Up next';label.style.cssText='font-size:12px;font-weight:700;color:#526858';tools.appendChild(label);tools.appendChild(queueToggle);queueList=document.createElement('ol');queueList.className='niv-bible-queue';queueList.hidden=true;var filters=document.querySelector('.niv-bible-panel__filters');if(filters&&filters.parentNode){filters.parentNode.insertBefore(tools,filters.nextSibling);tools.parentNode.insertBefore(queueList,tools.nextSibling);}renderQueue();
+    var heading=document.querySelector('.niv-bible-panel__heading');if(!heading||queueList)return;
+    queueToggle=document.createElement('button');queueToggle.type='button';queueToggle.className='niv-bible-queue-toggle';queueToggle.setAttribute('aria-controls','niv-bible-queue');
+    queueToggle.innerHTML='<svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg>';
+    queueToggle.addEventListener('click',function(){queueExpanded=!queueExpanded;renderQueue();});
+    heading.appendChild(queueToggle);
+    queueList=document.createElement('ol');queueList.id='niv-bible-queue';queueList.className='niv-bible-queue';queueList.hidden=false;
+    var filters=document.querySelector('.niv-bible-panel__filters');if(filters&&filters.parentNode)filters.parentNode.insertBefore(queueList,filters.nextSibling);
+    renderQueue();
   }
   function savedChapter(){try{return JSON.parse(localStorage.getItem(lastKey)||'null');}catch(_){return null;}}
   function remember(book,chapter,time){try{localStorage.setItem(lastKey,JSON.stringify({book:book,chapter:chapter,time:Math.max(0,Number(time)||0)}));}catch(_){}}
