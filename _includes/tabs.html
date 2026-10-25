@@ -291,7 +291,33 @@
   if(progressSlider)progressSlider.addEventListener('input',function(){
     if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progressSlider.value)/1000)*audio.duration;
   });
-  ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,updateProgress);});
+  function progressStorageKey(episode){
+    var identity=episode&&(episode.pageUrl||episode.url||episode.title)||audio.dataset.episodeTitle||'unknown';
+    return 'personal-library-progress:'+activeId+':'+identity;
+  }
+  function savePlaybackProgress(){
+    var key=audio.dataset.progressKey;
+    if(!key||!Number.isFinite(audio.currentTime)||audio.currentTime<0)return;
+    try{
+      if(Number.isFinite(audio.duration)&&audio.duration>0&&audio.currentTime>=audio.duration-2){localStorage.removeItem(key);return;}
+      if(audio.currentTime>0)localStorage.setItem(key,String(audio.currentTime));
+    }catch(_){}
+  }
+  function restorePlaybackProgress(){
+    var key=audio.dataset.progressKey;
+    if(!key||audio.dataset.restoredProgressKey===key||!Number.isFinite(audio.duration)||audio.duration<=0)return;
+    audio.dataset.restoredProgressKey=key;
+    try{
+      var saved=Number(localStorage.getItem(key));
+      if(Number.isFinite(saved)&&saved>0&&saved<audio.duration-2)audio.currentTime=saved;
+    }catch(_){}
+  }
+  ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,function(){
+    if(eventName==='loadedmetadata'||eventName==='durationchange')restorePlaybackProgress();
+    if(eventName==='timeupdate')savePlaybackProgress();
+    updateProgress();
+  });});
+  window.addEventListener('pagehide',savePlaybackProgress);
   var panelContent=document.getElementById('podcast-episode-panel-content');
   function showPanel(show,episodeTitle){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=episodeTitle||audio.dataset.episodeTitle||'';if(panelArtwork){panelArtwork.src=show.artwork||'';panelArtwork.alt=show.title?show.title+' artwork':'';panelArtwork.hidden=!show.artwork;}}
   function setPanelCollapsed(collapsed){
@@ -566,6 +592,8 @@
     });
   }
   function playEpisodeAt(index){
+    /* Save the outgoing episode before changing episodeIndex or replacing the audio source. */
+    savePlaybackProgress();
     if(index<0||index>=episodeQueue.length){
       if(activeId)paint(activeId,false);
       return;
@@ -580,9 +608,11 @@
     if(panelStatus)panelStatus.textContent='Loading audio…';
     resolveEpisodeAudio(episode).then(function(audioUrl){
       episode.url=audioUrl;
+      audio.dataset.episodeTitle=episode.title;
+      audio.dataset.progressKey=progressStorageKey(episode);
+      audio.dataset.restoredProgressKey='';
       audio.src=audioUrl;
       audio.load();
-      audio.dataset.episodeTitle=episode.title;
       setMetadata(show,episode.title||show.title);
       return audio.play();
     }).then(function(){
@@ -642,6 +672,9 @@
     }
   });
   audio.addEventListener('ended',function(){
+    /* A completed episode should restart from the beginning if the user replays it. */
+    var completedProgressKey=audio.dataset.progressKey;
+    if(completedProgressKey){try{localStorage.removeItem(completedProgressKey);}catch(_){}}
     /* Mark an episode as finished only after it reaches the end, then skip older finished episodes. */
     if(!activeId||episodeIndex<0||episodeIndex>=episodeQueue.length)return;
     setEpisodePlayed(episodeQueue[episodeIndex],true);
