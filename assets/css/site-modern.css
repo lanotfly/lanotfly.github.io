@@ -878,7 +878,7 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .niv-bible-panel{box-sizing:border-box;min-width:0;max-width:100%;padding:10px 4px 0;overflow:hidden}
 .niv-bible-panel__heading{min-width:0;max-width:100%;box-sizing:border-box;gap:8px}
 .niv-bible-panel__title{flex:1 1 auto;min-width:0;overflow-wrap:anywhere;word-break:normal}
-.niv-bible-book-select{min-width:0;max-width:46%;box-sizing:border-box}
+.niv-bible-book-select{min-width:0;width:40%;max-width:40%;box-sizing:border-box}
 .niv-bible-progress-wrap,.niv-bible-queue-frame{min-width:0;max-width:100%;box-sizing:border-box}
 .niv-bible-queue{padding:2px 4px!important;box-sizing:border-box}
 .niv-bible-queue-item{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding-left:7px;padding-right:7px;overflow:hidden}
@@ -1181,7 +1181,7 @@ html,body{max-width:100%;overflow-x:clip}
 
 
 /* Podcast and KJV share the same soft-purple playlist components. */
-.site-nav-shell .site-tab-links .site-tab--niv>img[data-audio-identity-icon]{display:inline-block;width:1.35em;height:1.35em;object-fit:contain;flex:0 0 auto;vertical-align:middle}
+.site-nav-shell .site-tab-links .site-tab--niv>img[data-audio-identity-icon]{display:inline-block;width:1.1em;height:1.1em;object-fit:contain;flex:0 0 auto;vertical-align:middle}
 .site-nav-shell .site-tab-links .site-tab--niv>span:first-child{display:none!important}
 .site-nav-shell .site-tab-links .site-tab--niv:hover{background:#f8f4fc!important;border-color:#b9a4d0!important;color:#50386a!important}
 .site-nav-shell .site-tab-links .site-tab--niv[aria-expanded="true"]{border:2px solid #9581b3!important;background:#f2ecf8!important;color:#50386a!important}
@@ -1266,3 +1266,9 @@ html,body{max-width:100%;overflow-x:clip}
   .site-nav-shell .site-tab-links .wiki-secondary-tabs .site-tab{grid-column:span 1!important;width:100%!important}
   .site-nav-shell .site-tab-links .wiki-secondary-tabs .site-nav-row-divider--wiki-bottom{grid-column:1/-1!important}
 }
+
+
+/* Keep the current KJV book/chapter label on one line beside the narrower book picker. */
+.niv-bible-panel__title{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;overflow-wrap:normal!important;word-break:normal!important}
+.niv-bible-book-select{flex:0 1 40%;width:40%;max-width:40%;padding-right:18px!important}
+@media(max-width:700px){.niv-bible-book-select{flex-basis:38%;width:38%;max-width:38%;font-size:12px!important;padding-left:6px!important;padding-right:16px!important}.niv-bible-panel__title{font-size:14px!important}}
