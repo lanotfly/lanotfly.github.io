@@ -50,13 +50,20 @@ def item_link(node):
         if local_name(attr) in ("about", "href", "link") and value.strip().startswith(("http://", "https://")):
             return value.strip()
     for child in list(node):
-        if local_name(child.tag) != "link":
-            continue
-        link = child.attrib.get("href", "").strip() or (child.text or "").strip()
-        if link.startswith(("http://", "https://")):
-            return link
+        if local_name(child.tag) == "link":
+            link = child.attrib.get("href", "").strip() or (child.text or "").strip()
+            if link.startswith(("http://", "https://")):
+                return link
     guid = child_text(node, {"guid", "id"})
-    return guid if guid.startswith(("http://", "https://")) else ""
+    if guid.startswith(("http://", "https://")):
+        return guid
+    # Some valid podcast RSS feeds publish audio in <enclosure> but omit a web-page <link>.
+    for child in list(node):
+        if local_name(child.tag) == "enclosure":
+            media_url = child.attrib.get("url", "").strip()
+            if media_url.startswith(("http://", "https://")):
+                return media_url
+    return ""
 
 def read_feed(feed):
     req = urllib.request.Request(feed["url"], headers={"User-Agent": "PersonalLibraryNewsFeed/1.0 (GitHub Actions; RSS reader)"})
