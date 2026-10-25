@@ -5,8 +5,10 @@
   window.__libraryNewsPanelInstalled = true;
 
   var feeds = [
-    { id: 'english', source: 'The Guardian · Today in Focus', url: 'https://www.theguardian.com/news/series/todayinfocus/podcast.xml', lang: 'en' },
-    { id: 'japanese', source: 'NHK ラジオニュース', url: 'https://www.nhk.or.jp/s-media/news/podcast/list/v1/all.xml', lang: 'ja' }
+    { id: 'bbc', source: 'BBC Global News Podcast', lang: 'en' },
+    { id: 'guardian', source: 'The Guardian · Today in Focus', lang: 'en' },
+    { id: 'nhk', source: 'NHK ラジオニュース', lang: 'ja' },
+    { id: 'chronicle', source: 'Chronicle · News Connect', lang: 'ja' }
   ];
   var cache = {};
   var root = document.getElementById('library-news-panel');
@@ -132,18 +134,11 @@
 
   function fetchFeed(feed) {
     if (cache[feed.id]) return Promise.resolve(cache[feed.id]);
-    var encoded = encodeURIComponent(feed.url);
-    var attempts = [
-      function () { return getJson('/assets/data/news.json?v=20261025-3').then(function (data) { return cachedItems(data, feed); }); },
-      function () { return getJson('https://api.rss2json.com/v1/api.json?rss_url=' + encoded).then(function (data) { return jsonItems(data, feed); }); },
-      function () { return getText('https://api.allorigins.win/raw?url=' + encoded).then(function (xml) { return xmlItems(xml, feed); }); },
-      function () { return getText('https://corsproxy.io/?url=' + encoded).then(function (xml) { return xmlItems(xml, feed); }); }
-    ];
-    function next(index) {
-      return index >= attempts.length ? Promise.reject(new Error('All RSS providers failed')) :
-        attempts[index]().catch(function () { return next(index + 1); });
-    }
-    return next(0).then(function (items) { cache[feed.id] = items; return items; });
+    return getJson('/assets/data/news.json?v=20261025-4').then(function (data) {
+      var items = cachedItems(data, feed);
+      cache[feed.id] = items;
+      return items;
+    });
   }
 
   function formatDate(value, lang) {
