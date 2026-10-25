@@ -10,9 +10,15 @@
       var audio=getAudio(name);
       if(audio&&!audio.paused){try{audio.pause();}catch(_){}}
     });
-    if(target==='radio4'||target==='nhk'||target==='bible'){
-      var panel=document.getElementById('podcast-episode-panel');
-      if(panel)panel.hidden=true;
+    if(target!=='podcast'){
+      var podcastPanel=document.getElementById('podcast-episode-panel');
+      if(podcastPanel)podcastPanel.hidden=true;
+    }
+    if(target!=='bible'){
+      var biblePanel=document.getElementById('niv-bible-panel');
+      var bibleButton=document.getElementById('niv-bible-toggle');
+      if(biblePanel)biblePanel.hidden=true;
+      if(bibleButton)bibleButton.setAttribute('aria-expanded','false');
     }
     return true;
   }
