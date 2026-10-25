@@ -42,6 +42,17 @@
       if(biblePanel)biblePanel.hidden=true;
       if(bibleButton)bibleButton.setAttribute('aria-expanded','false');
     }
+    /* Ensure the newly selected player's panel is visible. */
+    if(target==='podcast'){
+      var activePodcastPanel=document.getElementById('podcast-episode-panel');
+      if(activePodcastPanel)activePodcastPanel.hidden=false;
+    }
+    if(target==='bible'){
+      var activeBiblePanel=document.getElementById('niv-bible-panel');
+      var activeBibleButton=document.getElementById('niv-bible-toggle');
+      if(activeBiblePanel)activeBiblePanel.hidden=false;
+      if(activeBibleButton)activeBibleButton.setAttribute('aria-expanded','true');
+    }
     return true;
   }
   window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;}};
