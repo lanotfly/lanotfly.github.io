@@ -19,6 +19,7 @@
   var pendingAutoplay = false;
   var filters = { bbc: 'unplayed', chronicle: 'unplayed' };
   var lastSavedAt = { bbc: 0, chronicle: 0 };
+  var listModules = {};
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
   function audioFor(feedId) { return document.getElementById('news-' + feedId + '-audio'); }
@@ -222,86 +223,52 @@
     playEpisode(feed, remembered >= 0 ? remembered : 0);
   }
   function render(feed) {
-    var list = root.querySelector('[data-news-list="' + feed.id + '"]');
-    var count = root.querySelector('[data-news-count="' + feed.id + '"]');
-    var filter = root.querySelector('[data-news-filter="' + feed.id + '"]');
-    if (!list || !filter) return;
     syncFilterOptions(feed);
-    list.textContent = '';
-    var all = episodesByFeed[feed.id] || [];
-    var mode = filters[feed.id] || 'unplayed';
-    var visible = all.map(function (episode, index) {
-      return { episode: episode, index: index };
-    }).filter(function (entry) {
-      var played = isPlayed(feed, entry.episode);
-      return mode === 'all' || (mode === 'played' ? played : !played);
-    });
-    if (count) count.textContent = feed.language === 'ja'
-      ? '全 ' + all.length + ' 件 · 表示 ' + visible.length + ' 件'
-      : all.length + ' episodes · Showing ' + visible.length;
-    if (!visible.length) {
-      var empty = document.createElement('p');
-      empty.className = 'podcast-episode-panel__status';
-      empty.textContent = feed.language === 'ja' ? '表示できるエピソードはありません。' : 'No episodes in this filter.';
-      list.appendChild(empty);
-      return;
+    if (listModules[feed.id]) listModules[feed.id].render();
+    else {
+      var list = root.querySelector('[data-news-list="' + feed.id + '"]');
+      if (list) list.textContent = '';
     }
-    visible.forEach(function (entry) {
-      var episode = entry.episode, index = entry.index;
-      var isCurrent = current.feed === feed.id && current.index === index;
-      var audio = audioFor(feed.id);
-      var isPlaying = isCurrent && audio && !audio.paused && !audio.ended;
-      var row = document.createElement('div');
-      row.className = 'podcast-episode-row';
-      row.setAttribute('role', 'listitem');
-      row.dataset.episodeIndex = String(index);
-      if (isCurrent) row.classList.add('is-current');
-      if (isPlaying) row.classList.add('is-playing');
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'podcast-episode-choice' + (isCurrent ? ' is-current' : '');
-      button.setAttribute('aria-pressed', String(!!isPlaying));
-      button.setAttribute('aria-current', String(!!isCurrent));
-      button.setAttribute('aria-label', (isPlaying ? 'Pause ' : 'Play ') + episode.title);
-      var number = document.createElement('span');
-      number.className = 'podcast-episode-number';
-      number.textContent = isCurrent ? (isPlaying ? 'Ⅱ' : '▶') : String(index + 1);
-      var textWrap = document.createElement('span');
-      textWrap.className = 'podcast-episode-text';
-      textWrap.style.cssText = 'display:flex;flex:1;min-width:0;flex-direction:column;gap:4px;';
-      var title = document.createElement('span');
-      title.className = 'podcast-episode-name';
-      title.textContent = episode.title || ('Episode ' + (index + 1));
-      var meta = document.createElement('span');
-      meta.className = 'podcast-episode-meta';
-      var date = document.createElement('span');
-      date.className = 'podcast-episode-date';
-      date.textContent = dateLabel(episode.date || episode.published || episode.pubDate, feed.language);
-      if (date.textContent) meta.appendChild(date);
-      var played = isPlayed(feed, episode);
-      var state = document.createElement('span');
-      state.className = 'podcast-episode-state';
-      state.textContent = played ? '✓ Played' : '○ Unplayed';
-      textWrap.appendChild(title);
-      textWrap.appendChild(meta);
-      var duration = document.createElement('span');
-      duration.className = 'podcast-episode-duration';
-      duration.textContent = formatDuration(episode.duration);
-      if (duration.textContent) textWrap.appendChild(duration);
-      button.appendChild(number);
-      button.appendChild(textWrap);
-      button.addEventListener('click', function () {
-        var targetAudio = audioFor(feed.id);
-        if (current.feed === feed.id && current.index === index && !targetAudio.paused) {
-          targetAudio.pause();
-          renderAll();
-          return;
+  }
+  function createListModules() {
+    if (!window.LibraryPodcastList || !window.LibraryPodcastList.create) return;
+    feeds.forEach(function (feed) {
+      var list = root.querySelector('[data-news-list="' + feed.id + '"]');
+      var count = root.querySelector('[data-news-count="' + feed.id + '"]');
+      var status = root.querySelector('[data-news-status="' + feed.id + '"]');
+      var filter = root.querySelector('[data-news-filter="' + feed.id + '"]');
+      if (!list || !filter) return;
+      listModules[feed.id] = window.LibraryPodcastList.create({
+        listElement: list,
+        countElement: count,
+        statusElement: status,
+        filterElement: filter,
+        getQueue: function () { return episodesByFeed[feed.id] || []; },
+        getIndex: function () { return current.feed === feed.id ? current.index : -1; },
+        getListMode: function () { return filters[feed.id] || 'unplayed'; },
+        setListMode: function (mode) { filters[feed.id] = mode; syncFilterOptions(feed); },
+        getPanelMode: function () { return 'full'; },
+        getActiveId: function () { return feed.id; },
+        isPlayed: function (episode) { return isPlayed(feed, episode); },
+        setPlayed: function (episode, played) { setPlayed(feed, episode, played); },
+        isPlaying: function () {
+          var audio = audioFor(feed.id);
+          return current.feed === feed.id && !!audio && !audio.paused && !audio.ended;
+        },
+        toggleCurrentEpisode: function () {
+          var audio = audioFor(feed.id);
+          if (current.feed !== feed.id || current.index < 0) return;
+          if (audio && !audio.paused && !audio.ended) audio.pause();
+          else playEpisode(feed, current.index);
+        },
+        playEpisodeAt: function (index) { playEpisode(feed, index); },
+        formatCount: function (matching, total, mode) {
+          var label = feed.language === 'ja' ? '件' : 'episodes';
+          return feed.language === 'ja'
+            ? '全 ' + total + ' 件 · 表示 ' + matching + ' 件'
+            : total + ' episodes · Showing ' + matching;
         }
-        playEpisode(feed, index);
       });
-      row.appendChild(button);
-      row.appendChild(state);
-      list.appendChild(row);
     });
   }
   function renderAll() { feeds.forEach(function (feed) { render(feed); updateProgress(feed); }); }
@@ -322,17 +289,8 @@
       else pendingAutoplay = true;
     });
   });
-  root.querySelectorAll('[data-news-filter]').forEach(function (select) {
-    select.addEventListener('change', function () {
-      filters[select.getAttribute('data-news-filter')] = select.value;
-      render(getFeed(select.getAttribute('data-news-filter')));
-    });
-  });
-  document.addEventListener('click', function (event) {
-    var tab = event.target.closest && event.target.closest('.site-tab');
-    if (!tab || tab === mainToggle || root.hidden) return;
-    setNewsOpen(false);
-  });
+  /* Each News feed uses the same shared PodcastList renderer, including swipe-to-mark-played. */
+  createListModules();
   /* If any non-News player starts, stop News and remove its selected row. */
   document.addEventListener('play', function (event) {
     var audio = event.target;
@@ -386,6 +344,7 @@
   }).then(function (data) {
     feeds.forEach(function (feed) {
       episodesByFeed[feed.id] = Array.isArray(data[feed.id]) ? data[feed.id] : [];
+      episodesByFeed[feed.id].forEach(function (episode) { episode.url = episode.audioUrl || episode.url || ''; episode.published = episode.published || episode.date || episode.pubDate || ''; });
       var artwork = data.artwork && data.artwork[feed.id];
       var image = root.querySelector('[data-news-artwork="' + feed.id + '"]');
       if (image && artwork) image.src = artwork;
