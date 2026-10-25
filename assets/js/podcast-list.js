@@ -19,9 +19,8 @@
         if(mode==='all')return true;
         return !item.played;
       });
-      /* Keep the panel short and page scrolling natural: show only five rows, never an inner scroller.
-         All = first five feed items; Played = first five played items in feed order;
-         Unplayed = first five unplayed items, beginning with the oldest unplayed episode. */
+      /* Count every matching episode, but render at most five rows so the page scrolls naturally. */
+      var totalMatchingEpisodes=visibleEpisodes.length;
       visibleEpisodes=visibleEpisodes.slice(0,5);
       visibleEpisodes.forEach(function(item){
         var episode=item.episode,index=item.index,played=item.played;
@@ -80,15 +79,22 @@
         row.appendChild(choose);episodeList.appendChild(row);
       });
       if(listModeSelect&&listModeSelect.value!==mode)listModeSelect.value=mode;
+      /* The filter is self-explanatory; remove the redundant standalone label "List" if present. */
+      if(listModeSelect){
+        var filterLabel=document.querySelector('label[for="podcast-list-mode"]');
+        if(filterLabel){
+          var cleanedLabel=filterLabel.textContent.replace(/\\bList\\b/i,'').replace(/[:：]\\s*$/,'').trim();
+          if(cleanedLabel!==filterLabel.textContent.trim())filterLabel.textContent=cleanedLabel;
+        }
+      }
       if(episodeCount){
-        var count=visibleEpisodes.length;
-        episodeCount.textContent=count+' '+(count===1?'episode':'episodes');
+        episodeCount.textContent=totalMatchingEpisodes+' '+(totalMatchingEpisodes===1?'episode':'episodes');
         if(!queue.length)episodeCount.textContent='No episodes';
-        else if(!count)episodeCount.textContent=mode==='played'?'0 played episodes':'0 unplayed episodes';
+        else if(!totalMatchingEpisodes)episodeCount.textContent=mode==='played'?'0 played episodes':(mode==='unplayed'?'0 unplayed episodes':'0 episodes');
       }
       if(panelStatus){
         if(!queue.length)panelStatus.textContent='No episodes found.';
-        else if(!visibleEpisodes.length)panelStatus.textContent=mode==='played'?'No played episodes yet.':'All episodes have been played.';
+        else if(!totalMatchingEpisodes)panelStatus.textContent=mode==='played'?'No played episodes yet.':(mode==='unplayed'?'All episodes have been played.':'No episodes available.');
         else panelStatus.textContent='';
       }
     }
