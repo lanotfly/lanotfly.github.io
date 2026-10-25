@@ -914,3 +914,7 @@ html,body{max-width:100%;overflow-x:clip}
 .niv-bible-queue-item .queue-duration{flex:0 0 auto;margin-left:auto;font-size:11px;font-weight:600;color:#68756b;white-space:nowrap;font-variant-numeric:tabular-nums}
 .niv-bible-queue-item.is-current .queue-duration{color:#245237}
 @media(max-width:700px){.niv-bible-queue-item .queue-duration{font-size:10px}}
+
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links .site-tab--radio,.site-nav-shell .site-tab-links .site-tab--nhk-radio,.site-nav-shell .site-tab-links .site-tab--niv,.site-nav-shell .site-tab-links .site-tab--podcast,.site-nav-shell .site-tab-links .site-tab--home,.site-nav-shell .site-tab-links .site-tab--news,.site-nav-shell .site-tab-links .site-tab--data,.site-nav-shell .site-tab-links .site-tab--algorithm,.site-nav-shell .site-tab-links .site-tab--ai,.site-nav-shell .site-tab-links .site-tab--linux,.site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 1!important}
+}
