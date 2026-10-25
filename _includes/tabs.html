@@ -37,7 +37,7 @@
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
     </div>
-    <p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p>
+    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><button id="podcast-show-all" class="podcast-panel-filter" type="button" aria-pressed="false">Show all episodes</button></div>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
   </section>
 <script>
@@ -272,10 +272,23 @@
   ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,updateProgress);});
   function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;}
   if(closePanel)closePanel.addEventListener('click',function(){if(panel)panel.hidden=true;});
+  var showAllEpisodes=false;
+  var showAllButton=document.getElementById('podcast-show-all');
+  function episodeStorageKey(episode){
+    return 'personal-library-played:'+activeId+':'+(episode.url||episode.pageUrl||episode.title||'unknown');
+  }
+  function isEpisodePlayed(episode){
+    try{return localStorage.getItem(episodeStorageKey(episode))==='1';}catch(_){return false;}
+  }
+  function markEpisodePlayed(episode){
+    try{localStorage.setItem(episodeStorageKey(episode),'1');}catch(_){}
+  }
   function renderEpisodeList(){
     if(!episodeList)return;
     episodeList.textContent='';
+    var unplayedCount=episodeQueue.filter(function(episode){return !isEpisodePlayed(episode);}).length;
     episodeQueue.forEach(function(episode,index){
+      if(!showAllEpisodes&&isEpisodePlayed(episode))return;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
       var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
       if(index===episodeIndex)choose.classList.add('is-current');
@@ -286,8 +299,21 @@
       choose.addEventListener('click',function(){if(activeId){playEpisodeAt(index);}});
       row.appendChild(choose);episodeList.appendChild(row);
     });
-    if(panelStatus)panelStatus.textContent=episodeQueue.length?'Choose an episode. Playback continues to older episodes automatically.':'No episodes found.';
+    if(showAllButton){
+      showAllButton.hidden=episodeQueue.length===0;
+      showAllButton.textContent=showAllEpisodes?'Show unplayed only':'Show all episodes';
+      showAllButton.setAttribute('aria-pressed',String(showAllEpisodes));
+    }
+    if(panelStatus){
+      if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
+      else if(!showAllEpisodes&&unplayedCount===0)panelStatus.textContent='You’ve finished every episode in this list. Choose “Show all episodes” to replay one.';
+      else panelStatus.textContent=showAllEpisodes?episodeQueue.length+' episodes. Finished episodes are remembered on this device.':' '+unplayedCount+' unplayed episode'+(unplayedCount===1?'':'s')+'. Finished episodes are remembered on this device.';
+    }
   }
+  if(showAllButton)showAllButton.addEventListener('click',function(){
+    showAllEpisodes=!showAllEpisodes;
+    renderEpisodeList();
+  });
   function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
@@ -477,9 +503,16 @@
     }
   });
   audio.addEventListener('ended',function(){
-    /* Automatically continue with the next older episode when one finishes. */
-    if(activeId&&episodeIndex+1<episodeQueue.length){playEpisodeAt(episodeIndex+1);}
-    else if(activeId){paint(activeId,false);if(panelStatus)panelStatus.textContent='You reached the oldest episode available in this feed.';}
+    /* Mark an episode as finished only after it reaches the end, then skip older finished episodes. */
+    if(!activeId||episodeIndex<0||episodeIndex>=episodeQueue.length)return;
+    markEpisodePlayed(episodeQueue[episodeIndex]);
+    renderEpisodeList();
+    var nextIndex=-1;
+    for(var i=episodeIndex+1;i<episodeQueue.length;i++){
+      if(!isEpisodePlayed(episodeQueue[i])){nextIndex=i;break;}
+    }
+    if(nextIndex>=0)playEpisodeAt(nextIndex);
+    else{paint(activeId,false);if(panelStatus)panelStatus.textContent='No unplayed older episodes remain. Choose “Show all episodes” to replay one.';}
   });
   audio.addEventListener('error',function(){if(activeId)paint(activeId,false);});
 })();
