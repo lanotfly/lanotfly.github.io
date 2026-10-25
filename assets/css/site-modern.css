@@ -737,3 +737,20 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .niv-bible-queue-item.is-current{border:2px solid #326b4b;background:#e6f4e9;font-weight:800}
 .niv-bible-queue-item .queue-position{flex:0 0 25px;text-align:center;color:#66836d;font-size:11px}
 .niv-bible-queue-item .queue-title{min-width:0;flex:1}
+
+
+/* Match KJV queue toggle to the Podcast's round top-right list control. */
+.niv-bible-panel__heading{margin-bottom:8px}
+.niv-bible-queue-toggle{display:inline-flex;flex:0 0 34px;align-items:center;justify-content:center;width:34px;height:34px;min-width:34px;min-height:34px;padding:5px;border:1px solid #bad9c2;border-radius:50%;background:transparent;color:#315b45;cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.niv-bible-queue-toggle:hover,.niv-bible-queue-toggle:focus-visible{background:#eaf5ec;border-color:#6eaa7e;outline:none}
+.niv-bible-queue-toggle:focus-visible{box-shadow:0 0 0 3px rgba(49,107,75,.16)}
+.niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--top{transform:translateY(3px)}
+.niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--bottom{transform:translateY(-3px)}
+.niv-bible-queue{margin:10px 0 0}
+.niv-bible-queue-tools{display:none!important}
+
+/* Give Podcast filter/count controls clear separation from the episode rows. */
+.podcast-episode-panel__tools{display:flex;flex-wrap:wrap;gap:8px 12px;margin:10px 0 14px;padding-bottom:4px;align-items:center}
+.podcast-episode-panel__tools .podcast-episode-count{min-width:0}
+.podcast-episode-panel__tools .podcast-episode-panel__status{flex:1 0 100%;margin:0;padding-top:2px;line-height:1.4}
+#podcast-episode-list{margin-top:4px}
