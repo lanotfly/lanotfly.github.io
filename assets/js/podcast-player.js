@@ -337,8 +337,8 @@
         /* Start with the first Unplayed episode in the feed's original All episodes order.
            Skip episodes already marked Played instead of always replaying feed item zero. */
         episodeIndex=-1;
-        for(var i=0;i<episodes.length;i++){
-          if(!isEpisodePlayed(episodes[i])){episodeIndex=i;break;}
+        for(var i=0;i<episodeQueue.length;i++){
+          if(!isEpisodePlayed(episodeQueue[i])){episodeIndex=i;break;}
         }
         renderEpisodeList();
         if(episodeIndex>=0){
