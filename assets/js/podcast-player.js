@@ -106,10 +106,13 @@
   function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
+    var coordinator=window.LibraryAudioCoordinator;
+    var activeTarget=coordinator&&coordinator.getActiveTarget?coordinator.getActiveTarget():null;
     var bbcAudio=document.getElementById('radio4-audio');
     var nhkAudio=document.getElementById('nhk-radio-audio');
-    var radioIsPlaying=(bbcAudio&&!bbcAudio.paused)||(nhkAudio&&!nhkAudio.paused);
-    var selected=id===activeId&&!radioIsPlaying;
+    var bibleAudio=document.getElementById('niv-bible-audio');
+    var otherAudioIsPlaying=(bbcAudio&&!bbcAudio.paused)||(nhkAudio&&!nhkAudio.paused)||(bibleAudio&&!bibleAudio.paused);
+    var selected=id===activeId&&!otherAudioIsPlaying&&(!activeTarget||activeTarget==='podcast');
     button.setAttribute('aria-pressed',String(selected));
     button.classList.toggle('is-playing',playing);
     button.classList.toggle('is-selected',selected);
