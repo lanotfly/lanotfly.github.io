@@ -24,9 +24,8 @@
         if(mode==='all')return true;
         return !item.played;
       });
-      /* Count every matching episode, but render at most five rows so the page scrolls naturally. */
+      /* Keep the true total, render every matching episode, and let the fixed-height viewport show about five rows at a time. */
       var totalMatchingEpisodes=visibleEpisodes.length;
-      visibleEpisodes=visibleEpisodes.slice(0,5);
       visibleEpisodes.forEach(function(item){
         var episode=item.episode,index=item.index,played=item.played;
         var isCurrent=index===currentIndex;
