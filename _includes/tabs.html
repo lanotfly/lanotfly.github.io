@@ -330,7 +330,7 @@
     row.classList.add('is-swiping');
     row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');
     row.style.setProperty('--podcast-swipe-distance',(dx<0?'-':'')+'100%');
-    window.setTimeout(function(){toggleEpisodePlayed(episode);},240);
+    window.setTimeout(function(){toggleEpisodePlayed(episode);},140);
   }
   function renderEpisodeList(requestedMode){
     if(!episodeList)return;
