@@ -1107,6 +1107,8 @@ html,body{max-width:100%;overflow-x:clip}
 
 /* Shared PodcastList row template: title, date and duration stack; status stays at the right. */
 /* Shared PodcastList layout: compact rows, single-line titles, date and duration below. */
+/* Override the legacy ID-scoped block rule so the right-side status stays in the same row. */
+#podcast-episode-list>.podcast-episode-row{display:flex!important;align-items:center!important;gap:8px!important;min-width:0!important;}
 .podcast-episode-list .podcast-episode-row{display:flex!important;align-items:center!important;gap:8px!important;min-width:0!important;}
 .podcast-episode-list .podcast-episode-choice{display:flex!important;flex:1 1 auto!important;width:0!important;min-width:0!important;overflow:hidden!important;align-items:center!important;gap:8px!important;box-sizing:border-box!important;}
 .podcast-episode-list .podcast-episode-number{flex:0 0 25px!important;}
