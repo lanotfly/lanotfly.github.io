@@ -9,7 +9,7 @@
     nhk:{title:'NHK Radio 1',artist:'NHK らじる★らじる',album:'NHK Radio 1 — Live',artwork:root+'nhk-radio-square.png?v=20261025-1'},
     newsBbc:{title:'Global News Podcast',artist:'BBC News',album:'BBC Global News Podcast',artwork:''},
     newsChronicle:{title:'News Connect',artist:'Chronicle',album:'Chronicle News Connect',artwork:''},
-    kjv:{title:'King James Version',artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:root+'your-library-icon.svg'},
+    kjv:{title:'King James Version',artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:root+'kjv-audio.svg?v=20261025-1'},
     podcast:{title:'Podcast',artist:'Personal Library',album:'Personal Library Podcast',artwork:''}
   };
   var activeId=null;
