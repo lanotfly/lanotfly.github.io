@@ -49,6 +49,7 @@
       if(seen[key]){
         var duplicate=merged.find(function(item){return historyIdentity(item)===key;});
         if(duplicate&&(duplicate.duration===undefined||duplicate.duration===null||duplicate.duration==='')&&episode.duration!==undefined&&episode.duration!==null&&episode.duration!=='')duplicate.duration=episode.duration;
+        if(duplicate&&!duplicate.published&&(episode.published||episode.pubDate||episode.date||episode.isoDate))duplicate.published=episode.published||episode.pubDate||episode.date||episode.isoDate;
         return;
       }
       seen[key]=true;
@@ -56,7 +57,8 @@
         title:String(episode.title),
         url:episode.url||null,
         pageUrl:episode.pageUrl||null,
-        duration:episode.duration===undefined||episode.duration===null?'':episode.duration
+        duration:episode.duration===undefined||episode.duration===null?'':episode.duration,
+        published:episode.published||episode.pubDate||episode.date||episode.isoDate||''
       });
     }
     (Array.isArray(newEpisodes)?newEpisodes:[]).forEach(add);
