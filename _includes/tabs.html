@@ -335,7 +335,9 @@
   function renderEpisodeList(requestedMode){
     if(!episodeList)return;
     /* Keep the filter state in JS; Safari select values can be stale during rapid UI updates. */
-    var selectedMode=requestedMode||episodeListMode;
+    /* The native select is the source of truth. On iOS Safari, input events can fire
+       before the picker has committed its new value; read it on change and on redraw. */
+    var selectedMode=requestedMode||(listModeSelect?listModeSelect.value:episodeListMode);
     if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='unplayed';
     episodeListMode=selectedMode;
     episodeList.textContent='';
@@ -388,18 +390,10 @@
   }
   if(listModeSelect){
     listModeSelect.addEventListener('change',function(){
-      var option=listModeSelect.options[listModeSelect.selectedIndex];
-      var requestedMode=option?option.getAttribute('value'):'unplayed';
-      episodeListMode=['unplayed','played','all'].indexOf(requestedMode)>=0?requestedMode:'unplayed';
-      renderEpisodeList(episodeListMode);
-    });
-    listModeSelect.addEventListener('input',function(){
-      var option=listModeSelect.options[listModeSelect.selectedIndex];
-      var requestedMode=option?option.getAttribute('value'):'unplayed';
-      if(['unplayed','played','all'].indexOf(requestedMode)>=0){
-        episodeListMode=requestedMode;
-        renderEpisodeList(episodeListMode);
-      }
+      var requestedMode=listModeSelect.value;
+      if(['unplayed','played','all'].indexOf(requestedMode)<0)requestedMode='unplayed';
+      episodeListMode=requestedMode;
+      renderEpisodeList(requestedMode);
     });
   }
     function paint(id,playing){
