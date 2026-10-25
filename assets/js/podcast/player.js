@@ -164,17 +164,17 @@
     Object.keys(shows).forEach(function(id){paint(id,id===playingId);});
   }
   function setMetadata(show,episode){
+    var details={title:episode||show.title,artist:show.artist,album:show.title,artwork:show.artwork};
+    if(window.LibraryAudioIdentity){
+      window.LibraryAudioIdentity.setNowPlaying('podcast',audio,details);
+      return;
+    }
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
-      navigator.mediaSession.metadata=new MediaMetadata({
-        title:episode||show.title,
-        artist:show.artist,
-        album:show.title,
-        artwork:[{src:show.artwork,sizes:show.artworkSize||'600x600',type:'image/jpeg'}]
-      });
+      navigator.mediaSession.metadata=new MediaMetadata({title:details.title,artist:details.artist,album:details.album,artwork:[{src:details.artwork,sizes:show.artworkSize||'600x600',type:'image/jpeg'}]});
       navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){});});
       navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
-      navigator.mediaSession.playbackState='playing';
+      navigator.mediaSession.playbackState=audio.paused?'paused':'playing';
     }catch(_){}
   }
   function stopOtherAudio(){
