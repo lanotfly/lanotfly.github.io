@@ -561,7 +561,7 @@
 .podcast-episode-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
 .podcast-episode-panel__eyebrow{font-size:10px;font-weight:800;letter-spacing:.12em;color:#80699a}
 .podcast-episode-panel__title{margin:3px 0 0;font-size:16px;line-height:1.3;font-weight:700;color:#3f2e54}
-.podcast-episode-panel__close{flex:0 0 auto;border:1px solid #cbbbdc;border-radius:7px;background:transparent;color:#62458a;padding:6px 11px;min-height:32px;font:600 12px system-ui,sans-serif;cursor:pointer}
+.podcast-episode-panel__close{display:inline-flex;flex:0 0 34px;align-items:center;justify-content:center;width:34px;height:34px;min-height:34px;padding:0;border:1px solid #cbbbdc;border-radius:50%;background:transparent;color:#62458a;font:400 25px/1 system-ui,sans-serif;cursor:pointer;transition:background-color .15s ease,border-color .15s ease}.podcast-episode-panel__close:hover,.podcast-episode-panel__close:focus-visible{background:#f1ebf8;border-color:#8e76ad;outline:none}.podcast-episode-panel__close:focus-visible{box-shadow:0 0 0 3px rgba(112,84,147,.18)}
 .podcast-episode-panel__status{margin:8px 0 10px;font-size:12px;line-height:1.45;color:#6c6077}
 .podcast-episode-panel__tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .podcast-episode-panel__tools .podcast-episode-panel__status{flex:1 1 180px;margin:8px 0 10px}
