@@ -19,7 +19,7 @@
         if(mode==='all')return true;
         return !item.played;
       });
-      if(panelMode==='compact'){
+      if(panelMode!=='collapsed'){
         var current=visibleEpisodes.find(function(item){return item.index===currentIndex;});
         var following=visibleEpisodes.filter(function(item){return item.index>currentIndex;}).slice(0,4);
         visibleEpisodes=current?[current].concat(following):visibleEpisodes.slice(0,4);
