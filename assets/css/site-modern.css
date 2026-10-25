@@ -527,7 +527,8 @@
   display:inline-block;
   line-height:1.1;
 }
-.site-nav-shell .site-tab-links .site-tab--podcast.is-playing{
+.site-nav-shell .site-tab-links .site-tab--podcast.is-playing,
+.site-nav-shell .site-tab-links .site-tab--podcast.is-selected{
   border-style:solid!important;
   border-color:#9581b3!important;
   background:#f3eef9!important;
