@@ -1,0 +1,69 @@
+---
+layout: default
+title: "Linux filesystem structure"
+permalink: /linux/filesystem/
+---
+<link rel="stylesheet" href="/data-structures/wiki.css">
+<div class="wiki-wrap" id="top">
+<nav class="wiki-nav" aria-label="Linux chapters">
+<a href="/linux/">Overview</a><a href="/linux/filesystem/" class="current">1. Filesystem</a><a href="/linux/commands/">2. Commands</a>
+</nav>
+<h1>Linux filesystem structure</h1>
+<p class="lead">Linux uses one directory tree that begins at <code>/</code> (the root directory). These locations are common on Linux distributions, though exact contents and conventions can vary.</p>
+<figure class="diagram">
+<svg viewBox="0 0 600 330" role="img" aria-label="Linux filesystem tree rooted at slash with common directories">
+<rect x="245" y="10" width="110" height="38" rx="8" fill="#e8f1ff" stroke="#4779c4" stroke-width="2"/><text x="300" y="34" text-anchor="middle" font-size="16" fill="#172b4d">/</text>
+<path d="M300 48 V70 M55 70 H545 M55 70 V90 M178 70 V90 M300 70 V90 M422 70 V90 M545 70 V90" fill="none" stroke="#7895bc" stroke-width="2"/>
+<g fill="#fff" stroke="#7895bc" stroke-width="1.5"><rect x="10" y="90" width="90" height="38" rx="6"/><rect x="133" y="90" width="90" height="38" rx="6"/><rect x="255" y="90" width="90" height="38" rx="6"/><rect x="377" y="90" width="90" height="38" rx="6"/><rect x="500" y="90" width="90" height="38" rx="6"/></g>
+<g font-size="13" text-anchor="middle" fill="#172b4d"><text x="55" y="114">/etc</text><text x="178" y="114">/var</text><text x="300" y="114">/home</text><text x="422" y="114">/usr</text><text x="545" y="114">/tmp</text></g>
+<path d="M300 128 V157 M55 157 H545 M55 157 V176 M178 157 V176 M300 157 V176 M422 157 V176 M545 157 V176" fill="none" stroke="#7895bc" stroke-width="2"/>
+<g fill="#f2fbf6" stroke="#55a17b" stroke-width="1.5"><rect x="10" y="176" width="90" height="38" rx="6"/><rect x="133" y="176" width="90" height="38" rx="6"/><rect x="255" y="176" width="90" height="38" rx="6"/><rect x="377" y="176" width="90" height="38" rx="6"/><rect x="500" y="176" width="90" height="38" rx="6"/></g>
+<g font-size="13" text-anchor="middle" fill="#174b35"><text x="55" y="200">/dev</text><text x="178" y="200">/proc</text><text x="300" y="200">/sys</text><text x="422" y="200">/run</text><text x="545" y="200">/opt</text></g>
+<text x="300" y="254" text-anchor="middle" font-size="13" fill="#202124">One tree · filesystems may be mounted at directories</text>
+<text x="300" y="279" text-anchor="middle" font-size="12" fill="#424242">Example: a separate disk can be mounted at /mnt/data</text>
+</svg>
+<figcaption>Conceptual map of common top-level directories, not a complete directory listing.</figcaption>
+</figure>
+<h2>Directories you should recognize</h2>
+<table>
+<thead><tr><th>Path</th><th>What it contains</th><th>When you use it</th></tr></thead>
+<tbody>
+<tr><td><code>/</code></td><td>The root of the entire directory tree.</td><td>Starting point for absolute paths.</td></tr>
+<tr><td><code>/home</code></td><td>Regular users' home directories, such as <code>/home/alex</code>.</td><td>User files and personal configuration.</td></tr>
+<tr><td><code>/root</code></td><td>The root administrator's home directory.</td><td>Administrative files; usually requires elevated privileges.</td></tr>
+<tr><td><code>/etc</code></td><td>System-wide configuration files.</td><td>Inspect service and host configuration.</td></tr>
+<tr><td><code>/var</code></td><td>Variable data such as logs, caches, spools, and application state.</td><td>Investigate logs and growing data.</td></tr>
+<tr><td><code>/usr</code></td><td>Many user-space programs, libraries, and shared read-only data.</td><td>Find installed commands and libraries.</td></tr>
+<tr><td><code>/bin</code>, <code>/sbin</code>, <code>/lib</code></td><td>Essential commands and libraries; on many modern distributions these are symlinks into <code>/usr</code>.</td><td>Understand compatibility paths.</td></tr>
+<tr><td><code>/opt</code></td><td>Optional/add-on application software.</td><td>Locate software installed outside the package manager's usual layout.</td></tr>
+<tr><td><code>/tmp</code></td><td>Temporary files, often cleaned automatically.</td><td>Short-lived scratch files; do not assume data persists.</td></tr>
+<tr><td><code>/dev</code></td><td>Device nodes representing devices and kernel interfaces.</td><td>Understand devices such as disks and terminals.</td></tr>
+<tr><td><code>/proc</code></td><td>Virtual files exposing process and kernel information.</td><td>Inspect process IDs and kernel settings.</td></tr>
+<tr><td><code>/sys</code></td><td>Virtual view of devices and kernel objects.</td><td>Inspect hardware and driver-related information.</td></tr>
+<tr><td><code>/run</code></td><td>Runtime state created since boot, such as PID files and sockets.</td><td>Inspect service runtime information.</td></tr>
+<tr><td><code>/boot</code></td><td>Bootloader and kernel-related files on many systems.</td><td>Troubleshoot boot configuration carefully.</td></tr>
+<tr><td><code>/mnt</code>, <code>/media</code></td><td>Common mount points for manually mounted filesystems and removable media.</td><td>Find mounted disks or external media.</td></tr>
+</tbody>
+</table>
+<h2>Absolute vs relative paths</h2>
+<pre><code># Absolute path: starts at /
+cd /var/log
+
+# Relative path: starts from the current directory
+cd ..
+cd ./nginx
+
+# Useful path shortcuts
+cd ~
+cd -
+pwd</code></pre>
+<ul><li><code>.</code> means the current directory; <code>..</code> means its parent.</li><li><code>~</code> expands to your home directory in most shells.</li><li>Use <code>findmnt</code> or <code>df -h</code> to understand mounted filesystems and space usage.</li></ul>
+<h2>Inspect the filesystem safely</h2>
+<pre><code>ls -lah /
+find /etc -maxdepth 2 -type f
+df -h
+findmnt
+du -sh /var/log</code></pre>
+<p><strong>SRE tip:</strong> when a disk is full, check both filesystem capacity (<code>df -h</code>) and directory usage (<code>du -xhd1 /var</code>, where supported). A large directory and a full filesystem are related but not identical clues.</p>
+<div class="prev-next"><a href="/linux/">← Linux overview</a><a href="/linux/commands/">Essential commands →</a></div>
+</div>
