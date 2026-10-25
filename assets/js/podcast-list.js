@@ -2,15 +2,15 @@
   'use strict';
   if(window.LibraryPodcastList)return;
   function create(config){
-    var episodeList=document.getElementById('podcast-episode-list');
+    var episodeList=config.listElement||document.getElementById('podcast-episode-list');
     if(episodeList&&episodeList.parentNode&&!episodeList.parentNode.classList.contains('podcast-episode-scroll-frame')){
       var scrollFrame=document.createElement('div');scrollFrame.className='podcast-episode-scroll-frame';
       episodeList.parentNode.insertBefore(scrollFrame,episodeList);scrollFrame.appendChild(episodeList);
       ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');scrollFrame.appendChild(edge);});
     }
-    var episodeCount=document.getElementById('podcast-episode-count');
-    var panelStatus=document.getElementById('podcast-panel-status');
-    var listModeSelect=document.getElementById('podcast-list-mode');
+    var episodeCount=config.countElement||document.getElementById('podcast-episode-count');
+    var panelStatus=config.statusElement||document.getElementById('podcast-panel-status');
+    var listModeSelect=config.filterElement||document.getElementById('podcast-list-mode');
     var durationCacheKey='personal-library-podcast-duration-cache-v1';
     var durationCache={};
     var durationProbeQueue=[];
@@ -170,7 +170,7 @@
       });
       if(listModeSelect&&listModeSelect.value!==mode)listModeSelect.value=mode;
       /* The filter is self-explanatory; remove the redundant standalone label "List" if present. */
-      if(listModeSelect){
+      if(listModeSelect&&!config.filterElement){
         var filterLabel=document.querySelector('label[for="podcast-list-mode"]');
         if(filterLabel){
           var cleanedLabel=filterLabel.textContent.replace(/\\bList\\b/i,'').replace(/[:：]\\s*$/,'').trim();
@@ -178,7 +178,7 @@
         }
       }
       if(episodeCount){
-        episodeCount.textContent=totalMatchingEpisodes+' '+(totalMatchingEpisodes===1?'episode':'episodes');
+        episodeCount.textContent=config.formatCount?config.formatCount(totalMatchingEpisodes,queue.length,mode):totalMatchingEpisodes+' '+(totalMatchingEpisodes===1?'episode':'episodes');
         if(!queue.length)episodeCount.textContent='No episodes';
         else if(!totalMatchingEpisodes)episodeCount.textContent=mode==='played'?'0 played episodes':(mode==='unplayed'?'0 unplayed episodes':'0 episodes');
       }
