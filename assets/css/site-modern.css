@@ -851,3 +851,36 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
  .site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 1!important;font-size:11px!important;letter-spacing:0!important}
  .site-nav-shell .site-tab-links .site-tab--home{padding-left:7px!important;padding-right:7px!important}
 }
+
+/* News is loaded only after its compact navigation button is opened. */
+.site-nav-shell .site-tab-links .site-tab--news{flex:0 0 auto;gap:6px;color:#285b8d!important;background:#eef6ff;border-color:#c5dafa;cursor:pointer}
+.site-nav-shell .site-tab-links .site-tab--news:hover,
+.site-nav-shell .site-tab-links .site-tab--news.is-open{background:#deedff;border-color:#8fb9e9}
+.site-tab--news>span:first-child{font-size:10px;letter-spacing:.02em;font-weight:800}
+.library-news-panel[hidden]{display:none!important}
+.library-news-headline{align-items:center;min-width:0;box-sizing:border-box}
+.library-news-headline__title{display:block;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow-wrap:normal}
+.library-news-full-title{margin:0 0 8px;color:#222;font-size:17px;line-height:1.4;font-weight:700;overflow-wrap:anywhere}
+.library-news-detail{min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere}
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links .site-tab--news{grid-column:span 2!important;width:100%!important;min-height:37px!important;padding:6px!important;font-size:11px!important}
+ .library-news-headline{padding:9px 10px;font-size:14px!important;line-height:1.4!important}
+ .library-news-full-title{font-size:16px}
+}
+/* Put episode status and duration in a compact two-line stack at the right edge. */
+.podcast-episode-choice{box-sizing:border-box;min-width:0;overflow:hidden}
+.podcast-episode-name{min-width:0;flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow-wrap:normal}
+.podcast-episode-meta{display:flex;flex:0 0 auto;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;min-width:58px;margin-left:auto;line-height:1.15}
+.podcast-episode-meta .podcast-episode-state{margin:0!important;padding:2px 5px;font-size:9px;white-space:nowrap}
+.podcast-episode-meta .podcast-episode-duration{font-size:11px;line-height:1.15}
+@media(max-width:700px){.podcast-episode-meta{min-width:52px;gap:3px}.podcast-episode-meta .podcast-episode-state{font-size:8px;padding:2px 4px}.podcast-episode-meta .podcast-episode-duration{font-size:10px}}
+/* Keep KJV headings and queue rows inside the player frame on narrow screens. */
+.niv-bible-panel{box-sizing:border-box;min-width:0;max-width:100%;padding:10px 4px 0;overflow:hidden}
+.niv-bible-panel__heading{min-width:0;max-width:100%;box-sizing:border-box;gap:8px}
+.niv-bible-panel__title{flex:1 1 auto;min-width:0;overflow-wrap:anywhere;word-break:normal}
+.niv-bible-book-select{min-width:0;max-width:46%;box-sizing:border-box}
+.niv-bible-progress-wrap,.niv-bible-queue-frame{min-width:0;max-width:100%;box-sizing:border-box}
+.niv-bible-queue{padding:2px 4px!important;box-sizing:border-box}
+.niv-bible-queue-item{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding-left:7px;padding-right:7px;overflow:hidden}
+.niv-bible-queue-item .queue-position{flex:0 0 22px;min-width:0}
+.niv-bible-queue-item .queue-title{min-width:0;flex:1 1 auto;overflow-wrap:anywhere;word-break:normal}
