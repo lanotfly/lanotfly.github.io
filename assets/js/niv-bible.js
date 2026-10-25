@@ -33,7 +33,7 @@
     if(!queueList)return;
     queueList.textContent='';
     var currentBook=getBook(current.book)||books[0];
-    for(var chapter=current.chapter;chapter>=1;chapter--){
+    for(var chapter=1;chapter<=currentBook[2];chapter++){
       var item={book:currentBook[1],chapter:chapter,index:current.index,title:currentBook[0]+' '+chapter};
       var row=document.createElement('li');
       var choice=document.createElement('button');
@@ -50,7 +50,8 @@
       choice.addEventListener('click',(function(target){return function(){playChapter(target.book,target.chapter,true);};})(item));
       row.appendChild(choice);queueList.appendChild(row);
     }
-    queueList.scrollTop=0;
+    var currentRow=queueList.querySelector('.niv-bible-queue-item.is-current');
+    if(currentRow){var rowTop=currentRow.offsetTop;var rowBottom=rowTop+currentRow.offsetHeight;var viewTop=queueList.scrollTop;var viewBottom=viewTop+queueList.clientHeight;if(rowTop<viewTop||rowBottom>viewBottom)queueList.scrollTop=Math.max(0,rowTop-queueList.clientHeight/2+currentRow.offsetHeight/2);}
   }
   function installQueue(){
     var filters=document.querySelector('.niv-bible-panel__filters');
