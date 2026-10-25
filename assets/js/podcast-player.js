@@ -100,6 +100,24 @@
     getActiveId:function(){return activeId;},
     isPlayed:isEpisodePlayed,
     setPlayed:setEpisodePlayed,
+    isPlaying:function(){return !audio.paused&&!audio.ended;},
+    toggleCurrentEpisode:function(){
+      if(!activeId||episodeIndex<0||episodeIndex>=episodeQueue.length)return;
+      var show=shows[activeId];
+      if(!audio.paused&&!audio.ended){
+        audio.pause();
+        return;
+      }
+      stopOtherAudio();
+      setMetadata(show,audio.dataset.episodeTitle||episodeQueue[episodeIndex].title||show.title);
+      if(audio.src){
+        audio.play().catch(function(){
+          if(panelStatus)panelStatus.textContent='Playback was blocked by the browser. Tap the episode again or open the podcast in Apple Podcasts.';
+        });
+      }else{
+        playEpisodeAt(episodeIndex);
+      }
+    },
     playEpisodeAt:function(index){playEpisodeAt(index);}
   });
   function renderEpisodeList(){episodeListModule.render();}
