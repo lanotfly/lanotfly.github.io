@@ -73,6 +73,7 @@
       '<ul class="storage-check__details">'+
       '<li><strong>Context:</strong> '+contextLabel+'</li>'+
       '<li><strong>Podcast sources on this page:</strong> '+result.sourceCount+' ('+result.customPodcastSources+' custom feeds + '+result.newsPodcastSources+' news feeds)</li>'+
+      '<li><strong>Podcast sources represented in saved storage:</strong> '+result.showCount+'</li>'+
       '<li><strong>Saved episode-history records:</strong> '+result.historyCount+'</li>'+
       '<li><strong>Played episodes estimated from status keys:</strong> '+result.statusCount+' ('+result.statusKeys+' raw status keys)</li>'+
       '<li><strong>Playback-progress records:</strong> '+result.progressCount+'</li>'+
