@@ -59,8 +59,9 @@
         progressSlider.disabled=true;
       }
     }
-    if(currentTimeLabel)currentTimeLabel.textContent=formatTime(current,false)||'0m';
-    if(durationLabel)durationLabel.textContent=hasDuration?(formatTime(duration,true)||'—'):'—';
+    /* The episode row already shows duration; keep the progress control clean. */
+    if(currentTimeLabel)currentTimeLabel.textContent='';
+    if(durationLabel)durationLabel.textContent='';
   }
   if(progressSlider)progressSlider.addEventListener('input',function(){
     if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progressSlider.value)/1000)*audio.duration;
