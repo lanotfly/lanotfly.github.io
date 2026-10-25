@@ -46,6 +46,10 @@
           var durationSeconds=0;
           if(/^\d+(?:\.\d+)?$/.test(durationText))durationSeconds=Number(durationText);
           else if(/^\d+(?::\d{1,2}){1,2}$/.test(durationText)){var durationParts=durationText.split(':').map(Number);durationSeconds=durationParts.length===3?durationParts[0]*3600+durationParts[1]*60+durationParts[2]:durationParts[0]*60+durationParts[1];}
+          else {
+            var iso=durationText.match(/^PT(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?$/i);
+            if(iso)durationSeconds=Number(iso[1]||0)*3600+Number(iso[2]||0)*60+Number(iso[3]||0);
+          }
           if(durationSeconds>0){var durationHours=Math.floor(durationSeconds/3600),durationMinutes=Math.floor((durationSeconds%3600)/60),durationRemainder=Math.floor(durationSeconds%60);duration.textContent=durationHours?durationHours+':'+String(durationMinutes).padStart(2,'0')+':'+String(durationRemainder).padStart(2,'0'):durationMinutes+':'+String(durationRemainder).padStart(2,'0');}
         }
         var meta=document.createElement('span');meta.className='podcast-episode-meta';
