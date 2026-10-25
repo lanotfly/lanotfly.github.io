@@ -405,7 +405,10 @@
     function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
-    var selected=id===activeId;
+    var bbcAudio=document.getElementById('radio4-audio');
+    var nhkAudio=document.getElementById('nhk-radio-audio');
+    var radioIsPlaying=(bbcAudio&&!bbcAudio.paused)||(nhkAudio&&!nhkAudio.paused);
+    var selected=id===activeId&&!radioIsPlaying;
     button.setAttribute('aria-pressed',String(selected));
     button.classList.toggle('is-playing',playing);
     button.classList.toggle('is-selected',selected);
