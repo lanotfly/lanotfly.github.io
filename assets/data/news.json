@@ -85,23 +85,23 @@
     "bbc": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:06:16+00:00"
+      "checkedAt": "2026-10-25T09:07:14+00:00"
     },
     "guardian": {
       "ok": false,
-      "error": "No usable RSS items found",
-      "checkedAt": "2026-10-25T09:06:16+00:00"
+      "error": "No usable RSS items found (root=rss, item_nodes=297, first_item_children=['title', 'title', 'description', 'enclosure', 'pubdate', 'guid', 'duration', 'author', 'image', 'explicit', 'keywords', 'subtitle', 'summary'])",
+      "checkedAt": "2026-10-25T09:07:14+00:00"
     },
     "nhk": {
       "ok": false,
-      "error": "No usable RSS items found",
-      "checkedAt": "2026-10-25T09:06:16+00:00"
+      "error": "No usable RSS items found (root=rss, item_nodes=166, first_item_children=['title', 'enclosure', 'pubdate', 'guid', 'description', 'duration'])",
+      "checkedAt": "2026-10-25T09:07:15+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:06:17+00:00"
+      "checkedAt": "2026-10-25T09:07:15+00:00"
     }
   },
-  "updatedAt": "2026-10-25T09:06:17+00:00"
+  "updatedAt": "2026-10-25T09:07:15+00:00"
 }
