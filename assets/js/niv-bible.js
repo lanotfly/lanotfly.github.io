@@ -97,32 +97,24 @@
     return scan(data,0);
   }
   function playChapter(bookCode,chapter){
-    var book=getBook(bookCode);if(!book||busy)return;
+    var book=getBook(bookCode);if(!book)return;
     if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
     current={book:bookCode,chapter:chapter,index:books.findIndex(function(item){return item[1]===bookCode;})};
-    remember(bookCode,chapter);paintCurrent();busy=true;
-    setStatus('Loading NIV audio: '+book[0]+' '+chapter+'…');
-    var endpoint='https://audio-bible.youversionapi.com/3.1/chapter.json?reference='+encodeURIComponent(bookCode+'.'+chapter)+'&version_id=111';
-    fetch(endpoint,{mode:'cors',cache:'no-store'}).then(function(response){
-      if(!response.ok)throw new Error('Audio service returned '+response.status);
-      return response.json();
-    }).then(function(data){
-      var url=findAudioUrl(data);
-      if(!url)throw new Error('No direct audio URL was returned for this chapter');
-      audio.pause();audio.src=url;audio.dataset.book=bookCode;audio.dataset.chapter=String(chapter);
-      audio.load();
-      if('mediaSession' in navigator&&window.MediaMetadata){
-        try{navigator.mediaSession.metadata=new MediaMetadata({title:book[0]+' '+chapter,artist:'NIV Audio Bible',album:'New International Version'});}catch(_){}
-      }
-      return audio.play();
-    }).then(function(){
-      busy=false;paintCurrent();setStatus('Playing NIV · '+book[0]+' '+chapter);
-    }).catch(function(){
-      busy=false;
-      setStatus('Direct playback was blocked by the audio service or browser. Open this chapter on Bible.com instead.');
-      var fallback=document.createElement('a');fallback.href=chapterUrl(bookCode,chapter);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='niv-bible-fallback';fallback.textContent='Open '+book[0]+' '+chapter+' on Bible.com';
-      if(status){status.appendChild(document.createTextNode(' '));status.appendChild(fallback);}
-    });
+    remember(bookCode,chapter);paintCurrent();
+    var url=chapterUrl(bookCode,chapter);
+    setStatus('Opening official NIV audio: '+book[0]+' '+chapter+'…');
+    /* Open synchronously from the tap so iOS Safari does not block the new tab
+       after an asynchronous audio API request. Bible.com owns the licensed player. */
+    var opened=window.open(url,'_blank','noopener,noreferrer');
+    if(!opened){
+      setStatus('Your browser blocked the new tab. Tap the link below to play this chapter on Bible.com.');
+      var fallback=document.createElement('a');
+      fallback.href=url;fallback.target='_blank';fallback.rel='noopener noreferrer';
+      fallback.className='niv-bible-fallback';fallback.textContent='Play '+book[0]+' '+chapter+' on Bible.com';
+      if(status){status.textContent='';status.appendChild(fallback);}
+      return;
+    }
+    setStatus('Opened '+book[0]+' '+chapter+' in Bible.com. Use its audio player to listen.');
   }
   testament.addEventListener('change',function(){populateBooks(null);});
   bookSelect.addEventListener('change',renderChapters);
