@@ -328,7 +328,6 @@
   function renderEpisodeList(){
     if(!episodeList)return;
     episodeList.textContent='';
-    var playedCount=episodeQueue.filter(function(episode){return isEpisodePlayed(episode);}).length;
     var visibleEpisodes=episodeQueue.map(function(episode,index){
       return {episode:episode,index:index,played:isEpisodePlayed(episode)};
     }).filter(function(item){
