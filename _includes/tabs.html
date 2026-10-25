@@ -356,7 +356,7 @@
       if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
       else if(visibleCount===0&&episodeListMode==='played')panelStatus.textContent='No finished episodes yet.';
       else if(visibleCount===0&&episodeListMode==='unplayed')panelStatus.textContent='You’ve finished every episode in this list.';
-      else panelStatus.textContent=visibleCount+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Finished episodes are remembered on this device.';
+      else panelStatus.textContent=visibleCount+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Swipe an episode left or right to toggle Played/Unplayed; status is saved on this device.';
     }
   }
   if(listModeSelect)listModeSelect.addEventListener('change',function(){
