@@ -37,7 +37,7 @@
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
     </div>
-    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="all" selected>All episodes</option><option value="unplayed">Unplayed</option><option value="played">Played</option></select></label></div>
+    <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p></div>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
     </div>
   </section>
@@ -347,76 +347,23 @@
     row.style.setProperty('--podcast-swipe-distance',(dx<0?'-':'')+'100%');
     window.setTimeout(function(){toggleEpisodePlayed(episode);},140);
   }
-  function renderEpisodeList(requestedMode){
+  function renderEpisodeList(){
     if(!episodeList)return;
-    /* Keep the filter state in JS; Safari select values can be stale during rapid UI updates. */
-    /* The native select is the source of truth. On iOS Safari, input events can fire
-       before the picker has committed its new value; read it on change and on redraw. */
-    var selectedMode=normalizeEpisodeMode(requestedMode)||episodeListMode||'all';
-    /* Unknown picker values should never accidentally filter every episode away. */
-    if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='all';
-    episodeListMode=selectedMode;
-    if(listModeSelect&&listModeSelect.value!==selectedMode)listModeSelect.value=selectedMode;
     episodeList.textContent='';
-    var playedCount=episodeQueue.filter(function(episode){return isEpisodePlayed(episode);}).length;
-    var unplayedCount=episodeQueue.length-playedCount;
-    var visibleEpisodes=episodeQueue.map(function(episode,index){
-      return {episode:episode,index:index,played:isEpisodePlayed(episode)};
-    }).filter(function(item){
-      if(selectedMode==='all')return true;
-      if(selectedMode==='played')return item.played;
-      return !item.played;
-    });
-    visibleEpisodes.forEach(function(item){
-      var episode=item.episode,index=item.index,played=item.played;
+    episodeQueue.forEach(function(episode,index){
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
-      /* Keep playback highlighting out of episode-list rendering while debugging list visibility. */
       var choose=document.createElement('button');choose.type='button';choose.className='podcast-episode-choice';
-      choose.setAttribute('aria-current','false');
-      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=String(index+1);
+      if(index===episodeIndex)choose.classList.add('is-current');
+      choose.setAttribute('aria-current',index===episodeIndex?'true':'false');
+      var number=document.createElement('span');number.className='podcast-episode-number';number.textContent=index===episodeIndex?'▶':String(index+1);
       var title=document.createElement('span');title.className='podcast-episode-name';title.textContent=episode.title||('Episode '+(index+1));
-      var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';state.setAttribute('aria-label',played?'Played':'Unplayed');
-      choose.appendChild(number);choose.appendChild(title);choose.appendChild(state);
-      choose.addEventListener('click',function(){if(Date.now()<ignoreClickUntil)return;if(activeId){playEpisodeAt(index);}});
-      var touchStartX=null,touchStartY=null,ignoreClickUntil=0;
-      row.addEventListener('touchstart',function(event){
-        if(!event.changedTouches||!event.changedTouches.length)return;
-        touchStartX=event.changedTouches[0].clientX;touchStartY=event.changedTouches[0].clientY;
-      },{passive:true});
-      row.addEventListener('touchend',function(event){
-        if(touchStartX===null||!event.changedTouches||!event.changedTouches.length)return;
-        var dx=event.changedTouches[0].clientX-touchStartX;
-        var dy=event.changedTouches[0].clientY-touchStartY;
-        touchStartX=null;touchStartY=null;
-        if(Math.abs(dx)>=45&&Math.abs(dx)>Math.abs(dy)*1.25){
-          event.preventDefault();
-          ignoreClickUntil=Date.now()+600;
-          animateToggleEpisodePlayed(episode,row,dx);
-        }
-      },{passive:false});
+      choose.appendChild(number);choose.appendChild(title);
+      choose.addEventListener('click',function(){if(activeId){playEpisodeAt(index);}});
       row.appendChild(choose);episodeList.appendChild(row);
     });
-    if(panelStatus){
-      if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
-      else if(visibleEpisodes.length===0&&selectedMode==='played')panelStatus.textContent='No finished episodes yet.';
-      else if(visibleEpisodes.length===0&&selectedMode==='unplayed')panelStatus.textContent='You’ve finished every episode in this list.';
-      else panelStatus.textContent=visibleEpisodes.length+' '+(selectedMode==='all'?'episodes':selectedMode==='played'?'played episodes':'unplayed episodes')+'. Swipe an episode left or right to toggle Played/Unplayed; status is saved on this device.';
-    }
+    if(panelStatus)panelStatus.textContent=episodeQueue.length?'Choose an episode. Playback continues to older episodes automatically.':'No episodes found.';
   }
-  if(listModeSelect){
-    function applySelectedEpisodeMode(){
-      var option=listModeSelect.options&&listModeSelect.selectedIndex>=0?listModeSelect.options[listModeSelect.selectedIndex]:null;
-      /* Prefer the selected option itself, not a possibly stale iOS select.value. */
-      var requestedMode=normalizeEpisodeMode(option&&option.value)||
-        normalizeEpisodeMode(option&&option.textContent)||
-        normalizeEpisodeMode(listModeSelect.value)||'all';
-      episodeListMode=requestedMode;
-      renderEpisodeList(requestedMode);
-    }
-    listModeSelect.addEventListener('change',applySelectedEpisodeMode);
-    listModeSelect.addEventListener('input',applySelectedEpisodeMode);
-  }
-    function paint(id,playing){
+  function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
     var bbcAudio=document.getElementById('radio4-audio');
