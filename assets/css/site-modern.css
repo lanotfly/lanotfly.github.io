@@ -1130,3 +1130,14 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-episode-list .podcast-episode-row>.podcast-episode-state.is-played{color:#28764d!important;}
 .podcast-episode-list .podcast-episode-row>.podcast-episode-state.is-unplayed{color:#766b82!important;}
 .podcast-progress__times,.news-progress-times{display:none!important;}
+
+
+/* Ordinary podcast: status is selected in the toolbar above the list, not beside each episode. */
+#podcast-episode-list>.podcast-episode-row{display:block!important;width:100%!important;min-width:0!important;overflow:hidden!important;}
+#podcast-episode-list>.podcast-episode-row>.podcast-episode-choice{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;flex:1 1 100%!important;box-sizing:border-box!important;border:1px solid #e5ddec!important;border-radius:8px!important;background:#fff!important;}
+#podcast-episode-list>.podcast-episode-row>.podcast-episode-choice:hover{border-color:#b9a4d0!important;background:#f8f4fc!important;}
+#podcast-episode-list>.podcast-episode-row>.podcast-episode-choice.is-current{border-color:#9581b3!important;background:#f2ecf8!important;}
+#podcast-episode-list>.podcast-episode-row>.podcast-episode-state{display:none!important;}
+#podcast-episode-list .podcast-episode-meta{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:100%!important;min-width:0!important;margin:0!important;overflow:hidden!important;white-space:nowrap!important;}
+#podcast-episode-list .podcast-episode-meta .podcast-episode-date{display:inline-block!important;flex:0 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
+#podcast-episode-list .podcast-episode-meta .podcast-episode-duration{display:inline-block!important;flex:0 0 auto!important;margin:0!important;white-space:nowrap!important;}
