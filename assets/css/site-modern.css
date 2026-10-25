@@ -1212,3 +1212,57 @@ html,body{max-width:100%;overflow-x:clip}
 .niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--bottom{transform:translateY(-3px)}
 .niv-bible-queue-tools[hidden],.niv-bible-queue-frame[hidden]{display:none!important}
 @media(max-width:700px){.niv-bible-queue-toggle{width:34px;height:34px;min-width:34px;min-height:34px;flex-basis:34px}.niv-bible-book-select{max-width:42%}}
+
+
+/* KJV tile: simple centered white lettering on a black rounded square. */
+.site-nav-shell .site-tab-links .site-tab--niv{
+  width:40px!important;min-width:40px!important;height:40px!important;min-height:40px!important;
+  padding:3px!important;gap:0!important;justify-content:center!important;align-items:center!important;
+  border-radius:7px!important;background:#000!important;border-color:#000!important;color:#fff!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--niv>img[data-audio-identity-icon]{display:none!important}
+.site-nav-shell .site-tab-links .site-tab--niv::after{
+  content:"KJV";display:flex;align-items:center;justify-content:center;width:100%;height:100%;
+  color:#fff;font:800 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.015em;text-align:center;
+}
+.site-nav-shell .site-tab-links .site-tab--niv:hover{background:#202020!important;border-color:#202020!important;color:#fff!important}
+.site-nav-shell .site-tab-links .site-tab--niv[aria-pressed="true"]{background:#303030!important;border-color:#303030!important}
+.site-nav-shell .site-tab-links .site-tab--niv.is-active{background:#000!important;border-color:#000!important;color:#fff!important}
+
+/* KJV queue toggle uses the same softly rounded square as episode controls.
+   Expanded = three separated lines; collapsed = lines grouped together. */
+.niv-bible-queue-toggle{
+  border-radius:7px!important;background:#fff!important;border-color:#cbbbdc!important;
+  width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;
+}
+.niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--top{transform:translateY(3px)!important}
+.niv-bible-queue-toggle.is-collapsed .podcast-list-toggle-line--bottom{transform:translateY(-3px)!important}
+
+/* Wiki is a primary tab; its secondary section tabs only appear while open. */
+.site-nav-shell .site-tab-links .site-tab--wiki{
+  color:#5d4b70!important;background:transparent!important;border:1px dashed #d9cce8!important;
+  border-radius:8px!important;cursor:pointer;
+}
+.site-nav-shell .site-tab-links .site-tab--wiki:hover{background:#f4eefb!important;border-color:#a995c4!important}
+.site-nav-shell .site-tab-links .site-tab--wiki.is-open,
+.site-nav-shell .site-tab-links .site-tab--wiki[aria-expanded="true"]{
+  color:#fff!important;background:#6d548b!important;border:2px solid #6d548b!important;
+}
+.site-nav-shell .site-tab-links .wiki-secondary-tabs{
+  display:flex;align-items:center;gap:8px;flex:1 1 100%;min-width:0;flex-wrap:wrap;
+}
+.site-nav-shell .site-tab-links .wiki-secondary-tabs[hidden]{display:none!important}
+.site-nav-shell .site-tab-links .wiki-secondary-tabs .site-nav-row-divider--wiki-bottom{flex:0 0 100%}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links .site-tab--niv{width:35px!important;min-width:0!important;height:35px!important;min-height:35px!important;padding:2px!important}
+  .site-nav-shell .site-tab-links .site-tab--niv::after{font-size:12px}
+  .site-nav-shell .site-tab-links .wiki-secondary-tabs{
+    display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;
+    grid-column:1/-1!important;width:100%!important;
+  }
+  .site-nav-shell .site-tab-links .wiki-secondary-tabs[hidden]{display:none!important}
+  .site-nav-shell .site-tab-links .wiki-secondary-tabs .site-tab{grid-column:span 1!important;width:100%!important}
+  .site-nav-shell .site-tab-links .wiki-secondary-tabs .site-nav-row-divider--wiki-bottom{grid-column:1/-1!important}
+}
