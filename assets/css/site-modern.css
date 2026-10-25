@@ -890,3 +890,20 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .podcast-episode-panel__tools .podcast-episode-count{font-size:14px!important;font-weight:750!important;line-height:1.35;letter-spacing:.01em}
 .site-nav-shell .site-tab-links .site-tab--news{gap:0!important}
 .site-tab--news .library-news-button-label{font-size:12px;font-weight:750;letter-spacing:.01em}
+
+
+/* Short labels and viewport-aware navigation for phones, tablets and desktop. */
+.site-nav-shell .site-tab-links .site-tab--data{font-size:12px}
+.site-nav-shell .site-tab-links .site-tab--ai{font-size:12px}
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
+ .site-nav-shell .site-tab-links .site-tab{grid-column:span 1!important;width:100%!important;min-width:0!important;max-width:100%!important;min-height:35px!important;height:auto!important;padding:5px 2px!important;justify-content:center!important;font-size:10px!important;letter-spacing:-.03em!important;white-space:nowrap!important;box-sizing:border-box!important}
+ .site-nav-shell .site-tab-links .site-tab--podcast{grid-column:span 1!important}
+ .site-nav-shell .site-tab-links .site-tab--podcast .podcast-button-label,.site-nav-shell .site-tab-links .site-tab--radio .radio4-sr-label,.site-nav-shell .site-tab-links .site-tab--nhk-radio .nhk-radio-label,.site-nav-shell .site-tab-links .site-tab--niv .niv-button-label{display:none!important}
+ .site-nav-shell .site-tab-links .site-tab--radio img,.site-nav-shell .site-tab-links .site-tab--nhk-radio img{display:block!important;max-width:24px!important;max-height:24px!important}
+ .site-nav-shell .site-tab-links .site-tab--home,.site-nav-shell .site-tab-links .site-tab--news,.site-nav-shell .site-tab-links .site-tab--data,.site-nav-shell .site-tab-links .site-tab--algorithm,.site-nav-shell .site-tab-links .site-tab--ai,.site-nav-shell .site-tab-links .site-tab--linux,.site-nav-shell .site-tab-links .site-tab--cloud{padding-left:2px!important;padding-right:2px!important}
+}
+@media(min-width:701px) and (max-width:1100px){.site-nav-shell .site-tab-links{display:flex!important;flex-wrap:wrap!important;gap:6px!important}.site-nav-shell .site-tab-links .site-tab{min-height:36px;padding:7px 9px;font-size:12px}}
+@media(min-width:1101px){.site-nav-shell .site-tab-links{display:flex!important;flex-wrap:wrap!important;gap:8px!important}}
+html,body{max-width:100%;overflow-x:clip}
+.content-wrapper,.content-wrapper__inner{min-width:0;max-width:100%;box-sizing:border-box}
