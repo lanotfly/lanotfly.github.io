@@ -571,10 +571,14 @@
 .podcast-panel-filter:hover{background:#f5f0fa}
 .podcast-panel-filter[hidden]{display:none}
 .podcast-episode-list{display:flex;flex-direction:column;gap:5px;max-height:min(48vh,420px);overflow-y:auto;overscroll-behavior:contain}
-.podcast-episode-row{margin:0;touch-action:pan-y;overflow:hidden;opacity:1;transform:translateX(0);max-height:160px;transition:transform .13s ease-out,opacity .11s ease-out,max-height .13s ease-out,margin .13s ease-out;will-change:transform,opacity}
-.podcast-episode-row.is-swiping{opacity:0;transform:translateX(var(--podcast-swipe-distance,100%));max-height:0;margin-block:0}
-.podcast-episode-row.is-swiping-left{transform:translateX(-100%)}
-.podcast-episode-row.is-swiping-right{transform:translateX(100%)}
+.podcast-episode-row{position:relative;margin:0;touch-action:pan-y;overflow:hidden;opacity:1;transform:translateX(0);max-height:160px;border-radius:8px;background:#dff5e6;transition:transform .18s cubic-bezier(.2,.7,.2,1),opacity .16s ease-out,max-height .18s ease-out,margin .18s ease-out;will-change:transform,opacity}
+.podcast-episode-row::before,.podcast-episode-row::after{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:6px;padding:0 14px;color:#17663a;font:700 12px system-ui,sans-serif;white-space:nowrap;pointer-events:none}
+.podcast-episode-row::before{content:"✓ Played";right:0;justify-content:flex-end}
+.podcast-episode-row::after{content:"↶ Unplayed";left:0;justify-content:flex-start}
+.podcast-episode-row.is-swiping-left .podcast-episode-choice,.podcast-episode-row.is-swiping-right .podcast-episode-choice{box-shadow:0 0 0 1px #8bcba3}
+.podcast-episode-row.is-swiping-left .podcast-episode-choice{border-color:#86c99d}
+.podcast-episode-row.is-swiping-right .podcast-episode-choice{border-color:#86c99d}
+.podcast-episode-row.is-swiping{opacity:.08;max-height:0;margin-block:0}
 @media(prefers-reduced-motion:reduce){.podcast-episode-row{transition:none}}
 .podcast-episode-choice{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;padding:8px 10px;border:1px solid #e5ddec;border-radius:8px;background:#fff;color:#3f3549;text-align:left;font:500 13px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer}
 .podcast-episode-choice:hover{border-color:#b9a4d0;background:#f8f4fc}
@@ -590,7 +594,7 @@
 
 /* Hard override: keep the RSS episode rows visible even if another site style hides list children. */
 #podcast-episode-list{display:flex!important;flex-direction:column!important;gap:5px!important;visibility:visible!important;opacity:1!important;min-height:44px!important;height:auto!important;overflow-y:auto!important}
-#podcast-episode-list>.podcast-episode-row{display:block!important;visibility:visible!important;position:relative!important;opacity:1!important;transform:none!important;max-height:none!important;height:auto!important;overflow:visible!important;margin:0!important}
+#podcast-episode-list>.podcast-episode-row{display:block!important;visibility:visible!important;position:relative!important;opacity:1!important;max-height:none!important;height:auto!important;overflow:hidden!important;margin:0!important;transition:transform .18s cubic-bezier(.2,.7,.2,1),opacity .16s ease-out!important}
 #podcast-episode-list .podcast-episode-choice{display:flex!important;visibility:visible!important;opacity:1!important;min-height:44px!important;color:#3f3549!important;background:#fff!important}
 #podcast-episode-list .podcast-episode-name{display:block!important;visibility:visible!important;color:#3f3549!important}
 
@@ -613,3 +617,9 @@
 .podcast-episode-panel__close.is-collapsed .podcast-list-toggle-line--top{transform:translateY(3px)}
 .podcast-episode-panel__close.is-collapsed .podcast-list-toggle-line--bottom{transform:translateY(-3px)}
 @media(prefers-reduced-motion:reduce){.podcast-list-toggle-line{transition:none}}
+
+/* iOS Home Screen web app pull-to-refresh indicator. */
+.library-pull-refresh{position:fixed;z-index:9999;top:calc(env(safe-area-inset-top,0px) - 46px);left:50%;transform:translate(-50%,var(--pull-distance,0px));padding:8px 14px;border:1px solid #b7dfc5;border-radius:999px;background:#effaf2;color:#236743;box-shadow:0 3px 12px rgba(35,103,67,.12);font:700 12px/1.2 system-ui,-apple-system,sans-serif;opacity:0;pointer-events:none;transition:opacity .12s ease,top .12s ease}
+.library-pull-refresh.is-pulling{top:calc(env(safe-area-inset-top,0px) + 8px);opacity:1}
+.library-pull-refresh.is-ready{background:#d8f3e1;border-color:#5eaf7a;color:#155b32}
+@media(prefers-reduced-motion:reduce){.library-pull-refresh{transition:none}}
