@@ -384,8 +384,6 @@
       var artwork = data.artwork && data.artwork[feed.id];
       var image = root.querySelector('[data-news-artwork="' + feed.id + '"]');
       if (image && artwork) image.src = artwork;
-      var newsTab = root.querySelector('[data-news-tab="' + feed.id + '"]');
-      if (newsTab && window.LibraryAudioIdentity) window.LibraryAudioIdentity.ensureButtonIcon(newsTab, artwork || window.LibraryAudioIdentity.getArtwork(feed.id === 'bbc' ? 'newsBbc' : 'newsChronicle'));
       var status = root.querySelector('[data-news-status="' + feed.id + '"]');
       if (status) {
         var state = data.feedStatus && data.feedStatus[feed.id];
