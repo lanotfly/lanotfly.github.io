@@ -1,7 +1,7 @@
 (function(window,document){
   'use strict';
   if(window.LibraryAudioCoordinator)return;
-  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio'};
+  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio'};
   function getAudio(name){return document.getElementById(audioIds[name]);}
   function switchTo(target){
     /* Pause every outgoing source synchronously before the new source is played. */
