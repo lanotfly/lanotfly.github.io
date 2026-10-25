@@ -710,3 +710,8 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
   .site-nav-shell .site-tab-links .site-tab--niv .niv-button-label{font-size:10.5px!important;letter-spacing:-.02em!important}
   .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 6!important}
 }
+
+.niv-bible-frame{display:block;width:100%;height: min(72vh,760px);min-height:480px;margin:12px 0 0;border:1px solid #d7e7da;border-radius:10px;background:#fff}
+.niv-bible-frame[hidden],.niv-bible-fallback[hidden]{display:none!important}
+.niv-bible-fallback{display:inline-block;margin:8px 0 0;color:#315b45;font-weight:700;text-decoration:underline}
+@media(max-width:700px){.niv-bible-frame{height:68vh;min-height:420px}}
