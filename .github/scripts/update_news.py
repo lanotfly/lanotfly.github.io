@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch the two News podcast RSS feeds and publish a same-origin JSON cache."""
+"""Fetch all available News podcast RSS episodes into the static JSON cache."""
 import html
 import json
 import os
@@ -21,7 +21,7 @@ class TextOnly(HTMLParser):
     def handle_data(self, value):
         self.parts.append(value)
     def result(self):
-        return re.sub(r"\s+", " ", " ".join(self.parts)).strip()
+        return re.sub(r"\\s+", " ", " ".join(self.parts)).strip()
 
 def local_name(tag):
     return tag.rsplit("}", 1)[-1].split(":")[-1].lower()
@@ -32,7 +32,7 @@ def plain_text(value):
         parser.feed(html.unescape(value or ""))
         return parser.result()
     except Exception:
-        return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
+        return re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
 
 def child_text(node, names):
     wanted = {name.lower() for name in names}
@@ -44,11 +44,9 @@ def child_text(node, names):
     return ""
 
 def feed_artwork(root):
-    """Read the podcast's own artwork from feed metadata when available."""
     channel = next((node for node in root.iter() if local_name(node.tag) == "channel"), root)
     for node in channel.iter():
-        name = local_name(node.tag)
-        if name == "image":
+        if local_name(node.tag) == "image":
             for child in list(node):
                 if local_name(child.tag) == "url" and (child.text or "").strip().startswith(("http://", "https://")):
                     return child.text.strip()
@@ -58,13 +56,11 @@ def feed_artwork(root):
     return ""
 
 def item_audio(node):
-    """Return the RSS enclosure URL, kept separate from the episode page link."""
     for child in list(node):
         if local_name(child.tag) == "enclosure":
             media_url = child.attrib.get("url", "").strip()
             if media_url.startswith(("http://", "https://")):
                 return media_url
-    # Atom feeds may use a rel=enclosure link instead of an RSS enclosure element.
     for child in list(node):
         if local_name(child.tag) == "link" and child.attrib.get("rel", "").lower() == "enclosure":
             media_url = child.attrib.get("href", "").strip()
@@ -84,7 +80,6 @@ def item_link(node):
     guid = child_text(node, {"guid", "id"})
     if guid.startswith(("http://", "https://")):
         return guid
-    # Some valid podcast RSS feeds publish audio in <enclosure> but omit a web-page <link>.
     for child in list(node):
         if local_name(child.tag) == "enclosure":
             media_url = child.attrib.get("url", "").strip()
@@ -114,10 +109,13 @@ def read_feed(feed):
                 audio_url = "https://" + audio_url[len("http://"):]
         summary = plain_text(child_text(node, {"encoded", "content", "description", "summary"}))
         date = child_text(node, {"pubdate", "published", "updated", "date"})
+        duration = child_text(node, {"duration"})
         if title and link:
-            items.append({"title": title, "summary": summary, "link": link, "audioUrl": audio_url, "date": date, "source": feed["source"]})
-        if len(items) >= 5:
-            break
+            items.append({
+                "title": title, "summary": summary, "link": link,
+                "audioUrl": audio_url, "date": date, "duration": duration,
+                "source": feed["source"]
+            })
     if not items:
         item_nodes = [node for node in root.iter() if local_name(node.tag) in ("item", "entry")]
         sample_tags = [local_name(child.tag) for child in list(item_nodes[0])] if item_nodes else []
@@ -154,7 +152,7 @@ def main():
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-        file.write("\n")
+        file.write("\\n")
 
 if __name__ == "__main__":
     main()
