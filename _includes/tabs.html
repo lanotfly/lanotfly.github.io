@@ -311,6 +311,13 @@
     renderEpisodeList();
     if(panelStatus)panelStatus.textContent=(nextPlayed?'Marked as played: ':'Marked as unplayed: ')+(episode.title||'Episode')+'. Swipe either direction to toggle again.';
   }
+  function animateToggleEpisodePlayed(episode,row,dx){
+    if(!row||row.classList.contains('is-swiping'))return;
+    row.classList.add('is-swiping');
+    row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');
+    row.style.setProperty('--podcast-swipe-distance',(dx<0?'-':'')+'100%');
+    window.setTimeout(function(){toggleEpisodePlayed(episode);},240);
+  }
   function renderEpisodeList(){
     if(!episodeList)return;
     episodeList.textContent='';
@@ -345,8 +352,8 @@
         touchStartX=null;touchStartY=null;
         if(Math.abs(dx)>=45&&Math.abs(dx)>Math.abs(dy)*1.25){
           event.preventDefault();
-          ignoreClickUntil=Date.now()+500;
-          toggleEpisodePlayed(episode);
+          ignoreClickUntil=Date.now()+600;
+          animateToggleEpisodePlayed(episode,row,dx);
         }
       },{passive:false});
       row.appendChild(choose);episodeList.appendChild(row);
@@ -366,11 +373,16 @@
     function paint(id,playing){
     var button=document.getElementById(id);
     if(!button)return;
-    button.setAttribute('aria-pressed',String(playing));
+    var selected=id===activeId;
+    button.setAttribute('aria-pressed',String(selected));
     button.classList.toggle('is-playing',playing);
+    button.classList.toggle('is-selected',selected);
     var show=shows[id];
     button.setAttribute('aria-label',(playing?'Pause ':'Play latest episode: ')+show.title);
     button.title=(playing?'Pause ':'Play latest episode: ')+show.title;
+  }
+  function refreshPodcastSelection(playingId){
+    Object.keys(shows).forEach(function(id){paint(id,id===playingId);});
   }
   function setMetadata(show,episode){
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
@@ -534,7 +546,7 @@
     button.addEventListener('click',function(){
       if(activeId===id&&!audio.paused){showPanel(show);audio.pause();return;}
       if(activeId===id&&audio.paused&&audio.src){showPanel(show);renderEpisodeList();stopOtherAudio();setMetadata(show,audio.dataset.episodeTitle||show.title);audio.play().catch(function(){if(panelStatus)panelStatus.textContent='Playback was blocked by the browser. Tap the episode again or open the podcast in Apple Podcasts.';});return;}
-      stopOtherAudio();activeId=id;episodeQueue=[];episodeIndex=-1;showPanel(show);
+      stopOtherAudio();Object.keys(shows).forEach(function(otherId){paint(otherId,false);});activeId=id;paint(id,false);episodeQueue=[];episodeIndex=-1;showPanel(show);
       if(episodeList)episodeList.textContent='';
       if(panelStatus)panelStatus.textContent='Loading episodes…';
       button.classList.add('is-loading');
