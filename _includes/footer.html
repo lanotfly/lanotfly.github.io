@@ -13,4 +13,9 @@
             <a href="https://github.com/lanotfly/lanotfly.github.io">SRC</a> - &copy; {{site.time | date: "%Y"}}
         </span>
     </footer>
+    <div class="storage-check-footer">
+        <button id="library-storage-check-toggle" class="storage-check-footer__button" type="button" aria-expanded="false" aria-controls="library-storage-check-panel">System Check</button>
+        <section id="library-storage-check-panel" class="storage-check-footer__panel" aria-label="Local storage system check" hidden aria-live="polite"></section>
+    </div>
 </section>
+<script defer src="/assets/js/storage-check.js?v=20261026-1"></script>
