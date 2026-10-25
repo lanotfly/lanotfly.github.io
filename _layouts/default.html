@@ -7,24 +7,24 @@
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
 			{% include tabs.html %}
-            <section id="library-news-panel" class="library-news-panel" aria-label="BBC Global News and Chronicle News Connect" hidden>
+            <section id="library-news-panel" class="library-news-panel" aria-label="The Guardian Today in Focus and NHK Radio News" hidden>
               <div class="library-news-columns">
-                <section class="library-news-column" aria-label="BBC Global News Podcast">
-                  <h2 class="library-news-column__heading library-news-column__heading--english">BBC Global News</h2>
+                <section class="library-news-column" aria-label="The Guardian · Today in Focus">
+                  <h2 class="library-news-column__heading library-news-column__heading--english">The Guardian · Today in Focus</h2>
                   <div id="library-news-english-body">
                     <p class="library-news-status" data-news-status="english" aria-live="polite">Loading headlines…</p>
                     <ol class="library-news-list" data-news-list="english"></ol>
                   </div>
                 </section>
-                <section class="library-news-column" aria-label="Chronicle News Connect">
-                  <h2 class="library-news-column__heading library-news-column__heading--japanese">Chronicle · News Connect</h2>
+                <section class="library-news-column" aria-label="NHK Radio News">
+                  <h2 class="library-news-column__heading library-news-column__heading--japanese">NHK ラジオニュース</h2>
                   <div id="library-news-japanese-body">
                     <p class="library-news-status" data-news-status="japanese" aria-live="polite">ニュースを読み込み中…</p>
                     <ol class="library-news-list" data-news-list="japanese"></ol>
                   </div>
                 </section>
               </div>
-              <p class="library-news-attribution">Latest five episodes from BBC Global News Podcast and Chronicle News Connect.</p>
+              <p class="library-news-attribution">Latest five episodes from The Guardian · Today in Focus and NHK ラジオニュース.</p>
             </section>
             <hr class="post-list__divider" />
 			{{ content }}
