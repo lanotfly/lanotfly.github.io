@@ -12,6 +12,7 @@
       else if (href === '/data-structures/ai/') active = pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0;
       else if (href === '/data-structures/') active = pathname === '/data-structures/' || (pathname.indexOf('/data-structures/') === 0 && pathname.indexOf('/data-structures/ai/') !== 0);
       else if (href === '/cloud/') active = pathname === '/cloud/' || pathname.indexOf('/cloud/') === 0;
+      else if (href === '/linux/') active = pathname === '/linux/' || pathname.indexOf('/linux/') === 0;
       else if (href === '/home/') active = pathname === '/home/' || pathname === '/';
       link.classList.toggle('is-active', active);
       if (active) {
@@ -35,6 +36,8 @@
         link.style.removeProperty('color');
         link.style.removeProperty('background-color');
         link.style.removeProperty('border-color');
+        link.style.removeProperty('border-style');
+        link.style.removeProperty('border-width');
         link.style.removeProperty('box-shadow');
       }
     });
