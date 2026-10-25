@@ -9,7 +9,7 @@
         <img class="nhk-radio-icon-image" src="/assets/images/nhk-radio.svg" alt="" aria-hidden="true">
         <span class="nhk-radio-label">NHK Radio</span>
       </button>
-      <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Open NIV Audio Bible chapter list" title="NIV Audio Bible"><span aria-hidden="true">NIV</span><span class="niv-button-label">Bible Audio</span></button>
+      <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Open NIV Audio Bible chapter list" title="NIV Audio Bible"><span aria-hidden="true">NIV</span><span class="niv-button-label">NIV Audio</span></button>
       <button class="site-tab site-tab--podcast" id="bite-size-toggle" type="button" aria-pressed="false" aria-label="Play latest Bite Size Japanese episode" title="Play latest Bite Size Japanese episode">
         <span aria-hidden="true">JP</span><span class="podcast-button-label">Bite Size JP</span>
       </button>
@@ -31,6 +31,7 @@
   </audio>
 
   <audio id="podcast-audio" preload="none" playsinline hidden></audio>
+  <audio id="niv-bible-audio" preload="none" playsinline hidden></audio>
 </div>
   <section id="podcast-episode-panel" class="podcast-episode-panel" aria-label="Podcast episodes" hidden>
     <div class="podcast-episode-panel__heading"><div class="podcast-episode-panel__identity"><img id="podcast-panel-artwork" class="podcast-episode-panel__artwork" src="" alt="" loading="lazy"><div class="podcast-episode-panel__identity-text"><h2 id="podcast-panel-title" class="podcast-episode-panel__title">Choose an episode</h2></div></div><button id="podcast-panel-close" class="podcast-episode-panel__close" type="button" aria-expanded="true" aria-controls="podcast-episode-panel-content" aria-label="Collapse podcast list" title="Collapse podcast list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
