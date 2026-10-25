@@ -334,15 +334,22 @@
   }
   function renderEpisodeList(){
     if(!episodeList)return;
+    /* Read the live control value on every render; this avoids stale filter state on mobile Safari. */
+    var selectedMode=listModeSelect ? listModeSelect.value : episodeListMode;
+    if(['unplayed','played','all'].indexOf(selectedMode)<0)selectedMode='all';
+    episodeListMode=selectedMode;
     episodeList.textContent='';
     var playedCount=episodeQueue.filter(function(episode){return isEpisodePlayed(episode);}).length;
     var unplayedCount=episodeQueue.length-playedCount;
-    var visibleCount=0;
-    episodeQueue.forEach(function(episode,index){
-      var played=isEpisodePlayed(episode);
-      var shouldShowEpisode = episodeListMode === 'all' || (episodeListMode === 'played' ? played : !played);
-      if(!shouldShowEpisode)return;
-      visibleCount++;
+    var visibleEpisodes=episodeQueue.map(function(episode,index){
+      return {episode:episode,index:index,played:isEpisodePlayed(episode)};
+    }).filter(function(item){
+      if(selectedMode==='all')return true;
+      if(selectedMode==='played')return item.played;
+      return !item.played;
+    });
+    visibleEpisodes.forEach(function(item){
+      var episode=item.episode,index=item.index,played=item.played;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
       var isCurrent=index===episodeIndex&&activeId&&!played&&!audio.paused&&audio.dataset.episodeTitle===(episode.title||'');
       if(isCurrent)row.classList.add('is-current');
@@ -372,16 +379,15 @@
       },{passive:false});
       row.appendChild(choose);episodeList.appendChild(row);
     });
-    if(listModeSelect)listModeSelect.value=episodeListMode;
     if(panelStatus){
       if(!episodeQueue.length)panelStatus.textContent='No episodes found.';
-      else if(visibleCount===0&&episodeListMode==='played')panelStatus.textContent='No finished episodes yet.';
-      else if(visibleCount===0&&episodeListMode==='unplayed')panelStatus.textContent='You’ve finished every episode in this list.';
-      else panelStatus.textContent=visibleCount+' '+(episodeListMode==='all'?'episodes':episodeListMode==='played'?'played episodes':'unplayed episodes')+'. Swipe an episode left or right to toggle Played/Unplayed; status is saved on this device.';
+      else if(visibleEpisodes.length===0&&selectedMode==='played')panelStatus.textContent='No finished episodes yet.';
+      else if(visibleEpisodes.length===0&&selectedMode==='unplayed')panelStatus.textContent='You’ve finished every episode in this list.';
+      else panelStatus.textContent=visibleEpisodes.length+' '+(selectedMode==='all'?'episodes':selectedMode==='played'?'played episodes':'unplayed episodes')+'. Swipe an episode left or right to toggle Played/Unplayed; status is saved on this device.';
     }
   }
   if(listModeSelect)listModeSelect.addEventListener('change',function(){
-    var requestedMode=listModeSelect.options[listModeSelect.selectedIndex] ? listModeSelect.options[listModeSelect.selectedIndex].value : 'all';
+    var requestedMode=listModeSelect.value;
     episodeListMode=['unplayed','played','all'].indexOf(requestedMode)>=0 ? requestedMode : 'all';
     renderEpisodeList();
   });
