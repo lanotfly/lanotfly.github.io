@@ -279,7 +279,7 @@
     episodeIndex=index;
     /* Keep the existing progress UI mounted while the next episode loads to avoid list/player flicker. */
     var show=shows[activeId],episode=episodeQueue[episodeIndex];
-    renderEpisodeList();
+    if(episodeListModule&&episodeListModule.setCurrent)episodeListModule.setCurrent(episodeIndex,false);
     if(panelStatus)panelStatus.textContent='Loading audio…';
     resolveEpisodeAudio(episode).then(function(audioUrl){
       episode.url=audioUrl;
