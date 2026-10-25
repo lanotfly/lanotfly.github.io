@@ -309,15 +309,15 @@
 }
 
 
-/* Kubernetes navigation tab: keep the same outline-only visual language. */
-.site-nav-shell .site-tab-links .site-tab--kubernetes:not(.is-active){color:#0f6b72!important;border-color:#9dd9dc!important}
-.site-nav-shell .site-tab-links .site-tab--kubernetes.is-active,
-.site-nav-shell .site-tab-links .site-tab--kubernetes.is-active:hover{color:#07575d!important;background:transparent!important;border-color:#07575d!important;border-style:solid!important;border-width:2px!important;box-shadow:none!important}
+/* Cloud navigation tab: keep the same outline-only visual language. */
+.site-nav-shell .site-tab-links .site-tab--cloud:not(.is-active){color:#0f6b72!important;border-color:#9dd9dc!important}
+.site-nav-shell .site-tab-links .site-tab--cloud.is-active,
+.site-nav-shell .site-tab-links .site-tab--cloud.is-active:hover{color:#07575d!important;background:transparent!important;border-color:#07575d!important;border-style:solid!important;border-width:2px!important;box-shadow:none!important}
 @media(max-width:700px){
  .site-nav-shell .site-tab-links .site-tab--algorithm,
  .site-nav-shell .site-tab-links .site-tab--ai,
- .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 2!important}
- .site-nav-shell .site-tab-links .site-tab--kubernetes{font-size:10.5px!important;letter-spacing:-.03em}
+ .site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 2!important}
+ .site-nav-shell .site-tab-links .site-tab--cloud{font-size:10.5px!important;letter-spacing:-.03em}
 }
 
 .home-card--cloud{border-top:4px solid #17858b;background:linear-gradient(180deg,#eafafa 0%,#fff 58%)}
@@ -400,7 +400,7 @@
   .site-nav-shell .site-tab-links .site-tab--data{grid-column:span 3!important}
   .site-nav-shell .site-tab-links .site-tab--algorithm,
   .site-nav-shell .site-tab-links .site-tab--ai,
-  .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 2!important}
+  .site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 2!important}
   .site-nav-shell .site-tab-links .site-tab--nhk-radio{justify-content:center!important;gap:6px!important}
   .nhk-radio-icon{flex:0 0 24px;width:24px;min-width:24px;text-align:center}
   .nhk-radio-label{white-space:nowrap!important}
@@ -708,7 +708,7 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
   .site-nav-shell .site-tab-links .site-tab--niv{width:100%!important;min-height:37px!important;height:37px!important;padding:5px 3px!important;gap:4px!important;font-size:11px!important}
   .site-nav-shell .site-tab-links .site-tab--niv>span:first-child{min-width:23px;height:21px;font-size:9px}
   .site-nav-shell .site-tab-links .site-tab--niv .niv-button-label{font-size:10.5px!important;letter-spacing:-.02em!important}
-  .site-nav-shell .site-tab-links .site-tab--kubernetes{grid-column:span 6!important}
+  .site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 6!important}
 }
 
 .niv-bible-frame{display:block;width:100%;height: min(72vh,760px);min-height:480px;margin:12px 0 0;border:1px solid #d7e7da;border-radius:10px;background:#fff}
