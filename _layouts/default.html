@@ -7,20 +7,20 @@
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
 			{% include tabs.html %}
-            <section id="library-news-panel" class="library-news-panel" aria-label="English and Japanese news" hidden>
+            <section id="library-news-panel" class="library-news-panel" aria-label="BBC Global News and Chronicle News Connect" hidden>
               <div class="library-news-columns">
-                <section class="library-news-column" aria-label="English News">
+                <section class="library-news-column" aria-label="BBC Global News Podcast">
                   <button class="library-news-column__heading library-news-column__heading--english" type="button" data-news-toggle="english" aria-expanded="true" aria-controls="library-news-english-body">
-                    <span>English News</span><span class="library-news-column__mark" aria-hidden="true">−</span>
+                    <span>BBC Global News</span><span class="library-news-column__mark" aria-hidden="true">−</span>
                   </button>
                   <div id="library-news-english-body" data-news-body="english">
                     <p class="library-news-status" data-news-status="english" aria-live="polite">Loading headlines…</p>
                     <ol class="library-news-list" data-news-list="english"></ol>
                   </div>
                 </section>
-                <section class="library-news-column" aria-label="Japanese News">
+                <section class="library-news-column" aria-label="Chronicle News Connect">
                   <button class="library-news-column__heading library-news-column__heading--japanese" type="button" data-news-toggle="japanese" aria-expanded="true" aria-controls="library-news-japanese-body">
-                    <span>Japanese News</span><span class="library-news-column__mark" aria-hidden="true">−</span>
+                    <span>Chronicle · News Connect</span><span class="library-news-column__mark" aria-hidden="true">−</span>
                   </button>
                   <div id="library-news-japanese-body" data-news-body="japanese">
                     <p class="library-news-status" data-news-status="japanese" aria-live="polite">ニュースを読み込み中…</p>
@@ -28,7 +28,7 @@
                   </div>
                 </section>
               </div>
-              <p class="library-news-attribution">Headlines and summaries from The Guardian and NHK NEWS WEB.</p>
+              <p class="library-news-attribution">Latest five episodes from BBC Global News Podcast and Chronicle News Connect.</p>
             </section>
             <hr class="post-list__divider" />
 			{{ content }}
