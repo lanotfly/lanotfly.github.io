@@ -138,11 +138,12 @@
     request.onsuccess=function(){
       var storedKeys=Object.create(null);
       (request.result||[]).forEach(function(item){if(item&&typeof item.key==='string'){cache[item.key]=item.value;storedKeys[item.key]=true;}});
-      var migrations=[];
+      var migrations=[],legacyKeys=[];
       try{
         for(var i=0;i<localStorage.length;i++){
           var key=localStorage.key(i);
           if(!key||!(/^(personal-library-played:|personal-library-episode-history:|personal-library-progress:)/).test(key))continue;
+          legacyKeys.push(key);
           var raw=localStorage.getItem(key),value=raw;
           if(key.indexOf('personal-library-episode-history:')===0){try{value=raw?JSON.parse(raw):[];}catch(_){value=[];}}
           if(!storedKeys[key]){
@@ -151,12 +152,12 @@
           }
         }
       }catch(_){}
-      if(!migrations.length){finishReady();return;}
+      if(!migrations.length){legacyKeys.forEach(safeLocalRemove);finishReady();return;}
       try{
         var tx=db.transaction(STORE_NAME,'readwrite'),store=tx.objectStore(STORE_NAME);
         migrations.forEach(function(item){store.put(item);});
         tx.oncomplete=function(){
-          migrations.forEach(function(item){safeLocalRemove(item.key);});
+          legacyKeys.forEach(safeLocalRemove);
           finishReady();
         };
         tx.onerror=function(){finishReady();};
