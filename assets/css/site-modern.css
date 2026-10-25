@@ -801,3 +801,15 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
 .podcast-episode-scroll-edge--left{left:0}
 .podcast-episode-scroll-edge--right{right:0}
 @media(max-width:700px){.podcast-episode-scroll-frame{height:min(250px,38vh);min-height:190px}}
+
+
+/* KJV chapter history: current chapter first, then earlier chapters; show five rows in a scrollable viewport. */
+.niv-bible-queue-frame{position:relative;width:100%;height:min(250px,38vh);min-height:190px;margin:8px 0 0;overflow:visible}
+.niv-bible-queue{display:flex;flex-direction:column;gap:5px;height:100%;max-height:100%;margin:0;padding:1px 0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;list-style:none;box-sizing:border-box}
+.niv-bible-queue>li{display:block;flex:0 0 auto;margin:0;padding:0}
+.niv-bible-queue-item{min-height:42px}
+.niv-bible-queue-item.is-current{border:2px solid #326b4b;background:#e6f4e9;color:#245237;font-weight:800}
+.niv-bible-queue-scroll-edge{position:absolute;z-index:5;top:0;bottom:0;width:10%;background:transparent;touch-action:pan-y;pointer-events:auto}
+.niv-bible-queue-scroll-edge--left{left:0}
+.niv-bible-queue-scroll-edge--right{right:0}
+@media(max-width:700px){.niv-bible-queue-frame{height:min(250px,38vh);min-height:190px}.niv-bible-queue-item{min-height:42px}}
