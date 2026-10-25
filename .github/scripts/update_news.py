@@ -12,8 +12,8 @@ FEEDS = {
         "lang": "en",
     },
     "japanese": {
-        "source": "朝日新聞デジタル",
-        "url": "https://www.asahi.com/rss/asahi/newsheadlines.rdf",
+        "source": "NHK NEWS WEB",
+        "url": "https://www.nhk.or.jp/rss/news/cat0.xml",
         "lang": "ja",
     },
 }
@@ -49,7 +49,7 @@ def read_feed(feed):
                     link = child.attrib.get("href", "").strip()
                     if link:
                         break
-        summary = text_of(node, {"description", "summary", "encoded", "content"})
+        summary = text_of(node, {"encoded", "content", "description", "summary"})
         date = text_of(node, {"pubdate", "published", "updated", "date"})
         if title and link.startswith(("http://", "https://")):
             items.append({
