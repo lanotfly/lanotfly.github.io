@@ -571,7 +571,7 @@
 .podcast-panel-filter:hover{background:#f5f0fa}
 .podcast-panel-filter[hidden]{display:none}
 .podcast-episode-list{display:flex;flex-direction:column;gap:5px;max-height:min(48vh,420px);overflow-y:auto;overscroll-behavior:contain}
-.podcast-episode-row{margin:0;touch-action:pan-y;overflow:hidden;opacity:1;transform:translateX(0);max-height:160px;transition:transform .24s cubic-bezier(.22,.61,.36,1),opacity .24s ease,max-height .24s ease,margin .24s ease}
+.podcast-episode-row{margin:0;touch-action:pan-y;overflow:hidden;opacity:1;transform:translateX(0);max-height:160px;transition:transform .13s ease-out,opacity .11s ease-out,max-height .13s ease-out,margin .13s ease-out;will-change:transform,opacity}
 .podcast-episode-row.is-swiping{opacity:0;transform:translateX(var(--podcast-swipe-distance,100%));max-height:0;margin-block:0}
 .podcast-episode-row.is-swiping-left{transform:translateX(-100%)}
 .podcast-episode-row.is-swiping-right{transform:translateX(100%)}
