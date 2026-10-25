@@ -65,12 +65,13 @@
       var duration=document.createElement('span');duration.className='queue-duration';duration.setAttribute('aria-label','Chapter duration');
       var savedDuration=durationCache[durationCacheKey(item.book,chapter)];if(savedDuration)duration.textContent=formatChapterDuration(savedDuration);
       choice.appendChild(position);choice.appendChild(label);choice.appendChild(duration);
-      choice.addEventListener('click',(function(target){return function(){playChapter(target.book,target.chapter,true);};})(item));
+      choice.addEventListener('click',(function(target){return function(){toggleChapter(target.book,target.chapter);};})(item));
       row.appendChild(choice);queueList.appendChild(row);
       if(durationObserver)durationObserver.observe(row);
     }
     var currentRow=queueList.querySelector('.niv-bible-queue-item.is-current');
     if(currentRow){queueList.scrollTop=currentRow.offsetTop;}
+    updateQueuePlaybackState();
   }
   function installQueue(){
     var anchor=document.querySelector('.niv-bible-progress-wrap');
@@ -107,6 +108,34 @@
       navigator.mediaSession.playbackState=audio.paused?'paused':'playing';
     }catch(_){}
   }
+  function updateQueuePlaybackState(){
+    if(!queueList)return;
+    Array.prototype.forEach.call(queueList.querySelectorAll('li'),function(row){
+      var choice=row.querySelector('.niv-bible-queue-item');
+      var position=row.querySelector('.queue-position');
+      if(!choice||!position)return;
+      var isCurrent=row.dataset.book===current.book&&Number(row.dataset.chapter)===Number(current.chapter);
+      var isPlaying=isCurrent&&!audio.paused&&audio.dataset.chapterTitle===((getBook(current.book)||books[0])[0]+' '+current.chapter);
+      choice.classList.toggle('is-current',isCurrent);
+      choice.classList.toggle('is-playing',isPlaying);
+      choice.setAttribute('aria-current',isCurrent?'true':'false');
+      choice.setAttribute('aria-pressed',String(isPlaying));
+      choice.setAttribute('aria-label',(isPlaying?'Pause chapter: ':'Play chapter: ')+(getBook(row.dataset.book)||books[0])[0]+' '+row.dataset.chapter);
+      position.textContent=isCurrent?(isPlaying?'Ⅱ':'▶'):row.dataset.chapter;
+    });
+  }
+  function toggleChapter(bookCode,chapter){
+    var book=getBook(bookCode);if(!book)return;
+    chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
+    var selectedTitle=book[0]+' '+chapter;
+    var sameSelection=current.book===bookCode&&Number(current.chapter)===chapter&&audio.dataset.chapterTitle===selectedTitle&&!!audio.src;
+    if(!sameSelection){playChapter(bookCode,chapter,true);return;}
+    panel.hidden=false;
+    button.setAttribute('aria-expanded','true');
+    if(!audio.paused){audio.pause();setStatus('');paint();return;}
+    if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
+    audio.play().then(function(){setStatus('');paint();}).catch(function(){setStatus('');paint();});
+  }
   function paint(){
     var playing=!audio.paused;
     button.classList.toggle('is-playing',playing);
@@ -114,6 +143,7 @@
     button.setAttribute('aria-expanded',String(!panel.hidden));
     button.setAttribute('aria-label',(playing?'Pause':'Play')+' KJV Audio Bible'+(current.book?' · '+(getBook(current.book)||books[0])[0]+' '+current.chapter:''));
     button.title=(playing?'Pause':'Play')+' KJV Audio Bible';
+    updateQueuePlaybackState();
   }
   function playChapter(bookCode,chapter,shouldPlay){
     var book=getBook(bookCode);if(!book)return;
