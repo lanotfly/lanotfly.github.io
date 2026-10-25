@@ -2161,15 +2161,6 @@
       "source": "BBC Global News Podcast"
     },
     {
-      "title": "The Happy Pod: 'I'm blind but I can read a book again'",
-      "summary": "Doctors at Moorfields Eye Hospital in London have used microchips to help blind patients regain the ability to read. Also: the woman who played the clarinet during brain surgery, helping the doctors fine tune their treatment for Parkinson's; Thailand's water buffalo beauty contest; and how polystyrene boxes that keep fish fresh are being replaced... using mushrooms. Happy stories and positive news from around the world - our weekly collection. Presenter: Jannat Jalil. Music composed by Iona Hampson.",
-      "link": "https://www.bbc.co.uk/programmes/p0mbspl2",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0mbsn4p.mp3",
-      "date": "Sat, 25 Oct 2025 11:59:00 +0000",
-      "duration": "1619",
-      "source": "BBC Global News Podcast"
-    },
-    {
       "title": "Xi, Kim and Putin: A new world alliance?",
       "summary": "After China's President Xi welcomed North Korea's leader Kim Jong Un and Russia's Vladimir Putin to Beijing: we ask what do Western nations make of this show of strength? In this special edition, Celia Hatton is joined by our correspondents across the globe to discuss the reaction to the military parade. China marked the anniversary of the end of World War Two by showing off its next generation of cutting edge weaponry. We ask if the alliance between the three nuclear armed leaders poses a real threat to the West?",
       "link": "https://www.bbc.co.uk/programmes/p0m0w1rl",
@@ -17069,14 +17060,14 @@
   "feedStatus": {
     "bbc": {
       "ok": true,
-      "count": 287,
-      "checkedAt": "2026-10-25T12:00:29+00:00"
+      "count": 286,
+      "checkedAt": "2026-10-25T13:45:15+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1608,
-      "checkedAt": "2026-10-25T12:00:30+00:00"
+      "checkedAt": "2026-10-25T13:45:15+00:00"
     }
   },
-  "updatedAt": "2026-10-25T12:00:30+00:00"
+  "updatedAt": "2026-10-25T13:45:16+00:00"
 }
