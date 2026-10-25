@@ -966,3 +966,40 @@ html,body{max-width:100%;overflow-x:clip}
 
 .podcast-episode-meta .podcast-episode-date{margin:0;color:#777080;font-size:10px;line-height:1.15;white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:700px){.podcast-episode-meta .podcast-episode-date{font-size:9px}}
+
+
+/* Two clear navigation rows: audio/playback + Home above, News/wiki below. */
+.site-nav-shell .site-tab-links .site-nav-row-divider{
+  flex:0 0 100%;
+  width:100%;
+  height:0;
+  min-height:0;
+  margin:2px 0 3px;
+  border:0;
+  border-top:1px solid #d9dee8;
+  grid-column:1 / -1;
+  pointer-events:none;
+}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    row-gap:5px!important;
+  }
+  .site-nav-shell .site-tab-links .site-nav-row-divider{
+    grid-column:1 / -1!important;
+    height:0!important;
+    min-height:0!important;
+    margin:2px 0 3px!important;
+    padding:0!important;
+  }
+}
+/* A click on a wiki tab must never leave News looking selected. */
+.site-nav-shell .site-tab-links .site-tab--news:not(.is-open){
+  border-style:dashed!important;
+  border-width:1px!important;
+}
+.site-nav-shell .site-tab-links .site-tab--news.is-open{
+  border-style:solid!important;
+  border-width:2px!important;
+}
