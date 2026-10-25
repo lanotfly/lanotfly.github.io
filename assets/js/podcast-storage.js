@@ -48,10 +48,16 @@
       var key=historyIdentity(episode);
       if(seen[key])return;
       seen[key]=true;
+      var existing=merged.find(function(item){return historyIdentity(item)===key;});
+      if(existing){
+        if((existing.duration===undefined||existing.duration===null||existing.duration==='')&&episode.duration!==undefined&&episode.duration!==null&&episode.duration!=='')existing.duration=episode.duration;
+        return;
+      }
       merged.push({
         title:String(episode.title),
         url:episode.url||null,
-        pageUrl:episode.pageUrl||null
+        pageUrl:episode.pageUrl||null,
+        duration:episode.duration===undefined||episode.duration===null?'':episode.duration
       });
     }
     (Array.isArray(newEpisodes)?newEpisodes:[]).forEach(add);
