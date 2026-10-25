@@ -17,7 +17,7 @@
   function validArtwork(url){return typeof url==='string'&&url.trim()&&/^https?:\/\//i.test(absolute(url));}
   function artworkList(url){
     var selected=validArtwork(url)?absolute(url):absolute(fallback);
-    return [{src:selected,sizes:'512x512',type:/\\.svg(?:[?#]|$)/i.test(selected)?'image/svg+xml':'image/png'}];
+    return [{src:selected,sizes:'512x512',type:/\.svg(?:[?#]|$)/i.test(selected)?'image/svg+xml':'image/png'}];
   }
   function setNowPlaying(id,audio,details){
     details=details||{};
