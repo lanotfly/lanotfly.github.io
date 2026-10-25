@@ -647,7 +647,14 @@
       if(episodeList)episodeList.textContent='';
       if(panelStatus)panelStatus.textContent='Loading episodes…';
       button.classList.add('is-loading');
-      fetchEpisodes(show).then(function(episodes){episodeQueue=episodes;renderEpisodeList();playEpisodeAt(0);}).catch(function(){
+      fetchEpisodes(show).then(function(episodes){
+        episodeQueue=episodes;
+        /* Select the first episode before the initial list render, so it is present
+           immediately even if its saved Played state would normally filter it out. */
+        episodeIndex=episodes.length?0:-1;
+        renderEpisodeList();
+        if(episodeIndex>=0)playEpisodeAt(episodeIndex);
+      }).catch(function(){
         if(panelStatus)panelStatus.textContent='Could not load episodes in this browser. Try again later, or open the podcast in Apple Podcasts.';
       }).finally(function(){button.classList.remove('is-loading');});
     });
