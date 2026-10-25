@@ -177,9 +177,16 @@
     var episodes=items.map(function(item){
       var enclosure=item.querySelector('enclosure[url]');
       var episodeTitle=item.querySelector('title');
-      var durationNode=Array.from(item.getElementsByTagName('*')).find(function(node){return node.localName==='duration';});
+      var children=Array.from(item.getElementsByTagName('*'));
+      var durationNode=children.find(function(node){return node.localName.toLowerCase()==='duration';});
+      var publishedNode=children.find(function(node){return ['pubdate','published','date','updated'].indexOf(node.localName.toLowerCase())>=0;});
       if(!enclosure)return null;
-      return {url:enclosure.getAttribute('url'),title:episodeTitle?episodeTitle.textContent.trim():'',duration:durationNode?durationNode.textContent.trim():''};
+      return {
+        url:enclosure.getAttribute('url'),
+        title:episodeTitle?episodeTitle.textContent.trim():'',
+        duration:durationNode?durationNode.textContent.trim():'',
+        published:publishedNode?publishedNode.textContent.trim():''
+      };
     }).filter(function(episode){return !!episode;});
     if(!episodes.length)throw new Error('No playable episodes found');
     return episodes;
@@ -197,7 +204,8 @@
       if(!/^https?:\/\//i.test(mediaUrl||''))mediaUrl=null;
       var title=String(item.title||item.name||show.title).trim();
       var duration=item.duration||item.itunes_duration||item.itunesDuration||'';
-      return mediaUrl?{url:mediaUrl,title:title,duration:duration}:null;
+      var published=item.pubDate||item.pubdate||item.published||item.isoDate||item.date||item.updated||'';
+      return mediaUrl?{url:mediaUrl,title:title,duration:duration,published:published}:null;
     }).filter(function(episode){return !!episode;});
     if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
     return episodes;
