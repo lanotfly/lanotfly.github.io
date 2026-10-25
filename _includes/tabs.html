@@ -305,48 +305,6 @@
   if(closePanel)closePanel.addEventListener('click',function(){
     setPanelCollapsed(closePanel.getAttribute('aria-expanded')==='true');
   });
-  var episodeListMode='all';
-  var listModeSelect=document.getElementById('podcast-list-mode');
-  function normalizeEpisodeMode(value){
-    var mode=String(value==null?'':value).trim().toLowerCase().replace(/[ _]+/g,'-');
-    if(mode==='all'||mode==='all-episodes'||mode==='all-episode'||mode==='allepisodes'||mode==='all-episode-list'||mode==='全部'||mode==='所有节目')return 'all';
-    if(mode==='played'||mode==='finished'||mode==='completed'||mode==='played-episodes')return 'played';
-    if(mode==='unplayed'||mode==='unplayed-episodes'||mode==='not-played'||mode==='unfinished')return 'unplayed';
-    return null;
-  }
-  function selectedEpisodeMode(){
-    if(!listModeSelect)return episodeListMode;
-    /* On iOS Safari the select.value can briefly lag behind selectedIndex. */
-    var option=listModeSelect.options&&listModeSelect.selectedIndex>=0?listModeSelect.options[listModeSelect.selectedIndex]:null;
-    return normalizeEpisodeMode(option&&option.value)||
-      normalizeEpisodeMode(option&&option.textContent)||
-      normalizeEpisodeMode(listModeSelect.value)||episodeListMode;
-  }
-  function episodeStorageKey(episode){
-    return 'personal-library-played:'+activeId+':'+(episode.url||episode.pageUrl||episode.title||'unknown');
-  }
-  function isEpisodePlayed(episode){
-    try{return localStorage.getItem(episodeStorageKey(episode))==='1';}catch(_){return false;}
-  }
-  function setEpisodePlayed(episode,played){
-    try{
-      if(played)localStorage.setItem(episodeStorageKey(episode),'1');
-      else localStorage.removeItem(episodeStorageKey(episode));
-    }catch(_){}
-  }
-  function toggleEpisodePlayed(episode){
-    var nextPlayed=!isEpisodePlayed(episode);
-    setEpisodePlayed(episode,nextPlayed);
-    renderEpisodeList();
-    if(panelStatus)panelStatus.textContent=(nextPlayed?'Marked as played: ':'Marked as unplayed: ')+(episode.title||'Episode')+'. Swipe either direction to toggle again.';
-  }
-  function animateToggleEpisodePlayed(episode,row,dx){
-    if(!row||row.classList.contains('is-swiping'))return;
-    row.classList.add('is-swiping');
-    row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');
-    row.style.setProperty('--podcast-swipe-distance',(dx<0?'-':'')+'100%');
-    window.setTimeout(function(){toggleEpisodePlayed(episode);},140);
-  }
   function renderEpisodeList(){
     if(!episodeList)return;
     episodeList.textContent='';
