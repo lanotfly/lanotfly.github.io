@@ -49,7 +49,7 @@
       <div><p class="niv-bible-panel__eyebrow">OFFICIAL AUDIO</p><h2 class="niv-bible-panel__title">NIV Audio Bible</h2></div>
       <a class="niv-bible-official-link" href="https://www.bible.com/audio-bible-app-versions/111-niv-new-international-version" target="_blank" rel="noopener noreferrer">Open Bible.com</a>
     </div>
-    <p class="niv-bible-panel__note">Tap a chapter to open its official NIV audio reader on Bible.com. Playback is handled by Bible.com.</p>
+    <p class="niv-bible-panel__note">Tap a chapter to load the official NIV audio reader here. If Bible.com blocks embedding, use the fallback link.</p>
     <div class="niv-bible-panel__filters">
       <label for="niv-testament-select">Testament
         <select id="niv-testament-select"><option value="old">Old Testament</option><option value="new">New Testament</option></select>
@@ -61,4 +61,6 @@
     </div>
     <div id="niv-chapter-list" class="niv-chapter-list" aria-label="Chapter numbers"></div>
     <p id="niv-bible-status" class="niv-bible-status" aria-live="polite">Choose a chapter to listen.</p>
+    <a id="niv-bible-fallback" class="niv-bible-fallback" href="https://www.bible.com/audio-bible/111/GEN.1.NIV" target="_blank" rel="noopener noreferrer" hidden>Open chapter on Bible.com</a>
+    <iframe id="niv-bible-frame" class="niv-bible-frame" title="Official NIV audio reader" loading="lazy" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
   </section>
