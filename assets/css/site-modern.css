@@ -644,3 +644,39 @@ body.library-pull-refresh-zone-active .library-pull-refresh{
   border-style:dashed;
   border-width:1.5px;
 }
+
+
+/* NIV Audio Bible chapter selector, visually aligned with the podcast list. */
+.site-nav-shell .site-tab-links .site-tab--niv{
+  min-height:40px;padding:7px 10px;gap:6px;
+  color:#315b45!important;background:#edf7ef!important;border:1px solid #bad9c2!important;
+  border-radius:7px!important;font-weight:700;
+}
+.site-nav-shell .site-tab-links .site-tab--niv:hover{background:#dff0e3!important;border-color:#8fc29d!important}
+.site-nav-shell .site-tab-links .site-tab--niv[aria-expanded="true"]{color:#fff!important;background:#326b4b!important;border-color:#28563d!important}
+.niv-button-label{font-size:12px}
+.niv-bible-panel{margin:8px 0 14px;padding:14px;border:1px solid #c8dfce;border-radius:12px;background:#f8fcf8;color:#293c30;box-sizing:border-box}
+.niv-bible-panel[hidden]{display:none!important}
+.niv-bible-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.niv-bible-panel__eyebrow{margin:0 0 3px;color:#4e7b5b;font-size:9px;font-weight:850;letter-spacing:.12em}
+.niv-bible-panel__title{margin:0;color:#294c35;font-size:17px;line-height:1.25}
+.niv-bible-official-link{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 10px;border:1px solid #c8dfce;border-radius:7px;background:#fff;color:#315b45;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap}
+.niv-bible-panel__note{margin:8px 0 12px;color:#65766a;font-size:12px;line-height:1.45}
+.niv-bible-panel__filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) auto;align-items:end;gap:8px;margin-bottom:12px}
+.niv-bible-panel__filters label{display:flex;flex-direction:column;gap:5px;color:#526858;font-size:11px;font-weight:700}
+.niv-bible-panel__filters select{width:100%;min-width:0;min-height:38px;padding:7px 9px;border:1px solid #c8dfce;border-radius:7px;background:#fff;color:#2d4434;font:500 13px system-ui,-apple-system,sans-serif}
+.niv-chapter-count{padding-bottom:10px;color:#708173;font-size:10px;white-space:nowrap}
+.niv-chapter-list{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;max-height:42vh;overflow-y:auto;padding:1px}
+.niv-chapter-button{display:flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #d7e7da;border-radius:7px;background:#fff;color:#315b45;text-decoration:none;font-size:13px;font-weight:650}
+.niv-chapter-button:hover,.niv-chapter-button.is-last-listened{border-color:#73a985;background:#e6f4e9;color:#245237}
+.niv-bible-status{margin:10px 0 0;color:#6b7c6e;font-size:11px;line-height:1.4}
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links .site-tab--niv{min-height:36px;padding:6px 4px;font-size:11px}
+ .niv-button-label{font-size:11px}
+ .niv-bible-panel{padding:11px;margin:8px 0 12px}
+ .niv-bible-panel__title{font-size:15px}
+ .niv-bible-panel__filters{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:7px}
+ .niv-chapter-count{grid-column:1/-1;padding:0}
+ .niv-chapter-list{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-height:45vh}
+ .niv-chapter-button{min-height:40px}
+}
