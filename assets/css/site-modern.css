@@ -625,3 +625,10 @@
 .library-pull-refresh.is-pulling{top:calc(env(safe-area-inset-top,0px) + 8px);opacity:1}
 .library-pull-refresh.is-ready{background:#d8f3e1;border-color:#5eaf7a;color:#155b32}
 @media(prefers-reduced-motion:reduce){.library-pull-refresh{transition:none}}
+
+
+/* Three-step podcast list control: compact shows the current episode and three following rows. */
+.podcast-episode-panel.is-compact #podcast-episode-list{max-height:none!important;overflow-y:visible!important}
+.podcast-episode-panel__close.is-compact .podcast-list-toggle-line--top{transform:translateY(1.5px)}
+.podcast-episode-panel__close.is-compact .podcast-list-toggle-line--bottom{transform:translateY(-1.5px)}
+.podcast-episode-panel__close{min-width:34px;min-height:34px;padding:5px;display:flex;align-items:center;justify-content:center}
