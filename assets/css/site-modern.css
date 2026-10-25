@@ -1084,11 +1084,14 @@ html,body{max-width:100%;overflow-x:clip}
 .news-secondary-tab:hover{border-color:#a995c4;background:#f4eefb}
 .news-secondary-tab.is-active{border-color:#6d548b;background:#6d548b;color:#fff;box-shadow:0 2px 7px rgba(77,54,106,.16)}
 .news-podcast-panel[hidden]{display:none!important}
-.news-podcast-episode-list{max-height:62vh;overflow-y:auto;overscroll-behavior:contain}
+.news-podcast-episode-scroll-frame{height:min(250px,40vh);min-height:190px;margin-top:4px}
+.news-podcast-episode-list{display:flex!important;flex-direction:column!important;gap:5px!important;height:100%!important;min-height:0!important;max-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;box-sizing:border-box}
+.news-podcast-episode-list .podcast-episode-row{flex:0 0 auto}
 .news-podcast-episode-list .podcast-episode-row{margin-bottom:5px}
 .news-podcast-episode-list .podcast-episode-choice{align-items:center}
 .news-podcast-episode-list .podcast-episode-name{min-width:0;overflow-wrap:anywhere}
 .news-podcast-episode-list .podcast-episode-meta{align-items:flex-start;min-width:0;flex-direction:row;flex-wrap:wrap;gap:5px 8px;margin-left:0;color:#777080;font-size:10px}
 .news-podcast-episode-list .podcast-episode-meta .podcast-episode-date{font-size:10px}
 .news-podcast-episode-list .podcast-episode-meta .podcast-episode-state{font-size:9px}
-@media(max-width:600px){.news-secondary-tabs{gap:6px;margin-bottom:9px}.news-secondary-tab{min-height:40px;padding:8px 7px;font-size:11.5px}.news-podcast-episode-list{max-height:62vh}.news-podcast-episode-list .podcast-episode-meta .podcast-episode-date{font-size:9px}}
+@media(max-width:700px){.news-podcast-episode-scroll-frame{height:min(250px,38vh);min-height:190px}}
+@media(max-width:600px){.news-secondary-tabs{gap:6px;margin-bottom:9px}.news-secondary-tab{min-height:40px;padding:8px 7px;font-size:11.5px}.news-podcast-episode-list .podcast-episode-meta .podcast-episode-date{font-size:9px}}
