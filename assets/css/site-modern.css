@@ -918,3 +918,9 @@ html,body{max-width:100%;overflow-x:clip}
 @media(max-width:700px){
  .site-nav-shell .site-tab-links .site-tab--radio,.site-nav-shell .site-tab-links .site-tab--nhk-radio,.site-nav-shell .site-tab-links .site-tab--niv,.site-nav-shell .site-tab-links .site-tab--podcast,.site-nav-shell .site-tab-links .site-tab--home,.site-nav-shell .site-tab-links .site-tab--news,.site-nav-shell .site-tab-links .site-tab--data,.site-nav-shell .site-tab-links .site-tab--algorithm,.site-nav-shell .site-tab-links .site-tab--ai,.site-nav-shell .site-tab-links .site-tab--linux,.site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 1!important}
 }
+
+/* News is a standalone text view; hide the wiki/page content while it is open. */
+.content-wrapper__inner.news-panel-open > hr.post-list__divider:first-of-type,
+.content-wrapper__inner.news-panel-open > hr.post-list__divider:first-of-type ~ *{
+  display:none!important;
+}
