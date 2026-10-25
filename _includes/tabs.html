@@ -471,9 +471,12 @@
       var mediaUrl=typeof enclosure==='string'?enclosure:
         (enclosure&&(enclosure.link||enclosure.url||enclosure.href||enclosure.src))||
         item.enclosure_url||item.enclosureUrl||item.audio_url||item.audioUrl||item.audio;
-      var declaredAudio=enclosure&&typeof enclosure==='object'&&enclosure.type&&/^audio\//i.test(enclosure.type);
-      if(mediaUrl&&!/\.(mp3|m4a|aac|mp4|ogg|opus)(\?|#|$)/i.test(mediaUrl)&&!/\.m3u8(\?|#|$)/i.test(mediaUrl)&&!declaredAudio)mediaUrl=null;
-      return mediaUrl?{url:mediaUrl,title:item.title||show.title}:null;
+      /* RSS hosts often use signed URLs without a visible .mp3/.m4a suffix.
+         An RSS enclosure is the media declaration, so don't reject it by URL shape. */
+      if(typeof mediaUrl==='string')mediaUrl=mediaUrl.trim();
+      if(!/^https?:\/\//i.test(mediaUrl||''))mediaUrl=null;
+      var title=String(item.title||item.name||show.title).trim();
+      return mediaUrl?{url:mediaUrl,title:title}:null;
     }).filter(function(episode){return !!episode;});
     if(!episodes.length)throw new Error('No playable episodes in RSS proxy response');
     return episodes;
@@ -512,19 +515,29 @@
     });
   }
   function fetchEpisodes(show){
-    /* The Acast RSS currently may contain no playable enclosures. Use the official podcast RSS with proxy fallbacks if direct access fails. */
-    return fetch(show.feed,{cache:'no-store'}).then(function(response){
-      if(!response.ok)throw new Error('RSS feed unavailable');
-      return response.text();
-    }).then(parseRss).catch(function(){
-      if(!show.proxyFeed)throw new Error('RSS feed unavailable');
+    /* Try the feed directly, then independent public proxies. A failed proxy must not
+       prevent the next source from being tried, otherwise the episode list stays empty. */
+    function readText(url){
+      return fetch(url,{cache:'no-store'}).then(function(response){
+        if(!response.ok)throw new Error('RSS source unavailable');
+        return response.text();
+      }).then(parseRss);
+    }
+    function readJsonProxy(){
       var proxyUrl='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(show.feed);
       return fetch(proxyUrl,{cache:'no-store'}).then(function(response){
         if(!response.ok)throw new Error('RSS JSON proxy unavailable');
         return response.json();
-      }).then(function(data){return parseProxyEpisodes(data,show);}).catch(function(){
+      }).then(function(data){return parseProxyEpisodes(data,show);});
+    }
+    return readText(show.feed).catch(function(){
+      return readJsonProxy().catch(function(){
         return fetchViaAllOrigins(show.feed).then(parseRss).catch(function(){
-          return fetchOfficialArchive(show);
+          var corsUrl='https://corsproxy.io/?url='+encodeURIComponent(show.feed);
+          return readText(corsUrl).catch(function(){
+            if(show.archive)return fetchOfficialArchive(show);
+            throw new Error('All podcast RSS sources failed');
+          });
         });
       });
     });
