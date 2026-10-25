@@ -5,7 +5,7 @@
   window.__libraryNewsPanelInstalled = true;
   var feeds = [
     { id: 'english', source: 'BBC News', url: 'https://feeds.bbci.co.uk/news/rss.xml', lang: 'en' },
-    { id: 'japanese', source: 'Yahoo!ニュース', url: 'https://news.yahoo.co.jp/rss/topics/domestic.xml', lang: 'ja' }
+    { id: 'japanese', source: 'BBC News Japanese', url: 'https://feeds.bbci.co.uk/japanese/rss.xml', lang: 'ja' }
   ];
   var cache = {};
   var root = document.getElementById('library-news-panel');
