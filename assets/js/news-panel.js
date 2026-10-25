@@ -91,6 +91,7 @@
     if(toggle&&body)toggle.addEventListener('click',function(){
       var open=toggle.getAttribute('aria-expanded')!=='true';
       toggle.setAttribute('aria-expanded',String(open));body.hidden=!open;
+      var mark=toggle.querySelector('.library-news-column__mark');if(mark)mark.textContent=open?'−':'+';
     });
     renderFeed(feed);
   });
