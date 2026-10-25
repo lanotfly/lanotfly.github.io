@@ -14,17 +14,15 @@
       var visibleEpisodes=queue.map(function(episode,index){
         return {episode:episode,index:index,played:config.isPlayed(episode)};
       }).filter(function(item){
-        if(item.index===currentIndex)return true;
+        /* An episode is Played only after it has actually finished or the user marks it manually. */
         if(mode==='played')return item.played;
         if(mode==='all')return true;
         return !item.played;
       });
-      /* "All" and "Played" are complete lists. Only the default upcoming queue is compact. */
-      if(panelMode!=='collapsed'&&mode==='unplayed'){
-        var current=visibleEpisodes.find(function(item){return item.index===currentIndex;});
-        var following=visibleEpisodes.filter(function(item){return item.index>currentIndex;}).slice(0,4);
-        visibleEpisodes=current?[current].concat(following):visibleEpisodes.slice(0,5);
-      }
+      /* Keep the panel short and page scrolling natural: show only five rows, never an inner scroller.
+         All = first five feed items; Played = first five played items in feed order;
+         Unplayed = first five unplayed items, beginning with the oldest unplayed episode. */
+      visibleEpisodes=visibleEpisodes.slice(0,5);
       visibleEpisodes.forEach(function(item){
         var episode=item.episode,index=item.index,played=item.played;
         var isCurrent=index===currentIndex;
