@@ -934,3 +934,32 @@ html,body{max-width:100%;overflow-x:clip}
   .niv-bible-panel{padding:12px!important}
   .niv-bible-queue{padding:3px 4px!important}
 }
+
+
+/* Navigation selection contract: inactive tabs are dashed; selected/open tabs are solid outlines. */
+.site-nav-shell .site-tab-links .site-tab--news:not(.is-open),
+.site-nav-shell .site-tab-links .site-tab--data:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--algorithm:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--ai:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--linux:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--cloud:not(.is-active){
+  background:transparent!important;
+  box-shadow:none!important;
+  border-style:dashed!important;
+  border-width:1px!important;
+}
+.site-nav-shell .site-tab-links .site-tab--news.is-open,
+.site-nav-shell .site-tab-links .site-tab--data.is-active,
+.site-nav-shell .site-tab-links .site-tab--algorithm.is-active,
+.site-nav-shell .site-tab-links .site-tab--ai.is-active,
+.site-nav-shell .site-tab-links .site-tab--linux.is-active,
+.site-nav-shell .site-tab-links .site-tab--cloud.is-active{
+  background:transparent!important;
+  box-shadow:none!important;
+  border-style:solid!important;
+  border-width:2px!important;
+}
+.site-nav-shell .site-tab-links .site-tab--news:not(.is-open){color:#285b8d!important;border-color:#c5dafa!important}
+.site-nav-shell .site-tab-links .site-tab--news.is-open{color:#285b8d!important;border-color:#285b8d!important}
+.site-nav-shell .site-tab-links .site-tab--linux:not(.is-active){color:#4b5565!important;border-color:#c5ccd6!important}
+.site-nav-shell .site-tab-links .site-tab--linux.is-active{color:#344052!important;border-color:#344052!important}
