@@ -22,9 +22,9 @@
     function parseDuration(value){
       if(value===undefined||value===null||value==='')return 0;
       var raw=String(value).trim(),seconds=0;
-      if(/^\\d+(?:\\.\\d+)?$/.test(raw))seconds=Number(raw);
-      else if(/^\\d+(?::\\d{1,2}){1,2}$/.test(raw)){var parts=raw.split(':').map(Number);seconds=parts.length===3?parts[0]*3600+parts[1]*60+parts[2]:parts[0]*60+parts[1];}
-      else{var iso=raw.match(/^PT(?:(\\d+(?:\\.\\d+)?)H)?(?:(\\d+(?:\\.\\d+)?)M)?(?:(\\d+(?:\\.\\d+)?)S)?$/i);if(iso)seconds=Number(iso[1]||0)*3600+Number(iso[2]||0)*60+Number(iso[3]||0);}
+      if(/^\d+(?:\.\d+)?$/.test(raw))seconds=Number(raw);
+      else if(/^\d+(?::\d{1,2}){1,2}$/.test(raw)){var parts=raw.split(':').map(Number);seconds=parts.length===3?parts[0]*3600+parts[1]*60+parts[2]:parts[0]*60+parts[1];}
+      else{var iso=raw.match(/^PT(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?$/i);if(iso)seconds=Number(iso[1]||0)*3600+Number(iso[2]||0)*60+Number(iso[3]||0);}
       return Number.isFinite(seconds)&&seconds>0?seconds:0;
     }
     function formatDuration(value){
@@ -115,7 +115,13 @@
           if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
         }
         var meta=document.createElement('span');meta.className='podcast-episode-meta';
+        var publishedText=episode.published||episode.pubDate||episode.date||'';
+        var dateLabel=document.createElement('span');dateLabel.className='podcast-episode-date';
+        var parsedDate=publishedText?new Date(publishedText):null;
+        if(parsedDate&&Number.isFinite(parsedDate.getTime()))dateLabel.textContent=parsedDate.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+        else dateLabel.textContent='';
         var state=document.createElement('span');state.className='podcast-episode-state';state.textContent=played?'✓ Played':'○ Unplayed';
+        if(dateLabel.textContent)meta.appendChild(dateLabel);
         meta.appendChild(state);
         if(duration.textContent)meta.appendChild(duration);
         choose.appendChild(number);choose.appendChild(title);choose.appendChild(meta);
