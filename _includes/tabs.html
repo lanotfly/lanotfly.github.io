@@ -32,13 +32,14 @@
   <audio id="podcast-audio" preload="none" playsinline hidden></audio>
 </div>
   <section id="podcast-episode-panel" class="podcast-episode-panel" aria-label="Podcast episodes" hidden>
-    <div class="podcast-episode-panel__heading"><div><div class="podcast-episode-panel__eyebrow">PODCAST EPISODES</div><h2 id="podcast-panel-title" class="podcast-episode-panel__title">Choose an episode</h2></div><button id="podcast-panel-close" class="podcast-episode-panel__close" type="button" aria-label="Close podcast player" title="Close">×</button></div>
-    <div class="podcast-progress" id="podcast-progress-wrap" hidden>
+    <div class="podcast-episode-panel__heading"><div><div class="podcast-episode-panel__eyebrow">PODCAST EPISODES</div><h2 id="podcast-panel-title" class="podcast-episode-panel__title">Choose an episode</h2></div><button id="podcast-panel-close" class="podcast-episode-panel__close" type="button" aria-expanded="true" aria-controls="podcast-episode-panel-content" aria-label="Collapse podcast list" title="Collapse podcast list"><span aria-hidden="true">⌃</span></button></div>
+    <div id="podcast-episode-panel-content"><div class="podcast-progress" id="podcast-progress-wrap" hidden>
       <input id="podcast-progress" class="podcast-progress__slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Podcast playback position">
       <div class="podcast-progress__times"><span id="podcast-current-time">0:00</span><span id="podcast-duration">0:00</span></div>
     </div>
     <div class="podcast-episode-panel__tools"><p id="podcast-panel-status" class="podcast-episode-panel__status">Loading episodes…</p><label class="podcast-panel-filter-label" for="podcast-list-mode">List <select id="podcast-list-mode" class="podcast-panel-filter"><option value="unplayed">Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
     <div id="podcast-episode-list" class="podcast-episode-list" role="list"></div>
+    </div>
   </section>
 <script>
 /* One hidden audio element lives in the shared header; the button is the only player UI. */
@@ -249,7 +250,7 @@
       feed:'https://anchor.fm/s/463a19c0/podcast/rss',
       proxyFeed:true,
       apple:'https://podcasts.apple.com/jp/podcast/the-bite-size-japanese-podcast/id1588405417?l=en-US',
-      artwork:'https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/3c/2c/7f/3c2c7f52-ef6a-4f20-89b9-40d2b7a61c85/mza_16673831214975369420.jpg/600x600bb.jpg',
+      artwork:'https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/11682128/11682128-1664416592998-35f37c3752d35.jpg',
       artworkSize:'600x600'
     },
     'lukes-english-toggle':{
@@ -289,8 +290,22 @@
     if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progressSlider.value)/1000)*audio.duration;
   });
   ['loadedmetadata','durationchange','timeupdate','seeking','seeked'].forEach(function(eventName){audio.addEventListener(eventName,updateProgress);});
+  var panelContent=document.getElementById('podcast-episode-panel-content');
   function showPanel(show){if(panel)panel.hidden=false;if(panelTitle)panelTitle.textContent=show.title;}
-  if(closePanel)closePanel.addEventListener('click',function(){if(panel)panel.hidden=true;});
+  function setPanelCollapsed(collapsed){
+    if(panelContent)panelContent.hidden=collapsed;
+    if(closePanel){
+      closePanel.setAttribute('aria-expanded',String(!collapsed));
+      closePanel.setAttribute('aria-label',collapsed?'Expand podcast list':'Collapse podcast list');
+      closePanel.title=collapsed?'Expand podcast list':'Collapse podcast list';
+      var glyph=closePanel.querySelector('span');
+      if(glyph)glyph.textContent=collapsed?'⌄':'⌃';
+    }
+    if(panel)panel.classList.toggle('is-collapsed',collapsed);
+  }
+  if(closePanel)closePanel.addEventListener('click',function(){
+    setPanelCollapsed(closePanel.getAttribute('aria-expanded')==='true');
+  });
   var episodeListMode='unplayed';
   var listModeSelect=document.getElementById('podcast-list-mode');
   function episodeStorageKey(episode){
@@ -326,8 +341,8 @@
     var visibleCount=0;
     episodeQueue.forEach(function(episode,index){
       var played=isEpisodePlayed(episode);
-      if(episodeListMode==='unplayed'&&played)return;
-      if(episodeListMode==='played'&&!played)return;
+      if(episodeListMode!=='all'&&episodeListMode==='unplayed'&&played)return;
+      if(episodeListMode!=='all'&&episodeListMode==='played'&&!played)return;
       visibleCount++;
       var row=document.createElement('div');row.className='podcast-episode-row';row.setAttribute('role','listitem');
       var isCurrent=index===episodeIndex&&activeId&&!played&&!audio.paused&&audio.dataset.episodeTitle===(episode.title||'');
@@ -367,7 +382,8 @@
     }
   }
   if(listModeSelect)listModeSelect.addEventListener('change',function(){
-    episodeListMode=listModeSelect.value;
+    var requestedMode=String(listModeSelect.value||'all').toLowerCase();
+    episodeListMode=(requestedMode==='unplayed'||requestedMode==='played'||requestedMode==='all')?requestedMode:'all';
     renderEpisodeList();
   });
     function paint(id,playing){
