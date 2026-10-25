@@ -1003,3 +1003,28 @@ html,body{max-width:100%;overflow-x:clip}
   border-style:solid!important;
   border-width:2px!important;
 }
+
+
+/* News: plain text-first lists, five latest items per podcast, no internal scrolling or accordions. */
+.library-news-panel{max-width:100%;margin:8px 0 18px;padding:0;box-sizing:border-box}
+.library-news-columns{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px!important;align-items:start}
+.library-news-column{min-width:0;max-width:100%;padding:0!important;border:0!important;background:transparent!important}
+.library-news-column__heading{display:block;margin:0 0 10px!important;padding:0 0 8px!important;border:0!important;border-bottom:1px solid #d9dee8!important;border-radius:0!important;background:transparent!important;color:#222!important;font-size:17px!important;font-weight:750!important;line-height:1.35!important;text-align:left!important;cursor:default!important}
+.library-news-column__heading span{display:inline}
+.library-news-status{margin:0 0 10px;color:#68707c;font-size:12px;line-height:1.45}
+.library-news-list{display:block!important;height:auto!important;max-height:none!important;margin:0!important;padding:0!important;overflow:visible!important;overflow-y:visible!important;list-style:none!important}
+.library-news-item{display:block;margin:0!important;padding:12px 0!important;border:0!important;border-bottom:1px solid #edf0f4!important;background:transparent!important;overflow:visible!important}
+.library-news-item__title{margin:0 0 4px!important;font-size:15px!important;line-height:1.45!important;font-weight:650!important}
+.library-news-item__link{color:#202a38!important;text-decoration:none!important;overflow-wrap:anywhere}
+.library-news-item__link:hover{text-decoration:underline!important}
+.library-news-date{margin:0 0 6px!important;color:#78808b!important;font-size:11px!important;line-height:1.4!important}
+.library-news-summary{margin:0!important;color:#333!important;font-size:14px!important;line-height:1.6!important;overflow-wrap:anywhere}
+.library-news-attribution{margin:12px 0 0;color:#78808b;font-size:11px;line-height:1.5}
+@media(max-width:700px){
+  .library-news-panel{margin:6px 0 14px}
+  .library-news-columns{grid-template-columns:minmax(0,1fr)!important;gap:18px!important}
+  .library-news-column__heading{font-size:16px!important;margin-bottom:7px!important}
+  .library-news-item{padding:10px 0!important}
+  .library-news-item__title{font-size:14px!important}
+  .library-news-summary{font-size:13px!important;line-height:1.55!important}
+}
