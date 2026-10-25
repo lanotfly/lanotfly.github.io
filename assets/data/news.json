@@ -91,15 +91,15 @@
     "bbc": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:18:41+00:00"
+      "checkedAt": "2026-10-25T09:18:59+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 5,
-      "checkedAt": "2026-10-25T09:18:41+00:00"
+      "checkedAt": "2026-10-25T09:18:59+00:00"
     }
   },
-  "updatedAt": "2026-10-25T09:18:42+00:00",
+  "updatedAt": "2026-10-25T09:18:59+00:00",
   "artwork": {
     "bbc": "http://ichef.bbci.co.uk/images/ic/3000x3000/p0pc2j9y.jpg",
     "chronicle": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/21707347/21707347-1644160555988-248024357475.jpg"
