@@ -13,27 +13,16 @@
     toggle.classList.toggle('is-playing',playing);
     var label=toggle.querySelector('.nhk-radio-label');
     if(label) label.textContent='NHK Radio';
-    if('mediaSession' in navigator && playing){
-      try{
-        /* Only the station that is actively playing may claim Now Playing metadata. */
-        navigator.mediaSession.playbackState='playing';
-        if(typeof MediaMetadata!=='undefined') navigator.mediaSession.metadata=new MediaMetadata({
-          title:'NHK Radio 1',
-          artist:'NHK らじる★らじる',
-          album:'NHK Radio 1 — Live',
-          artwork:[
-            {src:'https://lanotfly.github.io/assets/images/nhk-radio-square.png?v=20261024-2',sizes:'64x64',type:'image/png'}
-          ]
-        });
-        navigator.mediaSession.setActionHandler('play',function(){if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('nhk');audio.play().catch(function(){paint(false);});});
-        navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
-      }catch(_){}
-    } else if('mediaSession' in navigator){
-      /* Do not overwrite the other station's title/artwork when this stream pauses. */
+    if(playing && window.LibraryAudioIdentity){
+      window.LibraryAudioIdentity.setNowPlaying('nhk',audio,{
+        title:'NHK Radio 1',
+        artist:'NHK らじる★らじる',
+        album:'NHK Radio 1 — Live',
+        artwork:window.LibraryAudioIdentity.getArtwork('nhk')
+      });
+    } else if('mediaSession' in navigator && !playing){
       var bbcAudio=document.getElementById('radio4-audio');
-      if(!bbcAudio || bbcAudio.paused){
-        try{navigator.mediaSession.playbackState='paused';}catch(_){}
-      }
+      if(!bbcAudio || bbcAudio.paused){try{navigator.mediaSession.playbackState='paused';}catch(_){}}
     }
   }
   toggle.addEventListener('click',function(){
