@@ -659,11 +659,18 @@
       button.classList.add('is-loading');
       fetchEpisodes(show).then(function(episodes){
         episodeQueue=episodes;
-        /* Select the first episode before the initial list render, so it is present
-           immediately even if its saved Played state would normally filter it out. */
-        episodeIndex=episodes.length?0:-1;
+        /* Start with the first Unplayed episode in the feed's original All episodes order.
+           Skip episodes already marked Played instead of always replaying feed item zero. */
+        episodeIndex=-1;
+        for(var i=0;i<episodes.length;i++){
+          if(!isEpisodePlayed(episodes[i])){episodeIndex=i;break;}
+        }
         renderEpisodeList();
-        if(episodeIndex>=0)playEpisodeAt(episodeIndex);
+        if(episodeIndex>=0){
+          playEpisodeAt(episodeIndex);
+        }else if(panelStatus){
+          panelStatus.textContent='No unplayed episodes remain. Choose “All episodes” to replay one.';
+        }
       }).catch(function(){
         if(panelStatus)panelStatus.textContent='Could not load episodes in this browser. Try again later, or open the podcast in Apple Podcasts.';
       }).finally(function(){button.classList.remove('is-loading');});
