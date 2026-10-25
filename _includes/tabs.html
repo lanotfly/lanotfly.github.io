@@ -355,7 +355,7 @@
         touchStartX=event.changedTouches[0].clientX;touchStartY=event.changedTouches[0].clientY;
         lastDx=0;swipeHandled=false;
         row.classList.remove('is-swiping-left','is-swiping-right','is-swiping');
-        row.style.transform='';
+        choose.style.transform='';
       },{passive:true});
       row.addEventListener('touchmove',function(event){
         if(touchStartX===null||!event.touches||!event.touches.length)return;
@@ -365,8 +365,7 @@
           lastDx=dx;
           row.classList.toggle('is-swiping-left',dx<0);
           row.classList.toggle('is-swiping-right',dx>0);
-          row.style.setProperty('--podcast-swipe-distance',dx+'px');
-          row.style.transform='translateX('+dx+'px)';
+          choose.style.transform='translateX('+dx+'px)';
           if(event.cancelable)event.preventDefault();
         }
       },{passive:false});
@@ -380,7 +379,7 @@
           row.classList.add('is-swiping');
           row.classList.remove('is-swiping-left','is-swiping-right');
           row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');
-          row.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
+          choose.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
           window.setTimeout(function(){
             var markPlayed=dx<0;
             setEpisodePlayed(episode,markPlayed);
@@ -389,12 +388,12 @@
           },170);
         }else{
           row.classList.remove('is-swiping-left','is-swiping-right');
-          row.style.transform='';
-          row.style.removeProperty('--podcast-swipe-distance');
+          choose.style.transform='';
+          choose.style.removeProperty('--podcast-swipe-distance');
         }
       },{passive:true});
       row.addEventListener('touchcancel',function(){
-        touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');row.style.transform='';
+        touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
       },{passive:true});
       row.appendChild(choose);episodeList.appendChild(row);
     });
