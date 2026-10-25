@@ -18,35 +18,36 @@
         <img data-news-artwork="bbc" class="podcast-episode-panel__artwork" src="" alt="BBC Global News Podcast artwork" loading="lazy">
         <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">BBC · ENGLISH</span><h2 class="podcast-episode-panel__title">Global News Podcast</h2></div>
       </div>
+      <button class="podcast-episode-panel__close news-podcast-list-toggle" type="button" data-news-collapse="bbc" aria-expanded="true" aria-controls="news-bbc-list-frame" aria-label="Collapse episode list" title="Collapse episode list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button>
     </div>
     <audio id="news-bbc-audio" preload="none" playsinline hidden></audio>
+    <div class="news-playback-progress" data-news-progress="bbc" hidden><input class="news-progress-slider" data-news-progress-slider="bbc" type="range" min="0" max="1000" value="0" step="1" aria-label="BBC playback position"><div class="news-progress-times"><span data-news-current-time="bbc">0:00</span><span data-news-total-time="bbc">0:00</span></div></div>
     <div class="podcast-episode-panel__tools">
       <div class="podcast-episode-count" data-news-count="bbc" aria-live="polite">Loading episodes…</div>
       <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="bbc" aria-label="BBC episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
     </div>
     <p class="podcast-episode-panel__status" data-news-status="bbc" aria-live="polite"></p>
-    <div class="news-playback-progress" data-news-progress="bbc" hidden><input class="news-progress-slider" data-news-progress-slider="bbc" type="range" min="0" max="1000" value="0" step="1" aria-label="BBC episode playback position"><div class="news-progress-times"><span data-news-current-time="bbc">0:00</span><span data-news-total-time="bbc">0:00</span></div></div>
-    <div class="podcast-episode-scroll-frame news-podcast-episode-scroll-frame">
+    <div class="podcast-episode-scroll-frame news-podcast-episode-scroll-frame" id="news-bbc-list-frame">
       <div class="podcast-episode-list news-podcast-episode-list" data-news-list="bbc" role="list"></div>
       <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div>
       <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div>
     </div>
-  </section>
-  <section id="news-feed-panel-chronicle" class="podcast-episode-panel news-podcast-panel" data-news-feed-panel="chronicle" role="tabpanel" aria-label="Chronicle News Connect" hidden>
+  </section>  <section id="news-feed-panel-chronicle" class="podcast-episode-panel news-podcast-panel" data-news-feed-panel="chronicle" role="tabpanel" aria-label="Chronicle News Connect" hidden>
     <div class="podcast-episode-panel__heading">
       <div class="podcast-episode-panel__identity">
         <img data-news-artwork="chronicle" class="podcast-episode-panel__artwork" src="" alt="Chronicle News Connect artwork" loading="lazy">
         <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">CHRONICLE · 日本語</span><h2 class="podcast-episode-panel__title">News Connect</h2></div>
       </div>
+      <button class="podcast-episode-panel__close news-podcast-list-toggle" type="button" data-news-collapse="chronicle" aria-expanded="true" aria-controls="news-chronicle-list-frame" aria-label="Collapse episode list" title="Collapse episode list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button>
     </div>
     <audio id="news-chronicle-audio" preload="none" playsinline hidden></audio>
+    <div class="news-playback-progress" data-news-progress="chronicle" hidden><input class="news-progress-slider" data-news-progress-slider="chronicle" type="range" min="0" max="1000" value="0" step="1" aria-label="Chronicle playback position"><div class="news-progress-times"><span data-news-current-time="chronicle">0:00</span><span data-news-total-time="chronicle">0:00</span></div></div>
     <div class="podcast-episode-panel__tools">
       <div class="podcast-episode-count" data-news-count="chronicle" aria-live="polite">Loading episodes…</div>
       <label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-news-filter="chronicle" aria-label="Chronicle episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label>
     </div>
     <p class="podcast-episode-panel__status" data-news-status="chronicle" aria-live="polite"></p>
-    <div class="news-playback-progress" data-news-progress="chronicle" hidden><input class="news-progress-slider" data-news-progress-slider="chronicle" type="range" min="0" max="1000" value="0" step="1" aria-label="Chronicle episode playback position"><div class="news-progress-times"><span data-news-current-time="chronicle">0:00</span><span data-news-total-time="chronicle">0:00</span></div></div>
-    <div class="podcast-episode-scroll-frame news-podcast-episode-scroll-frame">
+    <div class="podcast-episode-scroll-frame news-podcast-episode-scroll-frame" id="news-chronicle-list-frame">
       <div class="podcast-episode-list news-podcast-episode-list" data-news-list="chronicle" role="list"></div>
       <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div>
       <div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div>

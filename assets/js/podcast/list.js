@@ -165,8 +165,12 @@
         row.addEventListener('touchcancel',function(){
           touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
         },{passive:true});
-        /* Played/Unplayed is controlled by the shared filter above the list.
-           Keep each episode button full-width without a status badge beside it. */
+        /* Keep the per-episode status inside the full-width button, aligned to its right edge. */
+        var state=document.createElement('span');
+        state.className='podcast-episode-state '+(played?'is-played':'is-unplayed');
+        state.textContent=played?'✓ Played':'○ Unplayed';
+        state.setAttribute('aria-label',played?'Played':'Unplayed');
+        choose.appendChild(state);
         row.appendChild(choose);episodeList.appendChild(row);
         if(durationObserver&&!duration.textContent&&episode.url)durationObserver.observe(row);
         else if(!duration.textContent&&episode.url)requestDuration(episode,duration);

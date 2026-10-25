@@ -274,6 +274,19 @@
   mainToggle.addEventListener('click', function () {
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
   });
+  /* Each News feed keeps the shared podcast-list collapse control, expanded by default. */
+  root.querySelectorAll('[data-news-collapse]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var frame = document.getElementById(button.getAttribute('aria-controls'));
+      if (!frame) return;
+      var expanded = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(expanded));
+      button.classList.toggle('is-collapsed', !expanded);
+      button.setAttribute('aria-label', expanded ? 'Collapse episode list' : 'Expand episode list');
+      button.title = expanded ? 'Collapse episode list' : 'Expand episode list';
+      frame.hidden = !expanded;
+    });
+  });
   root.querySelectorAll('[data-news-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-news-tab');
@@ -301,8 +314,14 @@
     stopAllNews(true);
   }, true);
 
-  /* Keep News audio alive when wiki navigation uses soft navigation.
-     The navigation module preserves this panel and its audio element in place. */
+  /* Audio controls are listening-first: selecting another audio source closes News.
+     Wiki chapter links are deliberately excluded so News can continue while reading. */
+  document.addEventListener('click', function (event) {
+    var target = event.target && event.target.closest && event.target.closest(
+      '#radio4-toggle, #nhk-radio-toggle, #bite-size-toggle, #lukes-english-toggle, #niv-bible-toggle, #podcast-episode-list .podcast-episode-choice'
+    );
+    if (target && !root.hidden) setNewsOpen(false);
+  }, true);
 
   feeds.forEach(function (feed) {
     var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
