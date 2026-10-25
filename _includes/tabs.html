@@ -46,13 +46,12 @@
 
   <section id="niv-bible-panel" class="niv-bible-panel" aria-label="KJV Audio Bible player" hidden>
     <div class="niv-bible-panel__heading">
-      <div><h2 id="niv-bible-now-playing" class="niv-bible-panel__title">KJV Audio Bible</h2></div>
+      <h2 id="niv-bible-now-playing" class="niv-bible-panel__title">Genesis · Chapter 1</h2>
+      <select id="niv-book-select" class="niv-bible-book-select" aria-label="Select book"></select>
     </div>
-    <audio id="niv-bible-audio" class="kjv-audio-player" controls preload="none" playsinline></audio>
-    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite">Tap KJV Audio to start listening.</p>
-    <div class="niv-bible-panel__filters">
-      <label for="niv-book-select">Book
-        <select id="niv-book-select"></select>
-      </label>
+    <div class="niv-bible-progress-wrap">
+      <input id="niv-bible-progress" class="niv-bible-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Audio playback position">
     </div>
+    <audio id="niv-bible-audio" preload="none" playsinline hidden></audio>
+    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite" hidden></p>
   </section>
