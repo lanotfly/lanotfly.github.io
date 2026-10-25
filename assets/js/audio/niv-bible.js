@@ -134,7 +134,7 @@
     }
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
-      navigator.mediaSession.metadata=new MediaMetadata({title:chapterTitle,artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:[{src:'/assets/images/kjv-audio-lockscreen.png?v=20261025-1',sizes:'512x512',type:'image/png'}]});
+      navigator.mediaSession.metadata=new MediaMetadata({title:chapterTitle,artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:[{src:'/assets/images/kjv-audio-lockscreen.svg?v=20261025-1',sizes:'512x512',type:'image/svg+xml'}]});
       navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){});});
       navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
       navigator.mediaSession.setActionHandler('previoustrack',previousChapter);
