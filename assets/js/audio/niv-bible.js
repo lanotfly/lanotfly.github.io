@@ -98,9 +98,25 @@
   function updateProgress(){if(!progress)return;var duration=audio.duration;if(isFinite(duration)&&duration>0){progress.value=String(Math.round((audio.currentTime/duration)*1000));progress.disabled=false;}else{progress.value='0';progress.disabled=true;}}
   function chapterUrl(book,chapter){return 'https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/'+book+'+'+chapter+'.mp3';}
   function setMetadata(book,chapter){
+    var chapterTitle=book+' '+chapter;
+    if(window.LibraryAudioIdentity){
+      window.LibraryAudioIdentity.setNowPlaying('kjv',audio,{
+        title:chapterTitle,
+        artist:'King James Version (KJV) Audio Bible',
+        album:'King James Version',
+        artwork:window.LibraryAudioIdentity.getArtwork('kjv')
+      });
+      if('mediaSession' in navigator){
+        try{
+          navigator.mediaSession.setActionHandler('previoustrack',previousChapter);
+          navigator.mediaSession.setActionHandler('nexttrack',nextChapter);
+        }catch(_){}
+      }
+      return;
+    }
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
-      navigator.mediaSession.metadata=new MediaMetadata({title:book+' '+chapter,artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:[]});
+      navigator.mediaSession.metadata=new MediaMetadata({title:chapterTitle,artist:'King James Version (KJV) Audio Bible',album:'King James Version',artwork:[{src:'/assets/images/your-library-icon.svg',sizes:'512x512',type:'image/svg+xml'}]});
       navigator.mediaSession.setActionHandler('play',function(){audio.play().catch(function(){});});
       navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
       navigator.mediaSession.setActionHandler('previoustrack',previousChapter);
