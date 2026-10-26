@@ -154,7 +154,6 @@
   function setNewsOpen(open) {
     if (open && window.LibraryAudioCoordinator) {
       window.LibraryAudioCoordinator.setRadioPanelOpen(false);
-      window.LibraryAudioCoordinator.setBookPanelOpen(false);
     }
     mainToggle.setAttribute('aria-expanded', String(open));
     mainToggle.classList.toggle('is-open', open);
