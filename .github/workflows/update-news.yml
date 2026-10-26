@@ -14,7 +14,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
 
 concurrency:
   group: refresh-podcast-news
@@ -40,7 +39,3 @@ jobs:
           git commit -m "Refresh all News podcast episodes"
           git pull --rebase origin main
           git push
-      - name: Request GitHub Pages rebuild for the refreshed cache
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
