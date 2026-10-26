@@ -1531,3 +1531,11 @@ html,body{max-width:100%;overflow-x:clip}
  .book-source-tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
  .book-source-tabs .book-secondary-link{min-height:36px;padding:6px 1px;font-size:10.5px;}
 }
+
+
+/* Compact third-level Book navigation: book identity followed by its chapters. */
+.book-source-panel .book-source-tabs[hidden]{display:none!important}
+.book-chapter-tabs{display:flex;align-items:center;flex-wrap:nowrap;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;padding:4px 1px 8px}
+.book-chapter-book-label{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;padding:7px 10px;border:1px solid var(--book-label-color,#18734b);border-radius:8px;color:var(--book-label-color,#18734b);font-size:12px;font-weight:750;white-space:nowrap;background:transparent}
+.book-chapter-link{flex:0 0 auto;white-space:nowrap}
+.book-chapter-link.is-active{border-style:solid!important;border-width:2px!important;font-weight:750}
