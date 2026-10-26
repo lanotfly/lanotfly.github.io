@@ -1327,3 +1327,30 @@ html,body{max-width:100%;overflow-x:clip}
 .storage-check__note{margin:8px 0 0;color:#718096;font-size:11px}
 .storage-check__error{margin:0;color:#9b3535}
 @media(max-width:600px){.storage-check-footer__panel{padding:11px;font-size:11.5px}.storage-check__summary{display:block}.storage-check__summary span{display:block;margin-top:2px}}
+
+
+
+/* Unified Podcast + News header: one-line title, one-shot marquee, consistent episode count. */
+.podcast-episode-panel__identity{min-width:0;flex:1 1 auto}
+.podcast-episode-panel__identity-text{min-width:0;flex:1 1 auto;overflow:hidden}
+.podcast-episode-panel__title{
+  display:block!important;min-width:0!important;width:100%!important;max-width:100%!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+  overflow-wrap:normal!important;word-break:normal!important;
+}
+.podcast-title-marquee__text{display:inline-block;max-width:none;white-space:nowrap;will-change:transform}
+.podcast-episode-panel__title.is-marquee .podcast-title-marquee__text{
+  animation:podcast-title-marquee-once 8s ease-in-out 1 both;
+}
+@keyframes podcast-title-marquee-once{
+  0%,18%{transform:translateX(0)}
+  82%,100%{transform:translateX(var(--podcast-title-shift,0))}
+}
+.podcast-episode-panel__tools .podcast-episode-count{
+  font-size:14px!important;font-weight:750!important;line-height:1.35!important;
+  letter-spacing:.01em!important;flex:1 1 auto!important;min-width:0!important;
+  text-align:left!important;font-variant-numeric:tabular-nums;
+}
+@media(prefers-reduced-motion:reduce){
+  .podcast-episode-panel__title.is-marquee .podcast-title-marquee__text{animation:none!important}
+}
