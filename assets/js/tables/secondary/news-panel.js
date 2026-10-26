@@ -346,7 +346,9 @@
   });
 
   mainToggle.addEventListener('click', function () {
-    setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
+    /* Podcast is persistent like Radio and KJV: tapping it must not hide its player.
+       If already open, the remembered episode can toggle playback via playDefaultEpisode. */
+    setNewsOpen(true);
   });
   /* Every podcast feed uses the same list-collapse control, expanded by default. */
   root.querySelectorAll('[data-news-collapse]').forEach(function (button) {
