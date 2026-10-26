@@ -1,4 +1,6 @@
 /* Learning hub — shared responsive styles */
+/* Legacy per-page dashed chapter pills are only a source for the shared Book menu; show chapters in the new shared navigation instead. */
+.wiki-wrap > .wiki-nav{display:none!important}
 .content-wrapper__inner:has(.wiki-wrap) > .post-list__divider{display:none}
 .wiki-wrap{max-width:1040px;margin:0 auto;padding:0 16px;overflow-wrap:break-word;box-sizing:border-box}
 .wiki-wrap img,.wiki-wrap svg{max-width:100%;height:auto}
