@@ -429,9 +429,31 @@
     audio.addEventListener('seeking', function () { updateProgress(feed); });
     audio.addEventListener('ended', function () {
       savePosition(feed, true);
-      var episode = (episodesByFeed[feed.id] || [])[current.index];
-      if (current.feed === feed.id && episode) setPlayed(feed, episode, true);
+      var finishedIndex = current.index;
+      var queue = episodesByFeed[feed.id] || [];
+      var episode = queue[finishedIndex];
+      if (current.feed !== feed.id || !episode) {
+        renderAll();
+        return;
+      }
+
+      /* Mark the finished episode, then continue to the next item in this
+         feed's visible list order. For the Unplayed filter, skip items already
+         marked played; for Played/All, use the same queue order. */
+      setPlayed(feed, episode, true);
+      var mode = filters[feed.id] || 'unplayed';
+      var nextIndex = -1;
+      for (var i = finishedIndex + 1; i < queue.length; i += 1) {
+        var nextIsPlayed = isPlayed(feed, queue[i]);
+        if (mode === 'all' || (mode === 'played' && nextIsPlayed) || (mode === 'unplayed' && !nextIsPlayed)) {
+          nextIndex = i;
+          break;
+        }
+      }
       renderAll();
+      if (nextIndex >= 0) {
+        playEpisode(feed, nextIndex);
+      }
     });
     audio.addEventListener('loadedmetadata', function () {
       var episode = (episodesByFeed[feed.id] || [])[current.index];
