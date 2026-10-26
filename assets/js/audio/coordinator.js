@@ -1,9 +1,9 @@
 (function(window,document){
   'use strict';
   if(window.LibraryAudioCoordinator)return;
-  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio',newsBbc:'news-bbc-audio',newsChronicle:'news-chronicle-audio',newsEnglish:'news-english-audio',newsJapanese:'news-japanese-audio'};
+  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',bible:'niv-bible-audio',newsBbc:'news-bbc-audio',newsChronicle:'news-chronicle-audio',newsEnglish:'news-english-audio',newsJapanese:'news-japanese-audio'};
   function getAudio(name){return document.getElementById(audioIds[name]);}
-  var buttonsBySource={radio4:['radio4-toggle'],nhk:['nhk-radio-toggle'],podcast:[],bible:['niv-bible-toggle']};
+  var buttonsBySource={radio4:['radio4-toggle'],nhk:['nhk-radio-toggle'],bible:['niv-bible-toggle']};
   var activeTarget=null;
   var radioToggle=document.getElementById('library-radio-toggle');
   var radioPanel=document.getElementById('library-radio-panel');
@@ -33,9 +33,7 @@
       if(target==='news'&&name.indexOf('news')===0)return;
       var audio=getAudio(name);if(audio&&!audio.paused){try{audio.pause();}catch(_){}}
     });
-    if(target!=='podcast'){var pp=document.getElementById('podcast-episode-panel');if(pp)pp.hidden=true;}
     if(target!=='bible'){var bp=document.getElementById('niv-bible-panel'),bb=document.getElementById('niv-bible-toggle');if(bp)bp.hidden=true;if(bb)bb.setAttribute('aria-expanded','false');}
-    if(target==='podcast'){var p=document.getElementById('podcast-episode-panel');if(p)p.hidden=false;}
     if(target==='bible'){var b=document.getElementById('niv-bible-panel'),bt=document.getElementById('niv-bible-toggle');if(b)b.hidden=false;if(bt)bt.setAttribute('aria-expanded','true');}
     return true;
   }
