@@ -56,6 +56,6 @@
     var icons=[['niv-bible-toggle',sources.kjv.artwork]];
     icons.forEach(function(item){ensureButtonIcon(document.getElementById(item[0]),item[1]);});
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installIcons,{once:true});else installIcons();
+  /* Top-level KJV navigation is text-only; do not inject an icon. */
   window.LibraryAudioIdentity={setNowPlaying:setNowPlaying,clearIfActive:clearIfActive,ensureButtonIcon:ensureButtonIcon,getActiveId:function(){return activeId;},getArtwork:function(id){var s=sources[id]||sources.podcast;return s.artwork||absolute(fallback);}};
 })(window,document);
