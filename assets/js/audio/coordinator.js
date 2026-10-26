@@ -70,7 +70,14 @@
       if(result&&result.catch)result.catch(function(){/* If autoplay is blocked, the station button remains available for a direct tap. */});
     }
   }
-  if(radioToggle&&radioPanel)radioToggle.addEventListener('click',function(){setRadioPanelOpen(radioToggle.getAttribute('aria-expanded')!=='true');});
+  if(radioToggle&&radioPanel)radioToggle.addEventListener('click',function(){
+    /* Keep Radio's station row visible; repeated taps pause/resume the selected station. */
+    if(radioToggle.getAttribute('aria-expanded')==='true'){
+      var station=getAudio(lastRadio)||getAudio('radio4');
+      if(station&&!station.paused){station.pause();return;}
+    }
+    setRadioPanelOpen(true);
+  });
   if(bookToggle&&bookPanel)bookToggle.addEventListener('click',function(){
     /* Book is a level switch, never a close button. navigation.js chooses level 2 or 3. */
     setBookPanelOpen(true);
