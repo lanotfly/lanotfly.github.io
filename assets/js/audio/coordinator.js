@@ -7,8 +7,6 @@
   var activeTarget=null;
   var radioToggle=document.getElementById('library-radio-toggle');
   var radioPanel=document.getElementById('library-radio-panel');
-  var bookToggle=document.getElementById('library-book-toggle');
-  var bookPanel=document.getElementById('library-book-panel');
   var lastRadio='radio4';
   try{lastRadio=localStorage.getItem('library_last_radio_station')==='nhk'?'nhk':'radio4';}catch(_){}
   function clearButtonState(button){
@@ -25,24 +23,6 @@
   function closeRadioPanel(){
     if(!radioToggle||!radioPanel)return;
     radioToggle.setAttribute('aria-expanded','false');radioToggle.classList.remove('is-open','is-active');radioPanel.hidden=true;
-  }
-  function closeBookPanel(){
-    if(!bookToggle||!bookPanel)return;
-    bookToggle.setAttribute('aria-expanded','false');bookToggle.classList.remove('is-open','is-active');bookPanel.hidden=true;
-  }
-  function setBookPanelOpen(open){
-    if(!bookToggle||!bookPanel)return;
-    bookToggle.setAttribute('aria-expanded',String(!!open));bookToggle.classList.toggle('is-open',!!open);bookToggle.classList.toggle('is-active',!!open);bookPanel.hidden=!open;
-    if(open){
-      closeRadioPanel();
-      var news=document.getElementById('library-news-toggle');
-      if(news&&news.getAttribute('aria-expanded')==='true'){
-        /* Close only the Podcast panel UI; never click its toggle, which can toggle episode playback. */
-        if(typeof window.LibraryCloseNewsPanel==='function')window.LibraryCloseNewsPanel();
-        else {news.setAttribute('aria-expanded','false');news.classList.remove('is-open','is-active');var newsPanel=document.getElementById('library-news-panel');if(newsPanel)newsPanel.hidden=true;var inner=document.querySelector('.content-wrapper__inner');if(inner)inner.classList.remove('news-panel-open');}
-      }
-      bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');bookPanel.hidden=false;
-    }
   }
   function switchTo(target){
     activeTarget=target;
@@ -62,7 +42,7 @@
   function setRadioPanelOpen(open){
     if(!radioToggle||!radioPanel)return;
     if(!open){closeRadioPanel();return;}
-    var news=document.getElementById('library-news-toggle');if(news&&news.getAttribute('aria-expanded')==='true')news.click();
+    var news=document.getElementById('library-news-toggle');if(news&&news.getAttribute('aria-expanded')==='true'&&typeof window.LibraryCloseNewsPanel==='function')window.LibraryCloseNewsPanel();
     var biblePanel=document.getElementById('niv-bible-panel'),bibleButton=document.getElementById('niv-bible-toggle');
     if(biblePanel)biblePanel.hidden=true;if(bibleButton)bibleButton.setAttribute('aria-expanded','false');
     radioToggle.setAttribute('aria-expanded','true');radioToggle.classList.add('is-open','is-active');radioPanel.hidden=false;
@@ -81,14 +61,10 @@
     }
     setRadioPanelOpen(true);
   });
-  if(bookToggle&&bookPanel)bookToggle.addEventListener('click',function(){
-    /* Book is a level switch, never a close button. navigation.js chooses level 2 or 3. */
-    setBookPanelOpen(true);
-  });
   document.addEventListener('click',function(event){
-    var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle,.site-tab--home,.book-secondary-link');
-    if(target){closeRadioPanel();if(target.matches('.site-tab--home'))closeBookPanel();}
+    var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle,.site-tab--home');
+    if(target)closeRadioPanel();
   },true);
-  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,setBookPanelOpen:setBookPanelOpen,getLastRadio:function(){return lastRadio;}};
+  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,getLastRadio:function(){return lastRadio;}};
   window.__prepareRadioPlayback=function(target){switchTo(target||lastRadio||'radio4');};
 })(window,document);
