@@ -224,6 +224,12 @@
   }
   function render(feed) {
     syncFilterOptions(feed);
+    /* The heading beside the artwork is the current episode title, like the shared Podcast panel. */
+    var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
+    var selectedEpisode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
+    if (heading) heading.textContent = selectedEpisode && selectedEpisode.title
+      ? selectedEpisode.title
+      : (heading.getAttribute('data-news-show-title') || feed.title);
     if (listModules[feed.id]) listModules[feed.id].render();
     else {
       var list = root.querySelector('[data-news-list="' + feed.id + '"]');
