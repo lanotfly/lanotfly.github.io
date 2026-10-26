@@ -77,7 +77,7 @@
       button.style.setProperty('background-color',item[1],'important');
       button.style.setProperty('color',item[2],'important');
       button.style.setProperty('border-color',item[3],'important');
-      button.style.setProperty('border-style','dashed','important');
+      button.style.setProperty('border-style','solid','important');
       button.style.setProperty('box-shadow','none','important');
     });
   }
@@ -117,7 +117,7 @@
       button.style.setProperty('background-color',item[1],'important');
       button.style.setProperty('color',item[2],'important');
       button.style.setProperty('border-color',item[3],'important');
-      button.style.setProperty('border-style','dashed','important');
+      button.style.setProperty('border-style','solid','important');
       button.style.setProperty('box-shadow','none','important');
     });
     if(shell.getAttribute('data-active-family')==='audio'){
