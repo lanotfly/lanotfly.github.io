@@ -1,4 +1,4 @@
-/* News: two nested podcast tabs sharing the site's native episode-list UI. */
+/* Unified Podcast engine: every show uses the same episode list, progress, and playback logic. */
 (function (window, document) {
   'use strict';
   if (window.__libraryNewsPanelInstalled) return;
@@ -6,20 +6,22 @@
 
   var feeds = [
     { id: 'bbc', title: 'BBC Global News Podcast', language: 'en' },
-    { id: 'chronicle', title: 'Chronicle · News Connect', language: 'ja' }
+    { id: 'chronicle', title: 'Chronicle News Connect', language: 'ja' },
+    { id: 'english', title: 'Easy Natural English', language: 'en' },
+    { id: 'japanese', title: 'Bite Size Japanese', language: 'ja' }
   ];
   var root = document.getElementById('library-news-panel');
   var mainToggle = document.getElementById('library-news-toggle');
   if (!root || !mainToggle) return;
 
-  var episodesByFeed = { bbc: [], chronicle: [] };
+  var episodesByFeed = { bbc: [], chronicle: [], english: [], japanese: [] };
   var activeFeed = 'bbc';
   var activeTab = 'bbc';
   var current = { feed: null, index: -1 };
   var loaded = false;
   var pendingAutoplay = false;
-  var filters = { bbc: 'unplayed', chronicle: 'unplayed' };
-  var lastSavedAt = { bbc: 0, chronicle: 0 };
+  var filters = { bbc: 'unplayed', chronicle: 'unplayed', english: 'unplayed', japanese: 'unplayed' };
+  var lastSavedAt = { bbc: 0, chronicle: 0, english: 0, japanese: 0 };
   var listModules = {};
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
@@ -162,11 +164,7 @@
         link.removeAttribute('aria-current');
       });
       setActiveTab(activeTab || 'bbc');
-      var podcastEpisodePanel = document.getElementById('podcast-episode-panel');
-      if (podcastEpisodePanel && (activeTab === 'english' || activeTab === 'japanese')) {
-        podcastEpisodePanel.hidden = false;
-      }
-      pendingAutoplay = activeTab === 'bbc' || activeTab === 'chronicle';
+      pendingAutoplay = true;
       if (loaded && pendingAutoplay) { pendingAutoplay = false; playDefaultEpisode(activeFeed); }
     } else {
       stopAllNews(true);
@@ -359,18 +357,10 @@
       frame.hidden = !expanded;
     });
   });
-  root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
-    button.addEventListener('click', function () {
-      stopAllNews(true);
-      setActiveTab(button.getAttribute('data-podcast-tab'));
-    });
-  });
   root.querySelectorAll('[data-news-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-news-tab');
       var alreadySelectedNewsTab = activeTab === nextFeed;
-      var podcastEpisodePanel = document.getElementById('podcast-episode-panel');
-      if (podcastEpisodePanel) podcastEpisodePanel.hidden = true;
       if (alreadySelectedNewsTab && nextFeed === activeFeed) {
         playDefaultEpisode(nextFeed);
         return;
@@ -420,7 +410,7 @@
     audio.addEventListener('play', function () {
       var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
       if (window.LibraryAudioIdentity && episode) {
-        window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'newsBbc' : 'newsChronicle', audio, {
+        window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'newsBbc' : feed.id === 'chronicle' ? 'newsChronicle' : 'newsPodcast', audio, {
           title: episode.title || feed.title,
           artist: feed.title,
           album: feed.title,
@@ -462,7 +452,7 @@
 
   window.addEventListener('pagehide', function () { feeds.forEach(function (feed) { savePosition(feed, true); }); });
 
-  fetch('/assets/data/news.json?v=20261025-20', { cache: 'no-store' }).then(function (response) {
+  fetch('/assets/data/news.json?v=20261026-5', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('Unable to load News cache');
     return response.json();
   }).then(function (data) {
@@ -481,7 +471,7 @@
     });
     loaded = true;
     renderAll();
-    if (pendingAutoplay && !root.hidden && (activeTab === 'bbc' || activeTab === 'chronicle')) {
+    if (pendingAutoplay && !root.hidden) {
       pendingAutoplay = false;
       playDefaultEpisode(activeFeed);
     }
