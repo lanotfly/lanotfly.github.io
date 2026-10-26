@@ -1399,3 +1399,37 @@ html,body{max-width:100%;overflow-x:clip}
   background:#f8f4fc!important;
   border-color:#b9a4d0!important;
 }
+
+
+/* Podcast bulk episode-status menu, immediately left of the expand/collapse control. */
+.podcast-panel-actions{display:flex;align-items:center;gap:6px;flex:0 0 auto;min-width:0}
+.podcast-bulk-menu{position:relative;display:flex;align-items:center}
+.podcast-bulk-menu__toggle{
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 38px;
+  width:38px;height:34px;min-width:38px;min-height:34px;padding:0;
+  border:1px solid #e5ddec;border-radius:9px;background:#fff;color:#75618c;
+  cursor:pointer;transition:background-color .15s ease,border-color .15s ease;
+}
+.podcast-bulk-menu__toggle:hover,.podcast-bulk-menu__toggle:focus-visible,
+.podcast-bulk-menu__toggle[aria-expanded="true"]{background:#f8f4fc;border-color:#b9a4d0;outline:none}
+.podcast-bulk-menu__toggle:focus-visible{box-shadow:0 0 0 3px rgba(117,97,140,.16)}
+.podcast-bulk-menu__options{
+  position:absolute;z-index:30;top:calc(100% + 6px);right:0;
+  display:flex;flex-direction:column;gap:2px;width:max-content;min-width:190px;max-width:min(260px,80vw);
+  padding:5px;border:1px solid #e5ddec;border-radius:11px;background:#fff;
+  box-shadow:0 8px 24px rgba(47,35,62,.14);
+}
+.podcast-bulk-menu__options[hidden]{display:none!important}
+.podcast-bulk-menu__options button{
+  display:block;width:100%;min-height:40px;padding:9px 11px;border:0;border-radius:7px;
+  background:transparent;color:#3f334b;text-align:left;font:500 13px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  white-space:normal;cursor:pointer;
+}
+.podcast-bulk-menu__options button:hover,.podcast-bulk-menu__options button:focus-visible{
+  background:#f8f4fc;color:#50386a;outline:none
+}
+@media(max-width:480px){
+  .podcast-panel-actions{gap:5px}
+  .podcast-bulk-menu__toggle{flex-basis:35px;width:35px;min-width:35px;height:34px}
+  .podcast-bulk-menu__options{min-width:184px}
+}
