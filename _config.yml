@@ -31,6 +31,7 @@ nav:
 plugins:
   - jekyll-paginate
   - jekyll-feed
+  - jekyll-remote-theme
 paginate: 10
 paginate_path: "page/:num/"
 
@@ -53,4 +54,4 @@ ga:
 
 markdown: kramdown
 
-theme: jekyll-theme-cayman
+remote_theme: pages-themes/cayman@v0.2.0
