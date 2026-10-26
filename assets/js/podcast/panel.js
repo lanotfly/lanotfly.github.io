@@ -1,8 +1,8 @@
 /* Unified Podcast engine: every show uses the same episode list, progress, and playback logic. */
 (function (window, document) {
   'use strict';
-  if (window.__libraryNewsPanelInstalled) return;
-  window.__libraryNewsPanelInstalled = true;
+  if (window.__libraryPodcastPanelInstalled) return;
+  window.__libraryPodcastPanelInstalled = true;
 
   var feeds = [
     { id: 'bbc', title: 'BBC Global News Podcast', language: 'en' },
@@ -10,8 +10,8 @@
     { id: 'english', title: 'Easy Natural English', language: 'en' },
     { id: 'japanese', title: 'Bite Size Japanese', language: 'ja' }
   ];
-  var root = document.getElementById('library-news-panel');
-  var mainToggle = document.getElementById('library-news-toggle');
+  var root = document.getElementById('library-podcast-panel');
+  var mainToggle = document.getElementById('library-podcast-toggle');
   if (!root || !mainToggle) return;
 
   var episodesByFeed = { bbc: [], chronicle: [], english: [], japanese: [] };
@@ -28,10 +28,10 @@
   function audioFor(feedId) { return document.getElementById('news-' + feedId + '-audio'); }
   function episodeIdentity(episode) { return String(episode.link || episode.title || episode.audioUrl || '').toLowerCase(); }
   function storageKey(feed, episode) {
-    return 'personal-library-news-played:' + feed.id + ':' + episodeIdentity(episode);
+    return 'personal-library-podcast-played:' + feed.id + ':' + episodeIdentity(episode);
   }
-  function positionKey(feed, episode) { return 'personal-library-news-position:' + feed.id + ':' + episodeIdentity(episode); }
-  function selectedEpisodeKey(feed) { return 'personal-library-news-last-episode:' + feed.id; }
+  function positionKey(feed, episode) { return 'personal-library-podcast-position:' + feed.id + ':' + episodeIdentity(episode); }
+  function selectedEpisodeKey(feed) { return 'personal-library-podcast-last-episode:' + feed.id; }
   function savePosition(feed, force) {
     var audio = audioFor(feed.id);
     var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
@@ -52,10 +52,10 @@
     return h ? h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') : m + ':' + String(s).padStart(2, '0');
   }
   function updateProgress(feed) {
-    var audio = audioFor(feed.id), wrap = root.querySelector('[data-news-progress="' + feed.id + '"]');
-    var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
-    var currentLabel = root.querySelector('[data-news-current-time="' + feed.id + '"]');
-    var totalLabel = root.querySelector('[data-news-total-time="' + feed.id + '"]');
+    var audio = audioFor(feed.id), wrap = root.querySelector('[data-podcast-progress="' + feed.id + '"]');
+    var slider = root.querySelector('[data-podcast-progress-slider="' + feed.id + '"]');
+    var currentLabel = root.querySelector('[data-podcast-current-time="' + feed.id + '"]');
+    var totalLabel = root.querySelector('[data-podcast-total-time="' + feed.id + '"]');
     var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
     if (!wrap || !audio || !episode) { if (wrap) wrap.hidden = true; return; }
     wrap.hidden = false;
@@ -107,7 +107,7 @@
     return { all: all.length, played: played, unplayed: all.length - played };
   }
   function syncFilterOptions(feed) {
-    var select = root.querySelector('[data-news-filter="' + feed.id + '"]');
+    var select = root.querySelector('[data-podcast-filter="' + feed.id + '"]');
     if (!select) return;
     var tally = counts(feed);
     Array.prototype.forEach.call(select.options, function (option) {
@@ -116,7 +116,7 @@
     });
     select.value = filters[feed.id];
   }
-  function stopAllNews(clearSelection) {
+  function stopAllPodcasts(clearSelection) {
     feeds.forEach(function (feed) {
       var audio = audioFor(feed.id);
       if (audio && !audio.paused) audio.pause();
@@ -127,7 +127,7 @@
   function stopOtherAudio() {
     var coordinator = window.LibraryAudioCoordinator;
     if (coordinator && typeof coordinator.switchTo === 'function') {
-      coordinator.switchTo('news');
+      coordinator.switchTo('podcast');
       return;
     }
     ['radio4-audio', 'nhk-radio-audio', 'niv-bible-audio'].forEach(function (id) {
@@ -137,21 +137,21 @@
   }
   function setActiveTab(tabId) {
     activeTab = tabId;
-    Array.prototype.forEach.call(root.querySelectorAll('[data-news-tab]'), function (button) {
-      var selected = button.getAttribute('data-news-tab') === tabId;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-podcast-tab]'), function (button) {
+      var selected = button.getAttribute('data-podcast-tab') === tabId;
       button.classList.toggle('is-active', selected);
       button.setAttribute('aria-selected', String(selected));
       button.tabIndex = selected ? 0 : -1;
     });
-    Array.prototype.forEach.call(root.querySelectorAll('[data-news-feed-panel]'), function (panel) {
-      panel.hidden = panel.getAttribute('data-news-feed-panel') !== tabId;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-podcast-feed-panel]'), function (panel) {
+      panel.hidden = panel.getAttribute('data-podcast-feed-panel') !== tabId;
     });
   }
   function setActiveFeed(feedId) {
     activeFeed = feedId;
     setActiveTab(feedId);
   }
-  function setNewsOpen(open) {
+  function setPodcastOpen(open) {
     if (open && window.LibraryAudioCoordinator) {
       window.LibraryAudioCoordinator.setRadioPanelOpen(false);
     }
@@ -179,12 +179,12 @@
       }
     }
   }
-  window.LibraryCloseNewsPanel = function () { setNewsOpen(false); };
+  window.LibraryClosePodcastPanel = function () { setPodcastOpen(false); };
   function playEpisode(feed, index) {
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id);
     if (!episode || !audio || !episode.audioUrl) {
-      var missingStatus = root.querySelector('[data-news-status="' + feed.id + '"]');
+      var missingStatus = root.querySelector('[data-podcast-status="' + feed.id + '"]');
       if (missingStatus) missingStatus.textContent = 'This episode does not provide a direct audio URL.';
       if (episode && episode.link) window.open(episode.link, '_blank', 'noopener');
       return;
@@ -199,7 +199,7 @@
       var resume = audio.play();
       renderAll();
       if (resume && resume.catch) resume.catch(function () {
-        var resumeStatus = root.querySelector('[data-news-status="' + feed.id + '"]');
+        var resumeStatus = root.querySelector('[data-podcast-status="' + feed.id + '"]');
         if (resumeStatus) resumeStatus.textContent = 'Playback was blocked. Tap the episode again to resume.';
         renderAll();
       });
@@ -216,12 +216,12 @@
     audio.dataset.restoreSrc = '';
     audio.dataset.episodeTitle = episode.title || feed.title;
     audio.dataset.episodeArtist = feed.title;
-    audio.dataset.episodeArtwork = (root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '';
+    audio.dataset.episodeArtwork = (root.querySelector('[data-podcast-artwork="' + feed.id + '"]') || {}).src || '';
     audio.load();
     renderAll();
     var promise = audio.play();
     if (promise && promise.catch) promise.catch(function () {
-      var status = root.querySelector('[data-news-status="' + feed.id + '"]');
+      var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
       if (status) status.textContent = 'Autoplay was blocked by your browser. Tap the episode to start playback.';
       renderAll();
     });
@@ -238,28 +238,28 @@
   function render(feed) {
     syncFilterOptions(feed);
     /* The heading beside the artwork is the current episode title, like the shared Podcast panel. */
-    var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
+    var heading = root.querySelector('[data-podcast-title="' + feed.id + '"]');
     var selectedEpisode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
     if (heading) {
       var titleText = selectedEpisode && selectedEpisode.title
         ? selectedEpisode.title
-        : (heading.getAttribute('data-news-show-title') || feed.title);
+        : (heading.getAttribute('data-podcast-show-title') || feed.title);
       if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.set(heading, titleText);
       else heading.textContent = titleText;
     }
     if (listModules[feed.id]) listModules[feed.id].render();
     else {
-      var list = root.querySelector('[data-news-list="' + feed.id + '"]');
+      var list = root.querySelector('[data-podcast-list="' + feed.id + '"]');
       if (list) list.textContent = '';
     }
   }
   function createListModules() {
     if (!window.LibraryPodcastList || !window.LibraryPodcastList.create) return;
     feeds.forEach(function (feed) {
-      var list = root.querySelector('[data-news-list="' + feed.id + '"]');
-      var count = root.querySelector('[data-news-count="' + feed.id + '"]');
-      var status = root.querySelector('[data-news-status="' + feed.id + '"]');
-      var filter = root.querySelector('[data-news-filter="' + feed.id + '"]');
+      var list = root.querySelector('[data-podcast-list="' + feed.id + '"]');
+      var count = root.querySelector('[data-podcast-count="' + feed.id + '"]');
+      var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
+      var filter = root.querySelector('[data-podcast-filter="' + feed.id + '"]');
       if (!list || !filter) return;
       listModules[feed.id] = window.LibraryPodcastList.create({
         listElement: list,
@@ -294,15 +294,15 @@
   }
   function renderAll() { feeds.forEach(function (feed) { render(feed); updateProgress(feed); }); }
   function setNewsBulkMenuOpen(feedId, open) {
-    var toggle = root.querySelector('[data-news-bulk-toggle="' + feedId + '"]');
-    var menu = root.querySelector('[data-news-bulk-options="' + feedId + '"]');
+    var toggle = root.querySelector('[data-podcast-bulk-toggle="' + feedId + '"]');
+    var menu = root.querySelector('[data-podcast-bulk-options="' + feedId + '"]');
     if (!toggle || !menu) return;
     menu.hidden = !open;
     toggle.setAttribute('aria-expanded', String(!!open));
   }
-  root.querySelectorAll('[data-news-bulk-toggle]').forEach(function (toggle) {
-    var feedId = toggle.getAttribute('data-news-bulk-toggle');
-    var menu = root.querySelector('[data-news-bulk-options="' + feedId + '"]');
+  root.querySelectorAll('[data-podcast-bulk-toggle]').forEach(function (toggle) {
+    var feedId = toggle.getAttribute('data-podcast-bulk-toggle');
+    var menu = root.querySelector('[data-podcast-bulk-options="' + feedId + '"]');
     if (!menu) return;
     toggle.addEventListener('click', function (event) {
       event.stopPropagation();
@@ -310,21 +310,21 @@
     });
     menu.addEventListener('click', function (event) { event.stopPropagation(); });
   });
-  root.querySelectorAll('[data-news-bulk-played]').forEach(function (action) {
+  root.querySelectorAll('[data-podcast-bulk-played]').forEach(function (action) {
     action.addEventListener('click', function () {
-      var feedId = action.getAttribute('data-news-feed');
+      var feedId = action.getAttribute('data-podcast-feed');
       var feed = getFeed(feedId);
-      var played = action.getAttribute('data-news-bulk-played') === 'true';
+      var played = action.getAttribute('data-podcast-bulk-played') === 'true';
       setNewsBulkMenuOpen(feedId, false);
       var episodes = episodesByFeed[feedId] || [];
       if (!loaded || !episodes.length) {
-        var emptyStatus = root.querySelector('[data-news-status="' + feedId + '"]');
+        var emptyStatus = root.querySelector('[data-podcast-status="' + feedId + '"]');
         if (emptyStatus) emptyStatus.textContent = 'No episodes are loaded yet.';
         return;
       }
       episodes.forEach(function (episode) { setPlayed(feed, episode, played); });
       render(feed);
-      var status = root.querySelector('[data-news-status="' + feedId + '"]');
+      var status = root.querySelector('[data-podcast-status="' + feedId + '"]');
       if (status) status.textContent = played
         ? 'Marked all ' + episodes.length + ' episodes as played.'
         : 'Marked all ' + episodes.length + ' episodes as unplayed.';
@@ -336,10 +336,10 @@
   document.addEventListener('keydown', function (event) {
     if (event.key !== 'Escape') return;
     feeds.forEach(function (feed) {
-      var menu = root.querySelector('[data-news-bulk-options="' + feed.id + '"]');
+      var menu = root.querySelector('[data-podcast-bulk-options="' + feed.id + '"]');
       if (menu && !menu.hidden) {
         setNewsBulkMenuOpen(feed.id, false);
-        var toggle = root.querySelector('[data-news-bulk-toggle="' + feed.id + '"]');
+        var toggle = root.querySelector('[data-podcast-bulk-toggle="' + feed.id + '"]');
         if (toggle) toggle.focus();
       }
     });
@@ -348,10 +348,10 @@
   mainToggle.addEventListener('click', function () {
     /* Podcast is persistent like Radio and KJV: tapping it must not hide its player.
        If already open, the remembered episode can toggle playback via playDefaultEpisode. */
-    setNewsOpen(true);
+    setPodcastOpen(true);
   });
   /* Every podcast feed uses the same list-collapse control, expanded by default. */
-  root.querySelectorAll('[data-news-collapse]').forEach(function (button) {
+  root.querySelectorAll('[data-podcast-collapse]').forEach(function (button) {
     button.addEventListener('click', function () {
       var frame = document.getElementById(button.getAttribute('aria-controls'));
       if (!frame) return;
@@ -363,15 +363,15 @@
       frame.hidden = !expanded;
     });
   });
-  root.querySelectorAll('[data-news-tab]').forEach(function (button) {
+  root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
-      var nextFeed = button.getAttribute('data-news-tab');
+      var nextFeed = button.getAttribute('data-podcast-tab');
       var alreadySelectedNewsTab = activeTab === nextFeed;
       if (alreadySelectedNewsTab && nextFeed === activeFeed) {
         playDefaultEpisode(nextFeed);
         return;
       }
-      stopAllNews(true);
+      stopAllPodcasts(true);
       setActiveFeed(nextFeed);
       if (loaded) playDefaultEpisode(nextFeed);
       else pendingAutoplay = true;
@@ -384,11 +384,11 @@
     var media = event.target;
     if (!media || (media.tagName !== 'AUDIO' && media.tagName !== 'VIDEO')) return;
     if (media.tagName === 'VIDEO') {
-      if (!root.hidden) setNewsOpen(false);
+      if (!root.hidden) setPodcastOpen(false);
       return;
     }
-    if (!media.id || media.id.indexOf('news-') === 0) return;
-    stopAllNews(true);
+    if (!media.id || media.id.indexOf('podcast-') === 0) return;
+    stopAllPodcasts(true);
   }, true);
 
   /* Audio controls are listening-first: selecting another audio source closes News.
@@ -397,11 +397,11 @@
     var target = event.target && event.target.closest && event.target.closest(
       '#radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #podcast-episode-list .podcast-episode-choice'
     );
-    if (target && !root.hidden) setNewsOpen(false);
+    if (target && !root.hidden) setPodcastOpen(false);
   }, true);
 
   feeds.forEach(function (feed) {
-    var slider = root.querySelector('[data-news-progress-slider="' + feed.id + '"]');
+    var slider = root.querySelector('[data-podcast-progress-slider="' + feed.id + '"]');
     if (slider) {
       slider.addEventListener('input', function () {
         var audio = audioFor(feed.id);
@@ -416,20 +416,20 @@
     audio.addEventListener('play', function () {
       var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
       if (window.LibraryAudioIdentity && episode) {
-        window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'newsBbc' : feed.id === 'chronicle' ? 'newsChronicle' : 'newsPodcast', audio, {
+        window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'podcastBbc' : feed.id === 'chronicle' ? 'podcastChronicle' : 'podcastFeed', audio, {
           title: episode.title || feed.title,
           artist: feed.title,
           album: feed.title,
-          artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '')
+          artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-podcast-artwork="' + feed.id + '"]') || {}).src || '')
         });
       }
       renderAll();
-      var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
+      var heading = root.querySelector('[data-podcast-title="' + feed.id + '"]');
       if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.animate(heading);
     });
     audio.addEventListener('pause', function () {
       savePosition(feed, true);
-      var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
+      var heading = root.querySelector('[data-podcast-title="' + feed.id + '"]');
       if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.stop(heading);
       renderAll();
     });
@@ -491,9 +491,9 @@
       episodesByFeed[feed.id] = Array.isArray(data[feed.id]) ? data[feed.id] : [];
       episodesByFeed[feed.id].forEach(function (episode) { episode.url = episode.audioUrl || episode.url || ''; episode.published = episode.published || episode.date || episode.pubDate || ''; });
       var artwork = data.artwork && data.artwork[feed.id];
-      var image = root.querySelector('[data-news-artwork="' + feed.id + '"]');
+      var image = root.querySelector('[data-podcast-artwork="' + feed.id + '"]');
       if (image && artwork) image.src = artwork;
-      var status = root.querySelector('[data-news-status="' + feed.id + '"]');
+      var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
       if (status) {
         var state = data.feedStatus && data.feedStatus[feed.id];
         status.textContent = episodesByFeed[feed.id].length ? '' :
@@ -508,7 +508,7 @@
     }
   }).catch(function () {
     feeds.forEach(function (feed) {
-      var status = root.querySelector('[data-news-status="' + feed.id + '"]');
+      var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
       if (status) status.textContent = 'Could not load episodes. Please try again later.';
     });
   });
