@@ -1073,10 +1073,10 @@ html,body{max-width:100%;overflow-x:clip}
 
 
 /* News secondary podcast tabs */
-.news-secondary-tabs{display:flex;gap:8px;margin:0 0 12px;padding:0;overflow-x:auto}
-.news-secondary-tab{flex:1 1 0;min-width:0;min-height:42px;padding:9px 12px;border:1px solid #d9cce8;border-radius:9px;background:#faf7fd;color:#5d4b70;font:700 13px/1.25 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;cursor:pointer;white-space:normal}
-.news-secondary-tab:hover{border-color:#a995c4;background:#f4eefb}
-.news-secondary-tab.is-active{border-color:#6d548b;background:#6d548b;color:#fff;box-shadow:0 2px 7px rgba(77,54,106,.16)}
+.secondary-tabs{display:flex;gap:8px;margin:0 0 12px;padding:0;overflow-x:auto}
+.secondary-tab{flex:1 1 0;min-width:0;min-height:42px;padding:9px 12px;border:1px solid #d9cce8;border-radius:9px;background:#faf7fd;color:#5d4b70;font:700 13px/1.25 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;cursor:pointer;white-space:normal}
+.secondary-tab:hover{border-color:#a995c4;background:#f4eefb}
+.secondary-tab.is-active{border-color:#6d548b;background:#6d548b;color:#fff;box-shadow:0 2px 7px rgba(77,54,106,.16)}
 .podcast-feed-panel[hidden]{display:none!important}
 .podcast-feed-episode-scroll-frame{height:min(250px,40vh);min-height:190px;margin-top:4px}
 .podcast-feed-episode-list{display:flex!important;flex-direction:column!important;gap:5px!important;height:100%!important;min-height:0!important;max-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;box-sizing:border-box}
@@ -1088,7 +1088,7 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-feed-episode-list .podcast-episode-meta .podcast-episode-date{font-size:10px}
 .podcast-feed-episode-list .podcast-episode-meta .podcast-episode-state{font-size:9px}
 @media(max-width:700px){.podcast-feed-episode-scroll-frame{height:min(250px,38vh);min-height:190px}}
-@media(max-width:600px){.news-secondary-tabs{gap:6px;margin-bottom:9px}.news-secondary-tab{min-height:40px;padding:8px 7px;font-size:11.5px}.podcast-feed-episode-list .podcast-episode-meta .podcast-episode-date{font-size:9px}}
+@media(max-width:600px){.secondary-tabs{gap:6px;margin-bottom:9px}.secondary-tab{min-height:40px;padding:8px 7px;font-size:11.5px}.podcast-feed-episode-list .podcast-episode-meta .podcast-episode-date{font-size:9px}}
 
 
 /* News playback: compact row metadata and seekable playback progress. */
@@ -1435,14 +1435,14 @@ html,body{max-width:100%;overflow-x:clip}
 }
 
 /* Language podcast sub-tabs are text-only; podcast artwork belongs in the episode panel. */
-.library-lang-panel .news-secondary-tab>img,
-.library-lang-panel .news-secondary-tab>svg,
-.library-lang-panel .news-secondary-tab>[data-audio-identity-icon]{display:none!important}
+.library-lang-panel .secondary-tab>img,
+.library-lang-panel .secondary-tab>svg,
+.library-lang-panel .secondary-tab>[data-audio-identity-icon]{display:none!important}
 
 
 /* Unified Podcast selector and text-first audio row for mobile. */
-.news-secondary-tabs.podcast-source-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;}
-.news-secondary-tabs.podcast-source-tabs .news-secondary-tab{min-width:0;width:100%;padding:8px 4px;font-size:12px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;}
+.secondary-tabs.podcast-source-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;}
+.secondary-tabs.podcast-source-tabs .secondary-tab{min-width:0;width:100%;padding:8px 4px;font-size:12px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;}
 .site-nav-shell .site-tab-links .site-tab--radio,.site-nav-shell .site-tab-links .site-tab--nhk-radio{width:auto!important;min-width:0!important;max-width:none!important;flex:1 1 auto!important;height:38px!important;min-height:38px!important;padding:6px 10px!important;gap:0!important;font-size:13px!important;white-space:nowrap!important;justify-content:center!important;}
 .site-nav-shell .site-tab-links .site-tab--radio .radio4-icon-image,.site-nav-shell .site-tab-links .site-tab--nhk-radio .nhk-radio-icon-image{display:none!important;}
 @media(max-width:700px){
@@ -1453,7 +1453,7 @@ html,body{max-width:100%;overflow-x:clip}
  .site-nav-shell .site-tab-links .site-nav-row-divider{grid-column:1/-1!important;}
  .site-nav-shell .site-tab-links .site-tab--home,.site-nav-shell .site-tab-links .site-tab--data{grid-column:span 2!important;}
  .site-nav-shell .site-tab-links .site-tab--algorithm,.site-nav-shell .site-tab-links .site-tab--ai,.site-nav-shell .site-tab-links .site-tab--linux,.site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 2!important;}
- .news-secondary-tabs.podcast-source-tabs .news-secondary-tab{font-size:11px;padding:8px 3px;}
+ .secondary-tabs.podcast-source-tabs .secondary-tab{font-size:11px;padding:8px 3px;}
 }
 
 
@@ -1551,13 +1551,13 @@ html,body{max-width:100%;overflow-x:clip}
 
 
 /* Compact secondary audio tabs: conserve vertical space on mobile. */
-.news-secondary-tabs.podcast-source-tabs{
+.secondary-tabs.podcast-source-tabs{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:5px;
   align-items:stretch;
 }
-.news-secondary-tabs.podcast-source-tabs .news-secondary-tab{
+.secondary-tabs.podcast-source-tabs .secondary-tab{
   min-width:0;
   min-height:34px;
   height:34px;
@@ -1570,18 +1570,18 @@ html,body{max-width:100%;overflow-x:clip}
   overflow-wrap:normal;
 }
 .radio-source-tabs .radio-secondary-tab,
-.book-source-tabs .news-secondary-tab{
+.book-source-tabs .secondary-tab{
   min-height:34px;
   padding:6px 8px;
   line-height:1.15;
 }
 @media(max-width:700px){
-  .news-secondary-tabs.podcast-source-tabs{gap:4px;margin-bottom:7px}
-  .news-secondary-tabs.podcast-source-tabs .news-secondary-tab{
+  .secondary-tabs.podcast-source-tabs{gap:4px;margin-bottom:7px}
+  .secondary-tabs.podcast-source-tabs .secondary-tab{
     min-height:32px;height:32px;padding:4px 1px;font-size:10px;line-height:1.05;
   }
   .radio-source-tabs .radio-secondary-tab,
-  .book-source-tabs .news-secondary-tab{
+  .book-source-tabs .secondary-tab{
     min-height:34px!important;padding:6px 4px!important;font-size:11px!important;
   }
 }
