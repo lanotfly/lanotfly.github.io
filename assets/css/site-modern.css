@@ -1973,3 +1973,17 @@ html,body{max-width:100%;overflow-x:clip}
   margin:0!important;
   padding:0!important;
 }
+
+
+/* Podcast polish: use one visible episode-panel frame, not a framed wrapper
+   around another framed panel. Hide the generic divider directly below the
+   podcast window while that window is open. */
+.library-podcast-panel{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#library-podcast-panel:not([hidden]) + .post-list__divider{
+  display:none!important;
+}
