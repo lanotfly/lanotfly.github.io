@@ -25,7 +25,7 @@
   var listModules = {};
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
-  function audioFor(feedId) { return document.getElementById('news-' + feedId + '-audio'); }
+  function audioFor(feedId) { return document.getElementById('podcast-' + feedId + '-audio'); }
   function episodeIdentity(episode) { return String(episode.link || episode.title || episode.audioUrl || '').toLowerCase(); }
   function storageKey(feed, episode) {
     return 'personal-library-podcast-played:' + feed.id + ':' + episodeIdentity(episode);
@@ -160,7 +160,7 @@
     mainToggle.classList.toggle('is-active', open);
     root.hidden = !open;
     var inner = document.querySelector('.content-wrapper__inner');
-    if (inner) inner.classList.toggle('news-panel-open', open);
+    if (inner) inner.classList.toggle('podcast-panel-open', open);
     if (open) {
       document.querySelectorAll('.site-tab-links a.site-tab').forEach(function (link) {
         link.classList.remove('is-active');
@@ -293,7 +293,7 @@
     });
   }
   function renderAll() { feeds.forEach(function (feed) { render(feed); updateProgress(feed); }); }
-  function setNewsBulkMenuOpen(feedId, open) {
+  function setPodcastBulkMenuOpen(feedId, open) {
     var toggle = root.querySelector('[data-podcast-bulk-toggle="' + feedId + '"]');
     var menu = root.querySelector('[data-podcast-bulk-options="' + feedId + '"]');
     if (!toggle || !menu) return;
@@ -306,7 +306,7 @@
     if (!menu) return;
     toggle.addEventListener('click', function (event) {
       event.stopPropagation();
-      setNewsBulkMenuOpen(feedId, menu.hidden);
+      setPodcastBulkMenuOpen(feedId, menu.hidden);
     });
     menu.addEventListener('click', function (event) { event.stopPropagation(); });
   });
@@ -315,7 +315,7 @@
       var feedId = action.getAttribute('data-podcast-feed');
       var feed = getFeed(feedId);
       var played = action.getAttribute('data-podcast-bulk-played') === 'true';
-      setNewsBulkMenuOpen(feedId, false);
+      setPodcastBulkMenuOpen(feedId, false);
       var episodes = episodesByFeed[feedId] || [];
       if (!loaded || !episodes.length) {
         var emptyStatus = root.querySelector('[data-podcast-status="' + feedId + '"]');
@@ -331,14 +331,14 @@
     });
   });
   document.addEventListener('click', function () {
-    feeds.forEach(function (feed) { setNewsBulkMenuOpen(feed.id, false); });
+    feeds.forEach(function (feed) { setPodcastBulkMenuOpen(feed.id, false); });
   });
   document.addEventListener('keydown', function (event) {
     if (event.key !== 'Escape') return;
     feeds.forEach(function (feed) {
       var menu = root.querySelector('[data-podcast-bulk-options="' + feed.id + '"]');
       if (menu && !menu.hidden) {
-        setNewsBulkMenuOpen(feed.id, false);
+        setPodcastBulkMenuOpen(feed.id, false);
         var toggle = root.querySelector('[data-podcast-bulk-toggle="' + feed.id + '"]');
         if (toggle) toggle.focus();
       }
@@ -366,8 +366,8 @@
   root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-podcast-tab');
-      var alreadySelectedNewsTab = activeTab === nextFeed;
-      if (alreadySelectedNewsTab && nextFeed === activeFeed) {
+      var alreadySelectedPodcastTab = activeTab === nextFeed;
+      if (alreadySelectedPodcastTab && nextFeed === activeFeed) {
         playDefaultEpisode(nextFeed);
         return;
       }
@@ -379,7 +379,7 @@
   });
   /* All four podcasts use the same PodcastList renderer, including swipe-to-mark-played. */
   createListModules();
-  /* If any non-News player starts, stop News and remove its selected row. */
+  /* If any non-Podcast player starts, stop Podcast and remove its selected row. */
   document.addEventListener('play', function (event) {
     var media = event.target;
     if (!media || (media.tagName !== 'AUDIO' && media.tagName !== 'VIDEO')) return;
@@ -391,7 +391,7 @@
     stopAllPodcasts(true);
   }, true);
 
-  /* Audio controls are listening-first: selecting another audio source closes News.
+  /* Audio controls are listening-first: selecting another audio source closes Podcast.
      Wiki chapter links are deliberately excluded so News can continue while reading. */
   document.addEventListener('click', function (event) {
     var target = event.target && event.target.closest && event.target.closest(
@@ -484,7 +484,7 @@
   window.addEventListener('pagehide', function () { feeds.forEach(function (feed) { savePosition(feed, true); }); });
 
   fetch('/assets/data/podcast.json?v=20261026-1', { cache: 'no-store' }).then(function (response) {
-    if (!response.ok) throw new Error('Unable to load News cache');
+    if (!response.ok) throw new Error('Unable to load Podcast cache');
     return response.json();
   }).then(function (data) {
     feeds.forEach(function (feed) {
