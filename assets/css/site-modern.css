@@ -1794,3 +1794,46 @@ html,body{max-width:100%;overflow-x:clip}
     padding:0 3px!important;font-size:10px!important;line-height:1!important;
   }
 }
+
+/* One shared geometry for all three levels of the Book navigation.
+   Keep the Book toggle, section links, chapter label, and chapter links on
+   the same sizing contract so later component-specific rules cannot diverge. */
+.site-nav-shell .site-tab-links .site-tab--book-group,
+.book-source-panel .book-source-tabs .book-secondary-link,
+.book-source-panel .book-chapter-tabs .book-chapter-book-label,
+.book-source-panel .book-chapter-tabs .book-chapter-link{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0 8px!important;
+  margin:0!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+}
+.site-nav-shell .site-tab-links .site-tab--book-group{
+  width:100%!important;
+}
+.book-source-panel .book-source-tabs .book-secondary-link{
+  width:100%!important;
+}
+.book-source-panel .book-chapter-tabs .book-chapter-book-label,
+.book-source-panel .book-chapter-tabs .book-chapter-link{
+  flex:0 0 auto!important;
+}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links .site-tab--book-group,
+  .book-source-panel .book-source-tabs .book-secondary-link,
+  .book-source-panel .book-chapter-tabs .book-chapter-book-label,
+  .book-source-panel .book-chapter-tabs .book-chapter-link{
+    height:34px!important;
+    min-height:34px!important;
+    max-height:34px!important;
+    padding:0 3px!important;
+    font-size:11px!important;
+    line-height:1!important;
+  }
+}
