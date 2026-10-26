@@ -84,6 +84,7 @@
       shell.setAttribute('data-active-audio-tab','podcast');
     }else{
       shell.setAttribute('data-active-family','reading');
+      shell.setAttribute('data-active-reading-tab',target.matches('#library-book-toggle,.book-secondary-link,.book-chapter-link')?'book':'home');
       shell.removeAttribute('data-active-audio-tab');
     }
   },true);
