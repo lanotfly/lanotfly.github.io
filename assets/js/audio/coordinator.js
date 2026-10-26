@@ -85,6 +85,34 @@
       shell.setAttribute('data-active-reading-tab',target.matches('#library-book-toggle,.book-secondary-link,.book-chapter-link')?'book':'home');
       shell.removeAttribute('data-active-audio-tab');
     }
+    /* Explicitly maintain the audio tabs' family colors. Some older active-state
+       code applies inline important styles, which can beat stylesheet-only fixes. */
+    var audioTabColors=[
+      ['#library-radio-toggle','#f3eef9','#705493','#cbb9df'],
+      ['#niv-bible-toggle','#f3eef9','#705493','#cbb9df'],
+      ['#library-podcast-toggle','#f3eef9','#705493','#cbb9df']
+    ];
+    audioTabColors.forEach(function(item){
+      var button=shell.querySelector(item[0]);
+      if(!button)return;
+      button.style.setProperty('background-color',item[1],'important');
+      button.style.setProperty('color',item[2],'important');
+      button.style.setProperty('border-color',item[3],'important');
+      button.style.setProperty('border-style','dashed','important');
+      button.style.setProperty('box-shadow','none','important');
+    });
+    if(shell.getAttribute('data-active-family')==='audio'){
+      var selected=shell.getAttribute('data-active-audio-tab');
+      var selectedId=selected==='radio'?'#library-radio-toggle':selected==='kjv'?'#niv-bible-toggle':'#library-podcast-toggle';
+      var activeButton=shell.querySelector(selectedId);
+      if(activeButton){
+        activeButton.style.setProperty('background-color','#e9def5','important');
+        activeButton.style.setProperty('color','#50386a','important');
+        activeButton.style.setProperty('border-color','#9581b3','important');
+        activeButton.style.setProperty('border-style','solid','important');
+        activeButton.style.setProperty('border-width','2px','important');
+      }
+    }
   },true);
   window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,getLastRadio:function(){return lastRadio;}};
   window.__prepareRadioPlayback=function(target){switchTo(target||lastRadio||'radio4');};
