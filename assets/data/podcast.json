@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "Leaderless student movement wins Serbian election",
+      "summary": "Serbia's long-standing leader, Aleksander Vučić, is defeated in parliamentary elections by the Student List Party. The movement grew out of protests against corruption and authoritarianism. Also: we speak to Israelis about what many see as the most critical election in their history. Brazil's incumbent left-wing President, Luiz Inacio Lula da Silva, wins a stunning victory in a run-off vote. Around 300 top politicians gather in Beijing, as China's communist leadership holds its most important meeting of the year. And cars, buses, taxis and bicycles disappear from a section of Oxford Street, as pedestrians take over London's famous shopping thoroughfare. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Supporters of the electoral list, \"Student List - Students Win\", celebrate after Aleksandar Vučić,, Serbian Progressive Party (SNS) prime ministerial candidate, conceded defeat in the parliamentary election in Belgrade, Serbia. Credit: REUTERS",
+      "link": "https://www.bbc.co.uk/programmes/p0pjpv1c",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pjptg9.mp3",
+      "date": "Mon, 26 Oct 2026 16:31:00 +0000",
+      "duration": "1677",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Brazil's President Lula defeats Bolsonaro",
       "summary": "Brazil's left-wing President Luiz Inácio Lula da Silva has been elected to a fourth term in office, defeating Flávio Bolsonaro in the runoff of the presidential election. The right-wing challenger Bolsonaro has called for the election to be annulled, following in his father Jair Bolsonaro’s footsteps by not recognising the results. Lula becomes the first president in Brazil's history to win a fourth term. Also: joy and disbelief on Serbia's streets as a student-led protest movement defeats the long-standing leader Aleksandar Vučić. The Venezuelan opposition leader María Corina Machado returns to Caracas after nearly a year in exile. Why the money from China's soaring exports isn't reaching the nation's workers. Uganda imposes a 21-day Ebola quarantine for travellers arriving from the DRC. Israel's Prime Minister Benjamin Netanyahu reportedly clashes with his military chief. And why wind-up radios are flying off the shelves in the UK. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Brazil's President Luiz Inacio Lula da Silva, the Workers' Party (PT) candidate for re-election, gestures as he addresses supporters after his victory in the presidential runoff election, at Paulista Avenue, in Sao Paulo, Brazil, October 26, 2026. REUTERS/Amanda Perobelli",
       "link": "https://www.bbc.co.uk/programmes/p0pjlyh7",
@@ -1519,15 +1528,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p1chrp.mp3",
       "date": "Wed, 29 Jul 2026 04:51:00 +0000",
       "duration": "1792",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Many trapped in Japanese mall after earthquake",
-      "summary": "Japanese firefighters say many people are trapped inside a shopping centre after a powerful earthquake in the southern prefecture of Kumamoto, on Kyushu island. Witnesses say there was an explosion and fire at the mall after the magnitude 7.1 earthquake. Also: French firefighters have likened efforts to contain wildfires there as a David versus Goliath struggle, despite some progress tackling blazes ravaging parts of France and Spain. We report from the front line of Ecuador's war against drugs. The French football star, Zinedine Zidane, has been appointed as the coach of the men's national team. And how to become a Big Ben apprentice. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Aerial view showing the damaged Aeon Mall shopping centre, after the earthquake in Japan's Kumamoto prefecture Credit: Kyodo via Reuters",
-      "link": "https://www.bbc.co.uk/programmes/p0p19k6d",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p19hw7.mp3",
-      "date": "Tue, 28 Jul 2026 15:52:00 +0000",
-      "duration": "1673",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17074,25 +17074,25 @@
     "bbc": {
       "ok": true,
       "count": 286,
-      "checkedAt": "2026-10-26T12:09:09+00:00"
+      "checkedAt": "2026-10-26T18:43:34+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1609,
-      "checkedAt": "2026-10-26T12:09:09+00:00"
+      "checkedAt": "2026-10-26T18:43:34+00:00"
     },
     "english": {
       "ok": true,
       "count": 422,
-      "checkedAt": "2026-10-26T12:09:10+00:00"
+      "checkedAt": "2026-10-26T18:43:35+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 761,
-      "checkedAt": "2026-10-26T12:09:11+00:00"
+      "checkedAt": "2026-10-26T18:43:35+00:00"
     }
   },
-  "updatedAt": "2026-10-26T12:09:11+00:00",
+  "updatedAt": "2026-10-26T18:43:36+00:00",
   "english": [
     {
       "title": "Hello Again!",
