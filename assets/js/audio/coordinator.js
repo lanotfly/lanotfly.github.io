@@ -36,8 +36,11 @@
     if(open){
       closeRadioPanel();
       var news=document.getElementById('library-news-toggle');
-      if(news&&news.getAttribute('aria-expanded')==='true')news.click();
-      /* Closing Podcast dispatches a click too; restore Book as the open menu. */
+      if(news&&news.getAttribute('aria-expanded')==='true'){
+        /* Close only the Podcast panel UI; never click its toggle, which can toggle episode playback. */
+        if(typeof window.LibraryCloseNewsPanel==='function')window.LibraryCloseNewsPanel();
+        else {news.setAttribute('aria-expanded','false');news.classList.remove('is-open','is-active');var newsPanel=document.getElementById('library-news-panel');if(newsPanel)newsPanel.hidden=true;var inner=document.querySelector('.content-wrapper__inner');if(inner)inner.classList.remove('news-panel-open');}
+      }
       bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');bookPanel.hidden=false;
     }
   }
