@@ -130,7 +130,7 @@
       coordinator.switchTo('news');
       return;
     }
-    ['podcast-audio', 'radio4-audio', 'nhk-radio-audio', 'niv-bible-audio'].forEach(function (id) {
+    ['radio4-audio', 'nhk-radio-audio', 'niv-bible-audio'].forEach(function (id) {
       var audio = document.getElementById(id);
       if (audio && !audio.paused) audio.pause();
     });
