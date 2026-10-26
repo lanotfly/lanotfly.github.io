@@ -1381,3 +1381,20 @@ html,body{max-width:100%;overflow-x:clip}
   .podcast-episode-choice{transition:none!important}
   .podcast-episode-row.is-swipe-confirmed{animation:none!important}
 }
+
+/* Podcast episode-list toggle: use a compact rounded rectangle, matching News controls. */
+.podcast-episode-panel__close:not(.news-podcast-list-toggle){
+  flex:0 0 42px!important;
+  width:42px!important;
+  min-width:42px!important;
+  height:34px!important;
+  min-height:34px!important;
+  border-radius:9px!important;
+  border-color:#e5ddec!important;
+  background:#fff!important;
+}
+.podcast-episode-panel__close:not(.news-podcast-list-toggle):hover,
+.podcast-episode-panel__close:not(.news-podcast-list-toggle):focus-visible{
+  background:#f8f4fc!important;
+  border-color:#b9a4d0!important;
+}
