@@ -280,6 +280,57 @@
     });
   }
   function renderAll() { feeds.forEach(function (feed) { render(feed); updateProgress(feed); }); }
+  function setNewsBulkMenuOpen(feedId, open) {
+    var toggle = root.querySelector('[data-news-bulk-toggle="' + feedId + '"]');
+    var menu = root.querySelector('[data-news-bulk-options="' + feedId + '"]');
+    if (!toggle || !menu) return;
+    menu.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(!!open));
+  }
+  root.querySelectorAll('[data-news-bulk-toggle]').forEach(function (toggle) {
+    var feedId = toggle.getAttribute('data-news-bulk-toggle');
+    var menu = root.querySelector('[data-news-bulk-options="' + feedId + '"]');
+    if (!menu) return;
+    toggle.addEventListener('click', function (event) {
+      event.stopPropagation();
+      setNewsBulkMenuOpen(feedId, menu.hidden);
+    });
+    menu.addEventListener('click', function (event) { event.stopPropagation(); });
+  });
+  root.querySelectorAll('[data-news-bulk-played]').forEach(function (action) {
+    action.addEventListener('click', function () {
+      var feedId = action.getAttribute('data-news-feed');
+      var feed = getFeed(feedId);
+      var played = action.getAttribute('data-news-bulk-played') === 'true';
+      setNewsBulkMenuOpen(feedId, false);
+      var episodes = episodesByFeed[feedId] || [];
+      if (!loaded || !episodes.length) {
+        var emptyStatus = root.querySelector('[data-news-status="' + feedId + '"]');
+        if (emptyStatus) emptyStatus.textContent = 'No episodes are loaded yet.';
+        return;
+      }
+      episodes.forEach(function (episode) { setPlayed(feed, episode, played); });
+      render(feed);
+      var status = root.querySelector('[data-news-status="' + feedId + '"]');
+      if (status) status.textContent = played
+        ? 'Marked all ' + episodes.length + ' episodes as played.'
+        : 'Marked all ' + episodes.length + ' episodes as unplayed.';
+    });
+  });
+  document.addEventListener('click', function () {
+    feeds.forEach(function (feed) { setNewsBulkMenuOpen(feed.id, false); });
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape') return;
+    feeds.forEach(function (feed) {
+      var menu = root.querySelector('[data-news-bulk-options="' + feed.id + '"]');
+      if (menu && !menu.hidden) {
+        setNewsBulkMenuOpen(feed.id, false);
+        var toggle = root.querySelector('[data-news-bulk-toggle="' + feed.id + '"]');
+        if (toggle) toggle.focus();
+      }
+    });
+  });
 
   mainToggle.addEventListener('click', function () {
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
