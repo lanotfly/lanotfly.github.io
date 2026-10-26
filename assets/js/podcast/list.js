@@ -194,9 +194,9 @@
         }
       }
       if(episodeCount){
-        episodeCount.textContent=config.formatCount?config.formatCount(totalMatchingEpisodes,queue.length,mode):totalMatchingEpisodes+' '+(totalMatchingEpisodes===1?'episode':'episodes');
+        /* Show the stable archive size, not a redundant "Showing N" filtered-row count. */
+        episodeCount.textContent=queue.length+' '+(queue.length===1?'episode':'episodes');
         if(!queue.length)episodeCount.textContent='No episodes';
-        else if(!totalMatchingEpisodes)episodeCount.textContent=mode==='played'?'0 played episodes':(mode==='unplayed'?'0 unplayed episodes':'0 episodes');
       }
       if(panelStatus){
         if(!queue.length)panelStatus.textContent='No episodes found.';
@@ -227,5 +227,56 @@
     }
     return {render:render,setCurrent:setCurrent};
   }
+  /* Shared one-time marquee for the title beside podcast artwork. */
+  window.LibraryPodcastTitle=window.LibraryPodcastTitle|| (function(){
+    var selector='.podcast-title-marquee__text';
+    function innerFor(element){
+      var inner=element.querySelector(selector);
+      if(!inner){
+        inner=document.createElement('span');
+        inner.className='podcast-title-marquee__text';
+        inner.textContent=element.textContent||'';
+        element.textContent='';
+        element.appendChild(inner);
+        element.addEventListener('animationend',function(event){
+          if(event.target!==inner)return;
+          element.classList.remove('is-marquee');
+          element.style.removeProperty('--podcast-title-shift');
+          inner.style.transform='';
+        });
+      }
+      return inner;
+    }
+    function set(element,text){
+      if(!element)return;
+      text=String(text||'');
+      var inner=innerFor(element);
+      if(inner.textContent!==text){
+        element.classList.remove('is-marquee');
+        element.style.removeProperty('--podcast-title-shift');
+        inner.style.transform='';
+        inner.textContent=text;
+      }
+      element.setAttribute('title',text);
+    }
+    function stop(element){
+      if(!element)return;
+      element.classList.remove('is-marquee');
+      element.style.removeProperty('--podcast-title-shift');
+      var inner=element.querySelector(selector);
+      if(inner)inner.style.transform='';
+    }
+    function animate(element){
+      if(!element)return;
+      stop(element);
+      var inner=innerFor(element);
+      var overflow=inner.scrollWidth-element.clientWidth;
+      if(overflow<8)return;
+      element.style.setProperty('--podcast-title-shift',(-overflow)+'px');
+      void element.offsetWidth;
+      element.classList.add('is-marquee');
+    }
+    return {set:set,animate:animate,stop:stop};
+  })();
   window.LibraryPodcastList={create:create};
 })(window,document);
