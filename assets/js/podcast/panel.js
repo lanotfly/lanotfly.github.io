@@ -174,9 +174,8 @@
          episode playing in the background; only an actual audio resource
          selected through stopOtherAudio()/LibraryAudioCoordinator may replace it. */
       mainToggle.classList.remove('is-active');
-      if (typeof window.LibraryUpdatePrimaryActive === 'function') {
-        window.LibraryUpdatePrimaryActive(window.location.pathname);
-      }
+      /* The caller owns the selected navigation family. Closing this panel must not
+         reset Radio/KJV/Podcast back to the reading family. */
     }
   }
   window.LibraryClosePodcastPanel = function () { setPodcastOpen(false); };
@@ -392,7 +391,7 @@
   }, true);
 
   /* Audio controls are listening-first: selecting another audio source closes Podcast.
-     Wiki chapter links are deliberately excluded so News can continue while reading. */
+     Wiki chapter links are deliberately excluded so Podcast can continue while reading. */
   document.addEventListener('click', function (event) {
     var target = event.target && event.target.closest && event.target.closest(
       '#radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #podcast-episode-list .podcast-episode-choice'
