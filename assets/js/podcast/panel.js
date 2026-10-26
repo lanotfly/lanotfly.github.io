@@ -483,7 +483,7 @@
 
   window.addEventListener('pagehide', function () { feeds.forEach(function (feed) { savePosition(feed, true); }); });
 
-  fetch('/assets/data/news.json?v=20261026-5', { cache: 'no-store' }).then(function (response) {
+  fetch('/assets/data/podcast.json?v=20261026-1', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('Unable to load News cache');
     return response.json();
   }).then(function (data) {
