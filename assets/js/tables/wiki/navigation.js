@@ -61,7 +61,7 @@
 
   /* Remember the last page visited in each learning area for tab-to-tab switching. */
   var lastPageKeys = {
-    data: 'library_last_page_data_structure',
+    data: 'library_last_page_data',
     algorithm: 'library_last_page_algorithm',
     ai: 'library_last_page_ai',
     kubernetes: 'library_last_page_cloud'
@@ -140,6 +140,11 @@
     panel.hidden=false;
     if(bookToggle){bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');}
     var book=bookForPath(pathname);
+    if(!book && level==='3'){
+      var rememberedBookPath=safeRememberedPage('data')||safeRememberedPage('ai')||safeRememberedPage('algorithm')||safeRememberedPage('linux')||safeRememberedPage('kubernetes');
+      pathname=rememberedBookPath||'/data/';
+      book=bookForPath(pathname);
+    }
     var old=panel.querySelector('.book-chapter-tabs');
     if(old)old.remove();
     var second=panel.querySelector('.book-source-tabs');
