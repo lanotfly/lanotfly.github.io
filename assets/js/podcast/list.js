@@ -196,7 +196,7 @@
       }
       if(episodeCount){
         /* Show the stable archive size, not a redundant "Showing N" filtered-row count. */
-        episodeCount.textContent=queue.length+' '+(queue.length===1?'episode':'episodes');
+        episodeCount.textContent=totalMatchingEpisodes+' '+(totalMatchingEpisodes===1?'episode':'episodes');
         if(!queue.length)episodeCount.textContent='No episodes';
       }
       if(panelStatus){
