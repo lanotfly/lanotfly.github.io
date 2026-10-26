@@ -145,7 +145,7 @@
         row.addEventListener('touchstart',function(event){
           if(!event.changedTouches||!event.changedTouches.length)return;
           touchStartX=event.changedTouches[0].clientX;touchStartY=event.changedTouches[0].clientY;swipeHandled=false;
-          row.classList.remove('is-swiping-left','is-swiping-right','is-swiping');choose.style.transform='';
+          row.classList.remove('is-swiping-left','is-swiping-right','is-swiping','is-swipe-confirmed');choose.style.transition='none';choose.style.transform='';
         },{passive:true});
         row.addEventListener('touchmove',function(event){
           if(touchStartX===null||!event.touches||!event.touches.length)return;
@@ -162,14 +162,15 @@
           var dx=event.changedTouches[0].clientX-touchStartX,dy=event.changedTouches[0].clientY-touchStartY;
           touchStartX=null;touchStartY=null;
           if(Math.abs(dx)>=58&&Math.abs(dx)>Math.abs(dy)*1.25){
-            swipeHandled=true;row.classList.add('is-swiping');row.classList.remove('is-swiping-left','is-swiping-right');
-            row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');choose.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
+            swipeHandled=true;row.classList.add('is-swiping','is-swipe-confirmed');row.classList.remove('is-swiping-left','is-swiping-right');
+            row.classList.add(dx<0?'is-swiping-left':'is-swiping-right');choose.style.transition='transform 220ms cubic-bezier(.22,.8,.25,1)';choose.style.transform='translateX('+(dx<0?'-110%':'110%')+')';
+            if(window.navigator&&typeof window.navigator.vibrate==='function'){try{window.navigator.vibrate(8);}catch(_){}}
             window.setTimeout(function(){
               var markPlayed=!config.isPlayed(episode);
               config.setPlayed(episode,markPlayed);if(config.onChange)config.onChange();render();
               if(panelStatus)panelStatus.textContent=(markPlayed?'Marked as played: ':'Marked as unplayed: ')+(episode.title||'Episode');
             },170);
-          }else{row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';choose.style.removeProperty('--podcast-swipe-distance');}
+          }else{row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transition='transform 260ms cubic-bezier(.2,.9,.25,1.15)';choose.style.transform='';choose.style.removeProperty('--podcast-swipe-distance');window.setTimeout(function(){if(choose.isConnected)choose.style.removeProperty('transition');},280);}
         },{passive:true});
         row.addEventListener('touchcancel',function(){
           touchStartX=null;touchStartY=null;row.classList.remove('is-swiping-left','is-swiping-right');choose.style.transform='';
