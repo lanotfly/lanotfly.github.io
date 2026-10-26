@@ -130,6 +130,9 @@
   function renderBookMenu(pathname, level){
     var panel=document.getElementById('library-book-panel');
     if(!panel)return;
+    var bookToggle=document.getElementById('library-book-toggle');
+    panel.hidden=false;
+    if(bookToggle){bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');}
     var book=bookForPath(pathname);
     var old=panel.querySelector('.book-chapter-tabs');
     if(old)old.remove();
@@ -181,7 +184,10 @@
       if(panel&&!panel.hidden){
         if(chapters&&!chapters.hidden) level='2';
         else if(second&&!second.hidden) level='3';
-        else level='2';
+        else { try{level=localStorage.getItem('library_book_level')||'2';}catch(_){} }
+      }else{
+        /* Reopen the last Book level after an audio panel temporarily hides it. */
+        try{level=localStorage.getItem('library_book_level')||'2';}catch(_){}
       }
       try{localStorage.setItem('library_book_level',level);}catch(_){}
       renderBookMenu(window.location.pathname,level);
