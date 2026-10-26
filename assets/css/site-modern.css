@@ -1923,3 +1923,24 @@ html,body{max-width:100%;overflow-x:clip}
   color:#50386a!important;
   border:2px solid #9581b3!important;
 }
+
+/* Guaranteed first-paint audio colors: do not depend on deferred JavaScript. */
+.site-nav-shell .site-tab-links .site-tab--radio-group,
+.site-nav-shell .site-tab-links .site-tab--niv,
+.site-nav-shell .site-tab-links .site-tab--podcast{
+  background:#f3eef9!important;
+  color:#705493!important;
+  border:1px solid #cbb9df!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group.is-active,
+.site-nav-shell .site-tab-links .site-tab--radio-group[aria-expanded="true"],
+.site-nav-shell .site-tab-links .site-tab--niv.is-active,
+.site-nav-shell .site-tab-links .site-tab--niv[aria-expanded="true"],
+.site-nav-shell .site-tab-links .site-tab--niv[aria-pressed="true"],
+.site-nav-shell .site-tab-links .site-tab--podcast.is-active,
+.site-nav-shell .site-tab-links .site-tab--podcast[aria-expanded="true"]{
+  background:#e9def5!important;
+  color:#50386a!important;
+  border:2px solid #9581b3!important;
+}
