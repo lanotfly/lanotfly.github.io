@@ -1,9 +1,9 @@
 ---
 layout: default
 title: "9. Union-Find (Disjoint Set)"
-permalink: /data-structures/union-find/
+permalink: /data/union-find/
 ---
-<link rel="stylesheet" href="/data-structures/wiki.css">
+<link rel="stylesheet" href="/data/wiki.css">
 <div class="wiki-wrap">
 <h1>9. Union-Find (Disjoint Set)</h1>
 <figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Union-Find: elements live in sets; union merges two sets into one"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><circle cx="110" cy="70" r="42" fill="none" stroke="#3b6fd4" stroke-width="1.5" stroke-dasharray="5 4"/><circle cx="330" cy="70" r="42" fill="none" stroke="#3b6fd4" stroke-width="1.5" stroke-dasharray="5 4"/><circle cx="90" cy="60" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="90" y="65" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">1</text><circle cx="135" cy="85" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="135" y="90" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">2</text><circle cx="315" cy="60" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="315" y="65" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><circle cx="355" cy="85" r="15" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5"/><text x="355" y="90" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">4</text><line x1="165" y1="70" x2="270" y2="70" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><text x="218" y="55" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">union(2, 3)</text><text x="480" y="75" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">one set after merge</text></svg><figcaption>Union-Find: elements live in sets; union merges two sets into one</figcaption></figure>
@@ -54,10 +54,10 @@ permalink: /data-structures/union-find/
 assert find_circle_num([[1, 1, 0], [1, 1, 0], [0, 0, 1]]) == 2</code></pre>
 <p>And &quot;redundant connection&quot; is one line of logic: the first edge whose <code>union()</code> returns <code>False</code> is the answer.</p>
 <h3>Pitfalls</h3>
-<ul><li>Skip path compression <em>or</em> union by rank and depth can degrade to O(n).</li><li><code>components</code> bookkeeping: decrement only on a successful merge.</li><li>Union-Find answers connectivity, <strong>not paths</strong> — for &quot;give me the route&quot;, use <a href="/data-structures/graph/">Graph BFS/DFS</a>.</li></ul>
+<ul><li>Skip path compression <em>or</em> union by rank and depth can degrade to O(n).</li><li><code>components</code> bookkeeping: decrement only on a successful merge.</li><li>Union-Find answers connectivity, <strong>not paths</strong> — for &quot;give me the route&quot;, use <a href="/data/graph/">Graph BFS/DFS</a>.</li></ul>
 <h3>Practice</h3>
 <ul><li>[ ] Redundant connection</li><li>[ ] Accounts merge (map emails → ids, then union)</li><li>[ ] Number of connected components in an undirected graph</li><li>[ ] Satisfiability of equality equations</li></ul>
-<p>Next: <a href="/data-structures/sorting-binary-search/">Sorting &amp; Binary Search →</a></p>
+<p>Next: <a href="/data/sorting-binary-search/">Sorting &amp; Binary Search →</a></p>
 <h2>Real-world uses</h2><ul><li><strong>Connectivity:</strong> track which machines, accounts, or objects are linked as relationships are added.</li><li><strong>Clustering:</strong> merge groups while processing similarity or connectivity edges.</li><li><strong>Spanning trees:</strong> Kruskal's algorithm uses Union-Find to skip edges that would form a cycle.</li><li><strong>Grid problems:</strong> merge adjacent land cells and count connected components.</li></ul><h2>How the optimizations work</h2><ul><li><strong>Path compression:</strong> during <code>find(x)</code>, point visited nodes closer to the root.</li><li><strong>Union by size/rank:</strong> attach the smaller/shallower tree under the larger/taller one.</li><li><strong>Amortized complexity:</strong> using both makes operations O(α(n)) amortized, effectively constant for practical input sizes.</li></ul><h2>When not to use it</h2><p>Classic Union-Find supports merging components but does not naturally support splitting a component after deleting an edge. It also answers connectivity, not shortest paths or the actual path between two nodes. Use BFS/DFS for static traversal and specialized dynamic-connectivity methods for deletions.</p><p><strong>Related patterns:</strong> <a href="/algorithms/#search">graph traversal</a>, <a href="/algorithms/#optimization">greedy algorithms and Kruskal</a>.</p>
-<div class="prev-next"><a href="/data-structures/trie/">← 8. Trie</a><a href="/data-structures/sorting-binary-search/">10. Sorting & Binary Search →</a></div>
+<div class="prev-next"><a href="/data/trie/">← 8. Trie</a><a href="/data/sorting-binary-search/">10. Sorting & Binary Search →</a></div>
 </div>
