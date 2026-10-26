@@ -19,7 +19,7 @@
         link.setAttribute('aria-current', 'page');
         /* Inline important styles make the active state survive page-specific CSS. */
         if (!link.classList.contains('site-tab--radio')) {
-          var activePalette = link.classList.contains('site-tab--home') ? ['#54267f','#54267f'] :
+          var activePalette = link.classList.contains('site-tab--home') ? ['#18734b','#18734b'] :
             link.classList.contains('site-tab--data') ? ['#1b407d','#1b407d'] :
             link.classList.contains('site-tab--algorithm') ? ['#824306','#824306'] :
             link.classList.contains('site-tab--ai') ? ['#115638','#115638'] :
@@ -42,7 +42,7 @@
       }
     });
     var bookGroup = document.getElementById('library-book-toggle');
-    var bookActive = pathname.indexOf('/data-structures/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
+    var bookActive = pathname === '/' || pathname === '/home/' || pathname.indexOf('/data-structures/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
     if (bookGroup) {
       bookGroup.classList.toggle('is-active', bookActive);
       if (bookActive) bookGroup.style.setProperty('border-style', 'solid', 'important');
