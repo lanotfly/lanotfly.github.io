@@ -1905,3 +1905,21 @@ html,body{max-width:100%;overflow-x:clip}
   color:#50386a!important;
   border:2px solid #9581b3!important;
 }
+
+
+/* Keep Audio-family tabs tinted even while Reading/Book is selected.
+   They become inactive purple tabs, not unstyled/blank tabs. */
+.site-nav-shell .site-tab-links .site-tab--radio-group,
+.site-nav-shell .site-tab-links .site-tab--niv,
+.site-nav-shell .site-tab-links .site-tab--podcast{
+  background:#f3eef9!important;
+  color:#705493!important;
+  border-color:#cbb9df!important;
+}
+.site-nav-shell[data-active-family="audio"][data-active-audio-tab="radio"] .site-tab-links .site-tab--radio-group,
+.site-nav-shell[data-active-family="audio"][data-active-audio-tab="kjv"] .site-tab-links .site-tab--niv,
+.site-nav-shell[data-active-family="audio"][data-active-audio-tab="podcast"] .site-tab-links .site-tab--podcast{
+  background:#e9def5!important;
+  color:#50386a!important;
+  border:2px solid #9581b3!important;
+}
