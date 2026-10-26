@@ -10,13 +10,13 @@
     if(!('mediaSession' in navigator))return;
     /* Delegate station identity, cover art and lock-screen actions to the common manager. */
     var bibleAudio=document.getElementById('niv-bible-audio');
-    var newsBbc=document.getElementById('news-bbc-audio');
-    var newsChronicle=document.getElementById('news-chronicle-audio');
-    var newsEnglish=document.getElementById('news-english-audio');
-    var newsJapanese=document.getElementById('news-japanese-audio');
+    var podcastBbc=document.getElementById('podcast-bbc-audio');
+    var podcastChronicle=document.getElementById('podcast-chronicle-audio');
+    var podcastEnglish=document.getElementById('podcast-english-audio');
+    var podcastJapanese=document.getElementById('podcast-japanese-audio');
     if((bibleAudio&&!bibleAudio.paused)||
-       (newsBbc&&!newsBbc.paused)||(newsChronicle&&!newsChronicle.paused)||
-       (newsEnglish&&!newsEnglish.paused)||(newsJapanese&&!newsJapanese.paused))return;
+       (podcastBbc&&!podcastBbc.paused)||(podcastChronicle&&!podcastChronicle.paused)||
+       (podcastEnglish&&!podcastEnglish.paused)||(podcastJapanese&&!podcastJapanese.paused))return;
     if(!nhk.paused && window.LibraryAudioIdentity){
       window.LibraryAudioIdentity.setNowPlaying('nhk',nhk,{title:'NHK Radio 1',artist:'NHK らじる★らじる',album:'NHK Radio 1 — Live',artwork:window.LibraryAudioIdentity.getArtwork('nhk')});
     }else if(!bbc.paused && window.LibraryAudioIdentity){
