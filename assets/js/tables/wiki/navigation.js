@@ -177,7 +177,8 @@
     var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
     if(chapterLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
   },true);
-  renderBookMenu(window.location.pathname,'2');
+  var initialBookLevel='2'; try{initialBookLevel=localStorage.getItem('library_book_level')||'2';}catch(_){}
+  renderBookMenu(window.location.pathname,initialBookLevel);
 
   function sameOriginPageLink(link){
     if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
