@@ -168,7 +168,7 @@
   }
   document.addEventListener('click',function(event){
     var bookButton=event.target.closest&&event.target.closest('#library-book-toggle');
-    if(bookButton){try{localStorage.setItem('library_book_level','2');}catch(_){}}
+    if(bookButton){try{localStorage.setItem('library_book_level','2');}catch(_){} renderBookMenu(window.location.pathname,'2');}
     var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
     if(bookLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
     var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
