@@ -35,7 +35,7 @@
       /* Clear transport actions from the previous source before installing this source's controls. */
       try{navigator.mediaSession.setActionHandler('previoustrack',null);navigator.mediaSession.setActionHandler('nexttrack',null);}catch(_){}
       if(audio){
-        navigator.mediaSession.setActionHandler('play',function(){if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo(id==='kjv'?'bible':id==='radio4'?'radio4':id==='nhk'?'nhk':id.indexOf('podcast')===0?'podcast':'podcast');audio.play().catch(function(){});});
+        navigator.mediaSession.setActionHandler('play',function(){if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo(id==='kjv'?'bible':id==='radio4'?'radio4':id==='nhk'?'nhk':'podcast');audio.play().catch(function(){});});
         navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
       }
       navigator.mediaSession.playbackState=audio&&!audio.paused?'playing':'paused';
