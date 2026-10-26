@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - ".github/scripts/update_news.py"
+      - "assets/js/tables/secondary/news-panel.js"
       - ".github/workflows/update-news.yml"
       - "assets/js/news-panel.js"
       - "_layouts/default.html"
