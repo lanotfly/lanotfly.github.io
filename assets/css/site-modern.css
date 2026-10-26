@@ -1455,3 +1455,36 @@ html,body{max-width:100%;overflow-x:clip}
  .site-nav-shell .site-tab-links .site-tab--algorithm,.site-nav-shell .site-tab-links .site-tab--ai,.site-nav-shell .site-tab-links .site-tab--linux,.site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 2!important;}
  .news-secondary-tabs.podcast-source-tabs .news-secondary-tab{font-size:11px;padding:8px 3px;}
 }
+
+
+/* Radio mirrors Podcast: one top-level selector with BBC and NHK sub-tabs. */
+.site-nav-shell .site-tab-links .site-tab--radio-group{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-width:0!important;height:38px!important;min-height:38px!important;padding:6px 12px!important;
+  border:1px dashed #d9cce8!important;border-radius:8px!important;background:transparent!important;
+  color:#62458a!important;font-size:13px!important;font-weight:650!important;cursor:pointer!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group:hover,
+.site-nav-shell .site-tab-links .site-tab--radio-group.is-open,
+.site-nav-shell .site-tab-links .site-tab--radio-group[aria-expanded="true"]{
+  background:#f2ecf8!important;border:2px solid #9581b3!important;color:#62458a!important;
+}
+.radio-source-panel{width:100%;min-width:0;margin:8px 0 2px;}
+.radio-source-panel[hidden]{display:none!important;}
+.radio-source-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;}
+.radio-source-tabs .radio-secondary-tab{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;min-width:0!important;min-height:40px!important;padding:9px 8px!important;
+  border:1px dashed #d9cce8!important;border-radius:9px!important;background:#fff!important;
+  color:#62458a!important;font-size:13px!important;font-weight:650!important;white-space:nowrap!important;
+}
+.radio-source-tabs .radio-secondary-tab[aria-pressed="true"],
+.radio-source-tabs .radio-secondary-tab.is-playing{
+  background:#f2ecf8!important;border:2px solid #9581b3!important;
+}
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links .site-tab--radio-group{grid-column:span 1!important;width:100%!important;padding:6px 2px!important;font-size:12px!important;}
+ .radio-source-panel{margin-top:7px;}
+ .radio-source-tabs{gap:6px;}
+ .radio-source-tabs .radio-secondary-tab{min-height:38px!important;padding:8px 4px!important;font-size:12px!important;}
+}
