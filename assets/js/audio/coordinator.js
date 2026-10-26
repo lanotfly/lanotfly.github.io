@@ -62,7 +62,7 @@
     setRadioPanelOpen(true);
   });
   document.addEventListener('click',function(event){
-    var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle,.site-tab--home');
+    var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle');
     if(target)closeRadioPanel();
   },true);
   window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,getLastRadio:function(){return lastRadio;}};
