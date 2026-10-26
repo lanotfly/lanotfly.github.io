@@ -9,8 +9,8 @@
       var href = link.getAttribute('href') || '';
       var active = false;
       if (href === '/algorithms/') active = pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0;
-      else if (href === '/data-structures/ai/') active = pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0;
-      else if (href === '/data-structures/') active = pathname === '/data-structures/' || (pathname.indexOf('/data-structures/') === 0 && pathname.indexOf('/data-structures/ai/') !== 0);
+      else if (href === '/data/ai/') active = pathname === '/data/ai/' || pathname.indexOf('/data/ai/') === 0;
+      else if (href === '/data/') active = pathname === '/data/' || (pathname.indexOf('/data/') === 0 && pathname.indexOf('/data/ai/') !== 0);
       else if (href === '/cloud/') active = pathname === '/cloud/' || pathname.indexOf('/cloud/') === 0;
       else if (href === '/linux/') active = pathname === '/linux/' || pathname.indexOf('/linux/') === 0;
       else if (href === '/home/') active = pathname === '/home/' || pathname === '/';
@@ -42,7 +42,7 @@
       }
     });
     var bookGroup = document.getElementById('library-book-toggle');
-    var bookActive = pathname.indexOf('/data-structures/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
+    var bookActive = pathname.indexOf('/data/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
     var navShell = document.querySelector('.site-nav-shell');
     var isHomePath = pathname === '/' || pathname === '/home/';
     if (navShell) {
@@ -68,9 +68,9 @@
   };
   function sectionForPath(pathname){
     if (pathname === '/algorithms/' || pathname.indexOf('/algorithms/') === 0) return 'algorithm';
-    if (pathname === '/data-structures/ai/' || pathname.indexOf('/data-structures/ai/') === 0) return 'ai';
+    if (pathname === '/data/ai/' || pathname.indexOf('/data/ai/') === 0) return 'ai';
     if (pathname === '/cloud/' || pathname.indexOf('/cloud/') === 0) return 'kubernetes';
-    if (pathname === '/data-structures/' || pathname.indexOf('/data-structures/') === 0) return 'data';
+    if (pathname === '/data/' || pathname.indexOf('/data/') === 0) return 'data';
     return null;
   }
   function rememberPage(pathname){
@@ -101,8 +101,8 @@
   rememberPage(window.location.pathname);
 
   var bookSections = [
-    {key:'ai', label:'AI', root:'/data-structures/ai/', color:'#18734b'},
-    {key:'data', label:'Data', root:'/data-structures/', color:'#18734b'},
+    {key:'ai', label:'AI', root:'/data/ai/', color:'#18734b'},
+    {key:'data', label:'Data', root:'/data/', color:'#18734b'},
     {key:'algorithm', label:'Algorithm', root:'/algorithms/', color:'#18734b'},
     {key:'linux', label:'Linux', root:'/linux/', color:'#18734b'},
     {key:'cloud', label:'Cloud', root:'/cloud/', color:'#18734b'}
@@ -122,8 +122,8 @@
       var url;
       try{url=new URL(a.href,window.location.href);}catch(_){return;}
       if(url.origin!==window.location.origin || url.pathname===book.root || url.pathname.indexOf(book.root)!==0)return;
-      if(book.key==='data' && url.pathname.indexOf('/data-structures/ai/')===0)return;
-      if(book.key==='ai' && url.pathname.indexOf('/data-structures/ai/')!==0)return;
+      if(book.key==='data' && url.pathname.indexOf('/data/ai/')===0)return;
+      if(book.key==='ai' && url.pathname.indexOf('/data/ai/')!==0)return;
       var label=(a.textContent||a.getAttribute('aria-label')||'').replace(/\s+/g,' ').trim();
       if(!label || label.length>70 || seen[url.pathname])return;
       seen[url.pathname]=true;found.push({label:label,path:url.pathname+url.search+url.hash});
@@ -278,7 +278,7 @@
     document.querySelectorAll('link[data-library-page-style="true"]').forEach(function(link){ link.remove(); });
     doc.querySelectorAll('link[rel="stylesheet"]').forEach(function(link){
       var href = link.href;
-      if (href && href.indexOf(window.location.origin + '/data-structures/wiki.css') === 0) {
+      if (href && href.indexOf(window.location.origin + '/data/wiki.css') === 0) {
         var copy = link.cloneNode(true);
         copy.setAttribute('data-library-page-style', 'true');
         document.head.appendChild(copy);
