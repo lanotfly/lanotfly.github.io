@@ -35,6 +35,8 @@
   var panelStatus=document.getElementById('podcast-panel-status');
   var episodeList=document.getElementById('podcast-episode-list');
   var closePanel=document.getElementById('podcast-panel-close');
+  var bulkMenuToggle=document.getElementById('podcast-bulk-menu-toggle');
+  var bulkMenuOptions=document.getElementById('podcast-bulk-menu-options');
   var progressWrap=document.getElementById('podcast-progress-wrap');
   var progressSlider=document.getElementById('podcast-progress');
   var currentTimeLabel=document.getElementById('podcast-current-time');
@@ -112,6 +114,38 @@
   var listModeSelect=document.getElementById('podcast-list-mode');
   function isEpisodePlayed(episode){return window.LibraryPodcastStorage.isPlayed(activeId,episode);}
   function setEpisodePlayed(episode,played){window.LibraryPodcastStorage.setPlayed(activeId,episode,played);}
+  function setBulkMenuOpen(open){
+    if(!bulkMenuToggle||!bulkMenuOptions)return;
+    bulkMenuOptions.hidden=!open;
+    bulkMenuToggle.setAttribute('aria-expanded',String(!!open));
+  }
+  if(bulkMenuToggle&&bulkMenuOptions){
+    bulkMenuToggle.addEventListener('click',function(event){
+      event.stopPropagation();
+      setBulkMenuOpen(bulkMenuOptions.hidden);
+    });
+    bulkMenuOptions.addEventListener('click',function(event){event.stopPropagation();});
+    document.addEventListener('click',function(){setBulkMenuOpen(false);});
+    document.addEventListener('keydown',function(event){
+      if(event.key==='Escape'&&!bulkMenuOptions.hidden){
+        setBulkMenuOpen(false);
+        bulkMenuToggle.focus();
+      }
+    });
+    bulkMenuOptions.querySelectorAll('[data-podcast-bulk-played]').forEach(function(action){
+      action.addEventListener('click',function(){
+        var played=action.getAttribute('data-podcast-bulk-played')==='true';
+        setBulkMenuOpen(false);
+        if(!activeId||!episodeQueue.length){
+          if(panelStatus)panelStatus.textContent='Load a podcast first.';
+          return;
+        }
+        episodeQueue.forEach(function(episode){setEpisodePlayed(episode,played);});
+        renderEpisodeList();
+        if(panelStatus)panelStatus.textContent=played?'Marked all '+episodeQueue.length+' episodes as played.':'Marked all '+episodeQueue.length+' episodes as unplayed.';
+      });
+    });
+  }
   var episodeListModule=window.LibraryPodcastList.create({
     getQueue:function(){return episodeQueue;},
     getIndex:function(){return episodeIndex;},
