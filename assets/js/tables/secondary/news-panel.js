@@ -333,6 +333,10 @@
   });
 
   mainToggle.addEventListener('click', function () {
+    var langPanel = document.getElementById('library-lang-panel');
+    var langToggle = document.getElementById('library-lang-toggle');
+    if (langPanel) langPanel.hidden = true;
+    if (langToggle) langToggle.setAttribute('aria-expanded', 'false');
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
   });
   /* Each News feed keeps the shared podcast-list collapse control, expanded by default. */
