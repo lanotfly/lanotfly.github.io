@@ -1,20 +1,22 @@
 <div class="site-nav-shell">
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
+      <a class="site-tab site-tab--home" href="/home/">Home</a>
       <button class="site-tab site-tab--radio-group" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
       <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><img data-audio-identity-icon src="/assets/images/kjv-audio.svg?v=20261025-2" alt="" aria-hidden="true" width="22" height="22"><span class="niv-button-label">KJV</span></button>
-      <button class="site-tab site-tab--news" id="library-news-toggle" type="button" aria-expanded="false" aria-controls="library-news-panel" title="Choose from four podcasts">
-        <span class="library-news-button-label">Podcast</span>
-      </button>
-      <div class="site-nav-row-divider" role="separator" aria-label="Audio controls and library navigation"></div>
-      <a class="site-tab site-tab--home" href="/home/">Home</a>
-      <a class="site-tab site-tab--data" href="/data-structures/" aria-label="Data Structure" title="Data Structure">Data</a>
-      <a class="site-tab site-tab--algorithm" href="/algorithms/">Algorithm</a>
-      <a class="site-tab site-tab--ai" href="/data-structures/ai/" aria-label="AI Structure" title="AI Structure">AI</a>
-      <a class="site-tab site-tab--linux" href="/linux/">Linux</a>
-      <a class="site-tab site-tab--cloud" href="/cloud/">Cloud</a>
+      <button class="site-tab site-tab--news" id="library-news-toggle" type="button" aria-expanded="false" aria-controls="library-news-panel" title="Choose from four podcasts"><span class="library-news-button-label">Podcast</span></button>
+      <button class="site-tab site-tab--book-group" id="library-book-toggle" type="button" aria-expanded="false" aria-controls="library-book-panel" title="Browse the knowledge library">Book</button>
     </div>
   </nav>
+  <section id="library-book-panel" class="book-source-panel" aria-label="Book sections" hidden>
+    <nav class="news-secondary-tabs book-source-tabs" aria-label="Knowledge library sections">
+      <a class="news-secondary-tab book-secondary-link site-tab--data" href="/data-structures/">Data</a>
+      <a class="news-secondary-tab book-secondary-link site-tab--algorithm" href="/algorithms/">Algorithm</a>
+      <a class="news-secondary-tab book-secondary-link site-tab--ai" href="/data-structures/ai/">AI</a>
+      <a class="news-secondary-tab book-secondary-link site-tab--linux" href="/linux/">Linux</a>
+      <a class="news-secondary-tab book-secondary-link site-tab--cloud" href="/cloud/">Cloud</a>
+    </nav>
+  </section>
   <section id="library-radio-panel" class="radio-source-panel" aria-label="Radio stations" hidden>
     <div class="news-secondary-tabs radio-source-tabs" role="tablist" aria-label="Radio stations">
       <button class="news-secondary-tab radio-secondary-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio" title="BBC Radio"><span class="radio4-label" id="radio4-label">BBC Radio</span></button>
