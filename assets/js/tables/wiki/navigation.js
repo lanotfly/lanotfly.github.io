@@ -135,11 +135,6 @@
     if(old)old.remove();
     var second=panel.querySelector('.book-source-tabs');
     if(!second)return;
-    /* The old Wiki submenu duplicates the new Book chapter row. Hide it only
-       while the third-level Book menu is active. */
-    document.querySelectorAll('.site-nav-shell .site-tab-links .wiki-secondary-tabs').forEach(function(oldWikiMenu){
-      oldWikiMenu.hidden=(level==='3' && !!book);
-    });
     if(level!=='3' || !book){second.hidden=false;return;}
     var chapters=collectChapters(book);
     if(!chapters.length){
