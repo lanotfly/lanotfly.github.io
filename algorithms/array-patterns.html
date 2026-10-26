@@ -3,7 +3,7 @@ layout: default
 title: "1. Array Patterns — Two Pointers, Sliding Window &amp; Prefix Sum"
 permalink: /algorithms/array-patterns/
 ---
-<link rel="stylesheet" href="/data-structures/wiki.css">
+<link rel="stylesheet" href="/data/wiki.css">
 <div class="wiki-wrap">
 <h1>1. Array Patterns — Two Pointers, Sliding Window &amp; Prefix Sum</h1>
 
@@ -41,5 +41,5 @@ permalink: /algorithms/array-patterns/
 <p>For “subarray sum equals k”, store how often each prefix sum has appeared. At current sum s, each earlier prefix equal to <code>s-k</code> identifies a valid subarray.</p>
 <h2>4. How to choose</h2><table><thead><tr><th>Clue</th><th>Likely pattern</th><th>Watch out</th></tr></thead><tbody><tr><td>Sorted values, pair from ends</td><td>Two pointers</td><td>Sorting may change original indices</td></tr><tr><td>Longest/shortest contiguous range</td><td>Sliding window</td><td>Some negative-number problems cannot use a simple shrinking rule</td></tr><tr><td>Many range-sum queries</td><td>Prefix sum</td><td>Use a clear inclusive/half-open convention</td></tr><tr><td>Need quick membership or complement</td><td>Hash map / set</td><td>Expected O(1), not a universal worst-case guarantee</td></tr></tbody></table>
 <h2>Practice</h2><ul><li>Two Sum II — sorted input</li><li>Longest Substring Without Repeating Characters</li><li>Minimum Size Subarray Sum</li><li>Subarray Sum Equals K</li><li>Product of Array Except Self</li></ul>
-<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data-structures/">Explore Data Structure →</a></div>
+<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data/">Explore Data Structure →</a></div>
 </div>
