@@ -28,15 +28,17 @@ nav:
     - {title: AI Structure, description: foundations of modern AI, url: '/data-structures/ai/'}
 
 # Pagination
-gems: [jekyll-paginate]
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-remote-theme
 paginate: 10
 paginate_path: "page/:num/"
 
 # Comment
 comment:
     disqus: lanotfly
-    # duoshuo: 
-    
+
 # Social
 social:
     weibo: lanotfly
@@ -52,4 +54,4 @@ ga:
 
 markdown: kramdown
 
-theme: jekyll-theme-cayman
+remote_theme: pages-themes/cayman@v0.2.0
