@@ -114,6 +114,32 @@
     else readyPromise.then(function(){applySavedProgress(audio,key);});
   }
 
+  function parseHistoryValue(value){
+    if(Array.isArray(value))return value;
+    if(typeof value==='string'){try{var parsed=JSON.parse(value);return Array.isArray(parsed)?parsed:[];}catch(_){}}
+    return [];
+  }
+  function mergeHistoryValues(){
+    var merged=[],seen=Object.create(null);
+    Array.prototype.slice.call(arguments).forEach(function(value){
+      parseHistoryValue(value).forEach(function(item){
+        if(!item||typeof item.title!=='string'||(!item.url&&!item.pageUrl))return;
+        var key=historyIdentity(item);
+        if(seen[key]){
+          var existing=merged[seen[key]-1];
+          if(existing&&(existing.duration===undefined||existing.duration===null||existing.duration==='')&&item.duration!==undefined&&item.duration!==null&&item.duration!=='')existing.duration=item.duration;
+          if(existing&&!existing.published&&(item.published||item.pubDate||item.date||item.isoDate))existing.published=item.published||item.pubDate||item.date||item.isoDate;
+          if(existing&&!existing.url&&item.url)existing.url=item.url;
+          if(existing&&!existing.pageUrl&&item.pageUrl)existing.pageUrl=item.pageUrl;
+          return;
+        }
+        seen[key]=merged.length+1;
+        merged.push({title:item.title,url:item.url||null,pageUrl:item.pageUrl||null,duration:item.duration===undefined||item.duration===null?'':item.duration,published:item.published||item.pubDate||item.date||item.isoDate||''});
+      });
+    });
+    return merged;
+  }
+
   function openDatabase(){
     if(!('indexedDB' in window)){finishReady();return;}
     var request;
@@ -136,8 +162,17 @@
     catch(_){finishReady();return;}
     request.onerror=function(){finishReady();};
     request.onsuccess=function(){
-      var storedKeys=Object.create(null);
-      (request.result||[]).forEach(function(item){if(item&&typeof item.key==='string'){cache[item.key]=item.value;storedKeys[item.key]=true;}});
+      var storedKeys=Object.create(null),storedValues=Object.create(null);
+      (request.result||[]).forEach(function(item){
+        if(!item||typeof item.key!=='string')return;
+        storedKeys[item.key]=true;
+        storedValues[item.key]=item.value;
+        /* Do not overwrite changes made while IndexedDB was opening. */
+        if(cache[item.key]===undefined)cache[item.key]=item.value;
+        else if(item.key.indexOf('personal-library-episode-history:')===0){
+          cache[item.key]=mergeHistoryValues(cache[item.key],item.value);
+        }
+      });
       var migrations=[],legacyKeys=[];
       try{
         for(var i=0;i<localStorage.length;i++){
@@ -145,14 +180,26 @@
           if(!key||!(/^(personal-library-played:|personal-library-episode-history:|personal-library-progress:)/).test(key))continue;
           legacyKeys.push(key);
           var raw=localStorage.getItem(key),value=raw;
-          if(key.indexOf('personal-library-episode-history:')===0){try{value=raw?JSON.parse(raw):[];}catch(_){value=[];}}
-          if(!storedKeys[key]){
+          if(key.indexOf('personal-library-episode-history:')===0){
+            value=mergeHistoryValues(cache[key],storedValues[key],raw);
+            cache[key]=value;
+            if(!storedKeys[key]||JSON.stringify(value)!==JSON.stringify(storedValues[key])){
+              migrations.push({key:key,value:value});
+            }
+          }else if(!storedKeys[key]){
             if(cache[key]===undefined)cache[key]=value;
             migrations.push({key:key,value:cache[key]});
           }
         }
-      }catch(_){}
-      if(!migrations.length){legacyKeys.forEach(safeLocalRemove);finishReady();return;}
+      }catch(_){
+        /* Keep every legacy key if migration cannot be inspected safely. */
+        finishReady();return;
+      }
+      if(!migrations.length){
+        /* Only remove legacy copies after confirming that matching IndexedDB records exist. */
+        legacyKeys.forEach(function(key){if(storedKeys[key])safeLocalRemove(key);});
+        finishReady();return;
+      }
       try{
         var tx=db.transaction(STORE_NAME,'readwrite'),store=tx.objectStore(STORE_NAME);
         migrations.forEach(function(item){store.put(item);});
