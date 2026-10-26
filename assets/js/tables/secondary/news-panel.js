@@ -168,8 +168,6 @@
       if (loaded && pendingAutoplay) { pendingAutoplay = false; playDefaultEpisode(activeFeed); }
     } else {
       stopAllNews(true);
-      var podcastEpisodePanel = document.getElementById('podcast-episode-panel');
-      if (podcastEpisodePanel) podcastEpisodePanel.hidden = true;
       mainToggle.classList.remove('is-active');
       if (typeof window.LibraryUpdatePrimaryActive === 'function') {
         window.LibraryUpdatePrimaryActive(window.location.pathname);
@@ -344,7 +342,7 @@
   mainToggle.addEventListener('click', function () {
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
   });
-  /* Each News feed keeps the shared podcast-list collapse control, expanded by default. */
+  /* Every podcast feed uses the same list-collapse control, expanded by default. */
   root.querySelectorAll('[data-news-collapse]').forEach(function (button) {
     button.addEventListener('click', function () {
       var frame = document.getElementById(button.getAttribute('aria-controls'));
@@ -371,7 +369,7 @@
       else pendingAutoplay = true;
     });
   });
-  /* Each News feed uses the same shared PodcastList renderer, including swipe-to-mark-played. */
+  /* All four podcasts use the same PodcastList renderer, including swipe-to-mark-played. */
   createListModules();
   /* If any non-News player starts, stop News and remove its selected row. */
   document.addEventListener('play', function (event) {
