@@ -56,7 +56,7 @@
     }
   }
   updatePrimaryActive(window.location.pathname);
-  /* Let the News overlay temporarily clear the underlying wiki selection. */
+  /* Let the Podcast overlay temporarily clear the underlying wiki selection. */
   window.LibraryUpdatePrimaryActive = updatePrimaryActive;
 
   /* Remember the last page visited in each learning area for tab-to-tab switching. */
@@ -242,8 +242,8 @@
     var nextNav = nextInner.querySelector('.site-nav-shell');
     var currentPodcastPanel = currentInner.querySelector('#podcast-episode-panel');
     var nextPodcastPanel = nextInner.querySelector('#podcast-episode-panel');
-    var currentNewsPanel = currentInner.querySelector('#library-news-panel');
-    var nextNewsPanel = nextInner.querySelector('#library-news-panel');
+    var currentNewsPanel = currentInner.querySelector('#library-podcast-panel');
+    var nextNewsPanel = nextInner.querySelector('#library-podcast-panel');
     var rules = Array.from(currentInner.children).filter(function(el){ return el.tagName === 'HR'; });
     var nextRules = Array.from(nextInner.children).filter(function(el){ return el.tagName === 'HR'; });
     if (!currentNav || !nextNav || rules.length < 2 || nextRules.length < 2) {
