@@ -1,12 +1,12 @@
 (function(window,document){
   'use strict';
   if(window.LibraryAudioCoordinator)return;
-  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio',newsBbc:'news-bbc-audio',newsChronicle:'news-chronicle-audio'};
+  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',podcast:'podcast-audio',bible:'niv-bible-audio',newsBbc:'news-bbc-audio',newsChronicle:'news-chronicle-audio',newsEnglish:'news-english-audio',newsJapanese:'news-japanese-audio'};
   function getAudio(name){return document.getElementById(audioIds[name]);}
   var buttonsBySource={
     radio4:['radio4-toggle'],
     nhk:['nhk-radio-toggle'],
-    podcast:['bite-size-toggle','lukes-english-toggle'],
+    podcast:[],
     bible:['niv-bible-toggle']
   };
   function clearButtonState(button){
