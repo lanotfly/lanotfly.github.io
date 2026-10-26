@@ -1845,3 +1845,63 @@ html,body{max-width:100%;overflow-x:clip}
   overflow-y:hidden!important;
   flex-wrap:nowrap!important;
 }
+
+/* Active tabs use a soft family-tinted fill; inactive tabs keep a paler tint.
+   Audio family = purple, Reading/Book family = green. Keep solid vs dashed
+   borders as the primary state cue, while making active states easier to see. */
+.site-nav-shell[data-active-family="audio"] .site-tab-links .site-tab--radio-group,
+.site-nav-shell[data-active-family="audio"] .site-tab-links .site-tab--niv,
+.site-nav-shell[data-active-family="audio"] .site-tab-links .site-tab--podcast{
+  background:#f3eef9!important;
+  color:#62458a!important;
+  border-color:#cbb9df!important;
+}
+.site-nav-shell[data-active-family="audio"][data-active-audio-tab="radio"] .site-tab-links .site-tab--radio-group,
+.site-nav-shell[data-active-family="audio"][data-active-audio-tab="kjv"] .site-tab-links .site-tab--niv,
+.site-nav-shell[data-active-family="audio"][data-active-audio-tab="podcast"] .site-tab-links .site-tab--podcast{
+  background:#e9def5!important;
+  color:#50386a!important;
+  border:2px solid #9581b3!important;
+}
+.site-nav-shell[data-active-family="reading"] .site-tab-links .site-tab--home,
+.site-nav-shell[data-active-family="reading"] .site-tab-links .site-tab--book-group{
+  background:#f0f8f1!important;
+  color:#18734b!important;
+  border-color:#a8d9b8!important;
+}
+.site-nav-shell[data-active-family="reading"][data-active-reading-tab="home"] .site-tab-links .site-tab--home,
+.site-nav-shell[data-active-family="reading"][data-active-reading-tab="book"] .site-tab-links .site-tab--book-group{
+  background:#e5f8ed!important;
+  color:#245537!important;
+  border:2px solid #18734b!important;
+}
+/* Reading sub-tabs (Book level 2 and level 3): pale green when inactive,
+   a slightly stronger pale green plus solid border when active. */
+.book-source-panel .book-source-tabs .book-secondary-link,
+.book-source-panel .book-chapter-tabs .book-chapter-link{
+  background:#f0f8f1!important;
+  color:#287348!important;
+  border-color:#b7dfc2!important;
+  border-style:dashed!important;
+}
+.book-source-panel .book-source-tabs .book-secondary-link.is-active,
+.book-source-panel .book-source-tabs .book-secondary-link[aria-current="page"],
+.book-source-panel .book-chapter-tabs .book-chapter-link.is-active{
+  background:#e5f8ed!important;
+  color:#245537!important;
+  border:2px solid #18734b!important;
+}
+/* Audio secondary tabs: pale purple when inactive, stronger pale purple when active. */
+.radio-source-tabs .radio-secondary-tab{
+  background:#f3eef9!important;
+  color:#705493!important;
+  border-color:#cbb9df!important;
+  border-style:dashed!important;
+}
+.radio-source-tabs .radio-secondary-tab[aria-pressed="true"],
+.radio-source-tabs .radio-secondary-tab.is-playing,
+.radio-source-tabs .radio-secondary-tab.is-selected{
+  background:#e9def5!important;
+  color:#50386a!important;
+  border:2px solid #9581b3!important;
+}
