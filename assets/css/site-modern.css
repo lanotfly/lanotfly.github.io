@@ -637,7 +637,8 @@
 /* Dashed guide shows the valid page area while a pull-to-refresh gesture is active. */
 body.library-pull-refresh-zone-active .content-wrapper__inner{
   outline:1.5px dashed rgba(105,82,137,.58)!important;
-  outline-offset:-6px;
+  /* Place the guide outside the content edge so it frames the full content area. */
+  outline-offset:6px;
   border-radius:14px;
 }
 body.library-pull-refresh-zone-active .library-pull-refresh{
