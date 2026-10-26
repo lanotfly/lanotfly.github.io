@@ -6,7 +6,6 @@ on:
       - ".github/scripts/update_podcast.py"
       - "assets/js/podcast/panel.js"
       - ".github/workflows/update-podcast.yml"
-      - "assets/js/podcast/panel.js"
       - "_layouts/default.html"
   schedule:
     - cron: "17,47 * * * *"
@@ -16,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: refresh-podcast-news
+  group: refresh-podcast
   cancel-in-progress: false
 
 jobs:
@@ -25,7 +24,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Refresh all available episodes from each RSS feed
+      - name: Refresh all available podcast episodes from RSS feeds
         run: python3 .github/scripts/update_podcast.py
       - name: Commit updated static cache
         run: |
