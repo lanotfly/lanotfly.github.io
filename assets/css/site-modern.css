@@ -1693,3 +1693,51 @@ html,body{max-width:100%;overflow-x:clip}
   border-style:dashed!important;
   border-width:1px!important;
 }
+
+
+/* 2026-10-26: Podcast and KJV top-level navigation are text-only on web.
+   Override legacy icon-only rules left in earlier stylesheet sections. */
+.site-nav-shell .site-tab-links .site-tab--niv{
+  flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:none!important;
+  height:38px!important;min-height:38px!important;max-height:38px!important;
+  padding:8px 13px!important;gap:0!important;justify-content:center!important;
+}
+.site-nav-shell .site-tab-links .site-tab--niv>span.niv-button-label{
+  display:inline!important;visibility:visible!important;opacity:1!important;
+  width:auto!important;min-width:0!important;height:auto!important;
+  padding:0!important;margin:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;color:inherit!important;
+  font-size:12px!important;font-weight:650!important;white-space:nowrap!important;
+}
+.site-nav-shell .site-tab-links .site-tab--niv>img[data-audio-identity-icon],
+.site-nav-shell .site-tab-links .site-tab--podcast>img[data-audio-identity-icon]{
+  display:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--podcast{
+  flex:0 0 auto!important;gap:0!important;padding:8px 13px!important;
+}
+.site-nav-shell .site-tab-links .site-tab--podcast>span.library-podcast-button-label{
+  display:inline!important;visibility:visible!important;opacity:1!important;
+  flex:0 1 auto!important;width:auto!important;min-width:0!important;height:auto!important;
+  padding:0!important;margin:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;color:inherit!important;
+  font-size:12px!important;font-weight:650!important;letter-spacing:0!important;
+  white-space:nowrap!important;
+}
+@media(max-width:700px){
+  .site-nav-shell .site-tab-links .site-tab--niv{
+    width:100%!important;min-width:0!important;max-width:100%!important;
+    height:37px!important;min-height:37px!important;max-height:37px!important;
+    padding:5px 3px!important;
+  }
+  .site-nav-shell .site-tab-links .site-tab--niv>span.niv-button-label{
+    display:inline!important;font-size:11px!important;letter-spacing:0!important;
+  }
+  .site-nav-shell .site-tab-links .site-tab--podcast{
+    width:100%!important;min-width:0!important;max-width:100%!important;
+    height:37px!important;min-height:37px!important;padding:5px 3px!important;
+  }
+  .site-nav-shell .site-tab-links .site-tab--podcast>span.library-podcast-button-label{
+    display:inline!important;font-size:11px!important;letter-spacing:0!important;
+  }
+}
