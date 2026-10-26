@@ -1995,3 +1995,15 @@ html,body{max-width:100%;overflow-x:clip}
   border-bottom:0!important;
   box-shadow:none!important;
 }
+
+
+/* Definitive Podcast fix: the horizon is a page-level post-list divider,
+   not a border on the episode list. Hide every following divider while the
+   Podcast panel is open, including the divider after the page content. */
+.content-wrapper__inner:has(> #library-podcast-panel:not([hidden])) > .post-list__divider{
+  display:none!important;
+  border:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
