@@ -162,6 +162,10 @@
         link.removeAttribute('aria-current');
       });
       setActiveTab(activeTab || 'bbc');
+      var podcastEpisodePanel = document.getElementById('podcast-episode-panel');
+      if (podcastEpisodePanel && (activeTab === 'english' || activeTab === 'japanese')) {
+        podcastEpisodePanel.hidden = false;
+      }
       pendingAutoplay = activeTab === 'bbc' || activeTab === 'chronicle';
       if (loaded && pendingAutoplay) { pendingAutoplay = false; playDefaultEpisode(activeFeed); }
     } else {
