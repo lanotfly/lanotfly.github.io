@@ -1730,3 +1730,59 @@ html,body{max-width:100%;overflow-x:clip}
   border-width:1px!important;
   box-shadow:none!important;
 }
+
+
+/* Radio's station choices follow the Podcast palette: selected is deeper purple,
+   unselected is pale purple. */
+.radio-source-tabs .radio-secondary-tab{
+  color:#705493!important;
+  border-color:#cbb9df!important;
+  border-style:dashed!important;
+  background:#f3eef9!important;
+  box-shadow:none!important;
+}
+.radio-source-tabs .radio-secondary-tab:hover{
+  color:#62458a!important;
+  border-color:#b8a3d1!important;
+  background:#e9def5!important;
+}
+.radio-source-tabs .radio-secondary-tab[aria-pressed="true"],
+.radio-source-tabs .radio-secondary-tab.is-playing,
+.radio-source-tabs .radio-secondary-tab.is-selected{
+  color:#50386a!important;
+  border-color:#9581b3!important;
+  border-style:solid!important;
+  border-width:2px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Exactly one top-level tab is solid: Home OR Book OR one audio destination. */
+.site-nav-shell[data-active-family="reading"][data-active-reading-tab="home"] .site-tab-links .site-tab--home{
+  border:2px solid #18734b!important;
+  color:#245537!important;
+  background:transparent!important;
+}
+.site-nav-shell[data-active-family="reading"][data-active-reading-tab="home"] .site-tab-links .site-tab--book-group{
+  border:1px dashed #a8d9b8!important;
+  color:#18734b!important;
+  background:#f0f8f1!important;
+  box-shadow:none!important;
+}
+.site-nav-shell[data-active-family="reading"][data-active-reading-tab="book"] .site-tab-links .site-tab--book-group{
+  border:2px solid #18734b!important;
+  color:#245537!important;
+  background:transparent!important;
+}
+.site-nav-shell[data-active-family="reading"][data-active-reading-tab="book"] .site-tab-links .site-tab--home{
+  border:1px dashed #a8d9b8!important;
+  color:#18734b!important;
+  background:#f0f8f1!important;
+  box-shadow:none!important;
+}
+.site-nav-shell[data-active-family="reading"] .site-tab-links .site-tab--radio-group,
+.site-nav-shell[data-active-family="reading"] .site-tab-links .site-tab--niv,
+.site-nav-shell[data-active-family="reading"] .site-tab-links .site-tab--news{
+  border-style:dashed!important;
+  border-width:1px!important;
+}
