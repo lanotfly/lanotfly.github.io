@@ -1944,3 +1944,32 @@ html,body{max-width:100%;overflow-x:clip}
   color:#50386a!important;
   border:2px solid #9581b3!important;
 }
+
+
+/* Shared navigation state manager: final authority for first paint and active states. */
+.site-nav-shell .site-tab-links .site-tab--radio-group,
+.site-nav-shell .site-tab-links .site-tab--niv,
+.site-nav-shell .site-tab-links .site-tab--podcast{
+  background:#f3eef9!important;
+  color:#705493!important;
+  border:1px solid #cbb9df!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group.nav-state-active,
+.site-nav-shell .site-tab-links .site-tab--niv.nav-state-active,
+.site-nav-shell .site-tab-links .site-tab--podcast.nav-state-active{
+  background:#e9def5!important;
+  color:#50386a!important;
+  border:2px solid #9581b3!important;
+}
+/* Remove the legacy horizontal separator between primary and secondary tabs. */
+.site-nav-shell .site-tab-links .site-nav-row-divider,
+.site-nav-shell .site-tab-links .site-nav-row-divider--wiki-bottom,
+.site-nav-shell .site-nav-row-divider,
+.site-nav-shell .site-nav-row-divider--wiki-bottom{
+  display:none!important;
+  border:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
