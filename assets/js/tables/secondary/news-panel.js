@@ -441,6 +441,9 @@
          feed's visible list order. For the Unplayed filter, skip items already
          marked played; for Played/All, use the same queue order. */
       setPlayed(feed, episode, true);
+      /* Force the Unplayed filter totals and rows to refresh before auto-advance. */
+      syncFilterOptions(feed);
+      if (listModules[feed.id]) listModules[feed.id].render();
       var mode = filters[feed.id] || 'unplayed';
       var nextIndex = -1;
       for (var i = finishedIndex + 1; i < queue.length; i += 1) {
