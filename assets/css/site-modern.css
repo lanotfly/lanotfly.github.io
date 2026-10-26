@@ -1821,3 +1821,27 @@ html,body{max-width:100%;overflow-x:clip}
 .book-source-panel .book-chapter-tabs .book-chapter-link{
   flex:0 0 auto!important;
 }
+
+/* Normalize the visible Book L2/L3 row frames, not just their child buttons.
+   L2 is a grid and L3 is a horizontally scrolling flex row; remove the extra
+   vertical padding/margin from the L3 frame so both rows have the same geometry. */
+.book-source-panel .book-source-tabs:not([hidden]),
+.book-source-panel .book-chapter-tabs:not([hidden]){
+  box-sizing:border-box!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  margin:0!important;
+  align-items:center!important;
+  align-content:center!important;
+  row-gap:0!important;
+}
+.book-source-panel .book-source-tabs:not([hidden]){
+  grid-auto-rows:36px!important;
+}
+.book-source-panel .book-chapter-tabs:not([hidden]){
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  flex-wrap:nowrap!important;
+}
