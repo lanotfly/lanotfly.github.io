@@ -137,8 +137,8 @@
   }
   function setActiveTab(tabId) {
     activeTab = tabId;
-    Array.prototype.forEach.call(root.querySelectorAll('[data-news-tab], [data-podcast-tab]'), function (button) {
-      var selected = (button.getAttribute('data-news-tab') || button.getAttribute('data-podcast-tab')) === tabId;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-news-tab]'), function (button) {
+      var selected = button.getAttribute('data-news-tab') === tabId;
       button.classList.toggle('is-active', selected);
       button.setAttribute('aria-selected', String(selected));
       button.tabIndex = selected ? 0 : -1;
