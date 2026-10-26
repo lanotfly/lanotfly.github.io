@@ -79,6 +79,11 @@
     var bibleButton=document.getElementById('niv-bible-toggle');
     if(biblePanel)biblePanel.hidden=true;
     if(bibleButton)bibleButton.setAttribute('aria-expanded','false');
+    /* A synthetic click used to close another panel also reaches the global
+       click handler; re-assert Radio as the selected panel after that closes. */
+    radioToggle.setAttribute('aria-expanded','true');
+    radioToggle.classList.add('is-open','is-active');
+    radioPanel.hidden=false;
   }
   if(radioToggle&&radioPanel){
     radioToggle.addEventListener('click',function(){
