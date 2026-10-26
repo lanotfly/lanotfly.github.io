@@ -13,6 +13,16 @@
     toggle.setAttribute('aria-expanded', String(!!open));
   }
 
+  panel.querySelectorAll('[role="tab"]').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      panel.querySelectorAll('[role="tab"]').forEach(function (other) {
+        var selected = other === tab;
+        other.classList.toggle('is-active', selected);
+        other.setAttribute('aria-selected', String(selected));
+      });
+    });
+  });
+
   toggle.addEventListener('click', function () {
     var newsToggle = document.getElementById('library-news-toggle');
     var newsPanel = document.getElementById('library-news-panel');
