@@ -227,9 +227,13 @@
     /* The heading beside the artwork is the current episode title, like the shared Podcast panel. */
     var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
     var selectedEpisode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
-    if (heading) heading.textContent = selectedEpisode && selectedEpisode.title
-      ? selectedEpisode.title
-      : (heading.getAttribute('data-news-show-title') || feed.title);
+    if (heading) {
+      var titleText = selectedEpisode && selectedEpisode.title
+        ? selectedEpisode.title
+        : (heading.getAttribute('data-news-show-title') || feed.title);
+      if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.set(heading, titleText);
+      else heading.textContent = titleText;
+    }
     if (listModules[feed.id]) listModules[feed.id].render();
     else {
       var list = root.querySelector('[data-news-list="' + feed.id + '"]');
@@ -270,7 +274,7 @@
         },
         playEpisodeAt: function (index) { playEpisode(feed, index); },
         formatCount: function (matching, total, mode) {
-          return total + ' episodes · Showing ' + matching;
+          return total + ' ' + (total === 1 ? 'episode' : 'episodes');
         }
       });
     });
@@ -353,8 +357,15 @@
         });
       }
       renderAll();
+      var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
+      if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.animate(heading);
     });
-    audio.addEventListener('pause', function () { savePosition(feed, true); renderAll(); });
+    audio.addEventListener('pause', function () {
+      savePosition(feed, true);
+      var heading = root.querySelector('[data-news-title="' + feed.id + '"]');
+      if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.stop(heading);
+      renderAll();
+    });
     audio.addEventListener('timeupdate', function () { savePosition(feed, false); updateProgress(feed); });
     audio.addEventListener('seeking', function () { updateProgress(feed); });
     audio.addEventListener('ended', function () {
