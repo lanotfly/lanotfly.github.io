@@ -45,6 +45,16 @@
       selected = clickedTab;
     } else if (shell.getAttribute('data-active-family') === 'audio') {
       selected = shell.getAttribute('data-active-audio-tab');
+    } else {
+      /* Recover the active audio family from accessible state if a legacy script
+         has not restored the shared data attributes yet (notably after login). */
+      var radio = shell.querySelector('#library-radio-toggle');
+      var kjv = shell.querySelector('#niv-bible-toggle');
+      var podcast = shell.querySelector('#library-podcast-toggle');
+      if (radio && radio.getAttribute('aria-expanded') === 'true') selected = 'radio';
+      else if (kjv && (kjv.getAttribute('aria-expanded') === 'true' ||
+                       kjv.getAttribute('aria-pressed') === 'true')) selected = 'kjv';
+      else if (podcast && podcast.getAttribute('aria-expanded') === 'true') selected = 'podcast';
     }
 
     audioSelectors.forEach(function (item) {
@@ -84,9 +94,29 @@
   };
   window.LibraryNavTabState = api;
 
-  document.addEventListener('DOMContentLoaded', function () { apply('dom-ready', null); });
-  window.addEventListener('load', function () { apply('load', null); });
-  window.addEventListener('pageshow', function () { apply('pageshow', null); });
+  function scheduleSettledRefresh(reason) {
+    /* Run after deferred scripts and first-paint state restoration have settled. */
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () { apply(reason + '-settled', null); });
+    });
+    window.setTimeout(function () { apply(reason + '-delayed', null); }, 120);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    apply('dom-ready', null);
+    scheduleSettledRefresh('dom-ready');
+  });
+  window.addEventListener('load', function () {
+    apply('load', null);
+    scheduleSettledRefresh('load');
+  });
+  window.addEventListener('pageshow', function () {
+    apply('pageshow', null);
+    scheduleSettledRefresh('pageshow');
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) scheduleSettledRefresh('visible');
+  });
   document.addEventListener('click', handleClick, true);
 
   /* Catch other legacy scripts changing inline styles or adding the old divider. */
