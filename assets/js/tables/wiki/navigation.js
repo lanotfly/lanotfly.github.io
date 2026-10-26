@@ -4,7 +4,7 @@
   window.__librarySoftNavigationInstalled = true;
 
   function updatePrimaryActive(pathname){
-    var links = document.querySelectorAll('.site-tab-links .site-tab');
+    var links = document.querySelectorAll('.site-tab-links .site-tab, .book-source-tabs .book-secondary-link');
     links.forEach(function(link){
       var href = link.getAttribute('href') || '';
       var active = false;
@@ -41,6 +41,13 @@
         link.style.removeProperty('box-shadow');
       }
     });
+    var bookGroup = document.getElementById('library-book-toggle');
+    var bookActive = pathname.indexOf('/data-structures/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
+    if (bookGroup) {
+      bookGroup.classList.toggle('is-active', bookActive);
+      if (bookActive) bookGroup.style.setProperty('border-style', 'solid', 'important');
+      else bookGroup.style.removeProperty('border-style');
+    }
   }
   updatePrimaryActive(window.location.pathname);
   /* Let the News overlay temporarily clear the underlying wiki selection. */
