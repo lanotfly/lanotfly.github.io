@@ -1,9 +1,9 @@
 ---
 layout: default
 title: "3. Vector Search &amp; RAG — Retrieve Evidence Before Generation"
-permalink: /data-structures/ai/vector-search-rag/
+permalink: /data/ai/vector-search-rag/
 ---
-<link rel="stylesheet" href="/data-structures/wiki.css?v=20261025-2">
+<link rel="stylesheet" href="/data/wiki.css?v=20261025-2">
 <div class="wiki-wrap">
 <h1>3. Vector Search &amp; RAG — Retrieve Evidence Before Generation</h1>
 
@@ -21,5 +21,5 @@ def cosine_similarity(a, b):
 <h2>5. Failure modes</h2><ul><li>Chunking separates a fact from its heading or necessary context.</li><li>Embeddings retrieve semantically similar but incorrect passages.</li><li>Stale documents or wrong permissions leak into the context.</li><li>The context contains evidence but the generated answer ignores it.</li><li>Prompt injection inside retrieved content attempts to influence tool use.</li></ul>
 <h2>6. Evaluate components separately</h2><p>Measure retrieval recall and relevance separately from answer correctness and groundedness. Include “no answer in corpus” cases, access-control tests, and freshness tests. RAG can improve grounding, but it does not guarantee correctness.</p>
 
-<div class="prev-next"><a href="/data-structures/ai/">← AI Structure Home</a><a href="/algorithms/">Explore Algorithms →</a></div>
+<div class="prev-next"><a href="/data/ai/">← AI Structure Home</a><a href="/algorithms/">Explore Algorithms →</a></div>
 </div>
