@@ -59,7 +59,6 @@
   function setRadioPanelOpen(open){
     if(!radioToggle||!radioPanel)return;
     if(!open){closeRadioPanel();return;}
-    closeBookPanel();
     var news=document.getElementById('library-news-toggle');if(news&&news.getAttribute('aria-expanded')==='true')news.click();
     var biblePanel=document.getElementById('niv-bible-panel'),bibleButton=document.getElementById('niv-bible-toggle');
     if(biblePanel)biblePanel.hidden=true;if(bibleButton)bibleButton.setAttribute('aria-expanded','false');
@@ -75,7 +74,7 @@
   if(bookToggle&&bookPanel)bookToggle.addEventListener('click',function(){setBookPanelOpen(bookToggle.getAttribute('aria-expanded')!=='true');});
   document.addEventListener('click',function(event){
     var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle,.site-tab--home,.book-secondary-link');
-    if(target){closeRadioPanel();closeBookPanel();}
+    if(target){closeRadioPanel();if(target.matches('.site-tab--home'))closeBookPanel();}
   },true);
   window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,setBookPanelOpen:setBookPanelOpen,getLastRadio:function(){return lastRadio;}};
   window.__prepareRadioPlayback=function(target){switchTo(target||lastRadio||'radio4');};
