@@ -180,6 +180,7 @@
       }
     }
   }
+  window.LibraryCloseNewsPanel = function () { setNewsOpen(false); };
   function playEpisode(feed, index) {
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id);
