@@ -1433,3 +1433,8 @@ html,body{max-width:100%;overflow-x:clip}
   .podcast-bulk-menu__toggle{flex-basis:35px;width:35px;min-width:35px;height:34px}
   .podcast-bulk-menu__options{min-width:184px}
 }
+
+/* Language podcast sub-tabs are text-only; podcast artwork belongs in the episode panel. */
+.library-lang-panel .news-secondary-tab>img,
+.library-lang-panel .news-secondary-tab>svg,
+.library-lang-panel .news-secondary-tab>[data-audio-identity-icon]{display:none!important}
