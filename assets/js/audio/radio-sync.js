@@ -13,8 +13,11 @@
     var bibleAudio=document.getElementById('niv-bible-audio');
     var newsBbc=document.getElementById('news-bbc-audio');
     var newsChronicle=document.getElementById('news-chronicle-audio');
+    var newsEnglish=document.getElementById('news-english-audio');
+    var newsJapanese=document.getElementById('news-japanese-audio');
     if((podcastAudio&&!podcastAudio.paused)||(bibleAudio&&!bibleAudio.paused)||
-       (newsBbc&&!newsBbc.paused)||(newsChronicle&&!newsChronicle.paused))return;
+       (newsBbc&&!newsBbc.paused)||(newsChronicle&&!newsChronicle.paused)||
+       (newsEnglish&&!newsEnglish.paused)||(newsJapanese&&!newsJapanese.paused))return;
     if(!nhk.paused && window.LibraryAudioIdentity){
       window.LibraryAudioIdentity.setNowPlaying('nhk',nhk,{title:'NHK Radio 1',artist:'NHK らじる★らじる',album:'NHK Radio 1 — Live',artwork:window.LibraryAudioIdentity.getArtwork('nhk')});
     }else if(!bbc.paused && window.LibraryAudioIdentity){
