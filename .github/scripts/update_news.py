@@ -11,7 +11,9 @@ from datetime import datetime, timezone
 
 FEEDS = {
     "bbc": {"source": "BBC Global News Podcast", "url": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss"},
-    "chronicle": {"source": "Chronicle · News Connect", "url": "https://rss.listen.style/p/smbslbmi/rss"},
+    "chronicle": {"source": "Chronicle News Connect", "url": "https://rss.listen.style/p/smbslbmi/rss"},
+    "english": {"source": "Easy Natural English", "url": "https://anchor.fm/s/1258881c/podcast/rss"},
+    "japanese": {"source": "Bite Size Japanese", "url": "https://anchor.fm/s/463a19c0/podcast/rss"},
 }
 
 class TextOnly(HTMLParser):
