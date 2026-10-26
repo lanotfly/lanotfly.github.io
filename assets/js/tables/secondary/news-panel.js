@@ -167,6 +167,18 @@
       }
     }
   }
+  /* Keep News on the same Now Playing contract as the single-feed podcast player:
+     episode title is the media title; the show name is artist/album context. */
+  function setNewsNowPlaying(feed, episode, audio) {
+    if (!window.LibraryAudioIdentity || !episode || !audio) return;
+    window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'newsBbc' : 'newsChronicle', audio, {
+      title: String(episode.title || audio.dataset.episodeTitle || feed.title).trim(),
+      artist: feed.title,
+      album: feed.title,
+      artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '')
+    });
+  }
+
   function playEpisode(feed, index) {
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id);
@@ -183,6 +195,7 @@
         return;
       }
       stopOtherAudio();
+      setNewsNowPlaying(feed, episode, audio);
       var resume = audio.play();
       renderAll();
       if (resume && resume.catch) resume.catch(function () {
@@ -205,6 +218,7 @@
     audio.dataset.episodeArtist = feed.title;
     audio.dataset.episodeArtwork = (root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '';
     audio.load();
+    setNewsNowPlaying(feed, episode, audio);
     renderAll();
     var promise = audio.play();
     if (promise && promise.catch) promise.catch(function () {
@@ -338,14 +352,7 @@
     if (!audio) return;
     audio.addEventListener('play', function () {
       var episode = current.feed === feed.id ? (episodesByFeed[feed.id] || [])[current.index] : null;
-      if (window.LibraryAudioIdentity && episode) {
-        window.LibraryAudioIdentity.setNowPlaying(feed.id === 'bbc' ? 'newsBbc' : 'newsChronicle', audio, {
-          title: episode.title || feed.title,
-          artist: feed.title,
-          album: feed.title,
-          artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-news-artwork="' + feed.id + '"]') || {}).src || '')
-        });
-      }
+      setNewsNowPlaying(feed, episode, audio);
       renderAll();
     });
     audio.addEventListener('pause', function () { savePosition(feed, true); renderAll(); });
@@ -359,6 +366,7 @@
     });
     audio.addEventListener('loadedmetadata', function () {
       var episode = (episodesByFeed[feed.id] || [])[current.index];
+      if (current.feed === feed.id && episode) setNewsNowPlaying(feed, episode, audio);
       if (current.feed === feed.id && episode && audio.dataset.restoreSrc !== episode.audioUrl) {
         audio.dataset.restoreSrc = episode.audioUrl;
         var savedPosition = 0;
