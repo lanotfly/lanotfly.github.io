@@ -245,6 +245,8 @@
 
     var currentNav = currentInner.querySelector('.site-nav-shell');
     var nextNav = nextInner.querySelector('.site-nav-shell');
+    var currentBookPanel = currentInner.querySelector('#library-book-panel');
+    var wasBookPanelOpen = !!(currentBookPanel && !currentBookPanel.hidden);
     var currentPodcastPanel = currentInner.querySelector('#podcast-episode-panel');
     var nextPodcastPanel = nextInner.querySelector('#podcast-episode-panel');
     var currentPodcastPanel = currentInner.querySelector('#library-podcast-panel');
@@ -295,7 +297,18 @@
     updatePrimaryActive(url.pathname);
     rememberPage(url.pathname);
     var bookLevel='2'; try{bookLevel=localStorage.getItem('library_book_level')||'2';}catch(_){}
-    renderBookMenu(url.pathname,bookLevel);
+    var bookPanelAfterNav=document.getElementById('library-book-panel');
+    var bookToggleAfterNav=document.getElementById('library-book-toggle');
+    var isHomeDestination=url.pathname==='/'||url.pathname==='/home/';
+    if(wasBookPanelOpen&&!isHomeDestination){
+      renderBookMenu(url.pathname,bookLevel);
+    }else{
+      if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
+      if(bookToggleAfterNav){
+        bookToggleAfterNav.setAttribute('aria-expanded','false');
+        bookToggleAfterNav.classList.remove('is-open');
+      }
+    }
     newNodes.forEach(function(insertedNode){
       if (insertedNode.nodeType !== 1) return;
       if (insertedNode.tagName === 'SCRIPT') {
