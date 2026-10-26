@@ -13,13 +13,21 @@
 
   function setImportant(el, palette, activeState) {
     if (!el) return;
-    el.style.setProperty('background-color', palette.background, 'important');
-    el.style.setProperty('color', palette.color, 'important');
-    el.style.setProperty('border-color', palette.border, 'important');
-    el.style.setProperty('border-style', 'solid', 'important');
-    el.style.setProperty('border-width', activeState ? '2px' : '1px', 'important');
-    el.style.setProperty('box-shadow', 'none', 'important');
-    el.classList.toggle('nav-state-active', !!activeState);
+    function setIfDifferent(property, value) {
+      if (el.style.getPropertyValue(property) !== value ||
+          el.style.getPropertyPriority(property) !== 'important') {
+        el.style.setProperty(property, value, 'important');
+      }
+    }
+    setIfDifferent('background-color', palette.background);
+    setIfDifferent('color', palette.color);
+    setIfDifferent('border-color', palette.border);
+    setIfDifferent('border-style', 'solid');
+    setIfDifferent('border-width', activeState ? '2px' : '1px');
+    setIfDifferent('box-shadow', 'none');
+    if (el.classList.contains('nav-state-active') !== !!activeState) {
+      el.classList.toggle('nav-state-active', !!activeState);
+    }
   }
 
   function removeLegacyDivider() {
@@ -46,8 +54,12 @@
     });
 
     if (selected) {
-      shell.setAttribute('data-active-family', 'audio');
-      shell.setAttribute('data-active-audio-tab', selected);
+      if (shell.getAttribute('data-active-family') !== 'audio') {
+        shell.setAttribute('data-active-family', 'audio');
+      }
+      if (shell.getAttribute('data-active-audio-tab') !== selected) {
+        shell.setAttribute('data-active-audio-tab', selected);
+      }
     }
 
     removeLegacyDivider();
