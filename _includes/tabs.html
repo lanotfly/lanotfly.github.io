@@ -1,12 +1,7 @@
 <div class="site-nav-shell">
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
-      <button class="site-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio" title="BBC Radio">
-        <span class="radio4-label" id="radio4-label">BBC Radio</span>
-      </button>
-      <button class="site-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1">
-        <span class="nhk-radio-label">NHK Radio</span>
-      </button>
+      <button class="site-tab site-tab--radio-group" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
       <button class="site-tab site-tab--niv" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><img data-audio-identity-icon src="/assets/images/kjv-audio.svg?v=20261025-2" alt="" aria-hidden="true" width="22" height="22"><span class="niv-button-label">KJV</span></button>
       <button class="site-tab site-tab--news" id="library-news-toggle" type="button" aria-expanded="false" aria-controls="library-news-panel" title="Choose from four podcasts">
         <span class="library-news-button-label">Podcast</span>
@@ -20,6 +15,12 @@
       <a class="site-tab site-tab--cloud" href="/cloud/">Cloud</a>
     </div>
   </nav>
+  <section id="library-radio-panel" class="radio-source-panel" aria-label="Radio stations" hidden>
+    <div class="news-secondary-tabs radio-source-tabs" role="tablist" aria-label="Radio stations">
+      <button class="news-secondary-tab radio-secondary-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio" title="BBC Radio"><span class="radio4-label" id="radio4-label">BBC Radio</span></button>
+      <button class="news-secondary-tab radio-secondary-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1"><span class="nhk-radio-label">NHK Radio</span></button>
+    </div>
+  </section>
   <audio id="nhk-radio-audio" preload="none" playsinline hidden>
     <source src="https://simul2.drdi.st.nhk/live/3/joined/master.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
