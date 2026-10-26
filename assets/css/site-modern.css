@@ -1590,3 +1590,110 @@ html,body{max-width:100%;overflow-x:clip}
 /* Book secondary tabs: compact height override (the previous rule targeted the wrong class). */
 .book-source-tabs .book-secondary-link{min-height:30px!important;height:30px!important;padding:4px 3px!important;line-height:1.1!important;font-size:11.5px!important;box-sizing:border-box;}
 @media(max-width:700px){.book-source-tabs .book-secondary-link{min-height:28px!important;height:28px!important;padding:3px 1px!important;font-size:10px!important;line-height:1.05!important;}}
+
+
+/* Navigation families: audio is muted purple; reading (Home + Book) is pale green.
+   Only the currently selected control gets a solid border; other top-level controls stay dashed. */
+.site-nav-shell .site-tab-links .site-tab--home:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--book-group:not(.is-open):not([aria-expanded="true"]),
+.site-nav-shell .site-tab-links .site-tab--data:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--algorithm:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--ai:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--linux:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--cloud:not(.is-active){
+  border-style:dashed!important;
+}
+.site-nav-shell .site-tab-links .site-tab--home,
+.site-nav-shell .site-tab-links .site-tab--book-group{
+  color:#18734b!important;
+  border-color:#a8d9b8!important;
+  background:#f0f8f1!important;
+}
+.site-nav-shell .site-tab-links .site-tab--home:hover,
+.site-nav-shell .site-tab-links .site-tab--book-group:hover{
+  background:#e5f4e8!important;
+  border-color:#82bd95!important;
+}
+.site-nav-shell .site-tab-links .site-tab--home.is-active,
+.site-nav-shell .site-tab-links .site-tab--book-group.is-open,
+.site-nav-shell .site-tab-links .site-tab--book-group[aria-expanded="true"]{
+  color:#245537!important;
+  background:transparent!important;
+  border:2px solid #18734b!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--data:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--algorithm:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--ai:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--linux:not(.is-active),
+.site-nav-shell .site-tab-links .site-tab--cloud:not(.is-active){
+  color:#287348!important;
+  border-color:#b7dfc2!important;
+}
+.site-nav-shell .site-tab-links .site-tab--data.is-active,
+.site-nav-shell .site-tab-links .site-tab--algorithm.is-active,
+.site-nav-shell .site-tab-links .site-tab--ai.is-active,
+.site-nav-shell .site-tab-links .site-tab--linux.is-active,
+.site-nav-shell .site-tab-links .site-tab--cloud.is-active{
+  color:#245537!important;
+  border-color:#18734b!important;
+  border-style:solid!important;
+  border-width:2px!important;
+  background:transparent!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group,
+.site-nav-shell .site-tab-links .site-tab--niv,
+.site-nav-shell .site-tab-links .site-tab--news{
+  color:#62458a!important;
+  background:#f3eef9!important;
+  border:1px dashed #cbb9df!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group:hover,
+.site-nav-shell .site-tab-links .site-tab--niv:hover,
+.site-nav-shell .site-tab-links .site-tab--news:hover{
+  background:#e9def5!important;
+  border-color:#a995c4!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group.is-open,
+.site-nav-shell .site-tab-links .site-tab--radio-group[aria-expanded="true"],
+.site-nav-shell .site-tab-links .site-tab--niv[aria-pressed="true"],
+.site-nav-shell .site-tab-links .site-tab--niv[aria-expanded="true"],
+.site-nav-shell .site-tab-links .site-tab--news.is-open,
+.site-nav-shell .site-tab-links .site-tab--news[aria-expanded="true"],
+.site-nav-shell .site-tab-links .site-tab--news.is-playing,
+.site-nav-shell .site-tab-links .site-tab--news.is-selected{
+  color:#50386a!important;
+  background:transparent!important;
+  border:2px solid #9581b3!important;
+  box-shadow:none!important;
+}
+.site-nav-shell .site-tab-links .site-tab--radio-group.is-playing,
+.site-nav-shell .site-tab-links .site-tab--radio-group.is-selected{
+  border-style:solid!important;
+}
+.radio-source-tabs .radio-secondary-tab,
+.book-source-tabs .book-secondary-link,
+.book-chapter-tabs .book-chapter-link,
+.book-chapter-tabs .book-chapter-book-label{
+  color:#287348!important;
+  border-color:#b7dfc2!important;
+  background:#f0f8f1!important;
+}
+.book-source-tabs .book-secondary-link.is-active,
+.book-source-tabs .book-secondary-link[aria-current="page"],
+.book-chapter-tabs .book-chapter-link.is-active{
+  color:#245537!important;
+  border-color:#18734b!important;
+  border-style:solid!important;
+  border-width:2px!important;
+  background:transparent!important;
+}
+.book-source-tabs .book-secondary-link:not(.is-active):not([aria-current="page"]),
+.book-chapter-tabs .book-chapter-link:not(.is-active){
+  border-style:dashed!important;
+}
+.book-chapter-tabs .book-chapter-book-label{
+  background:transparent!important;
+  border-style:solid!important;
+}
