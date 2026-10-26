@@ -1345,9 +1345,6 @@ html,body{max-width:100%;overflow-x:clip}
 }
 
 /* Language podcast sub-tabs are text-only; podcast artwork belongs in the episode panel. */
-.library-lang-panel .secondary-tab>img,
-.library-lang-panel .secondary-tab>svg,
-.library-lang-panel .secondary-tab>[data-audio-identity-icon]{display:none!important}
 
 
 /* Unified Podcast selector and text-first audio row for mobile. */
