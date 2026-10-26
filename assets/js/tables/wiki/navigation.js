@@ -18,7 +18,7 @@
       if (active) {
         link.setAttribute('aria-current', 'page');
         /* Inline important styles make the active state survive page-specific CSS. */
-        if (!link.classList.contains('site-tab--radio')) {
+        if (!link.classList.contains('site-tab--radio') && !link.classList.contains('site-tab--home')) {
           var activePalette = link.classList.contains('site-tab--home') ? ['#18734b','#18734b'] :
             link.classList.contains('site-tab--data') ? ['#1b407d','#1b407d'] :
             link.classList.contains('site-tab--algorithm') ? ['#824306','#824306'] :
