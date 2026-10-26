@@ -171,7 +171,21 @@
   }
   document.addEventListener('click',function(event){
     var bookButton=event.target.closest&&event.target.closest('#library-book-toggle');
-    if(bookButton){try{localStorage.setItem('library_book_level','2');}catch(_){} renderBookMenu(window.location.pathname,'2');}
+    if(bookButton){
+      var panel=document.getElementById('library-book-panel');
+      var second=panel&&panel.querySelector('.book-source-tabs');
+      var chapters=panel&&panel.querySelector('.book-chapter-tabs');
+      var level='2';
+      /* Book is a two-state switch: level 2 -> level 3, level 3 -> level 2.
+         If neither menu is currently visible (first open), start at level 2. */
+      if(panel&&!panel.hidden){
+        if(chapters&&!chapters.hidden) level='2';
+        else if(second&&!second.hidden) level='3';
+        else level='2';
+      }
+      try{localStorage.setItem('library_book_level',level);}catch(_){}
+      renderBookMenu(window.location.pathname,level);
+    }
     var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
     if(bookLink){try{localStorage.setItem('library_book_level','3');}catch(_){} var targetPath;try{targetPath=new URL(bookLink.href,window.location.href).pathname;}catch(_){} if(targetPath===window.location.pathname)renderBookMenu(window.location.pathname,'3');}
     var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
