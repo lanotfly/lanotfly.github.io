@@ -118,7 +118,7 @@
       if(url.origin!==window.location.origin || url.pathname===book.root || url.pathname.indexOf(book.root)!==0)return;
       if(book.key==='data' && url.pathname.indexOf('/data-structures/ai/')===0)return;
       if(book.key==='ai' && url.pathname.indexOf('/data-structures/ai/')!==0)return;
-      var label=(a.textContent||a.getAttribute('aria-label')||'').replace(/\\s+/g,' ').trim();
+      var label=(a.textContent||a.getAttribute('aria-label')||'').replace(/\s+/g,' ').trim();
       if(!label || label.length>70 || seen[url.pathname])return;
       seen[url.pathname]=true;found.push({label:label,path:url.pathname+url.search+url.hash});
     });
