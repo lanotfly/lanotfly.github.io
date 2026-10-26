@@ -1,9 +1,9 @@
 ---
 layout: default
 title: "3. Linked List"
-permalink: /data-structures/linked-list/
+permalink: /data/linked-list/
 ---
-<link rel="stylesheet" href="/data-structures/wiki.css">
+<link rel="stylesheet" href="/data/wiki.css">
 <div class="wiki-wrap">
 <h1>3. Linked List</h1>
 <figure class="diagram"><svg viewBox="0 0 560 150" role="img" aria-label="Linked list: each node points to the next; the last points to None"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b6fd4"/></marker></defs><rect x="30" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="65" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">7</text><line x1="100" y1="73" x2="132" y2="73" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><rect x="135" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="170" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">3</text><line x1="205" y1="73" x2="237" y2="73" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><rect x="240" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="275" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">9</text><line x1="310" y1="73" x2="342" y2="73" stroke="#3b6fd4" stroke-width="2" marker-end="url(#ah)"/><rect x="345" y="50" width="70" height="46" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.5" rx="6"/><text x="380" y="79" font-family="monospace" font-size="14" fill="#1c2b4a" text-anchor="middle">4</text><text x="380" y="125" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">next = None</text><text x="65" y="30" font-family="sans-serif" font-size="12" fill="#5a6b8a" text-anchor="middle">head</text></svg><figcaption>Linked list: each node points to the next; the last points to None</figcaption></figure>
@@ -53,7 +53,7 @@ class ListNode:
 <p>  <code>list.pop(0)</code> is O(n), a linked list pop-front is O(1).</p>
 <h3>Practice</h3>
 <ul><li>[ ] Merge two sorted lists (dummy head again)</li><li>[ ] Remove the Nth node from the end (two pointers, gap of N)</li><li>[ ] Intersection of two lists</li><li>[ ] Palindrome linked list (middle + reverse half)</li></ul>
-<p>Next: <a href="/data-structures/stack-queue/">Stack &amp; Queue →</a></p>
+<p>Next: <a href="/data/stack-queue/">Stack &amp; Queue →</a></p>
 <h2>Real-world uses</h2><ul><li><strong>LRU cache:</strong> combine a hash map with a doubly linked list to move recently used items to the front in O(1).</li><li><strong>Queues and deques:</strong> linked nodes can support operations at both ends, though array-backed deques are often faster in practice.</li><li><strong>Memory/runtime internals:</strong> intrusive lists, free lists, and some schedulers.</li></ul><h2>Core linked-list patterns</h2><div class="cards"><section class="card"><h3>Dummy / sentinel node</h3><p>Simplifies edge cases when the head may be removed or the list may become empty.</p></section><section class="card"><h3>Fast and slow pointers</h3><p>Find the middle node or detect a cycle in O(n) time and O(1) extra space.</p></section><section class="card"><h3>Reverse pointers</h3><p>Save next before rewiring links; maintain previous, current, and next references.</p></section><section class="card"><h3>Merge two lists</h3><p>Use a dummy head and repeatedly attach the smaller current node. O(n + m) time.</p></section></div><h2>Trade-offs</h2><p>Inserting or deleting a known node can be O(1), but finding that node is O(n). Lists have pointer overhead and poor cache locality, so they are not automatically faster than arrays. Choose them when link manipulation is the main requirement, not merely because insertion sounds frequent.</p><p><strong>Related patterns:</strong> <a href="/algorithms/#recursion">recursion</a>, <a href="/algorithms/#search">fast/slow pointers and graph traversal</a>.</p>
-<div class="prev-next"><a href="/data-structures/hash-table/">← 2. Hash Table</a><a href="/data-structures/stack-queue/">4. Stack & Queue →</a></div>
+<div class="prev-next"><a href="/data/hash-table/">← 2. Hash Table</a><a href="/data/stack-queue/">4. Stack & Queue →</a></div>
 </div>
