@@ -1488,3 +1488,13 @@ html,body{max-width:100%;overflow-x:clip}
  .radio-source-tabs{gap:6px;}
  .radio-source-tabs .radio-secondary-tab{min-height:38px!important;padding:8px 4px!important;font-size:12px!important;}
 }
+
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+ .site-nav-shell .site-tab-links .site-tab--home,
+ .site-nav-shell .site-tab-links .site-tab--data,
+ .site-nav-shell .site-tab-links .site-tab--algorithm,
+ .site-nav-shell .site-tab-links .site-tab--ai,
+ .site-nav-shell .site-tab-links .site-tab--linux,
+ .site-nav-shell .site-tab-links .site-tab--cloud{grid-column:span 1!important;}
+}
