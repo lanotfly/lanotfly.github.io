@@ -71,7 +71,10 @@
     }
   }
   if(radioToggle&&radioPanel)radioToggle.addEventListener('click',function(){setRadioPanelOpen(radioToggle.getAttribute('aria-expanded')!=='true');});
-  if(bookToggle&&bookPanel)bookToggle.addEventListener('click',function(){setBookPanelOpen(bookToggle.getAttribute('aria-expanded')!=='true');});
+  if(bookToggle&&bookPanel)bookToggle.addEventListener('click',function(){
+    /* Book is a level switch, never a close button. navigation.js chooses level 2 or 3. */
+    setBookPanelOpen(true);
+  });
   document.addEventListener('click',function(event){
     var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle,.site-tab--home,.book-secondary-link');
     if(target){closeRadioPanel();if(target.matches('.site-tab--home'))closeBookPanel();}
