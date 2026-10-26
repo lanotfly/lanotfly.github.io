@@ -7,10 +7,12 @@
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
             {% include tabs.html %}
-            <section id="library-news-panel" class="library-news-panel" aria-label="News podcasts" hidden>
-  <div class="news-secondary-tabs" role="tablist" aria-label="News podcast sources">
-    <button type="button" class="news-secondary-tab is-active" role="tab" aria-selected="true" aria-controls="news-feed-panel-bbc" data-news-tab="bbc">BBC Global News</button>
-    <button type="button" class="news-secondary-tab" role="tab" aria-selected="false" aria-controls="news-feed-panel-chronicle" data-news-tab="chronicle">Local News · Chronicle</button>
+            <section id="library-news-panel" class="library-news-panel" aria-label="Podcasts" hidden>
+  <div class="news-secondary-tabs podcast-source-tabs" role="tablist" aria-label="Podcast sources">
+    <button type="button" class="news-secondary-tab" id="lukes-english-toggle" role="tab" aria-selected="false" aria-pressed="false" aria-label="Play Easy Natural English" title="Easy Natural English" data-podcast-tab="english">Easy English</button>
+    <button type="button" class="news-secondary-tab" id="bite-size-toggle" role="tab" aria-selected="false" aria-pressed="false" aria-label="Play Bite Size Japanese" title="Bite Size Japanese" data-podcast-tab="japanese">Bite Japanese</button>
+    <button type="button" class="news-secondary-tab is-active" role="tab" aria-selected="true" aria-controls="news-feed-panel-bbc" data-news-tab="bbc">BBC News</button>
+    <button type="button" class="news-secondary-tab" role="tab" aria-selected="false" aria-controls="news-feed-panel-chronicle" data-news-tab="chronicle">Japan News</button>
   </div>
   <section id="news-feed-panel-bbc" class="podcast-episode-panel news-podcast-panel" data-news-feed-panel="bbc" role="tabpanel" aria-label="BBC Global News Podcast">
     <div class="podcast-episode-panel__heading">
