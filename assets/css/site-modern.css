@@ -2007,3 +2007,14 @@ html,body{max-width:100%;overflow-x:clip}
   margin:0!important;
   padding:0!important;
 }
+
+
+/* Reliable Podcast state hook: panel.js toggles .podcast-panel-open on the inner wrapper.
+   Hide both generic page separators while that state is active (including empty-home content). */
+.content-wrapper__inner.podcast-panel-open > hr.post-list__divider{
+  display:none!important;
+  border:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
