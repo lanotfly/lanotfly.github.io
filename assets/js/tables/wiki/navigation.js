@@ -19,11 +19,7 @@
         link.setAttribute('aria-current', 'page');
         /* Inline important styles make the active state survive page-specific CSS. */
         if (!link.classList.contains('site-tab--radio') && !link.classList.contains('site-tab--home')) {
-          var activePalette = link.classList.contains('site-tab--home') ? ['#18734b','#18734b'] :
-            link.classList.contains('site-tab--data') ? ['#1b407d','#1b407d'] :
-            link.classList.contains('site-tab--algorithm') ? ['#824306','#824306'] :
-            link.classList.contains('site-tab--ai') ? ['#115638','#115638'] :
-            link.classList.contains('site-tab--cloud') ? ['#07575d','#07575d'] : ['#46546a','#344052'];
+          var activePalette = ['#18734b','#18734b'];
           link.style.setProperty('color', activePalette[0], 'important');
           link.style.setProperty('background-color', 'transparent', 'important');
           link.style.setProperty('border-color', activePalette[1], 'important');
