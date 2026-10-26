@@ -242,8 +242,8 @@
     var nextNav = nextInner.querySelector('.site-nav-shell');
     var currentPodcastPanel = currentInner.querySelector('#podcast-episode-panel');
     var nextPodcastPanel = nextInner.querySelector('#podcast-episode-panel');
-    var currentNewsPanel = currentInner.querySelector('#library-podcast-panel');
-    var nextNewsPanel = nextInner.querySelector('#library-podcast-panel');
+    var currentPodcastPanel = currentInner.querySelector('#library-podcast-panel');
+    var nextPodcastPanel = nextInner.querySelector('#library-podcast-panel');
     var rules = Array.from(currentInner.children).filter(function(el){ return el.tagName === 'HR'; });
     var nextRules = Array.from(nextInner.children).filter(function(el){ return el.tagName === 'HR'; });
     if (!currentNav || !nextNav || rules.length < 2 || nextRules.length < 2) {
@@ -261,7 +261,7 @@
       /* Keep the shared navigation, audio elements, and podcast panel alive.
          Replacing them during soft navigation leaves playback/listeners attached
          to detached DOM nodes, which can make the episode list appear empty. */
-      if (node !== nextNav && node !== nextPodcastPanel && node !== nextNewsPanel) {
+      if (node !== nextNav && node !== nextPodcastPanel && node !== nextPodcastPanel) {
         newNodes.push(node.cloneNode(true));
       }
       node = node.nextSibling;
@@ -270,7 +270,7 @@
     node = currentTopRule.nextSibling;
     while (node && node !== currentBottomRule) {
       var next = node.nextSibling;
-      if (node !== currentNav && node !== currentPodcastPanel && node !== currentNewsPanel) node.remove();
+      if (node !== currentNav && node !== currentPodcastPanel && node !== currentPodcastPanel) node.remove();
       node = next;
     }
     newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, currentBottomRule); });
