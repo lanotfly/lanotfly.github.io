@@ -57,6 +57,38 @@
     }
     return true;
   }
-  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;}};
+  var radioToggle=document.getElementById('library-radio-toggle');
+  var radioPanel=document.getElementById('library-radio-panel');
+  function setRadioPanelOpen(open){
+    if(!radioToggle||!radioPanel)return;
+    radioToggle.setAttribute('aria-expanded',String(!!open));
+    radioToggle.classList.toggle('is-open',!!open);
+    radioToggle.classList.toggle('is-active',!!open);
+    radioPanel.hidden=!open;
+    if(!open)return;
+    /* Opening the Radio selector closes other listening panels, but does not stop
+       a radio station that is already playing. */
+    var newsToggle=document.getElementById('library-news-toggle');
+    if(newsToggle&&newsToggle.getAttribute('aria-expanded')==='true')newsToggle.click();
+    ['podcast-audio','niv-bible-audio','news-bbc-audio','news-chronicle-audio','news-english-audio','news-japanese-audio'].forEach(function(id){
+      var audio=document.getElementById(id);if(audio&&!audio.paused){try{audio.pause();}catch(_){}}
+    });
+    var podcastPanel=document.getElementById('podcast-episode-panel');
+    if(podcastPanel)podcastPanel.hidden=true;
+    var biblePanel=document.getElementById('niv-bible-panel');
+    var bibleButton=document.getElementById('niv-bible-toggle');
+    if(biblePanel)biblePanel.hidden=true;
+    if(bibleButton)bibleButton.setAttribute('aria-expanded','false');
+  }
+  if(radioToggle&&radioPanel){
+    radioToggle.addEventListener('click',function(){
+      setRadioPanelOpen(radioToggle.getAttribute('aria-expanded')!=='true');
+    });
+    document.addEventListener('click',function(event){
+      var target=event.target&&event.target.closest&&event.target.closest('#library-news-toggle,#niv-bible-toggle,.site-tab--home,.site-tab--data,.site-tab--algorithm,.site-tab--ai,.site-tab--linux,.site-tab--cloud');
+      if(target)setRadioPanelOpen(false);
+    },true);
+  }
+  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen};
   window.__prepareRadioPlayback=function(target){switchTo(target||'radio4');};
 })(window,document);
