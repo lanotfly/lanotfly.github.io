@@ -1795,9 +1795,8 @@ html,body{max-width:100%;overflow-x:clip}
   }
 }
 
-/* One shared geometry for all three levels of the Book navigation.
-   Keep the Book toggle, section links, chapter label, and chapter links on
-   the same sizing contract so later component-specific rules cannot diverge. */
+/* One fixed size across desktop/mobile and Book navigation levels 1/2/3.
+   This is the final sizing rule and intentionally has no mobile override. */
 .site-nav-shell .site-tab-links .site-tab--book-group,
 .book-source-panel .book-source-tabs .book-secondary-link,
 .book-source-panel .book-chapter-tabs .book-chapter-book-label,
@@ -1814,26 +1813,11 @@ html,body{max-width:100%;overflow-x:clip}
   line-height:1!important;
   vertical-align:middle!important;
 }
-.site-nav-shell .site-tab-links .site-tab--book-group{
-  width:100%!important;
-}
+.site-nav-shell .site-tab-links .site-tab--book-group,
 .book-source-panel .book-source-tabs .book-secondary-link{
   width:100%!important;
 }
 .book-source-panel .book-chapter-tabs .book-chapter-book-label,
 .book-source-panel .book-chapter-tabs .book-chapter-link{
   flex:0 0 auto!important;
-}
-@media(max-width:700px){
-  .site-nav-shell .site-tab-links .site-tab--book-group,
-  .book-source-panel .book-source-tabs .book-secondary-link,
-  .book-source-panel .book-chapter-tabs .book-chapter-book-label,
-  .book-source-panel .book-chapter-tabs .book-chapter-link{
-    height:34px!important;
-    min-height:34px!important;
-    max-height:34px!important;
-    padding:0 3px!important;
-    font-size:11px!important;
-    line-height:1!important;
-  }
 }
