@@ -95,9 +95,9 @@
   rememberPage(window.location.pathname);
 
   var bookSections = [
+    {key:'ai', label:'AI', root:'/data-structures/ai/', color:'#18734b'},
     {key:'data', label:'Data', root:'/data-structures/', color:'#18734b'},
     {key:'algorithm', label:'Algorithm', root:'/algorithms/', color:'#18734b'},
-    {key:'ai', label:'AI', root:'/data-structures/ai/', color:'#18734b'},
     {key:'linux', label:'Linux', root:'/linux/', color:'#18734b'},
     {key:'cloud', label:'Cloud', root:'/cloud/', color:'#18734b'}
   ];
@@ -141,6 +141,9 @@
       try{chapters=JSON.parse(localStorage.getItem(chapterStoreKey(book))||'[]');}catch(_){chapters=[];}
     }
     second.hidden=true;
+    panel.hidden=false;
+    var bookToggle=document.getElementById('library-book-toggle');
+    if(bookToggle){bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');}
     var nav=document.createElement('nav');
     nav.className='news-secondary-tabs book-chapter-tabs';
     nav.setAttribute('aria-label',book.label+' chapters');
@@ -170,7 +173,7 @@
     var bookButton=event.target.closest&&event.target.closest('#library-book-toggle');
     if(bookButton){try{localStorage.setItem('library_book_level','2');}catch(_){} renderBookMenu(window.location.pathname,'2');}
     var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
-    if(bookLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
+    if(bookLink){try{localStorage.setItem('library_book_level','3');}catch(_){} var targetPath;try{targetPath=new URL(bookLink.href,window.location.href).pathname;}catch(_){} if(targetPath===window.location.pathname)renderBookMenu(window.location.pathname,'3');}
     var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
     if(chapterLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
   },true);
