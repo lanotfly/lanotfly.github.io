@@ -171,7 +171,9 @@
       pendingAutoplay = true;
       if (loaded && pendingAutoplay) { pendingAutoplay = false; playDefaultEpisode(activeFeed); }
     } else {
-      stopAllNews(true);
+      /* Hiding a visual panel is not an audio-source switch. Keep the current
+         episode playing in the background; only an actual audio resource
+         selected through stopOtherAudio()/LibraryAudioCoordinator may replace it. */
       mainToggle.classList.remove('is-active');
       if (typeof window.LibraryUpdatePrimaryActive === 'function') {
         window.LibraryUpdatePrimaryActive(window.location.pathname);
