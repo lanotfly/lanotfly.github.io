@@ -14,6 +14,7 @@
 
   var episodesByFeed = { bbc: [], chronicle: [] };
   var activeFeed = 'bbc';
+  var activeTab = 'bbc';
   var current = { feed: null, index: -1 };
   var loaded = false;
   var pendingAutoplay = false;
@@ -132,17 +133,21 @@
       if (audio && !audio.paused) audio.pause();
     });
   }
-  function setActiveFeed(feedId) {
-    activeFeed = feedId;
-    Array.prototype.forEach.call(root.querySelectorAll('[data-news-tab]'), function (button) {
-      var selected = button.getAttribute('data-news-tab') === feedId;
+  function setActiveTab(tabId) {
+    activeTab = tabId;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-news-tab], [data-podcast-tab]'), function (button) {
+      var selected = (button.getAttribute('data-news-tab') || button.getAttribute('data-podcast-tab')) === tabId;
       button.classList.toggle('is-active', selected);
       button.setAttribute('aria-selected', String(selected));
       button.tabIndex = selected ? 0 : -1;
     });
     Array.prototype.forEach.call(root.querySelectorAll('[data-news-feed-panel]'), function (panel) {
-      panel.hidden = panel.getAttribute('data-news-feed-panel') !== feedId;
+      panel.hidden = panel.getAttribute('data-news-feed-panel') !== tabId;
     });
+  }
+  function setActiveFeed(feedId) {
+    activeFeed = feedId;
+    setActiveTab(feedId);
   }
   function setNewsOpen(open) {
     mainToggle.setAttribute('aria-expanded', String(open));
@@ -156,11 +161,13 @@
         link.classList.remove('is-active');
         link.removeAttribute('aria-current');
       });
-      setActiveFeed(activeFeed || 'bbc');
-      pendingAutoplay = true;
-      if (loaded) playDefaultEpisode(activeFeed);
+      setActiveTab(activeTab || 'bbc');
+      pendingAutoplay = activeTab === 'bbc' || activeTab === 'chronicle';
+      if (loaded && pendingAutoplay) { pendingAutoplay = false; playDefaultEpisode(activeFeed); }
     } else {
       stopAllNews(true);
+      var podcastEpisodePanel = document.getElementById('podcast-episode-panel');
+      if (podcastEpisodePanel) podcastEpisodePanel.hidden = true;
       mainToggle.classList.remove('is-active');
       if (typeof window.LibraryUpdatePrimaryActive === 'function') {
         window.LibraryUpdatePrimaryActive(window.location.pathname);
@@ -333,10 +340,6 @@
   });
 
   mainToggle.addEventListener('click', function () {
-    var langPanel = document.getElementById('library-lang-panel');
-    var langToggle = document.getElementById('library-lang-toggle');
-    if (langPanel) langPanel.hidden = true;
-    if (langToggle) langToggle.setAttribute('aria-expanded', 'false');
     setNewsOpen(mainToggle.getAttribute('aria-expanded') !== 'true');
   });
   /* Each News feed keeps the shared podcast-list collapse control, expanded by default. */
@@ -352,10 +355,19 @@
       frame.hidden = !expanded;
     });
   });
+  root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      stopAllNews(true);
+      setActiveTab(button.getAttribute('data-podcast-tab'));
+    });
+  });
   root.querySelectorAll('[data-news-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-news-tab');
-      if (nextFeed === activeFeed) {
+      var alreadySelectedNewsTab = activeTab === nextFeed;
+      var podcastEpisodePanel = document.getElementById('podcast-episode-panel');
+      if (podcastEpisodePanel) podcastEpisodePanel.hidden = true;
+      if (alreadySelectedNewsTab && nextFeed === activeFeed) {
         playDefaultEpisode(nextFeed);
         return;
       }
@@ -383,7 +395,7 @@
      Wiki chapter links are deliberately excluded so News can continue while reading. */
   document.addEventListener('click', function (event) {
     var target = event.target && event.target.closest && event.target.closest(
-      '#radio4-toggle, #nhk-radio-toggle, #bite-size-toggle, #lukes-english-toggle, #niv-bible-toggle, #podcast-episode-list .podcast-episode-choice'
+      '#radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #podcast-episode-list .podcast-episode-choice'
     );
     if (target && !root.hidden) setNewsOpen(false);
   }, true);
@@ -465,7 +477,7 @@
     });
     loaded = true;
     renderAll();
-    if (pendingAutoplay && !root.hidden) {
+    if (pendingAutoplay && !root.hidden && (activeTab === 'bbc' || activeTab === 'chronicle')) {
       pendingAutoplay = false;
       playDefaultEpisode(activeFeed);
     }
