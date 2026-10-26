@@ -94,6 +94,88 @@
   }
   rememberPage(window.location.pathname);
 
+  var bookSections = [
+    {key:'data', label:'Data', root:'/data-structures/', color:'#18734b'},
+    {key:'algorithm', label:'Algorithm', root:'/algorithms/', color:'#18734b'},
+    {key:'ai', label:'AI', root:'/data-structures/ai/', color:'#18734b'},
+    {key:'linux', label:'Linux', root:'/linux/', color:'#18734b'},
+    {key:'cloud', label:'Cloud', root:'/cloud/', color:'#18734b'}
+  ];
+  function bookForPath(pathname){
+    for(var i=0;i<bookSections.length;i++){
+      var item=bookSections[i];
+      if(pathname===item.root || pathname.indexOf(item.root)===0)return item;
+    }
+    return null;
+  }
+  function chapterStoreKey(book){return 'library_book_chapters_'+book.key;}
+  function collectChapters(book){
+    var found=[], seen={};
+    document.querySelectorAll('.content-wrapper__inner a[href]').forEach(function(a){
+      if(a.closest('.site-nav-shell') || a.classList.contains('book-secondary-link'))return;
+      var url;
+      try{url=new URL(a.href,window.location.href);}catch(_){return;}
+      if(url.origin!==window.location.origin || url.pathname===book.root || url.pathname.indexOf(book.root)!==0)return;
+      if(book.key==='data' && url.pathname.indexOf('/data-structures/ai/')===0)return;
+      if(book.key==='ai' && url.pathname.indexOf('/data-structures/ai/')!==0)return;
+      var label=(a.textContent||a.getAttribute('aria-label')||'').replace(/\\s+/g,' ').trim();
+      if(!label || label.length>70 || seen[url.pathname])return;
+      seen[url.pathname]=true;found.push({label:label,path:url.pathname+url.search+url.hash});
+    });
+    if(found.length){
+      try{localStorage.setItem(chapterStoreKey(book),JSON.stringify(found));}catch(_){}
+    }
+    return found;
+  }
+  function renderBookMenu(pathname, level){
+    var panel=document.getElementById('library-book-panel');
+    if(!panel)return;
+    var book=bookForPath(pathname);
+    var old=panel.querySelector('.book-chapter-tabs');
+    if(old)old.remove();
+    var second=panel.querySelector('.book-source-tabs');
+    if(!second)return;
+    if(level!=='3' || !book){second.hidden=false;return;}
+    var chapters=collectChapters(book);
+    if(!chapters.length){
+      try{chapters=JSON.parse(localStorage.getItem(chapterStoreKey(book))||'[]');}catch(_){chapters=[];}
+    }
+    second.hidden=true;
+    var nav=document.createElement('nav');
+    nav.className='news-secondary-tabs book-chapter-tabs';
+    nav.setAttribute('aria-label',book.label+' chapters');
+    var badge=document.createElement('span');
+    badge.className='book-chapter-book-label';
+    badge.textContent=book.label;
+    badge.style.setProperty('--book-label-color',book.color);
+    nav.appendChild(badge);
+    var overview=document.createElement('a');
+    overview.className='news-secondary-tab book-chapter-link book-overview-link';
+    overview.href=book.root;
+    overview.textContent='Overview';
+    if(pathname===book.root)overview.classList.add('is-active');
+    nav.appendChild(overview);
+    chapters.forEach(function(chapter){
+      if(chapter.path.split(/[?#]/)[0]===book.root)return;
+      var a=document.createElement('a');
+      a.className='news-secondary-tab book-chapter-link';
+      a.href=chapter.path;
+      a.textContent=chapter.label;
+      if(pathname===chapter.path.split(/[?#]/)[0])a.classList.add('is-active');
+      nav.appendChild(a);
+    });
+    panel.appendChild(nav);
+  }
+  document.addEventListener('click',function(event){
+    var bookButton=event.target.closest&&event.target.closest('#library-book-toggle');
+    if(bookButton){try{localStorage.setItem('library_book_level','2');}catch(_){}}
+    var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
+    if(bookLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
+    var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
+    if(chapterLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
+  },true);
+  renderBookMenu(window.location.pathname,'2');
+
   function sameOriginPageLink(link){
     if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
     var url;
@@ -171,6 +253,8 @@
     if (push) history.pushState({ libraryPage: true }, '', url.href);
     updatePrimaryActive(url.pathname);
     rememberPage(url.pathname);
+    var bookLevel='2'; try{bookLevel=localStorage.getItem('library_book_level')||'2';}catch(_){}
+    renderBookMenu(url.pathname,bookLevel);
     newNodes.forEach(function(insertedNode){
       if (insertedNode.nodeType !== 1) return;
       if (insertedNode.tagName === 'SCRIPT') {
