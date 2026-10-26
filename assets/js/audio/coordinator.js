@@ -33,7 +33,13 @@
   function setBookPanelOpen(open){
     if(!bookToggle||!bookPanel)return;
     bookToggle.setAttribute('aria-expanded',String(!!open));bookToggle.classList.toggle('is-open',!!open);bookToggle.classList.toggle('is-active',!!open);bookPanel.hidden=!open;
-    if(open){closeRadioPanel();var news=document.getElementById('library-news-toggle');if(news&&news.getAttribute('aria-expanded')==='true')news.click();}
+    if(open){
+      closeRadioPanel();
+      var news=document.getElementById('library-news-toggle');
+      if(news&&news.getAttribute('aria-expanded')==='true')news.click();
+      /* Closing Podcast dispatches a click too; restore Book as the open menu. */
+      bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');bookPanel.hidden=false;
+    }
   }
   function switchTo(target){
     activeTarget=target;
