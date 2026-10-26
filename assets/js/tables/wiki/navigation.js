@@ -42,11 +42,17 @@
       }
     });
     var bookGroup = document.getElementById('library-book-toggle');
-    var bookActive = pathname === '/' || pathname === '/home/' || pathname.indexOf('/data-structures/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
+    var bookActive = pathname.indexOf('/data-structures/') === 0 || pathname.indexOf('/algorithms/') === 0 || pathname.indexOf('/linux/') === 0 || pathname.indexOf('/cloud/') === 0;
+    var navShell = document.querySelector('.site-nav-shell');
+    var isHomePath = pathname === '/' || pathname === '/home/';
+    if (navShell) {
+      navShell.setAttribute('data-active-family', 'reading');
+      navShell.setAttribute('data-active-reading-tab', isHomePath ? 'home' : 'book');
+      navShell.removeAttribute('data-active-audio-tab');
+    }
     if (bookGroup) {
       bookGroup.classList.toggle('is-active', bookActive);
-      if (bookActive) bookGroup.style.setProperty('border-style', 'solid', 'important');
-      else bookGroup.style.removeProperty('border-style');
+      bookGroup.style.removeProperty('border-style');
     }
   }
   updatePrimaryActive(window.location.pathname);
@@ -186,8 +192,8 @@
         else if(second&&!second.hidden) level='3';
         else { try{level=localStorage.getItem('library_book_level')||'2';}catch(_){} }
       }else{
-        /* Reopen the last Book level after an audio panel temporarily hides it. */
-        try{level=localStorage.getItem('library_book_level')||'2';}catch(_){}
+        /* First tap after Book is closed always starts at level 2. */
+        level='2';
       }
       try{localStorage.setItem('library_book_level',level);}catch(_){}
       renderBookMenu(window.location.pathname,level);
@@ -197,8 +203,14 @@
     var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
     if(chapterLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
   },true);
-  var initialBookLevel='2'; try{initialBookLevel=localStorage.getItem('library_book_level')||'2';}catch(_){}
-  renderBookMenu(window.location.pathname,initialBookLevel);
+  /* Keep Book closed on page load. Its first tap always opens level 2. */
+  var initialBookPanel = document.getElementById('library-book-panel');
+  var initialBookToggle = document.getElementById('library-book-toggle');
+  if (initialBookPanel) initialBookPanel.hidden = true;
+  if (initialBookToggle) {
+    initialBookToggle.setAttribute('aria-expanded', 'false');
+    initialBookToggle.classList.remove('is-open');
+  }
 
   function sameOriginPageLink(link){
     if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
