@@ -63,6 +63,25 @@
     var target=event.target&&event.target.closest&&event.target.closest('#library-podcast-toggle,#niv-bible-toggle');
     if(target)closeRadioPanel();
   },true);
+  /* Apply the default purple treatment immediately on first render, not only after a click. */
+  function applyInitialAudioTabColors(){
+    var shell=document.querySelector('.site-nav-shell');
+    if(!shell)return;
+    [
+      ['#library-radio-toggle','#f3eef9','#705493','#cbb9df'],
+      ['#niv-bible-toggle','#f3eef9','#705493','#cbb9df'],
+      ['#library-podcast-toggle','#f3eef9','#705493','#cbb9df']
+    ].forEach(function(item){
+      var button=shell.querySelector(item[0]);
+      if(!button)return;
+      button.style.setProperty('background-color',item[1],'important');
+      button.style.setProperty('color',item[2],'important');
+      button.style.setProperty('border-color',item[3],'important');
+      button.style.setProperty('border-style','dashed','important');
+      button.style.setProperty('box-shadow','none','important');
+    });
+  }
+  applyInitialAudioTabColors();
   /* Track visual navigation family without coupling reading clicks to playback or panel visibility. */
   document.addEventListener('click',function(event){
     var target=event.target&&event.target.closest&&event.target.closest(
