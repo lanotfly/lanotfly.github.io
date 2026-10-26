@@ -3,7 +3,7 @@ layout: default
 title: "5. Graph Algorithms — Topological Sort, Union-Find &amp; Shortest Paths"
 permalink: /algorithms/graph-algorithms/
 ---
-<link rel="stylesheet" href="/data-structures/wiki.css">
+<link rel="stylesheet" href="/data/wiki.css">
 <div class="wiki-wrap">
 <h1>5. Graph Algorithms — Topological Sort, Union-Find &amp; Shortest Paths</h1>
 
@@ -28,5 +28,5 @@ def topo_sort(graph, indegree):
 <h2>3. Union-Find / Disjoint Set Union</h2><p>Union-Find maintains connected components as edges are added. Path compression and union by size/rank make operations nearly constant amortized time, O(α(n)). It is excellent for connectivity but does not directly support arbitrary edge deletions.</p>
 <h2>4. Shortest paths</h2><table><thead><tr><th>Problem type</th><th>Algorithm</th><th>Key condition</th></tr></thead><tbody><tr><td>Unweighted graph</td><td>BFS</td><td>Each edge has equal cost</td></tr><tr><td>Non-negative weights</td><td>Dijkstra + min-heap</td><td>No negative edge weights</td></tr><tr><td>Negative edges allowed</td><td>Bellman–Ford</td><td>Can detect reachable negative cycles</td></tr><tr><td>All pairs, small dense graph</td><td>Floyd–Warshall</td><td>O(V³) time and O(V²) space</td></tr></tbody></table>
 <h2>Practice</h2><ul><li>Course Schedule</li><li>Redundant Connection</li><li>Network Delay Time</li><li>Number of Provinces</li><li>Cheapest Flights Within K Stops</li></ul>
-<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data-structures/">Explore Data Structure →</a></div>
+<div class="prev-next"><a href="/algorithms/">← Algorithm Home</a><a href="/data/">Explore Data Structure →</a></div>
 </div>
