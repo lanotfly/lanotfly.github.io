@@ -154,7 +154,7 @@
     var bookToggle=document.getElementById('library-book-toggle');
     if(bookToggle){bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');}
     var nav=document.createElement('nav');
-    nav.className='news-secondary-tabs book-chapter-tabs';
+    nav.className='secondary-tabs book-chapter-tabs';
     nav.setAttribute('aria-label',book.label+' chapters');
     var badge=document.createElement('span');
     badge.className='book-chapter-book-label';
@@ -162,7 +162,7 @@
     badge.style.setProperty('--book-label-color',book.color);
     nav.appendChild(badge);
     var overview=document.createElement('a');
-    overview.className='news-secondary-tab book-chapter-link book-overview-link';
+    overview.className='secondary-tab book-chapter-link book-overview-link';
     overview.href=book.root;
     overview.textContent='Overview';
     if(pathname===book.root)overview.classList.add('is-active');
@@ -170,7 +170,7 @@
     chapters.forEach(function(chapter){
       if(chapter.path.split(/[?#]/)[0]===book.root)return;
       var a=document.createElement('a');
-      a.className='news-secondary-tab book-chapter-link';
+      a.className='secondary-tab book-chapter-link';
       a.href=chapter.path;
       a.textContent=chapter.label;
       if(pathname===chapter.path.split(/[?#]/)[0])a.classList.add('is-active');
