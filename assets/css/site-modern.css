@@ -1765,3 +1765,32 @@ html,body{max-width:100%;overflow-x:clip}
     line-height:1.05!important;
   }
 }
+
+
+/* Final normalization: Book level 2 and level 3 controls share identical geometry. */
+.book-source-panel .book-source-tabs .book-secondary-link,
+.book-source-panel .book-chapter-tabs .book-chapter-book-label,
+.book-source-panel .book-chapter-tabs .book-chapter-link{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 auto!important;
+  height:32px!important;
+  min-height:32px!important;
+  max-height:32px!important;
+  padding:0 8px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  font-size:11px!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+}
+.book-source-panel .book-source-tabs .book-secondary-link{width:100%!important;}
+@media(max-width:700px){
+  .book-source-panel .book-source-tabs .book-secondary-link,
+  .book-source-panel .book-chapter-tabs .book-chapter-book-label,
+  .book-source-panel .book-chapter-tabs .book-chapter-link{
+    height:30px!important;min-height:30px!important;max-height:30px!important;
+    padding:0 3px!important;font-size:10px!important;line-height:1!important;
+  }
+}
