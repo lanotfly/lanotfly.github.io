@@ -1741,3 +1741,27 @@ html,body{max-width:100%;overflow-x:clip}
     display:inline!important;font-size:11px!important;letter-spacing:0!important;
   }
 }
+
+
+/* Keep Book level-2 section tabs and level-3 chapter tabs exactly the same height. */
+.book-source-tabs .book-secondary-link,
+.book-source-panel .book-chapter-tabs .book-chapter-book-label,
+.book-source-panel .book-chapter-tabs .book-chapter-link{
+  height:30px!important;
+  min-height:30px!important;
+  max-height:30px!important;
+  box-sizing:border-box!important;
+  align-self:center;
+}
+@media(max-width:700px){
+  .book-source-tabs .book-secondary-link,
+  .book-source-panel .book-chapter-tabs .book-chapter-book-label,
+  .book-source-panel .book-chapter-tabs .book-chapter-link{
+    height:28px!important;
+    min-height:28px!important;
+    max-height:28px!important;
+    padding-top:3px!important;
+    padding-bottom:3px!important;
+    line-height:1.05!important;
+  }
+}
