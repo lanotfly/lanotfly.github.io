@@ -1,19 +1,15 @@
 (function () {
   "use strict";
   var key = "yui-library-theme";
-  var modes = ["system", "light", "dark"];
-  var labels = { system: "System", light: "Light", dark: "Dark" };
-  var icons = { system: "◐", light: "☀", dark: "☾" };
+  var modes = ["light", "dark"];
   var media = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   var button;
-
   function readMode() {
     try {
       var saved = localStorage.getItem(key);
-      return modes.indexOf(saved) >= 0 ? saved : "system";
-    } catch (error) {
-      return "system";
-    }
+      if (modes.indexOf(saved) >= 0) return saved;
+    } catch (error) {}
+    return media && media.matches ? "dark" : "light";
   }
   var mode = readMode();
 
@@ -25,10 +21,10 @@
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", dark ? "#111318" : "#ffffff");
     if (button) {
-      button.innerHTML = '<span aria-hidden="true">' + icons[mode] + '</span><span>' + labels[mode] + '</span>';
-      button.setAttribute("aria-label", "Color theme: " + labels[mode] + ". Activate to change theme.");
-      button.setAttribute("title", "Color theme: " + labels[mode] + " (click to change)");
-      button.setAttribute("aria-pressed", mode === "dark" ? "true" : "false");
+      button.innerHTML = '<span class="theme-yinyang" aria-hidden="true">☯</span>';
+      button.setAttribute("aria-label", "Switch to " + (dark ? "light" : "dark") + " mode");
+      button.setAttribute("title", "Switch to " + (dark ? "light" : "dark") + " mode");
+      button.setAttribute("aria-pressed", dark ? "true" : "false");
     }
   }
 
@@ -41,13 +37,15 @@
     button = document.getElementById("site-theme-toggle");
     if (button) {
       button.addEventListener("click", function () {
-        mode = modes[(modes.indexOf(mode) + 1) % modes.length];
+        mode = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
         saveMode();
       });
       applyTheme();
     }
     if (media) {
-      var onSystemChange = function () { if (mode === "system") applyTheme(); };
+      var onSystemChange = function () {
+        try { if (!localStorage.getItem(key)) { mode = media.matches ? "dark" : "light"; applyTheme(); } } catch (error) {}
+      };
       if (media.addEventListener) media.addEventListener("change", onSystemChange);
       else if (media.addListener) media.addListener(onSystemChange);
     }
