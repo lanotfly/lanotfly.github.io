@@ -32,13 +32,13 @@
   function plainText(html){
     var doc=new DOMParser().parseFromString(String(html||''),'text/html');
     doc.querySelectorAll('script,style,iframe,object,svg').forEach(function(el){el.remove();});
-    return (doc.body.textContent||'').replace(/\\s+/g,' ').trim();
+    return (doc.body.textContent||'').replace(/\s+/g,' ').trim();
   }
   function dateLabel(raw){if(!raw)return '';var d=new Date(raw);if(Number.isNaN(d.getTime()))return raw;return new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d);}
   function makeItem(item,lang){
     var title=getText(item,['title']).trim()||'Untitled article';
     var link=getText(item,['link']).trim();
-    if(!/^https?:\\/\\//i.test(link))return null;
+    if(!/^https?:\/\//i.test(link))return null;
     var date=getText(item,['pubDate','published','updated','date']);
     var body=getText(item,['encoded','content','description','summary']);
     if(!body)body=getText(item,['description']);
