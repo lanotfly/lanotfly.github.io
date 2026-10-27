@@ -593,7 +593,7 @@ body[data-theme="dark"] .wiki-wrap figure.diagram svg path[stroke="#333" i] {
   stroke: #aeb8ca !important;
 }
 /* Real HTML tables are preferred for text-heavy comparison charts; fit columns to the reading width. */
-.wiki-wrap table { width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; }
+.wiki-wrap table { width: 100%; max-width: 100%; table-layout: auto; border-collapse: collapse; }
 .wiki-wrap th, .wiki-wrap td { overflow-wrap: anywhere; word-break: normal; vertical-align: top; }
 .wiki-wrap th { font-weight: 700; }
 @media (max-width: 600px) {
