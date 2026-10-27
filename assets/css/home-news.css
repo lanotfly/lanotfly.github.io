@@ -67,3 +67,20 @@
 .home-news-item__chevron{font-size:13px;line-height:1}
 .home-news-item[open]>.home-news-item__title-row{padding-top:6px;padding-bottom:6px}
 @media(max-width:600px){.home-news-item__title-row{min-height:0;padding:5px 7px}.home-news-item__title{font-size:.8rem;line-height:1.25}}
+
+
+/* Match Podcast's comfortable episode-row height; bulk controls stay compact. */
+.home-news-item__title-row{min-height:44px;padding:9px 11px;gap:9px}
+.home-news-item__title{font-size:.88rem;line-height:1.35;font-weight:650}
+.home-news-item__chevron{font-size:14px}
+.home-news-item[open]>.home-news-item__title-row{padding-top:9px;padding-bottom:9px}
+.home-news-heading__actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap}
+.home-news-bulk{min-height:30px;padding:5px 8px;border:1px solid #c5dfcd;border-radius:8px;background:#fff;color:#326c45;font-size:.72rem;font-weight:700;white-space:nowrap;cursor:pointer}
+.home-news-bulk:hover{background:#f0f8f2}
+.home-news-refresh{flex-basis:32px;width:32px;height:32px;font-size:20px}
+@media(max-width:600px){
+ .home-news-item__title-row{min-height:43px;padding:9px}
+ .home-news-item__title{font-size:.86rem;line-height:1.35}
+ .home-news-heading__actions{gap:4px}
+ .home-news-bulk{min-height:29px;padding:5px 6px;font-size:.68rem}
+}
