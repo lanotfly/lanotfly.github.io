@@ -37,8 +37,19 @@
       const node = bar.querySelector('[data-market-value="' + key + '"]');
       if (!node || !item || !Number.isFinite(item.price)) return;
       const digits = key === "bitcoin" ? 0 : 2;
-      node.textContent = (key === "bitcoin" ? "$" : "") + format(item.price, digits);
-      node.title = (item.changePct == null ? "" : ((item.changePct > 0 ? "+" : "") + item.changePct.toFixed(2) + "% · ")) +
+      const priceNode = node.querySelector("[data-market-price]");
+      const changeNode = node.querySelector("[data-market-change]");
+      const priceText = (key === "bitcoin" || key === "gold" ? "$" : "") + format(item.price, digits);
+      const changeText = item.changePct == null ? "—" : ((item.changePct > 0 ? "+" : "") + item.changePct.toFixed(2) + "%");
+      if (priceNode && changeNode) {
+        priceNode.textContent = priceText;
+        changeNode.textContent = changeText;
+        changeNode.classList.toggle("is-up", Number(item.changePct) > 0);
+        changeNode.classList.toggle("is-down", Number(item.changePct) < 0);
+      } else {
+        node.textContent = priceText + (item.changePct == null ? "" : " " + changeText);
+      }
+      node.title = (item.changePct == null ? "Change vs previous close unavailable · " : (changeText + " vs previous close · ")) +
         (cached ? "Saved quote" : "Latest available quote");
       node.classList.toggle("is-up", Number(item.changePct) > 0);
       node.classList.toggle("is-down", Number(item.changePct) < 0);
@@ -73,8 +84,8 @@
   }
   async function refreshMarkets() {
     const instruments = {
-      sp500: "^GSPC", nasdaq: "^IXIC", dow: "^DJI",
-      shanghai: "000001.SS", nikkei: "^N225", bitcoin: "BTC-USD"
+      nasdaq: "^IXIC", dow: "^DJI",
+      shanghai: "000001.SS", nikkei: "^N225", bitcoin: "BTC-USD", gold: "GC=F"
     };
     const entries = await Promise.allSettled(Object.entries(instruments).map(async ([key, symbol]) => [key, await fetchMarketQuote(symbol)]));
     const quotes = {};
