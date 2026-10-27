@@ -57,8 +57,9 @@
     return false;
   }
   async function fetchMarketQuote(symbol) {
-    const url = "https://query1.finance.yahoo.com/v8/finance/chart/" + encodeURIComponent(symbol) + "?range=1d&interval=1m";
-    const response = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } });
+    const yahooUrl = "https://query1.finance.yahoo.com/v8/finance/chart/" + encodeURIComponent(symbol) + "?range=1d&interval=1m";
+    // Yahoo Finance does not send browser CORS headers; use a lightweight public CORS relay.
+    const response = await fetch("https://proxy.cors.dev/" + yahooUrl, { cache: "no-store", credentials: "omit", headers: { Accept: "application/json" } });
     if (!response.ok) throw new Error("Market quote unavailable: " + symbol);
     const json = await response.json();
     const result = json?.chart?.result?.[0];
