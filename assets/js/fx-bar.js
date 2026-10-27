@@ -36,14 +36,10 @@
     usdJpyNode.textContent = format(data.usdJpy, 2);
     usdCnyNode.textContent = format(data.usdCny, 4);
     jpyCnyNode.textContent = format(data.jpyCny, 5);
-    const date = data.date ? new Date(data.date + "T12:00:00") : new Date();
-    const dateLabel = Number.isNaN(date.getTime())
-      ? (data.date || "date unavailable")
-      : date.toLocaleDateString("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
     const fetchedLabel = data.fetchedAt
-      ? "Fetched " + formatFetchTime(data.fetchedAt) + " JST"
+      ? "Fetch time · " + formatFetchTime(data.fetchedAt) + " JST"
       : "Fetch time unavailable";
-    meta.textContent = (cached ? "Saved · " : "Rate date · ") + dateLabel + " · " + fetchedLabel;
+    meta.textContent = (cached ? "Saved · " : "") + fetchedLabel;
     status.textContent = cached ? "Showing last saved rates." : "Exchange rates updated.";
   }
 
