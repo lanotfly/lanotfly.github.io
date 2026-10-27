@@ -9,7 +9,7 @@
   var sourcePanels=Array.prototype.slice.call(document.querySelectorAll('[data-news-source-panel]'));
   if(!topTabs.length||!views.length)return;
   var feeds={
-    japanese:{url:'https://business.nikkei.com/rss/all_nb.rdf',proxy:'https://proxy.cors.dev/',label:'日経ビジネス電子版'},
+    japanese:{url:'https://www.nhk.or.jp/rss/news/cat5.xml',proxy:'https://proxy.cors.dev/',label:'NHKニュース・経済'},
     english:{url:'https://www.theguardian.com/international/rss',proxy:'https://proxy.cors.dev/',label:'The Guardian'}
   };
   var loaded={japanese:false,english:false};
@@ -86,13 +86,14 @@
       loaded[lang]=true;
     }).catch(function(error){
       status.textContent='Could not load this feed right now. Open the source website instead.';
-      if(!list.children.length){var fallback=node('p','home-news-item__summary','Feed loading failed: '+(error&&error.message?error.message:'network error')+' ');var link=node('a','','Visit '+feeds[lang].label);link.href=lang==='english'?'https://www.theguardian.com/international':'https://business.nikkei.com/';link.target='_blank';link.rel='noopener noreferrer';fallback.appendChild(link);list.replaceChildren(fallback);}
+      if(!list.children.length){var fallback=node('p','home-news-item__summary','Feed loading failed: '+(error&&error.message?error.message:'network error')+' ');var link=node('a','','Visit '+feeds[lang].label);link.href=lang==='english'?'https://www.theguardian.com/international':'https://www3.nhk.or.jp/news/cat5/';link.target='_blank';link.rel='noopener noreferrer';fallback.appendChild(link);list.replaceChildren(fallback);}
     }).finally(function(){busy[lang]=false;});
   }
   topTabs.forEach(function(tab){tab.addEventListener('click',function(){activateTop(tab.getAttribute('data-home-panel-tab'));});});
   sourceTabs.forEach(function(tab){tab.addEventListener('click',function(){activateSource(tab.getAttribute('data-news-source-tab'));});});
   document.querySelectorAll('[data-news-refresh]').forEach(function(button){button.addEventListener('click',function(){var id=button.getAttribute('data-news-refresh');loaded[id]=false;var list=document.querySelector('[data-news-list="'+id+'"]');if(list)list.replaceChildren();loadFeed(id,true);});});
-  document.querySelectorAll('[data-news-bulk]').forEach(function(button){button.addEventListener('click',function(){var action=button.getAttribute('data-news-bulk');var id=button.getAttribute('data-news-bulk-source');var list=document.querySelector('[data-news-list="'+id+'"]');if(!list)return;Array.prototype.forEach.call(list.querySelectorAll('details.home-news-item'),function(card){card.open=action==='expand';});});});
+  function syncBulkToggle(button,expand){button.setAttribute('aria-label',expand?'Expand all articles':'Collapse all articles');button.setAttribute('title',expand?'Expand all articles':'Collapse all articles');button.setAttribute('data-expand-next',String(expand));button.innerHTML=expand?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14l5-5 5 5M7 20l5-5 5 5"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5M7 4l5 5 5-5"/></svg>';}
+  document.querySelectorAll('[data-news-bulk-toggle]').forEach(function(button){syncBulkToggle(button,true);button.addEventListener('click',function(){var id=button.getAttribute('data-news-bulk-toggle');var list=document.querySelector('[data-news-list="'+id+'"]');if(!list)return;var cards=Array.prototype.slice.call(list.querySelectorAll('details.home-news-item'));var expand=cards.some(function(card){return !card.open;});cards.forEach(function(card){card.open=expand;});syncBulkToggle(button,!expand);});});
   activateTop('market');
   activateSource('japanese');
 })(window,document);
