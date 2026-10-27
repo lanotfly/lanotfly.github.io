@@ -121,3 +121,23 @@
 .home-page .home-market-panel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:1;}
 .home-page .home-market-panel[hidden]{display:block!important;}
 .home-page .home-market-list .fx-bar__rates{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important;}
+
+
+/* Clear visual groups inside the Home market snapshot. */
+.home-market-list .home-market-section-label{
+  grid-column:1/-1;
+  margin:5px 1px 0;
+  padding:5px 2px 3px;
+  border-top:1px solid #dcd0e9;
+  color:#6e568b;
+  font-size:10px;
+  line-height:1.2;
+  font-weight:800;
+  letter-spacing:.045em;
+}
+.home-market-list .home-market-section-label:first-child{
+  margin-top:0;
+  padding-top:1px;
+  border-top:0;
+}
+.home-market-panel.is-collapsed{display:none!important}
