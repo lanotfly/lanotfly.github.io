@@ -1,4 +1,16 @@
 <div class="site-nav-shell">
+  <nav class="site-tabs" aria-label="Main navigation">
+    <div class="site-tab-links">
+      <a class="site-tab site-tab--home" href="/home/">Home</a>
+      <button class="site-tab site-tab--market" id="library-market-toggle" type="button" aria-expanded="false" aria-controls="library-market-panel" title="Show exchange rates and market prices">Market</button>
+      <button class="site-tab site-tab--radio-group" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
+      <button class="site-tab site-tab--niv" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span class="niv-button-label">KJV</span></button>
+      <button class="site-tab site-tab--podcast" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-podcast-toggle" type="button" aria-expanded="false" aria-controls="library-podcast-panel" title="Choose from four podcasts"><span class="library-podcast-button-label">Podcast</span></button>
+      <button class="site-tab site-tab--book-group" id="library-book-toggle" data-audio-resource="false" type="button" aria-expanded="false" aria-controls="library-book-panel" title="Browse the knowledge library">Book</button>
+    </div>
+  </nav>
+  <section id="library-market-panel" class="library-market-panel" aria-label="Exchange rates and market prices" hidden>
+    <div class="library-market-panel__heading"><strong>Market overview</strong><span>FX · Indices · Bitcoin</span></div>
   <div class="fx-bar" data-fx-bar aria-label="Exchange rates">
   <div class="fx-bar__content">
     <div class="fx-bar__rates">
@@ -24,16 +36,7 @@
   </div>
   <span class="fx-bar__status" data-fx-status role="status" aria-live="polite"></span>
 </div>
-
-  <nav class="site-tabs" aria-label="Main navigation">
-    <div class="site-tab-links">
-      <a class="site-tab site-tab--home" href="/home/">Home</a>
-      <button class="site-tab site-tab--radio-group" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
-      <button class="site-tab site-tab--niv" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span class="niv-button-label">KJV</span></button>
-      <button class="site-tab site-tab--podcast" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-podcast-toggle" type="button" aria-expanded="false" aria-controls="library-podcast-panel" title="Choose from four podcasts"><span class="library-podcast-button-label">Podcast</span></button>
-      <button class="site-tab site-tab--book-group" id="library-book-toggle" data-audio-resource="false" type="button" aria-expanded="false" aria-controls="library-book-panel" title="Browse the knowledge library">Book</button>
-    </div>
-  </nav>
+  </section>
   <section id="library-book-panel" class="book-source-panel" aria-label="Book sections" hidden>
     <nav class="secondary-tabs book-source-tabs" aria-label="Knowledge library sections">
       <a class="secondary-tab book-secondary-link site-tab--data" data-audio-resource="false" href="/data/" aria-label="Data">Data</a>
