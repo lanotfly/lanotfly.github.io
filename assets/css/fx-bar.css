@@ -158,3 +158,22 @@
 .home-market-list .fx-rate-change.is-up{color:#19845b}
 .home-market-list .fx-rate-change.is-down{color:#c04e54}
 @media(max-width:380px){.home-market-list .fx-rate-price{font-size:11px}.home-market-list .fx-rate-change{font-size:9px}}
+
+
+/* Compact inline values: keep FX prices and daily percentages on the same line. */
+.home-market-list .fx-bar__value[data-fx-value]{
+  display:inline-flex!important;
+  flex-direction:row!important;
+  align-items:baseline!important;
+  justify-content:flex-end!important;
+  gap:6px!important;
+  white-space:nowrap!important;
+}
+.home-market-list .fx-rate-price{display:inline!important;white-space:nowrap!important}
+.home-market-list .fx-rate-change{display:inline!important;margin:0 0 0 2px!important;padding-left:2px;white-space:nowrap!important}
+.home-market-list .fx-bar__value [data-market-price]{margin-right:4px!important}
+.home-market-list .fx-bar__change{margin-left:3px!important;padding-left:2px}
+@media(max-width:380px){
+  .home-market-list .fx-bar__value[data-fx-value]{gap:4px!important}
+  .home-market-list .fx-bar__value [data-market-price]{margin-right:3px!important}
+}
