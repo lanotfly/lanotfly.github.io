@@ -16,3 +16,13 @@
 @media(max-width:420px){.fx-bar{gap:5px;padding:4px 5px;margin-bottom:5px}.fx-bar__content{gap:3px}.fx-bar__rates{gap:clamp(4px,1.4vw,7px)}.fx-bar__rate{gap:3px}.fx-bar__pair{font-size:9px}.fx-bar__value{font-size:11px}.fx-bar__meta{font-size:8px}.fx-bar__refresh{width:27px;height:27px}.fx-bar__refresh svg{width:15px;height:15px}}
 @media(max-width:350px){.fx-bar__rates{gap:4px}.fx-bar__pair{font-size:8px}.fx-bar__value{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.fx-bar__refresh.is-loading svg{animation-duration:2s}}
+
+/* Keep the expanded finance ticker compact; allow horizontal swipe on small screens. */
+.fx-bar__rates{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:1px 0;gap:clamp(7px,1.3vw,13px)}
+.fx-bar__rates::-webkit-scrollbar{display:none}
+.fx-bar__divider{flex:0 0 1px;height:15px;background:#d8dfeb;margin:0 1px}
+.fx-bar__market{color:#426c91}
+.fx-bar__market.is-up{color:#16845b}
+.fx-bar__market.is-down{color:#c14c52}
+.fx-bar__meta{flex-shrink:0}
+@media(max-width:420px){.fx-bar__rates{gap:7px}.fx-bar__divider{height:13px}}
