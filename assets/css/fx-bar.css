@@ -47,3 +47,10 @@
   .fx-bar[data-fx-bar] .fx-bar__tools{min-width:48px!important;gap:2px!important}
   .fx-bar[data-fx-bar] .fx-bar__meta{font-size:8px!important;max-width:72px!important}
 }
+
+/* Final compact controls: square refresh button and short timestamp. */
+.fx-bar[data-fx-bar] .fx-bar__refresh{border-radius:4px!important}
+.fx-bar[data-fx-bar] .fx-bar__meta{white-space:nowrap!important;overflow:visible!important;overflow-wrap:normal!important;max-width:none!important;font-size:9px!important;line-height:1.1!important}
+@media(max-width:420px){
+  .fx-bar[data-fx-bar] .fx-bar__meta{font-size:8px!important;max-width:none!important}
+}
