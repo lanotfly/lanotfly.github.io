@@ -139,15 +139,14 @@
     const isHome = target.matches(".site-tab--home");
     marketPanel.classList.toggle("is-collapsed", !isHome);
     if (isHome) {
-      if (typeof window.LibraryClosePodcastPanel === "function") window.LibraryClosePodcastPanel();
-      const podcastPanel = document.getElementById("library-podcast-panel");
-      const podcastToggle = document.getElementById("library-podcast-toggle");
-      if (podcastPanel) podcastPanel.hidden = true;
-      if (podcastToggle) podcastToggle.setAttribute("aria-expanded", "false");
-      const biblePanel = document.getElementById("niv-bible-panel");
-      const bibleToggle = document.getElementById("niv-bible-toggle");
-      if (biblePanel) biblePanel.hidden = true;
-      if (bibleToggle) bibleToggle.setAttribute("aria-expanded", "false");
+      /* Keep both player panels visible; use their existing list-fold controls. */
+      document.querySelectorAll("#library-podcast-panel [data-podcast-collapse]").forEach(function (collapseButton) {
+        if (collapseButton.getAttribute("aria-expanded") === "true") collapseButton.click();
+      });
+      const kjvCollapseButton = document.getElementById("niv-bible-queue-toggle");
+      if (kjvCollapseButton && kjvCollapseButton.getAttribute("aria-expanded") === "true") {
+        kjvCollapseButton.click();
+      }
     }
   }, true);
 
