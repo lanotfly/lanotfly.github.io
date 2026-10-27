@@ -51,8 +51,10 @@
       }
       node.title = (item.changePct == null ? "Change vs previous close unavailable · " : (changeText + " vs previous close · ")) +
         (cached ? "Saved quote" : "Latest available quote");
-      node.classList.toggle("is-up", Number(item.changePct) > 0);
-      node.classList.toggle("is-down", Number(item.changePct) < 0);
+      if (!priceNode || !changeNode) {
+        node.classList.toggle("is-up", Number(item.changePct) > 0);
+        node.classList.toggle("is-down", Number(item.changePct) < 0);
+      }
     });
   }
   function readCache() {
