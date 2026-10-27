@@ -88,3 +88,31 @@
 @media(max-width:700px){
  .site-nav-shell .site-tab-links .site-tab--market{grid-column:span 2!important}
 }
+
+/* Home market snapshot: compact, readable list with no horizontal scrolling. */
+.home-market-panel{margin:12px 0 18px;padding:11px 12px 10px;border:1px solid #e2d8ef;border-radius:12px;background:linear-gradient(145deg,#fcfaff,#f7f4fc);box-sizing:border-box}
+.home-market-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px}
+.home-market-panel__heading>div:first-child{min-width:0}
+.home-market-panel__heading .eyebrow{margin:0 0 2px;color:#8871a7;font-size:9px;letter-spacing:.1em}
+.home-market-panel__heading h2{margin:0;font-size:16px;line-height:1.2;color:#493764}
+.home-market-panel__refresh{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:0 0 auto}
+.home-market-panel__refresh .fx-bar__refresh{width:28px;height:28px;border-radius:5px}
+.home-market-panel__refresh .fx-bar__meta{font-size:9px;line-height:1.1;white-space:nowrap;color:#82748f}
+.home-market-list.fx-bar{display:block;width:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;overflow:visible}
+.home-market-list .fx-bar__content{display:block;width:100%;min-width:0}
+.home-market-list .fx-bar__rates{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important;width:100%;min-width:0;padding:0!important;overflow:visible!important;white-space:normal!important}
+.home-market-list .fx-bar__rate{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:5px!important;min-width:0;padding:7px 8px;border:1px solid #e9e2f1;border-radius:7px;background:rgba(255,255,255,.9);white-space:normal!important}
+.home-market-list .fx-bar__pair{font-size:10px!important;line-height:1.15!important;color:#777087!important;white-space:nowrap!important}
+.home-market-list .fx-bar__value{font-size:12px!important;line-height:1.15!important;font-weight:750!important;color:#3568b2!important;text-align:right;white-space:nowrap!important}
+.home-market-list .fx-bar__market.is-up{color:#19845b!important}
+.home-market-list .fx-bar__market.is-down{color:#c04e54!important}
+.home-market-list .fx-bar__status{display:block}
+@media(max-width:380px){
+ .home-market-panel{margin:9px 0 14px;padding:9px}
+ .home-market-panel__heading h2{font-size:15px}
+ .home-market-list .fx-bar__rates{gap:4px!important}
+ .home-market-list .fx-bar__rate{padding:6px 5px;gap:3px!important}
+ .home-market-list .fx-bar__pair{font-size:9px!important}
+ .home-market-list .fx-bar__value{font-size:11px!important}
+ .home-market-panel__refresh .fx-bar__meta{font-size:8px}
+}
