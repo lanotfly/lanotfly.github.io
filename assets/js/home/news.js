@@ -38,6 +38,8 @@
   function makeItem(item,lang){
     var title=getText(item,['title']).trim()||'Untitled article';
     var link=getText(item,['link']).trim();
+    if(!link){var linkNode=item.getElementsByTagNameNS('*','link')[0]||item.getElementsByTagName('link')[0];if(linkNode)link=linkNode.getAttribute('href')||linkNode.textContent||'';}
+    link=link.trim();
     var date=getText(item,['pubDate','published','updated','date']);
     var bodyCandidates=['encoded','content','description','summary'].map(function(name){return getText(item,[name]);}).map(plainText).filter(Boolean);
     var summary=bodyCandidates.sort(function(a,b){return b.length-a.length;})[0]||'';
@@ -58,6 +60,7 @@
     }else{
       detail.appendChild(node('p','home-news-item__summary',lang==='english'?'The RSS feed did not include an article summary for this story.':'このニュースにはRSSの概要文が含まれていません。'));
     }
+    if(link){var actions=node('div','home-news-item__actions');var original=node('a','',lang==='english'?'Read full article ↗':'記事全文を読む ↗');original.href=link;original.target='_blank';original.rel='noopener noreferrer';actions.appendChild(original);detail.appendChild(actions);}
     card.appendChild(detail);
     card.addEventListener('toggle',function(){if(card.open){arrow.textContent='－';}else{arrow.textContent='＋';}});
     return card;
