@@ -33,3 +33,17 @@
 .fx-bar[data-fx-bar] .fx-bar__rate{display:inline-flex!important;flex:0 0 auto!important;flex-direction:row!important;align-items:baseline!important;white-space:nowrap!important}
 .fx-bar[data-fx-bar] .fx-bar__divider{display:block!important;flex:0 0 1px!important}
 .fx-bar[data-fx-bar] .fx-bar__pair,.fx-bar[data-fx-bar] .fx-bar__value{display:inline!important;white-space:nowrap!important}
+
+
+/* Slightly larger ticker text; keep update time directly below the refresh control. */
+.fx-bar[data-fx-bar] .fx-bar__tools{display:flex!important;flex:0 0 auto!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;min-width:54px!important}
+.fx-bar[data-fx-bar] .fx-bar__pair{font-size:11px!important}
+.fx-bar[data-fx-bar] .fx-bar__value{font-size:clamp(12px,2.2vw,15px)!important}
+.fx-bar[data-fx-bar] .fx-bar__meta{font-size:9px!important;line-height:1.15!important;max-width:92px!important;text-align:center!important;white-space:normal!important;overflow-wrap:anywhere!important;flex-shrink:0!important}
+.fx-bar[data-fx-bar] .fx-bar__content{width:auto!important;flex:1 1 auto!important;min-width:0!important}
+@media(max-width:420px){
+  .fx-bar[data-fx-bar] .fx-bar__pair{font-size:10px!important}
+  .fx-bar[data-fx-bar] .fx-bar__value{font-size:12px!important}
+  .fx-bar[data-fx-bar] .fx-bar__tools{min-width:48px!important;gap:2px!important}
+  .fx-bar[data-fx-bar] .fx-bar__meta{font-size:8px!important;max-width:72px!important}
+}
