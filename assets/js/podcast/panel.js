@@ -15,8 +15,13 @@
   if (!root || !mainToggle) return;
 
   var episodesByFeed = { bbc: [], chronicle: [], english: [], japanese: [] };
-  var activeFeed = 'bbc';
-  var activeTab = 'bbc';
+  var rememberedFeed = 'bbc';
+  try {
+    var savedFeed = localStorage.getItem('personal-library-podcast-active-feed');
+    if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(savedFeed) >= 0) rememberedFeed = savedFeed;
+  } catch (_) {}
+  var activeFeed = rememberedFeed;
+  var activeTab = rememberedFeed;
   var current = { feed: null, index: -1 };
   var loaded = false;
   var pendingAutoplay = false;
@@ -148,8 +153,10 @@
     });
   }
   function setActiveFeed(feedId) {
+    if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(feedId) < 0) return;
     activeFeed = feedId;
     setActiveTab(feedId);
+    try { localStorage.setItem('personal-library-podcast-active-feed', feedId); } catch (_) {}
   }
   function setPodcastOpen(open) {
     if (open && window.LibraryAudioCoordinator) {
@@ -365,13 +372,15 @@
   root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-podcast-tab');
+      if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(nextFeed) < 0) return;
+      /* Remember the chosen show immediately, even if playback has not started yet. */
+      setActiveFeed(nextFeed);
       var alreadySelectedPodcastTab = activeTab === nextFeed;
       if (alreadySelectedPodcastTab && nextFeed === activeFeed) {
         playDefaultEpisode(nextFeed);
         return;
       }
       stopAllPodcasts(true);
-      setActiveFeed(nextFeed);
       if (loaded) playDefaultEpisode(nextFeed);
       else pendingAutoplay = true;
     });
