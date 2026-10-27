@@ -9,97 +9,128 @@
   const jpyCnyNode = bar.querySelector('[data-fx-value="jpy-cny"]');
   const meta = bar.querySelector("[data-fx-meta]");
   const status = bar.querySelector("[data-fx-status]");
-  const cacheKey = "library_fx_rates_v1";
+  const cacheKey = "library_fx_rates_v2";
+  const marketCacheKey = "library_market_quotes_v1";
   let activeRequest = null;
 
-  const format = (value, digits) => Number(value).toLocaleString("en-US", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits
+  const format = (value, digits = 2) => Number(value).toLocaleString("en-US", {
+    minimumFractionDigits: digits, maximumFractionDigits: digits
   });
-
   function formatFetchTime(timestamp) {
     const date = new Date(timestamp);
     if (Number.isNaN(date.getTime())) return "time unavailable";
     return new Intl.DateTimeFormat("ja-JP", {
-      timeZone: "Asia/Tokyo",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false
+      timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
     }).format(date);
   }
-
   function showRates(data, cached = false) {
     usdJpyNode.textContent = format(data.usdJpy, 2);
     usdCnyNode.textContent = format(data.usdCny, 4);
-    jpyCnyNode.textContent = format(data.jpyCny, 5);
-    const fetchedLabel = data.fetchedAt
-      ? "Fetch time · " + formatFetchTime(data.fetchedAt) + " JST"
-      : "Fetch time unavailable";
-    meta.textContent = (cached ? "Saved · " : "") + fetchedLabel;
-    status.textContent = cached ? "Showing last saved rates." : "Exchange rates updated.";
+    jpyCnyNode.textContent = format(data.usdCny / data.usdJpy, 5);
+    meta.textContent = (cached ? "Saved · " : "") + "Fetch time · " + formatFetchTime(data.fetchedAt) + " JST";
   }
-
+  function showMarkets(quotes, cached = false) {
+    Object.entries(quotes || {}).forEach(([key, item]) => {
+      const node = bar.querySelector('[data-market-value="' + key + '"]');
+      if (!node || !item || !Number.isFinite(item.price)) return;
+      const digits = key === "bitcoin" ? 0 : 2;
+      node.textContent = (key === "bitcoin" ? "$" : "") + format(item.price, digits);
+      node.title = (item.changePct == null ? "" : ((item.changePct > 0 ? "+" : "") + item.changePct.toFixed(2) + "% · ")) +
+        (cached ? "Saved quote" : "Latest available quote");
+      node.classList.toggle("is-up", Number(item.changePct) > 0);
+      node.classList.toggle("is-down", Number(item.changePct) < 0);
+    });
+  }
   function readCache() {
     try {
-      const value = JSON.parse(localStorage.getItem(cacheKey) || "null");
-      if (value && Number.isFinite(value.usdJpy) && Number.isFinite(value.usdCny)) {
-        showRates({ ...value, jpyCny: value.usdCny / value.usdJpy }, true);
-        return true;
-      }
+      const data = JSON.parse(localStorage.getItem(cacheKey) || "null");
+      if (data && Number.isFinite(data.usdJpy) && Number.isFinite(data.usdCny)) { showRates(data, true); return true; }
     } catch (_) {}
     return false;
   }
-
+  function readMarketCache() {
+    try {
+      const data = JSON.parse(localStorage.getItem(marketCacheKey) || "null");
+      if (data && data.quotes) { showMarkets(data.quotes, true); return true; }
+    } catch (_) {}
+    return false;
+  }
+  async function fetchMarketQuote(symbol) {
+    const url = "https://query1.finance.yahoo.com/v8/finance/chart/" + encodeURIComponent(symbol) + "?range=1d&interval=1m";
+    const response = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error("Market quote unavailable: " + symbol);
+    const json = await response.json();
+    const result = json?.chart?.result?.[0];
+    const meta = result?.meta || {};
+    const price = Number(meta.regularMarketPrice);
+    const previous = Number(meta.chartPreviousClose || meta.previousClose);
+    if (!(price > 0)) throw new Error("Missing market quote: " + symbol);
+    return { price, changePct: previous > 0 ? ((price - previous) / previous) * 100 : null, fetchedAt: Date.now() };
+  }
+  async function refreshMarkets() {
+    const instruments = {
+      sp500: "^GSPC", nasdaq: "^IXIC", dow: "^DJI",
+      shanghai: "000001.SS", nikkei: "^N225", bitcoin: "BTC-USD"
+    };
+    const entries = await Promise.allSettled(Object.entries(instruments).map(async ([key, symbol]) => [key, await fetchMarketQuote(symbol)]));
+    const quotes = {};
+    entries.forEach(entry => { if (entry.status === "fulfilled") quotes[entry.value[0]] = entry.value[1]; });
+    if (Object.keys(quotes).length) {
+      showMarkets(quotes);
+      try {
+        const old = JSON.parse(localStorage.getItem(marketCacheKey) || '{"quotes":{}}');
+        localStorage.setItem(marketCacheKey, JSON.stringify({ quotes: { ...(old.quotes || {}), ...quotes }, fetchedAt: Date.now() }));
+      } catch (_) {}
+    }
+    return Object.keys(quotes).length;
+  }
   async function refresh() {
     if (activeRequest) return activeRequest;
     button.disabled = true;
     button.classList.add("is-loading");
     button.setAttribute("aria-busy", "true");
-    status.textContent = "Refreshing exchange rates…";
+    status.textContent = "Refreshing exchange rates and market quotes…";
     activeRequest = (async () => {
-      try {
-        const response = await fetch("https://api.frankfurter.dev/v2/rates?base=USD&quotes=JPY,CNY", {
-          cache: "no-store",
-          headers: { Accept: "application/json" }
-        });
-        if (!response.ok) throw new Error("Exchange rate service returned " + response.status);
-        const rows = await response.json();
-        const rates = Object.fromEntries(rows.map(row => [String(row.quote).toUpperCase(), Number(row.rate)]));
-        const usdJpy = rates.JPY;
-        const usdCny = rates.CNY;
-        if (!(usdJpy > 0) || !(usdCny > 0)) throw new Error("Required currencies are missing");
-        const data = { usdJpy, usdCny, jpyCny: usdCny / usdJpy, date: rows[0]?.date || "", fetchedAt: Date.now() };
-        showRates(data);
-        try { localStorage.setItem(cacheKey, JSON.stringify(data)); } catch (_) {}
-      } catch (error) {
-        const hadCache = readCache();
-        status.textContent = hadCache
-          ? "Refresh failed. Showing previously saved rates."
-          : "Rates unavailable. Tap refresh to try again.";
-        if (!hadCache) meta.textContent = "Unable to load rates";
-      } finally {
-        button.disabled = false;
-        button.classList.remove("is-loading");
-        button.removeAttribute("aria-busy");
-        activeRequest = null;
-      }
-    })();
+      const tasks = await Promise.allSettled([
+        (async () => {
+          const response = await fetch("https://api.frankfurter.dev/v2/rates?base=USD&quotes=JPY,CNY", {
+            cache: "no-store", headers: { Accept: "application/json" }
+          });
+          if (!response.ok) throw new Error("Exchange-rate service returned " + response.status);
+          const rows = await response.json();
+          const rates = Object.fromEntries(rows.map(row => [String(row.quote).toUpperCase(), Number(row.rate)]));
+          if (!(rates.JPY > 0) || !(rates.CNY > 0)) throw new Error("Required currencies are missing");
+          const data = { usdJpy: rates.JPY, usdCny: rates.CNY, fetchedAt: Date.now() };
+          showRates(data);
+          try { localStorage.setItem(cacheKey, JSON.stringify(data)); } catch (_) {}
+        })(),
+        refreshMarkets()
+      ]);
+      const rateFailed = tasks[0].status === "rejected";
+      const marketFailed = tasks[1].status === "rejected" || tasks[1].value === 0;
+      if (rateFailed) readCache();
+      if (marketFailed) readMarketCache();
+      status.textContent = rateFailed && marketFailed
+        ? "Refresh failed. Showing saved data where available."
+        : rateFailed || marketFailed
+          ? "Some data could not refresh; saved quotes may be shown."
+          : "Rates and market quotes updated.";
+      if (rateFailed && !readCache()) meta.textContent = "Rates unavailable";
+    })().finally(() => {
+      button.disabled = false;
+      button.classList.remove("is-loading");
+      button.removeAttribute("aria-busy");
+      activeRequest = null;
+    });
     return activeRequest;
   }
-
   button.addEventListener("click", refresh);
   if (!readCache()) {
-    usdJpyNode.textContent = "—";
-    usdCnyNode.textContent = "—";
-    jpyCnyNode.textContent = "—";
+    usdJpyNode.textContent = "—"; usdCnyNode.textContent = "—"; jpyCnyNode.textContent = "—";
     meta.textContent = "Loading rates…";
   }
+  readMarketCache();
   refresh();
-  window.addEventListener("pageshow", event => {
-    if (event.persisted) refresh();
-  });
+  window.addEventListener("pageshow", event => { if (event.persisted) refresh(); });
 })();
