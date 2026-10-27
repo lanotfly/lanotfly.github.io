@@ -112,7 +112,7 @@
 .home-market-list .fx-bar__market.is-down{color:#c04e54!important}
 .home-market-list .fx-bar__status{display:block}
 @media(max-width:700px){
- .home-market-panel{width:calc(100% + 32px);margin-left:-16px}
+ .home-market-panel{width:100%;margin-left:0}
 }
 @media(max-width:380px){
  .home-market-panel{margin-top:9px;margin-bottom:14px;padding:9px}
