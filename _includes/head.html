@@ -37,6 +37,9 @@
 	<meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
   <meta name="theme-color" content="#ffffff">
+  <script>
+    (function(){try{var m=localStorage.getItem("yui-library-theme");var d=m==="dark"||(m!=="light"&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();
+  </script>
   <link rel="icon" type="image/svg+xml" href="/assets/images/your-library-icon.svg?v=20261025-1">
   <link rel="shortcut icon" href="/assets/images/your-library-icon.svg?v=20261025-1" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/images/your-library-icon.svg?v=20261025-1">
@@ -51,6 +54,7 @@
 	<!--  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 -->
   <link rel="stylesheet" href="/assets/css/site-modern.css?v=20261027-19">
+  <link rel="stylesheet" href="/assets/css/theme-mode.css?v=20261028-1">
   <link rel="stylesheet" href="/assets/css/fx-bar.css?v=20261027-13">
   <script defer src="/assets/js/diagram-zoom.js?v=20261025-3"></script>
 
@@ -69,5 +73,6 @@
   <script defer src="/assets/js/fx-bar.js?v=20261027-14"></script>
 
   <link rel="stylesheet" href="/assets/css/home-news.css?v=20261027-11">
+  <script defer src="/assets/js/theme-mode.js?v=20261028-1"></script>
   <script defer src="/assets/js/home/news.js?v=20261027-9"></script>
 </head>
