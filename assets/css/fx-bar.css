@@ -54,3 +54,37 @@
 @media(max-width:420px){
   .fx-bar[data-fx-bar] .fx-bar__meta{font-size:8px!important;max-width:none!important}
 }
+
+/* Market overview panel: compact card grid replaces the scrolling ticker. */
+.library-market-panel{margin:6px 0 12px;padding:10px;border:1px solid #d9cde9;border-radius:10px;background:#fbf9fe;box-sizing:border-box}
+.library-market-panel[hidden]{display:none!important}
+.library-market-panel__heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 2px 8px;color:#62458a;font-size:13px}
+.library-market-panel__heading span{font-size:10px;font-weight:500;color:#8a7a9e}
+.library-market-panel .fx-bar[data-fx-bar]{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px;padding:0;border:0;border-radius:0;background:transparent}
+.library-market-panel .fx-bar__content{grid-column:1/-1;grid-row:2;width:100%!important;min-width:0!important;display:block!important}
+.library-market-panel .fx-bar__rates{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;overflow:visible!important;width:100%!important;white-space:normal!important;padding:0!important}
+.library-market-panel .fx-bar__rate{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center;gap:3px;min-width:0;padding:7px 8px;border:1px solid #e7e0ef;border-radius:7px;background:#fff;white-space:normal!important}
+.library-market-panel .fx-bar__pair{font-size:10px!important;line-height:1.15!important;color:#77708a!important}
+.library-market-panel .fx-bar__value{font-size:clamp(12px,2.4vw,15px)!important;line-height:1.2!important;font-weight:750!important;white-space:nowrap!important}
+.library-market-panel .fx-bar__divider{display:none!important}
+.library-market-panel .fx-bar__tools{grid-column:2;grid-row:1;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;min-width:0!important}
+.library-market-panel .fx-bar__meta{font-size:9px!important;white-space:nowrap!important;max-width:none!important;text-align:right!important;color:#77708a!important}
+.library-market-panel .fx-bar__refresh{width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;border-radius:5px!important}
+.library-market-panel .fx-bar__refresh svg{width:15px!important;height:15px!important}
+@media(min-width:520px){
+ .library-market-panel .fx-bar__rates{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+}
+@media(max-width:380px){
+ .library-market-panel{padding:8px}
+ .library-market-panel__heading{margin-bottom:6px}
+ .library-market-panel .fx-bar__rates{gap:4px!important}
+ .library-market-panel .fx-bar__rate{padding:6px 5px}
+ .library-market-panel .fx-bar__pair{font-size:9px!important}
+ .library-market-panel .fx-bar__value{font-size:11px!important}
+ .library-market-panel .fx-bar__meta{font-size:8px!important}
+}
+.site-nav-shell .site-tab-links .site-tab--market:not(.is-active){color:#62458a!important;background:#f3eef9!important;border-color:#d6c7e8!important}
+.site-nav-shell .site-tab-links .site-tab--market.is-active,.site-nav-shell .site-tab-links .site-tab--market.is-active:hover{color:#62458a!important;background:#f3eef9!important;border:2px solid #9581b3!important;box-shadow:none!important}
+@media(max-width:700px){
+ .site-nav-shell .site-tab-links .site-tab--market{grid-column:span 2!important}
+}
