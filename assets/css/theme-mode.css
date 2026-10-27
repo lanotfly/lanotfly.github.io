@@ -521,3 +521,25 @@ body[data-theme="dark"] { color-scheme: dark; }
 @media(prefers-reduced-motion:reduce) {
   body { transition: none !important; }
 }
+
+/* Final catch-all for page-specific text and video components whose exact
+   class names vary between individual lesson pages. */
+body[data-theme="dark"] .content-wrapper__inner :is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,summary,td,th) {
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .content-wrapper__inner :is(pre,code,input,textarea,select,details) {
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .content-wrapper__inner [class*="video"] {
+  background-color: #1b1f28 !important;
+  background-image: none !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .content-wrapper__inner [class*="video"] :is(h1,h2,h3,h4,h5,h6,p,li,span,label,small,strong,em,figcaption) {
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .content-wrapper__inner [class*="video"] video,
+body[data-theme="dark"] .content-wrapper__inner [class*="video"] iframe {
+  background: #000 !important;
+}
