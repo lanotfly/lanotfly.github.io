@@ -19,10 +19,12 @@
   function formatFetchTime(timestamp) {
     const date = new Date(timestamp);
     if (Number.isNaN(date.getTime())) return "time unavailable";
-    return new Intl.DateTimeFormat("en-US", {
+    const parts = new Intl.DateTimeFormat("en-US", {
       timeZone: "Asia/Tokyo", month: "2-digit", day: "2-digit",
       hour: "2-digit", minute: "2-digit", hour12: false
-    }).format(date);
+    }).formatToParts(date);
+    const part = type => parts.find(item => item.type === type)?.value || "";
+    return part("month") + "/" + part("day") + " " + part("hour") + ":" + part("minute");
   }
   function showRates(data, cached = false) {
     usdJpyNode.textContent = format(data.usdJpy, 2);
