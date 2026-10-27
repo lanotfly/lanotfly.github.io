@@ -559,3 +559,44 @@ body[data-theme="dark"] .site-nav-shell .site-theme-toggle { background: #232936
   .site-nav-shell .site-tab-links .site-tab { padding-left: 8px; padding-right: 8px; }
   .site-nav-shell .site-theme-toggle { width: 28px; height: 28px; min-height: 28px; min-width: 28px; }
 }
+
+
+/* Wiki diagrams: darken white SVG canvases and brighten black labels without replacing semantic accent colors. */
+body[data-theme="dark"] .wiki-wrap figure.diagram,
+body[data-theme="dark"] .wiki-wrap .diagram {
+  background-color: #1b1f28 !important;
+  border-color: #394253 !important;
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .wiki-wrap figure.diagram svg rect[fill="#fff" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg rect[fill="#ffffff" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg rect[fill="white" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg path[fill="#fff" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg path[fill="#ffffff" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg polygon[fill="#fff" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg polygon[fill="#ffffff" i] {
+  fill: #232936 !important;
+}
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="#000" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="#000000" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="#111" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="#222" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="#333" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="#444" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg text[fill="black" i] {
+  fill: #edf0f7 !important;
+}
+body[data-theme="dark"] .wiki-wrap figure.diagram svg line[stroke="#000" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg line[stroke="#222" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg path[stroke="#222" i],
+body[data-theme="dark"] .wiki-wrap figure.diagram svg path[stroke="#333" i] {
+  stroke: #aeb8ca !important;
+}
+/* Real HTML tables are preferred for text-heavy comparison charts; fit columns to the reading width. */
+.wiki-wrap table { width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; }
+.wiki-wrap th, .wiki-wrap td { overflow-wrap: anywhere; word-break: normal; vertical-align: top; }
+.wiki-wrap th { font-weight: 700; }
+@media (max-width: 600px) {
+  .wiki-wrap table { font-size: 12px; }
+  .wiki-wrap th, .wiki-wrap td { padding: 6px 5px !important; }
+}
