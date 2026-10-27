@@ -27,9 +27,32 @@
     return part("month") + "/" + part("day") + " " + part("hour") + ":" + part("minute");
   }
   function showRates(data, cached = false) {
-    usdJpyNode.textContent = format(data.usdJpy, 2);
-    usdCnyNode.textContent = format(data.usdCny, 4);
-    jpyCnyNode.textContent = format(data.usdCny / data.usdJpy, 5);
+    const values = [
+      [usdJpyNode, data.usdJpy, data.previousUsdJpy, 2, "USD/JPY"],
+      [usdCnyNode, data.usdCny, data.previousUsdCny, 4, "USD/CNY"],
+      [jpyCnyNode, data.usdCny / data.usdJpy,
+        data.previousUsdJpy > 0 && data.previousUsdCny > 0 ? data.previousUsdCny / data.previousUsdJpy : null,
+        5, "JPY/CNY"]
+    ];
+    values.forEach(([node, value, previous, digits, label]) => {
+      if (!node) return;
+      node.replaceChildren();
+      const price = document.createElement("span");
+      price.className = "fx-rate-price";
+      price.textContent = format(value, digits);
+      node.appendChild(price);
+      if (Number.isFinite(previous) && previous > 0) {
+        const pct = ((value - previous) / previous) * 100;
+        const change = document.createElement("span");
+        change.className = "fx-rate-change" + (pct > 0 ? " is-up" : pct < 0 ? " is-down" : "");
+        change.textContent = (pct > 0 ? "+" : "") + pct.toFixed(2) + "%";
+        change.title = label + " change versus previous business day's reference rate";
+        node.appendChild(change);
+        node.title = change.title;
+      } else {
+        node.title = label + " daily change unavailable";
+      }
+    });
     meta.textContent = formatFetchTime(data.fetchedAt);
   }
   function showMarkets(quotes, cached = false) {
@@ -117,7 +140,29 @@
           const rows = await response.json();
           const rates = Object.fromEntries(rows.map(row => [String(row.quote).toUpperCase(), Number(row.rate)]));
           if (!(rates.JPY > 0) || !(rates.CNY > 0)) throw new Error("Required currencies are missing");
-          const data = { usdJpy: rates.JPY, usdCny: rates.CNY, fetchedAt: Date.now() };
+          const currentDate = rows[0]?.date;
+          let previousRates = null;
+          if (currentDate) {
+            const day = new Date(currentDate + "T00:00:00Z");
+            for (let offset = 1; offset <= 7 && !previousRates; offset++) {
+              const priorDay = new Date(day.getTime() - offset * 86400000).toISOString().slice(0, 10);
+              try {
+                const previousResponse = await fetch("https://api.frankfurter.dev/v2/rates?date=" + priorDay + "&base=USD&quotes=JPY,CNY", {
+                  cache: "no-store", headers: { Accept: "application/json" }
+                });
+                if (!previousResponse.ok) continue;
+                const previousRows = await previousResponse.json();
+                const prior = Object.fromEntries(previousRows.map(row => [String(row.quote).toUpperCase(), Number(row.rate)]));
+                if (prior.JPY > 0 && prior.CNY > 0) previousRates = prior;
+              } catch (_) {}
+            }
+          }
+          const data = {
+            usdJpy: rates.JPY, usdCny: rates.CNY,
+            previousUsdJpy: previousRates?.JPY ?? null,
+            previousUsdCny: previousRates?.CNY ?? null,
+            fetchedAt: Date.now()
+          };
           showRates(data);
           try { localStorage.setItem(cacheKey, JSON.stringify(data)); } catch (_) {}
         })(),
