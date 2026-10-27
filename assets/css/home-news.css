@@ -58,3 +58,12 @@
 .home-news-heading p{display:none}
 .home-news-item__title{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
 .home-news-status{margin:4px 0 7px;font-size:.72rem}
+
+/* Tight, title-height-only rows to conserve vertical space on mobile. */
+.home-news-list{gap:3px}
+.home-news-item{border-radius:7px}
+.home-news-item__title-row{min-height:0;height:auto;padding:5px 8px;gap:7px;line-height:1.25}
+.home-news-item__title{font-size:.82rem;line-height:1.25;font-weight:600}
+.home-news-item__chevron{font-size:13px;line-height:1}
+.home-news-item[open]>.home-news-item__title-row{padding-top:6px;padding-bottom:6px}
+@media(max-width:600px){.home-news-item__title-row{min-height:0;padding:5px 7px}.home-news-item__title{font-size:.8rem;line-height:1.25}}
