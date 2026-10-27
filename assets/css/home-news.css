@@ -120,3 +120,11 @@
 .home-news-bulk-toggle:hover,.home-news-bulk-toggle:focus-visible{background:#e6f3e9;border-color:#6da780;outline:2px solid rgba(109,167,128,.22);outline-offset:1px}
 .home-news-bulk-toggle:active{transform:translateY(1px)}
 @media(max-width:600px){.home-news-bulk-toggle{flex-basis:32px;width:32px;height:32px;min-height:32px;padding:5px}.home-news-bulk-toggle svg{width:20px;height:20px}}
+
+
+/* Further tighten news headline rows without shrinking the text too much. */
+.home-news-list{gap:3px}
+.home-news-item__title-row{min-height:34px;padding:5px 9px;gap:7px}
+.home-news-item__title{font-size:.82rem;line-height:1.25}
+.home-news-item__chevron{font-size:13px}
+@media(max-width:600px){.home-news-item__title-row{min-height:34px;padding:5px 8px}.home-news-item__title{font-size:.81rem;line-height:1.25}}
