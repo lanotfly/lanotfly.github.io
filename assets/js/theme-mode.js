@@ -39,10 +39,13 @@
       button.addEventListener("click", function () {
         mode = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
         if (button) {
-          button.classList.remove("is-spinning");
-          void button.offsetWidth;
-          button.classList.add("is-spinning");
-          window.setTimeout(function () { if (button) button.classList.remove("is-spinning"); }, 260);
+          var yinYang = button.querySelector(".theme-yinyang");
+          if (yinYang) {
+            yinYang.classList.remove("is-spinning");
+            void yinYang.offsetWidth;
+            yinYang.classList.add("is-spinning");
+            window.setTimeout(function () { if (yinYang) yinYang.classList.remove("is-spinning"); }, 260);
+          }
         }
         saveMode();
       });
