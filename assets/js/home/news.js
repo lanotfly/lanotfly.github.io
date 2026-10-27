@@ -39,9 +39,8 @@
     var title=getText(item,['title']).trim()||'Untitled article';
     var link=getText(item,['link']).trim();
     var date=getText(item,['pubDate','published','updated','date']);
-    var body=getText(item,['encoded','content','description','summary']);
-    if(!body)body=getText(item,['description']);
-    var summary=plainText(body);
+    var bodyCandidates=['encoded','content','description','summary'].map(function(name){return getText(item,[name]);}).map(plainText).filter(Boolean);
+    var summary=bodyCandidates.sort(function(a,b){return b.length-a.length;})[0]||'';
     var card=node('details','home-news-item');
     var summaryRow=node('summary','home-news-item__title-row');
     var titleNode=node('span','home-news-item__title',title);
@@ -59,8 +58,6 @@
     }else{
       detail.appendChild(node('p','home-news-item__summary',lang==='english'?'The RSS feed did not include an article summary for this story.':'このニュースにはRSSの概要文が含まれていません。'));
     }
-    var note=node('p','home-news-item__note',lang==='english'?'This is the full text supplied in the RSS feed, where available. Some feeds provide only an excerpt, so this is not necessarily the complete publisher article.':'RSSに含まれる記事概要を表示しています。配信元が概要のみを提供している場合、記事全文ではありません。');
-    detail.appendChild(note);
     card.appendChild(detail);
     card.addEventListener('toggle',function(){if(card.open){arrow.textContent='－';}else{arrow.textContent='＋';}});
     return card;
