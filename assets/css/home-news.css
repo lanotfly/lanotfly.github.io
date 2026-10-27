@@ -84,3 +84,21 @@
  .home-news-heading__actions{gap:4px}
  .home-news-bulk{min-height:29px;padding:5px 6px;font-size:.68rem}
 }
+
+
+/* News reader width and row rhythm aligned with the Podcast episode list. */
+.home-news-panel{width:100%;max-width:100%;margin:8px 0 18px;padding:10px;box-sizing:border-box}
+.home-news-list{width:100%;max-width:100%;box-sizing:border-box;gap:5px}
+.home-news-item__title-row{min-height:42px;padding:8px 10px}
+.home-news-item__title{font-size:.86rem;line-height:1.35;font-weight:650}
+.home-news-heading__actions{display:flex;align-items:center;justify-content:flex-end;gap:6px}
+.home-news-bulk-toggle{display:inline-flex;flex:0 0 34px;align-items:center;justify-content:center;width:34px;height:34px;min-height:34px;padding:5px;border:1px solid #c5dfcd;border-radius:50%;background:transparent;color:#326c45;cursor:pointer}
+.home-news-bulk-toggle svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.home-news-bulk-toggle:hover,.home-news-bulk-toggle:focus-visible{background:#f0f8f2;border-color:#76ad88;outline:none}
+@media(max-width:600px){
+ .home-news-panel{margin:8px 0 14px;padding:8px}
+ .home-news-item__title-row{min-height:42px;padding:8px 9px}
+ .home-news-item__title{font-size:.84rem}
+ .home-news-bulk-toggle{width:32px;height:32px;min-height:32px;flex-basis:32px}
+ .home-news-bulk-toggle svg{width:19px;height:19px}
+}
