@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "Huge turnout in Israeli election",
+      "summary": "Israelis turn out in large numbers to vote in what many view as one of the most pivotal elections in the country's history. The campaign has been shaped by the issues of democracy and security and is widely being seen as a referendum on Benjamin Netanyahu's leadership. Also: Officials aligned with the Rapid Support Forces in Sudan say drone strikes on the city of Nyala have killed over a hundred people. A ceasefire between Russia and Ukraine is holding in the Russia-occupied city of Oleshky, to allow in humanitarian aid. Media groups in India have told the country's supreme court that the government’s new privacy law would challenge the entire concept of news and amount to pre-censorship. The US Justice Department is set to file new charges against James Comey, marking the third time in just over a year that the Trump administration has tried to prosecute the former FBI director. Football star Kylian Mbappe has been dropped by two of his Chinese sponsors after a video emerged of the player making fun of China’s revolutionary hero Mao Zedong. As the sixth instalment in Sarah J. Mass’s ACOTAR series is released, we learn why the romantasy genre has become so popular. And finally, a two-metre-tall skeleton of a dinosaur is expected to sell at Southby’s for $9m. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: An ultra-Orthodox Jewish man casts his vote for the 26th Knesset elections in the city of Bnei Brak, near Tel Aviv, Israel, 27 October 2026. Credit: EPA/ Shutterstock",
+      "link": "https://www.bbc.co.uk/programmes/p0pjwfwn",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pjw48x.mp3",
+      "date": "Tue, 27 Oct 2026 16:30:00 +0000",
+      "duration": "1704",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Israel holds first election since October 7th attacks",
       "summary": "Israel is holding its first general election since the October 7th Hamas attacks in 2023, with Benjamin Netanyahu seeking to maintain his hold on power after three years of war. Also: after his shock defeat in the Brazilian election, the right wing opposition candidate, Flávio Bolsonaro, says he's now been banned from leaving the country. Anthropic files for a potentially record-breaking stock market valuation. Two Catholic bishops in the US say they regret meeting President Trump, after images of them praying with him are released by a White House aide. Harry Kane becomes the first English footballer in 25 years to win the game's most prestigious individual award - the Ballon d'Or. A convicted murderer in Australia loses his legal challenge against the ban on Vegemite in prisons. 'Maxxing' is selected as Dictionary.com's word of the year.",
       "link": "https://www.bbc.co.uk/programmes/p0pjrnd4",
@@ -1528,15 +1537,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p1l39d.mp3",
       "date": "Thu, 30 Jul 2026 05:00:00 +0000",
       "duration": "1748",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Fifa faces backlash over proposed World Cup sell-off",
-      "summary": "There's a growing backlash after Fifa announced plans to sell stakes in a $20bn subsidiary to manage its competitions. The EU's sports chief accused Fifa of relentless and corrosive commercialisation of football, while European football's governing body UEFA said the World Cup was not an \"asset to trade\". Also: after the resumption of fighting between the US and Iran, we hear more about a militia group in Iraq which was targeted in US-Saudi strikes. At least 14 people are now known to have died in the earthquake that struck the Japanese island of Kyushu. Russia's Federal Security Service has charged the ‌Telegram founder Pavel Durov with facilitating terrorist activities and issued an international arrest warrant. We speak to one of the people who helped rescue horses from an equestrian centre caught up in the wildfires in France; videos of them galloping through the town have gone viral. The actor and musician Jared Leto is facing allegations of criminal sexual conduct by four women. Nepal says its tiger population is bouncing back... and why raving in a sauna is becoming popular in major cities around the world. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Fifa President Gianni Infantino during World Cup 2026 press conference Credit: Reuters/Henry Romero",
-      "link": "https://www.bbc.co.uk/programmes/p0p1hk97",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p1hh9m.mp3",
-      "date": "Wed, 29 Jul 2026 15:27:00 +0000",
-      "duration": "1724",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17101,25 +17101,25 @@
     "bbc": {
       "ok": true,
       "count": 287,
-      "checkedAt": "2026-10-27T14:36:32+00:00"
+      "checkedAt": "2026-10-27T19:41:41+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1611,
-      "checkedAt": "2026-10-27T14:36:32+00:00"
+      "checkedAt": "2026-10-27T19:41:41+00:00"
     },
     "english": {
       "ok": true,
       "count": 422,
-      "checkedAt": "2026-10-27T14:36:33+00:00"
+      "checkedAt": "2026-10-27T19:41:42+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 761,
-      "checkedAt": "2026-10-27T14:36:33+00:00"
+      "checkedAt": "2026-10-27T19:41:42+00:00"
     }
   },
-  "updatedAt": "2026-10-27T14:36:34+00:00",
+  "updatedAt": "2026-10-27T19:41:43+00:00",
   "english": [
     {
       "title": "Hello Again!",
