@@ -19,16 +19,16 @@
   function formatFetchTime(timestamp) {
     const date = new Date(timestamp);
     if (Number.isNaN(date.getTime())) return "time unavailable";
-    return new Intl.DateTimeFormat("ja-JP", {
-      timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Tokyo", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false
     }).format(date);
   }
   function showRates(data, cached = false) {
     usdJpyNode.textContent = format(data.usdJpy, 2);
     usdCnyNode.textContent = format(data.usdCny, 4);
     jpyCnyNode.textContent = format(data.usdCny / data.usdJpy, 5);
-    meta.textContent = (cached ? "Saved · " : "") + "Fetch time · " + formatFetchTime(data.fetchedAt) + " JST";
+    meta.textContent = formatFetchTime(data.fetchedAt);
   }
   function showMarkets(quotes, cached = false) {
     Object.entries(quotes || {}).forEach(([key, item]) => {
