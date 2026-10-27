@@ -26,3 +26,10 @@
 .fx-bar__market.is-down{color:#c14c52}
 .fx-bar__meta{flex-shrink:0}
 @media(max-width:420px){.fx-bar__rates{gap:7px}.fx-bar__divider{height:13px}}
+
+/* Force the finance ticker items onto one horizontal line, even if theme styles conflict. */
+.fx-bar[data-fx-bar] .fx-bar__content{display:flex!important;flex-direction:column!important;min-width:0!important;width:0!important;flex:1 1 0!important}
+.fx-bar[data-fx-bar] .fx-bar__rates{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;white-space:nowrap!important;width:100%!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important}
+.fx-bar[data-fx-bar] .fx-bar__rate{display:inline-flex!important;flex:0 0 auto!important;flex-direction:row!important;align-items:baseline!important;white-space:nowrap!important}
+.fx-bar[data-fx-bar] .fx-bar__divider{display:block!important;flex:0 0 1px!important}
+.fx-bar[data-fx-bar] .fx-bar__pair,.fx-bar[data-fx-bar] .fx-bar__value{display:inline!important;white-space:nowrap!important}
