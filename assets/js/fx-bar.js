@@ -3,11 +3,11 @@
   if (!bar || bar.dataset.fxInitialized === "true") return;
   bar.dataset.fxInitialized = "true";
 
-  const button = bar.querySelector("[data-fx-refresh]");
+  const button = document.querySelector("[data-fx-refresh]");
   const usdJpyNode = bar.querySelector('[data-fx-value="usd-jpy"]');
   const usdCnyNode = bar.querySelector('[data-fx-value="usd-cny"]');
   const jpyCnyNode = bar.querySelector('[data-fx-value="jpy-cny"]');
-  const meta = bar.querySelector("[data-fx-meta]");
+  const meta = document.querySelector("[data-fx-meta]");
   const status = bar.querySelector("[data-fx-status]");
   const cacheKey = "library_fx_rates_v2";
   const marketCacheKey = "library_market_quotes_v1";
