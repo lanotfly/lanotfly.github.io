@@ -51,3 +51,10 @@
  .home-news-item__detail{padding:9px}
  .home-news-item__full-title{font-size:1rem}
 }
+
+/* Compact source heading and single-line tappable headlines. */
+.home-news-heading{align-items:center;margin:0 0 8px}
+.home-news-heading h2{font-size:1rem;font-weight:700}
+.home-news-heading p{display:none}
+.home-news-item__title{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
+.home-news-status{margin:4px 0 7px;font-size:.72rem}
