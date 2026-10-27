@@ -32,25 +32,37 @@
   function plainText(html){
     var doc=new DOMParser().parseFromString(String(html||''),'text/html');
     doc.querySelectorAll('script,style,iframe,object,svg').forEach(function(el){el.remove();});
-    return (doc.body.textContent||'').replace(/\s+/g,' ').trim();
+    return (doc.body.textContent||'').replace(/\\s+/g,' ').trim();
   }
-  function dateLabel(raw){if(!raw)return '';var d=new Date(raw);if(Number.isNaN(d.getTime()))return raw;return new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d);}
+  function dateLabel(raw){if(!raw)return '';var d=new Date(raw);if(Number.isNaN(d.getTime()))return raw;return new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'numeric'}).format(d);}
   function makeItem(item,lang){
     var title=getText(item,['title']).trim()||'Untitled article';
     var link=getText(item,['link']).trim();
-    if(!/^https?:\/\//i.test(link))return null;
     var date=getText(item,['pubDate','published','updated','date']);
     var body=getText(item,['encoded','content','description','summary']);
     if(!body)body=getText(item,['description']);
     var summary=plainText(body);
-    var card=node('article','home-news-item');
+    var card=node('details','home-news-item');
+    var summaryRow=node('summary','home-news-item__title-row');
+    var titleNode=node('span','home-news-item__title',title);
+    var arrow=node('span','home-news-item__chevron','＋');
+    arrow.setAttribute('aria-hidden','true');
+    summaryRow.appendChild(titleNode);summaryRow.appendChild(arrow);card.appendChild(summaryRow);
+    var detail=node('div','home-news-item__detail');
     var meta=node('p','home-news-item__meta');
     if(date)meta.appendChild(node('span','',dateLabel(date)));
     meta.appendChild(node('span','',feeds[lang].label));
-    card.appendChild(meta);
-    var h=node('h3');var a=node('a','',title);a.href=link;a.target='_blank';a.rel='noopener noreferrer';h.appendChild(a);card.appendChild(h);
-    if(summary)card.appendChild(node('p','home-news-item__summary',summary));
-    var actions=node('div','home-news-item__actions');var read=node('a','',lang==='english'?'Open full article ↗':'記事全文を読む ↗');read.href=link;read.target='_blank';read.rel='noopener noreferrer';actions.appendChild(read);card.appendChild(actions);
+    detail.appendChild(meta);
+    detail.appendChild(node('h3','home-news-item__full-title',title));
+    if(summary){
+      detail.appendChild(node('p','home-news-item__summary',summary));
+    }else{
+      detail.appendChild(node('p','home-news-item__summary',lang==='english'?'The RSS feed did not include an article summary for this story.':'このニュースにはRSSの概要文が含まれていません。'));
+    }
+    var note=node('p','home-news-item__note',lang==='english'?'This is the full text supplied in the RSS feed, where available. Some feeds provide only an excerpt, so this is not necessarily the complete publisher article.':'RSSに含まれる記事概要を表示しています。配信元が概要のみを提供している場合、記事全文ではありません。');
+    detail.appendChild(note);
+    card.appendChild(detail);
+    card.addEventListener('toggle',function(){if(card.open){arrow.textContent='－';}else{arrow.textContent='＋';}});
     return card;
   }
   function parseFeed(xml,lang){
@@ -58,7 +70,7 @@
     if(doc.querySelector('parsererror'))throw new Error('RSS feed could not be parsed.');
     var items=Array.prototype.slice.call(doc.getElementsByTagName('item'));
     if(!items.length)items=Array.prototype.slice.call(doc.getElementsByTagName('entry'));
-    return items.slice(0,35).map(function(item){return makeItem(item,lang);}).filter(Boolean);
+    return items.slice(0,5).map(function(item){return makeItem(item,lang);}).filter(Boolean);
   }
   function loadFeed(lang,force){
     var list=document.querySelector('[data-news-list="'+lang+'"]');
@@ -70,7 +82,7 @@
       var cards=parseFeed(xml,lang);
       if(!cards.length)throw new Error('No articles were returned by this feed.');
       list.replaceChildren();cards.forEach(function(card){list.appendChild(card);});
-      status.textContent=cards.length+' articles · '+(lang==='english'?'Guardian RSS includes full-text article content when supplied by the publisher.':'RSS summaries are shown here; use the article link for the publisher’s full text.');
+      status.textContent='Latest '+cards.length+' articles · Tap a headline to expand its available details.'
       loaded[lang]=true;
     }).catch(function(error){
       status.textContent='Could not load this feed right now. Open the source website instead.';
