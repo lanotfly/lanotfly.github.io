@@ -116,3 +116,8 @@
  .home-market-list .fx-bar__value{font-size:11px!important}
  .home-market-panel__refresh .fx-bar__meta{font-size:8px}
 }
+
+/* Deployment safeguard: the Home snapshot must remain visible independently of ticker JS. */
+.home-page .home-market-panel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:1;}
+.home-page .home-market-panel[hidden]{display:block!important;}
+.home-page .home-market-list .fx-bar__rates{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important;}
