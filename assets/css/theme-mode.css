@@ -543,3 +543,19 @@ body[data-theme="dark"] .content-wrapper__inner [class*="video"] video,
 body[data-theme="dark"] .content-wrapper__inner [class*="video"] iframe {
   background: #000 !important;
 }
+
+
+/* Compact theme switch: keep it at the far right of the first navigation row. */
+.site-nav-shell .site-tabs { justify-content: space-between !important; flex-wrap: nowrap !important; gap: 6px !important; }
+.site-nav-shell .site-tab-links { flex: 1 1 auto; flex-wrap: wrap; min-width: 0; }
+.site-nav-shell .site-theme-control { position: static !important; flex: 0 0 auto; margin-left: auto; padding: 0; width: auto; }
+.site-nav-shell .site-theme-toggle { width: 30px; height: 30px; min-height: 30px; min-width: 30px; padding: 0; gap: 0; border-radius: 8px; box-shadow: none; }
+.site-nav-shell .theme-yinyang { display: inline-block; font-size: 19px; line-height: 1; transform: rotate(0deg); transition: transform .24s ease; }
+.site-nav-shell .site-theme-toggle:active .theme-yinyang { transform: rotate(180deg); }
+body[data-theme="dark"] .site-nav-shell .site-theme-toggle { background: #232936 !important; color: #edf0f7 !important; border-color: #465168 !important; }
+@media (max-width: 600px) {
+  .site-nav-shell .site-tabs { flex-wrap: nowrap !important; gap: 5px !important; }
+  .site-nav-shell .site-tab-links { gap: 5px !important; }
+  .site-nav-shell .site-tab-links .site-tab { padding-left: 8px; padding-right: 8px; }
+  .site-nav-shell .site-theme-toggle { width: 28px; height: 28px; min-height: 28px; min-width: 28px; }
+}
