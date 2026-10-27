@@ -149,3 +149,12 @@
   border-top:0;
 }
 .home-market-panel.is-collapsed{display:none!important}
+
+
+/* Exchange-rate daily change uses the same compact two-line treatment as index quotes. */
+.home-market-list .fx-bar__value[data-fx-value]{display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:3px!important}
+.home-market-list .fx-rate-price{font-size:12px;line-height:1.15;white-space:nowrap}
+.home-market-list .fx-rate-change{font-size:10px;line-height:1.1;font-weight:700;letter-spacing:.01em;color:#7d8796;white-space:nowrap}
+.home-market-list .fx-rate-change.is-up{color:#19845b}
+.home-market-list .fx-rate-change.is-down{color:#c04e54}
+@media(max-width:380px){.home-market-list .fx-rate-price{font-size:11px}.home-market-list .fx-rate-change{font-size:9px}}
