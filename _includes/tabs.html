@@ -1,4 +1,17 @@
 <div class="site-nav-shell">
+  <div class="fx-bar" data-fx-bar aria-label="Exchange rates">
+  <div class="fx-bar__rates">
+    <div class="fx-bar__rate"><span class="fx-bar__pair">USD / JPY</span><span class="fx-bar__value" data-fx-value="usd-jpy" aria-label="Japanese yen per US dollar">—</span></div>
+    <div class="fx-bar__rate"><span class="fx-bar__pair">USD / CNY</span><span class="fx-bar__value" data-fx-value="usd-cny" aria-label="Chinese yuan per US dollar">—</span></div>
+    <div class="fx-bar__rate"><span class="fx-bar__pair">JPY / CNY</span><span class="fx-bar__value" data-fx-value="jpy-cny" aria-label="Chinese yuan per Japanese yen">—</span></div>
+  </div>
+  <button class="fx-bar__refresh" type="button" data-fx-refresh aria-label="Refresh exchange rates" title="Refresh exchange rates">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.6-2L20 12"/><path d="M4 12l2.8 5a7 7 0 0 0 11.6-2"/></svg>
+  </button>
+  <div class="fx-bar__meta" data-fx-meta>Loading rates…</div>
+  <span class="fx-bar__status" data-fx-status role="status" aria-live="polite"></span>
+</div>
+
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
       <a class="site-tab site-tab--home" href="/home/">Home</a>
