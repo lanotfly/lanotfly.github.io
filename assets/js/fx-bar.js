@@ -17,6 +17,21 @@
     maximumFractionDigits: digits
   });
 
+  function formatFetchTime(timestamp) {
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return "time unavailable";
+    return new Intl.DateTimeFormat("ja-JP", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(date);
+  }
+
   function showRates(data, cached = false) {
     usdJpyNode.textContent = format(data.usdJpy, 2);
     usdCnyNode.textContent = format(data.usdCny, 4);
@@ -25,7 +40,10 @@
     const dateLabel = Number.isNaN(date.getTime())
       ? (data.date || "date unavailable")
       : date.toLocaleDateString("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
-    meta.textContent = (cached ? "Cached · " : "Rate date · ") + dateLabel;
+    const fetchedLabel = data.fetchedAt
+      ? "Fetched " + formatFetchTime(data.fetchedAt) + " JST"
+      : "Fetch time unavailable";
+    meta.textContent = (cached ? "Saved · " : "Rate date · ") + dateLabel + " · " + fetchedLabel;
     status.textContent = cached ? "Showing last saved rates." : "Exchange rates updated.";
   }
 
@@ -58,7 +76,7 @@
         const usdJpy = rates.JPY;
         const usdCny = rates.CNY;
         if (!(usdJpy > 0) || !(usdCny > 0)) throw new Error("Required currencies are missing");
-        const data = { usdJpy, usdCny, jpyCny: usdCny / usdJpy, date: rows[0]?.date || "" };
+        const data = { usdJpy, usdCny, jpyCny: usdCny / usdJpy, date: rows[0]?.date || "", fetchedAt: Date.now() };
         showRates(data);
         try { localStorage.setItem(cacheKey, JSON.stringify(data)); } catch (_) {}
       } catch (error) {
