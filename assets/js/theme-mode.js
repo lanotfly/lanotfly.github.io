@@ -38,6 +38,12 @@
     if (button) {
       button.addEventListener("click", function () {
         mode = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        if (button) {
+          button.classList.remove("is-spinning");
+          void button.offsetWidth;
+          button.classList.add("is-spinning");
+          window.setTimeout(function () { if (button) button.classList.remove("is-spinning"); }, 260);
+        }
         saveMode();
       });
       applyTheme();
