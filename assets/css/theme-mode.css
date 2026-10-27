@@ -1,0 +1,221 @@
+/* Global light/dark appearance for the Personal Library.
+   Keep existing section accent colors, while adapting shared surfaces and text. */
+:root {
+  color-scheme: light;
+  --theme-page: #f7f8fc;
+  --theme-surface: #ffffff;
+  --theme-surface-soft: #f1f4fa;
+  --theme-text: #20283a;
+  --theme-muted: #606b80;
+  --theme-border: #dce3ee;
+  --theme-link: #315fbd;
+  --theme-shadow: rgba(20, 30, 50, .08);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --theme-page: #111318;
+  --theme-surface: #1b1f28;
+  --theme-surface-soft: #232936;
+  --theme-text: #edf0f7;
+  --theme-muted: #b0b9ca;
+  --theme-border: #394253;
+  --theme-link: #a9c5ff;
+  --theme-shadow: rgba(0, 0, 0, .24);
+}
+html { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+body {
+  background-color: var(--theme-page);
+  color: var(--theme-text);
+  transition: background-color .18s ease, color .18s ease;
+}
+body[data-theme="dark"] {
+  background-color: var(--theme-page) !important;
+  color: var(--theme-text) !important;
+}
+body[data-theme="dark"] .content-wrapper,
+body[data-theme="dark"] .content-wrapper__inner,
+body[data-theme="dark"] .page-content,
+body[data-theme="dark"] main,
+body[data-theme="dark"] article,
+body[data-theme="dark"] .main-content,
+body[data-theme="dark"] .wrapper,
+body[data-theme="dark"] .inner {
+  background-color: transparent !important;
+  color: var(--theme-text);
+}
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] h5,
+body[data-theme="dark"] h6,
+body[data-theme="dark"] p,
+body[data-theme="dark"] li,
+body[data-theme="dark"] dt,
+body[data-theme="dark"] dd,
+body[data-theme="dark"] label,
+body[data-theme="dark"] summary,
+body[data-theme="dark"] figcaption,
+body[data-theme="dark"] blockquote,
+body[data-theme="dark"] strong,
+body[data-theme="dark"] b {
+  color: var(--theme-text);
+}
+body[data-theme="dark"] small,
+body[data-theme="dark"] .muted,
+body[data-theme="dark"] .text-muted,
+body[data-theme="dark"] .subtitle,
+body[data-theme="dark"] .post-meta,
+body[data-theme="dark"] .post-date,
+body[data-theme="dark"] .excerpt {
+  color: var(--theme-muted) !important;
+}
+body[data-theme="dark"] a { color: var(--theme-link); }
+body[data-theme="dark"] a:hover { color: #c6d8ff; }
+body[data-theme="dark"] hr,
+body[data-theme="dark"] table,
+body[data-theme="dark"] th,
+body[data-theme="dark"] td,
+body[data-theme="dark"] pre,
+body[data-theme="dark"] code,
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] select,
+body[data-theme="dark"] details,
+body[data-theme="dark"] .highlight,
+body[data-theme="dark"] .panel,
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .well {
+  border-color: var(--theme-border) !important;
+}
+body[data-theme="dark"] pre,
+body[data-theme="dark"] code,
+body[data-theme="dark"] .highlight,
+body[data-theme="dark"] table,
+body[data-theme="dark"] th,
+body[data-theme="dark"] td,
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] select,
+body[data-theme="dark"] details,
+body[data-theme="dark"] .panel,
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .well {
+  background-color: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+}
+body[data-theme="dark"] pre code { background: transparent !important; }
+body[data-theme="dark"] th { background-color: var(--theme-surface-soft) !important; }
+body[data-theme="dark"] blockquote {
+  border-left-color: var(--theme-border) !important;
+  background: var(--theme-surface-soft) !important;
+}
+body[data-theme="dark"] img { color: var(--theme-muted); }
+body[data-theme="dark"] .site-nav-shell,
+body[data-theme="dark"] .site-tabs,
+body[data-theme="dark"] .secondary-tabs { color: var(--theme-text); }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab:not(.site-tab--radio) {
+  background: transparent !important;
+}
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--home:not(.is-active) { color: #d6b5ff !important; border-color: #76569b !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--data:not(.is-active) { color: #b8d0ff !important; border-color: #5575b0 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--algorithm:not(.is-active) { color: #ffd19b !important; border-color: #a87942 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--ai:not(.is-active) { color: #a9e8c3 !important; border-color: #438767 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--home.is-active { color: #e4d1ff !important; border-color: #b995e5 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--data.is-active { color: #c8dcff !important; border-color: #83a9f4 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--algorithm.is-active { color: #ffe0b8 !important; border-color: #e3ad69 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--ai.is-active { color: #c2f3d5 !important; border-color: #72c89a !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--radio {
+  color: #e0d1f5 !important; background: #30263d !important; border-color: #6e598b !important;
+}
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--radio:hover { background: #403151 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--radio.is-playing { color: #fff !important; background: #705493 !important; border-color: #a28ac2 !important; }
+body[data-theme="dark"] .radio4-icon { background: #8b70b2; }
+body[data-theme="dark"] .radio4-icon__play,
+body[data-theme="dark"] .radio4-icon__pause { color: #705493; }
+body[data-theme="dark"] .book-source-panel,
+body[data-theme="dark"] .radio-source-panel,
+body[data-theme="dark"] .library-podcast-panel,
+body[data-theme="dark"] .niv-bible-panel,
+body[data-theme="dark"] .radio4-panel,
+body[data-theme="dark"] .podcast-episode-panel,
+body[data-theme="dark"] .podcast-episode-scroll-frame,
+body[data-theme="dark"] .podcast-episode-list,
+body[data-theme="dark"] .podcast-episode-panel__tools,
+body[data-theme="dark"] .podcast-episode-panel__heading,
+body[data-theme="dark"] .podcast-feed-panel,
+body[data-theme="dark"] .podcast-panel-filter-label {
+  background-color: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+body[data-theme="dark"] .secondary-tab,
+body[data-theme="dark"] .podcast-episode-card,
+body[data-theme="dark"] .podcast-episode-item,
+body[data-theme="dark"] .podcast-episode-row,
+body[data-theme="dark"] .podcast-bulk-menu__options {
+  background-color: var(--theme-surface-soft);
+  color: var(--theme-text);
+  border-color: var(--theme-border);
+}
+body[data-theme="dark"] .secondary-tab.is-active {
+  filter: brightness(1.18);
+}
+body[data-theme="dark"] .podcast-episode-panel__title,
+body[data-theme="dark"] .podcast-episode-count,
+body[data-theme="dark"] .podcast-episode-panel__status,
+body[data-theme="dark"] .podcast-progress-times,
+body[data-theme="dark"] .podcast-panel-filter,
+body[data-theme="dark"] .niv-bible-status,
+body[data-theme="dark"] .radio4-panel__heading,
+body[data-theme="dark"] .radio4-note,
+body[data-theme="dark"] .radio4-fallback {
+  color: var(--theme-text) !important;
+}
+body[data-theme="dark"] .fx-bar,
+body[data-theme="dark"] .fx-bar * {
+  border-color: var(--theme-border);
+}
+body[data-theme="dark"] .fx-bar { background: var(--theme-surface) !important; color: var(--theme-text) !important; }
+body[data-theme="dark"] button:not(.site-tab):not(.secondary-tab) {
+  border-color: var(--theme-border);
+}
+body[data-theme="dark"] button:not(.site-tab--radio):not(.site-tab):not(.secondary-tab) {
+  color: var(--theme-text);
+}
+body[data-theme="dark"] .site-theme-toggle {
+  color: var(--theme-text);
+  background: var(--theme-surface);
+  border-color: var(--theme-border);
+}
+.site-theme-control {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 1100px;
+  margin: -8px auto 10px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+.site-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid #d6dce7;
+  border-radius: 7px;
+  background: #fff;
+  color: #354056;
+  font: 600 12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  cursor: pointer;
+}
+.site-theme-toggle:hover { border-color: #a8b4c8; }
+.site-theme-toggle:focus-visible { outline: 2px solid #6e8fe0; outline-offset: 2px; }
+@media(max-width:700px) {
+  .site-theme-control { margin-top: -4px; margin-bottom: 8px; padding: 0 8px; }
+  .site-theme-toggle { min-height: 30px; padding: 5px 9px; }
+}
+@media(prefers-reduced-motion:reduce) { body { transition: none; } }
