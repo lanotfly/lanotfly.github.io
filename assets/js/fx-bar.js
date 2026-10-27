@@ -128,6 +128,18 @@
     });
     return activeRequest;
   }
+  /* Keep the large market snapshot out of the way while using other nav panels. */
+  const marketPanel = document.querySelector(".home-market-panel");
+  document.addEventListener("click", event => {
+    if (!marketPanel) return;
+    const target = event.target && event.target.closest && event.target.closest(
+      ".site-tab--home, #library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle, #library-book-toggle, .book-secondary-link"
+    );
+    if (!target) return;
+    const isHome = target.matches(".site-tab--home");
+    marketPanel.classList.toggle("is-collapsed", !isHome);
+  }, true);
+
   button.addEventListener("click", refresh);
   if (!readCache()) {
     usdJpyNode.textContent = "—"; usdCnyNode.textContent = "—"; jpyCnyNode.textContent = "—";
