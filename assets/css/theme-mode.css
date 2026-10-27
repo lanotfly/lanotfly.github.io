@@ -190,12 +190,16 @@ body[data-theme="dark"] .site-theme-toggle {
   border-color: var(--theme-border);
 }
 .site-theme-control {
+  position: fixed;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
+  z-index: 1200;
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  max-width: 1100px;
-  margin: -8px auto 10px;
-  padding: 0 12px;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 .site-theme-toggle {
@@ -203,19 +207,317 @@ body[data-theme="dark"] .site-theme-toggle {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-height: 32px;
-  padding: 5px 10px;
+  min-height: 34px;
+  padding: 6px 10px;
   border: 1px solid #d6dce7;
   border-radius: 7px;
-  background: #fff;
+  background: rgba(255,255,255,.96);
   color: #354056;
+  box-shadow: 0 2px 10px rgba(15,23,42,.12);
   font: 600 12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .site-theme-toggle:hover { border-color: #a8b4c8; }
 .site-theme-toggle:focus-visible { outline: 2px solid #6e8fe0; outline-offset: 2px; }
+body[data-theme="dark"] .site-theme-toggle {
+  background: rgba(27,31,40,.96) !important;
+  color: #edf0f7 !important;
+  border-color: #465168 !important;
+}
 @media(max-width:700px) {
-  .site-theme-control { margin-top: -4px; margin-bottom: 8px; padding: 0 8px; }
-  .site-theme-toggle { min-height: 30px; padding: 5px 9px; }
+  .site-theme-toggle { min-height: 32px; padding: 5px 9px; }
 }
 @media(prefers-reduced-motion:reduce) { body { transition: none; } }
+
+/* FINAL DARK-THEME AUDIT — load this file after page-specific stylesheets.
+   Shared surfaces and readable text across Home, Wiki/Book, Podcast, KJV and media pages. */
+html[data-theme="dark"] { background: #111318 !important; }
+html[data-theme="dark"] body,
+body[data-theme="dark"] {
+  background: #111318 !important;
+  background-image: none !important;
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .content-wrapper,
+body[data-theme="dark"] .content-wrapper__inner,
+body[data-theme="dark"] .post-list,
+body[data-theme="dark"] .post-list__item,
+body[data-theme="dark"] .post,
+body[data-theme="dark"] .post-content,
+body[data-theme="dark"] .page-content,
+body[data-theme="dark"] main,
+body[data-theme="dark"] article {
+  background-color: transparent !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+
+/* Wiki, Book chapters, Home summaries and learning cards */
+body[data-theme="dark"] .wiki-wrap,
+body[data-theme="dark"] .wiki-wrap p,
+body[data-theme="dark"] .wiki-wrap li,
+body[data-theme="dark"] .wiki-wrap dd,
+body[data-theme="dark"] .wiki-wrap dt,
+body[data-theme="dark"] .wiki-wrap blockquote,
+body[data-theme="dark"] .wiki-wrap td,
+body[data-theme="dark"] .wiki-wrap th,
+body[data-theme="dark"] .wiki-wrap .lead,
+body[data-theme="dark"] .wiki-wrap .card p,
+body[data-theme="dark"] .wiki-wrap figcaption,
+body[data-theme="dark"] .wiki-wrap .diagram-zoom-hint,
+body[data-theme="dark"] .wiki-wrap h1,
+body[data-theme="dark"] .wiki-wrap h2,
+body[data-theme="dark"] .wiki-wrap h3,
+body[data-theme="dark"] .wiki-wrap h4,
+body[data-theme="dark"] .wiki-wrap h5,
+body[data-theme="dark"] .wiki-wrap h6,
+body[data-theme="dark"] .home-page .eyebrow,
+body[data-theme="dark"] .home-page .lead,
+body[data-theme="dark"] .home-page .card,
+body[data-theme="dark"] .home-page .card p,
+body[data-theme="dark"] .home-page .card h2,
+body[data-theme="dark"] .home-page .card h2 a,
+body[data-theme="dark"] .home-page .home-link,
+body[data-theme="dark"] .home-page .home-link a {
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .wiki-wrap .card,
+body[data-theme="dark"] .wiki-wrap .home-card,
+body[data-theme="dark"] .wiki-wrap .diagram,
+body[data-theme="dark"] .wiki-wrap .ai-illustration,
+body[data-theme="dark"] .wiki-wrap .prev-next a,
+body[data-theme="dark"] .wiki-wrap .wiki-nav a,
+body[data-theme="dark"] .wiki-wrap table,
+body[data-theme="dark"] .wiki-wrap th,
+body[data-theme="dark"] .wiki-wrap td {
+  background-color: #1b1f28 !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .wiki-wrap pre {
+  background: #171b24 !important;
+  color: #e8edf7 !important;
+  border: 1px solid #394253 !important;
+}
+body[data-theme="dark"] .wiki-wrap code,
+body[data-theme="dark"] .wiki-wrap p code,
+body[data-theme="dark"] .wiki-wrap li code,
+body[data-theme="dark"] .wiki-wrap td code {
+  background: #2a3040 !important;
+  color: #e8edf7 !important;
+}
+body[data-theme="dark"] .wiki-wrap pre code { background: transparent !important; }
+body[data-theme="dark"] .wiki-wrap a { color: #a9c5ff; }
+body[data-theme="dark"] .wiki-wrap .wiki-nav a.current,
+body[data-theme="dark"] .wiki-wrap .wiki-nav a.current:hover {
+  background: transparent !important;
+  color: #c8dcff !important;
+  border-color: #83a9f4 !important;
+}
+
+/* Home market snapshot, rates bar and news summaries */
+body[data-theme="dark"] .home-market-panel,
+body[data-theme="dark"] .home-market-list,
+body[data-theme="dark"] .home-news-panel,
+body[data-theme="dark"] .home-news-item,
+body[data-theme="dark"] .home-news-item__detail,
+body[data-theme="dark"] .home-news-item[open] > .home-news-item__title-row,
+body[data-theme="dark"] .home-dashboard-tabs .secondary-tab,
+body[data-theme="dark"] .home-news-source-tabs .secondary-tab,
+body[data-theme="dark"] .home-news-refresh,
+body[data-theme="dark"] .home-news-bulk {
+  background: #1b1f28 !important;
+  background-image: none !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .home-news-heading h2,
+body[data-theme="dark"] .home-news-heading p,
+body[data-theme="dark"] .home-news-item__title,
+body[data-theme="dark"] .home-news-item__title-row,
+body[data-theme="dark"] .home-news-item__full-title,
+body[data-theme="dark"] .home-news-item__summary,
+body[data-theme="dark"] .home-news-item__meta,
+body[data-theme="dark"] .home-news-item__note,
+body[data-theme="dark"] .home-news-status,
+body[data-theme="dark"] .home-market-section-label,
+body[data-theme="dark"] .home-market-panel__heading h2,
+body[data-theme="dark"] .home-market-panel__heading .eyebrow,
+body[data-theme="dark"] .home-news-item h3 a {
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .home-dashboard-tabs .secondary-tab.is-active,
+body[data-theme="dark"] .home-news-source-tabs .secondary-tab.is-active {
+  background: #2e4037 !important;
+  color: #c3f1d2 !important;
+  border-color: #57866a !important;
+}
+body[data-theme="dark"] .fx-bar {
+  background: #1b1f28 !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .fx-bar__pair,
+body[data-theme="dark"] .fx-bar__meta { color: #b0b9ca !important; }
+body[data-theme="dark"] .fx-bar__value { color: #b8d0ff !important; }
+body[data-theme="dark"] .fx-bar__market.is-up { color: #72d6a0 !important; }
+body[data-theme="dark"] .fx-bar__market.is-down { color: #ff9b9b !important; }
+body[data-theme="dark"] .fx-bar__divider { background: #394253 !important; }
+body[data-theme="dark"] .fx-bar__refresh { background: #252b37 !important; color: #d5deee !important; border-color: #465168 !important; }
+
+/* Podcast: every feed, episode row, title, metadata, toolbar and dropdown */
+body[data-theme="dark"] .library-podcast-panel,
+body[data-theme="dark"] .podcast-episode-panel,
+body[data-theme="dark"] .podcast-feed-panel,
+body[data-theme="dark"] .podcast-episode-panel__heading,
+body[data-theme="dark"] .podcast-episode-panel__tools,
+body[data-theme="dark"] .podcast-episode-scroll-frame,
+body[data-theme="dark"] .podcast-feed-episode-scroll-frame,
+body[data-theme="dark"] .podcast-episode-list,
+body[data-theme="dark"] .podcast-feed-episode-list,
+body[data-theme="dark"] .podcast-episode-row,
+body[data-theme="dark"] .podcast-episode-choice,
+body[data-theme="dark"] .podcast-bulk-menu__options,
+body[data-theme="dark"] .podcast-bulk-menu__options button,
+body[data-theme="dark"] .podcast-panel-filter,
+body[data-theme="dark"] .podcast-bulk-menu__toggle,
+body[data-theme="dark"] .podcast-episode-panel__close,
+body[data-theme="dark"] .podcast-playback-progress,
+body[data-theme="dark"] .podcast-progress-slider {
+  background-color: #1b1f28 !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .podcast-episode-panel__title,
+body[data-theme="dark"] .podcast-episode-panel__eyebrow,
+body[data-theme="dark"] .podcast-episode-count,
+body[data-theme="dark"] .podcast-episode-panel__status,
+body[data-theme="dark"] .podcast-episode-text,
+body[data-theme="dark"] .podcast-episode-name,
+body[data-theme="dark"] .podcast-episode-choice,
+body[data-theme="dark"] .podcast-episode-meta,
+body[data-theme="dark"] .podcast-episode-date,
+body[data-theme="dark"] .podcast-episode-duration,
+body[data-theme="dark"] .podcast-progress-times,
+body[data-theme="dark"] .podcast-panel-filter-label,
+body[data-theme="dark"] .podcast-bulk-menu__options button {
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .podcast-episode-choice:hover,
+body[data-theme="dark"] .podcast-episode-choice.is-current,
+body[data-theme="dark"] .podcast-episode-row.is-current .podcast-episode-choice {
+  background: #293246 !important;
+}
+body[data-theme="dark"] .podcast-episode-state.is-played { color: #8e9bb0 !important; }
+body[data-theme="dark"] .podcast-episode-state.is-unplayed { color: #a9c5ff !important; }
+body[data-theme="dark"] .secondary-tabs .secondary-tab {
+  background-color: #252b37;
+  color: #d9e1ef;
+  border-color: #394253;
+}
+body[data-theme="dark"] .secondary-tabs .secondary-tab.is-active {
+  background-color: #352b46 !important;
+  color: #e2d2ff !important;
+  border-color: #755b98 !important;
+}
+
+/* Radio, KJV and book panels */
+body[data-theme="dark"] .radio-source-panel,
+body[data-theme="dark"] .book-source-panel,
+body[data-theme="dark"] .niv-bible-panel,
+body[data-theme="dark"] .niv-bible-queue-tools,
+body[data-theme="dark"] .niv-bible-queue-frame,
+body[data-theme="dark"] .niv-bible-queue,
+body[data-theme="dark"] .niv-bible-queue .podcast-episode-row,
+body[data-theme="dark"] .niv-bible-queue .podcast-episode-choice,
+body[data-theme="dark"] .niv-bible-book-select,
+body[data-theme="dark"] .niv-bible-queue-toggle,
+body[data-theme="dark"] .radio-source-tabs .radio-secondary-tab,
+body[data-theme="dark"] .book-source-tabs .book-secondary-link,
+body[data-theme="dark"] .book-chapter-tabs .book-chapter-link,
+body[data-theme="dark"] .book-chapter-tabs .book-chapter-book-label {
+  background-color: #1b1f28 !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .niv-bible-panel__title,
+body[data-theme="dark"] .niv-bible-status,
+body[data-theme="dark"] .niv-bible-queue .podcast-episode-meta,
+body[data-theme="dark"] .niv-bible-queue .podcast-episode-date,
+body[data-theme="dark"] .niv-bible-queue .podcast-episode-duration {
+  color: #edf0f7 !important;
+}
+body[data-theme="dark"] .radio-source-tabs .radio-secondary-tab[aria-pressed="true"],
+body[data-theme="dark"] .radio-source-tabs .radio-secondary-tab.is-playing,
+body[data-theme="dark"] .book-source-tabs .book-secondary-link.is-active,
+body[data-theme="dark"] .book-source-tabs .book-secondary-link[aria-current="page"],
+body[data-theme="dark"] .book-chapter-tabs .book-chapter-link.is-active {
+  background-color: #352b46 !important;
+  color: #e2d2ff !important;
+  border-color: #755b98 !important;
+}
+
+/* Video and other embedded media: keep player itself intact, darken its surrounding UI. */
+body[data-theme="dark"] video,
+body[data-theme="dark"] iframe { color-scheme: dark; }
+body[data-theme="dark"] .video-panel,
+body[data-theme="dark"] .video-card,
+body[data-theme="dark"] .video-container,
+body[data-theme="dark"] .video-player,
+body[data-theme="dark"] .video-list,
+body[data-theme="dark"] .video-item,
+body[data-theme="dark"] .video-description,
+body[data-theme="dark"] .reading-panel,
+body[data-theme="dark"] .reading-card,
+body[data-theme="dark"] .article-card,
+body[data-theme="dark"] .article-content,
+body[data-theme="dark"] .summary-card,
+body[data-theme="dark"] .summary-panel,
+body[data-theme="dark"] .book-card,
+body[data-theme="dark"] .book-content {
+  background-color: #1b1f28 !important;
+  background-image: none !important;
+  color: #edf0f7 !important;
+  border-color: #394253 !important;
+}
+body[data-theme="dark"] .video-panel *,
+body[data-theme="dark"] .video-card *,
+body[data-theme="dark"] .video-container *,
+body[data-theme="dark"] .video-list *,
+body[data-theme="dark"] .video-item *,
+body[data-theme="dark"] .video-description *,
+body[data-theme="dark"] .reading-panel *,
+body[data-theme="dark"] .reading-card *,
+body[data-theme="dark"] .article-card *,
+body[data-theme="dark"] .article-content *,
+body[data-theme="dark"] .summary-card *,
+body[data-theme="dark"] .summary-panel *,
+body[data-theme="dark"] .book-card *,
+body[data-theme="dark"] .book-content * {
+  color: #edf0f7;
+  border-color: #394253;
+}
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] select {
+  background-color: #202632 !important;
+  color: #edf0f7 !important;
+  border-color: #465168 !important;
+}
+body[data-theme="dark"] input::placeholder,
+body[data-theme="dark"] textarea::placeholder { color: #9ba7bb !important; }
+body[data-theme="dark"] .post-list__divider,
+body[data-theme="dark"] hr { border-color: #303847 !important; background-color: #303847 !important; }
+
+/* Top-right appearance switch; reserve a small top strip so it never covers the nav. */
+body { padding-top: 0; }
+body[data-theme="dark"] { color-scheme: dark; }
+.content-wrapper__inner { padding-top: 48px !important; }
+@media(max-width:700px) {
+  .content-wrapper__inner { padding-top: 48px !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  body { transition: none !important; }
+}
