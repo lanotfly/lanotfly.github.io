@@ -1216,3 +1216,34 @@ body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .boo
   background: #284b3b !important;
   border-color: #72c89a !important;
 }
+
+/* Book chapter side drawer: separate from the L2 Book picker. */
+#library-book-chapter-drawer {
+  position: fixed;
+  z-index: 2147483001;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(82vw, 340px);
+  padding: max(14px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--theme-text, #20283a);
+  background: var(--theme-surface, #fff);
+  border-right: 1px solid var(--theme-border, #dce3ee);
+  box-shadow: 12px 0 32px rgba(20,30,50,.18);
+  transform: translateX(-105%);
+  visibility: hidden;
+  transition: transform .22s ease, visibility .22s;
+  overscroll-behavior: contain;
+}
+#library-book-chapter-drawer.is-open { transform: translateX(0); visibility: visible; }
+#library-book-chapter-drawer .book-drawer-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:4px 2px 10px; border-bottom:1px solid var(--theme-border,#dce3ee); }
+#library-book-chapter-drawer .book-drawer-title { font-size:16px; font-weight:750; }
+#library-book-chapter-drawer .book-drawer-close { width:34px; height:34px; border:1px solid var(--theme-border,#dce3ee); border-radius:7px; background:var(--theme-surface-soft,#f1f4fa); color:var(--theme-text,#20283a); font-size:23px; line-height:1; }
+#library-book-chapter-drawer .book-drawer-list { display:flex; flex-direction:column; gap:7px; overflow-y:auto; min-height:0; overscroll-behavior:contain; }
+#library-book-chapter-drawer .book-drawer-link { display:block; padding:10px 12px; border:1px solid var(--theme-border,#dce3ee); border-radius:8px; color:var(--theme-text,#20283a); background:var(--theme-surface-soft,#f1f4fa); text-decoration:none; font-size:14px; line-height:1.35; }
+#library-book-chapter-drawer .book-drawer-link.is-current { border:2px solid #18734b; padding:9px 11px; color:#18734b; font-weight:700; background:var(--theme-surface,#fff); }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link.is-current { color:#a9e8c3; border-color:#72c89a; }
