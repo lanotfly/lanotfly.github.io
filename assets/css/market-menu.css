@@ -1,12 +1,21 @@
 /* Shared Market dropdown: full-width panel, square controls, no frosted-glass blur. */
 .site-nav-shell,
 .site-nav-shell .site-tabs,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tabs::before,
+.site-nav-shell .site-tabs::after,
 .site-nav-shell .site-tab-links,
+.site-nav-shell .site-tab-links::before,
+.site-nav-shell .site-tab-links::after,
 .site-nav-shell .site-tab,
 .site-nav-shell .site-tab::before,
 .site-nav-shell .site-tab::after {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
+  filter: none !important;
+}
+.site-nav-shell .site-tab-links {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
 }
 .site-nav-shell .site-tab--market {
   display: inline-flex !important;
