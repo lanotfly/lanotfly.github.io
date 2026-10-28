@@ -634,17 +634,7 @@
 .podcast-episode-panel__close{min-width:34px;min-height:34px;padding:5px;display:flex;align-items:center;justify-content:center}
 
 
-/* Dashed guide shows the valid page area while a pull-to-refresh gesture is active. */
-body.library-pull-refresh-zone-active .content-wrapper__inner{
-  outline:1.5px dashed rgba(105,82,137,.58)!important;
-  /* Place the guide outside the content edge so it frames the full content area. */
-  outline-offset:6px;
-  border-radius:14px;
-}
-body.library-pull-refresh-zone-active .library-pull-refresh{
-  border-style:dashed;
-  border-width:1.5px;
-}
+/* Pull-down controls are a fixed overlay and never alter page layout. */
 
 
 /* NIV Audio Bible chapter selector, visually aligned with the podcast list. */
