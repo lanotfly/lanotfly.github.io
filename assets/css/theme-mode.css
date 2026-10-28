@@ -1010,3 +1010,93 @@ html, body {
   margin-top: 0 !important;
   transform: none !important;
 }
+
+/* 2026-10-28 FIX: navigation is a normal-flow stack, never an overlay.
+   The Book panel is a child of the shell, so its height must contribute to
+   the shell height before the article/content begins. */
+.content-wrapper,
+.content-wrapper__inner {
+  position: relative !important;
+  display: flow-root !important;
+  float: none !important;
+  transform: none !important;
+  inset: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+.content-wrapper__inner > .site-nav-shell {
+  position: relative !important;
+  display: flow-root !important;
+  float: none !important;
+  inset: auto !important;
+  top: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 0 8px !important;
+  padding: 0 8px 2px !important;
+  transform: none !important;
+  overflow: visible !important;
+  contain: none !important;
+  z-index: auto !important;
+}
+.site-nav-shell > .site-tabs {
+  position: relative !important;
+  display: block !important;
+  height: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+.site-nav-shell > #library-book-panel:not([hidden]),
+.site-nav-shell > #library-radio-panel:not([hidden]) {
+  position: relative !important;
+  display: block !important;
+  float: none !important;
+  clear: both !important;
+  inset: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 6px 0 8px !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+  z-index: auto !important;
+}
+.site-nav-shell > #library-book-panel[hidden],
+.site-nav-shell > #library-radio-panel[hidden],
+#niv-bible-panel[hidden],
+#library-podcast-panel[hidden] {
+  display: none !important;
+}
+.site-nav-shell .book-source-tabs:not([hidden]),
+.site-nav-shell .book-chapter-tabs:not([hidden]),
+.site-nav-shell .radio-source-tabs:not([hidden]) {
+  position: relative !important;
+  display: flex !important;
+  float: none !important;
+  clear: both !important;
+  inset: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 0 8px !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+.content-wrapper__inner > #niv-bible-panel:not([hidden]),
+.content-wrapper__inner > #library-podcast-panel:not([hidden]) {
+  position: relative !important;
+  display: block !important;
+  float: none !important;
+  clear: both !important;
+  inset: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 0 8px !important;
+  transform: none !important;
+  z-index: auto !important;
+}
+
