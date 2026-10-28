@@ -589,3 +589,31 @@ body > #library-market-panel.library-market-dropdown {
     margin-top: 18px !important;
   }
 }
+
+
+/* 2026-10-28: remove the frosted-glass/blur look from the primary navigation row. */
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+.site-nav-shell::before,
+.site-nav-shell::after,
+.site-nav-shell .site-tabs::before,
+.site-nav-shell .site-tabs::after,
+.site-nav-shell .site-tab-links::before,
+.site-nav-shell .site-tab-links::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+.site-nav-shell {
+  background: var(--page-bg, #fff) !important;
+}
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  background-image: none !important;
+}
