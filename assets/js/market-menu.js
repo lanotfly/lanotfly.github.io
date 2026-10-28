@@ -1,4 +1,4 @@
-/* Gesture-driven Market panel: swipe down directly on the first navigation row; taps keep their normal behavior. */
+/* Swipe down directly on the first navigation row to reveal Market/News. Taps retain their normal behavior. */
 (function () {
   "use strict";
   function init() {
@@ -7,7 +7,7 @@
     var refresh = document.getElementById("library-market-refresh");
     if (!panel || !nav || panel.dataset.marketGestureReady === "true") return;
     panel.dataset.marketGestureReady = "true";
-    var startX = 0, startY = 0, tracking = false, threshold = 64, gestureClaimed = false;
+    var startX = 0, startY = 0, tracking = false, threshold = 64;
 
     function setOpen(open) {
       panel.hidden = !open;
@@ -23,9 +23,7 @@
       var touch = event.touches[0];
       startX = touch.clientX;
       startY = touch.clientY;
-      gestureClaimed = false;
-      var onFirstRow = nav.contains(event.target);
-      tracking = !panel.hidden ? (onFirstRow || panel.contains(event.target)) : onFirstRow;
+      tracking = nav.contains(event.target) || (!panel.hidden && panel.contains(event.target));
     }, { passive: true });
 
     document.addEventListener("touchmove", function (event) {
@@ -33,10 +31,7 @@
       var touch = event.touches[0];
       var dx = touch.clientX - startX, dy = touch.clientY - startY;
       if (Math.abs(dx) > Math.abs(dy) * 0.8) { tracking = false; return; }
-      var opening = panel.hidden && dy > 8;
-      var closing = !panel.hidden && dy < -8;
-      if (opening || closing) {
-        gestureClaimed = true;
+      if ((panel.hidden && dy > 8) || (!panel.hidden && dy < -8)) {
         if (event.cancelable) event.preventDefault();
       }
     }, { passive: false });
