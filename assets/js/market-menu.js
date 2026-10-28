@@ -1,28 +1,56 @@
-/* Full-width Market dropdown with market/news tabs and utility actions. */
+/* Gesture-driven Market panel: pull down from the top of the page to reveal it. */
 (function () {
   "use strict";
   function init() {
-    var toggle = document.getElementById("library-market-toggle");
     var panel = document.getElementById("library-market-panel");
+    var anchor = document.getElementById("library-market-gesture-anchor");
     var refresh = document.getElementById("library-market-refresh");
-    if (!toggle || !panel || toggle.dataset.marketMenuReady === "true") return;
-    toggle.dataset.marketMenuReady = "true";
+    if (!panel || !anchor || panel.dataset.marketGestureReady === "true") return;
+    panel.dataset.marketGestureReady = "true";
+    var startX = 0;
+    var startY = 0;
+    var tracking = false;
+    var threshold = 64;
+
     function setOpen(open) {
       panel.hidden = !open;
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.classList.toggle("is-active", open);
+      document.documentElement.classList.toggle("market-panel-open", open);
+      panel.setAttribute("aria-hidden", open ? "false" : "true");
     }
-    toggle.addEventListener("click", function (event) {
-      event.preventDefault();
-      setOpen(panel.hidden);
+
+    // Begin a pull only from the top edge of the page, so normal scrolling remains natural.
+    document.addEventListener("touchstart", function (event) {
+      if (!event.touches || event.touches.length !== 1) return;
+      var touch = event.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      var panelOpen = !panel.hidden;
+      tracking = panelOpen
+        ? panel.contains(event.target) && startY > 80
+        : window.scrollY <= 2 && startY <= 110;
+    }, { passive: true });
+
+    document.addEventListener("touchend", function (event) {
+      if (!tracking || !event.changedTouches || !event.changedTouches.length) return;
+      tracking = false;
+      var touch = event.changedTouches[0];
+      var dx = touch.clientX - startX;
+      var dy = touch.clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) * 0.8) return;
+      if (dy >= threshold && panel.hidden && window.scrollY <= 2) setOpen(true);
+      else if (dy <= -threshold && !panel.hidden) setOpen(false);
+    }, { passive: true });
+
+    // Keyboard users can still open and close the panel without a visible button.
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !panel.hidden) setOpen(false);
+      if ((event.altKey || event.metaKey) && event.key.toLowerCase() === "m") {
+        event.preventDefault();
+        setOpen(panel.hidden);
+      }
     });
     if (refresh) refresh.addEventListener("click", function () { window.location.reload(); });
-    document.addEventListener("click", function (event) {
-      if (!panel.hidden && !panel.contains(event.target) && !toggle.contains(event.target)) setOpen(false);
-    });
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && !panel.hidden) { setOpen(false); toggle.focus(); }
-    });
+    setOpen(false);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
