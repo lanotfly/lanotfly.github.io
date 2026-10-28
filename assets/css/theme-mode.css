@@ -511,12 +511,12 @@ body[data-theme="dark"] textarea::placeholder { color: #9ba7bb !important; }
 body[data-theme="dark"] .post-list__divider,
 body[data-theme="dark"] hr { border-color: #303847 !important; background-color: #303847 !important; }
 
-/* Top-right appearance switch; reserve a small top strip so it never covers the nav. */
+/* The theme switch and pull-down menu are overlays; reserve no blank space above page content. */
 body { padding-top: 0; }
 body[data-theme="dark"] { color-scheme: dark; }
-.content-wrapper__inner { padding-top: 48px !important; }
+.content-wrapper__inner { padding-top: 0 !important; }
 @media(max-width:700px) {
-  .content-wrapper__inner { padding-top: 48px !important; }
+  .content-wrapper__inner { padding-top: 0 !important; }
 }
 @media(prefers-reduced-motion:reduce) {
   body { transition: none !important; }
