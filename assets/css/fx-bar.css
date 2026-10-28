@@ -195,3 +195,48 @@
   .home-market-list .fx-bar__rates { gap: 6px 5px !important; }
   .home-market-list .fx-bar__rate { padding: 4px 1px !important; }
 }
+
+
+/* 2026-10-28: Stack each market price above its daily change so the compact
+   market grid stays readable on one row without squeezing the main number. */
+#library-market-panel .home-market-list .fx-bar__value,
+#library-market-panel .home-market-list .fx-bar__value[data-fx-value] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  line-height: 1.1 !important;
+}
+#library-market-panel .home-market-list .fx-bar__value [data-market-price],
+#library-market-panel .home-market-list .fx-rate-price {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
+}
+#library-market-panel .home-market-list .fx-bar__change,
+#library-market-panel .home-market-list .fx-rate-change {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 9px !important;
+  font-weight: 650 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+@media (max-width: 600px) {
+  #library-market-panel .home-market-list .fx-bar__value [data-market-price],
+  #library-market-panel .home-market-list .fx-rate-price {
+    font-size: 12px !important;
+  }
+  #library-market-panel .home-market-list .fx-bar__change,
+  #library-market-panel .home-market-list .fx-rate-change {
+    font-size: 8.5px !important;
+  }
+}
