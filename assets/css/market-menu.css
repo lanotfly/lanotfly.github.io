@@ -158,3 +158,36 @@
   .site-nav-shell .site-tab-links { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
 
 }
+/* Hard visibility guard: keep the Market/News tabs and active content visible in the pull-down. */
+.library-market-dropdown .home-dashboard-tabs > #home-market-tab,
+.library-market-dropdown .home-dashboard-tabs > #home-news-tab {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #477456 !important;
+  background: #f4faf6 !important;
+  border: 1px solid #c5dfcd !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.library-market-dropdown .home-dashboard-tabs > #home-market-tab.is-active,
+.library-market-dropdown .home-dashboard-tabs > #home-news-tab.is-active {
+  color: #245b39 !important;
+  background: #e3f2e8 !important;
+  border-color: #76ad88 !important;
+}
+.library-market-dropdown #home-market-view:not([hidden]),
+.library-market-dropdown #home-news-view:not([hidden]) {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.library-market-dropdown #home-market-view:not([hidden]) .home-market-panel {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.library-market-dropdown #home-market-view[hidden],
+.library-market-dropdown #home-news-view[hidden] {
+  display: none !important;
+}
