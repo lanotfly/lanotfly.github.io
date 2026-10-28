@@ -887,3 +887,105 @@ body[data-theme="dark"] .site-nav-shell .site-tabs,
 body[data-theme="dark"] .site-nav-shell .site-tab-links {
   background-color: var(--theme-page, #111318) !important;
 }
+
+
+/* 2026-10-28 NAV RENDER FIX:
+   Avoid paint containment clipping the primary row, and give all three tab levels
+   enough vertical breathing room so borders/focus rings are not cut by scrollports. */
+.site-nav-shell {
+  contain: none !important;
+  overflow: visible !important;
+  clip-path: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  box-sizing: border-box !important;
+  padding: 7px 8px 8px !important;
+  margin-top: 0 !important;
+}
+.site-nav-shell .site-tabs {
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 5px 2px !important;
+  margin: 0 !important;
+}
+.site-nav-shell .site-tab-links {
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: stretch !important;
+  padding: 3px 2px !important;
+  gap: 7px !important;
+}
+.site-nav-shell .site-tab-links .site-tab {
+  box-sizing: border-box !important;
+  align-self: stretch !important;
+  min-height: 38px !important;
+  height: auto !important;
+  margin-block: 1px !important;
+  line-height: 1.25 !important;
+  transform: none !important;
+}
+.site-nav-shell .site-tab-links .site-tab:hover,
+.site-nav-shell .site-tab-links .site-tab:focus-visible {
+  transform: none !important;
+}
+.secondary-tabs {
+  box-sizing: border-box !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 5px 3px 6px !important;
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+  align-items: stretch !important;
+}
+.secondary-tabs > .secondary-tab {
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 40px !important;
+  margin-block: 1px !important;
+  line-height: 1.25 !important;
+  flex-shrink: 0;
+}
+.book-source-panel .book-chapter-tabs {
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 5px 3px 6px !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  align-items: stretch !important;
+}
+.book-source-panel .book-chapter-tabs > .book-chapter-link,
+.book-source-panel .book-chapter-tabs > .book-chapter-book-label {
+  box-sizing: border-box !important;
+  margin-block: 1px !important;
+}
+@media (max-width: 700px) {
+  .site-nav-shell {
+    padding: 6px 8px 7px !important;
+  }
+  .site-nav-shell .site-tabs {
+    padding: 4px 1px !important;
+  }
+  .site-nav-shell .site-tab-links {
+    padding: 3px 2px !important;
+    gap: 6px !important;
+  }
+  .site-nav-shell .site-tab-links .site-tab {
+    min-height: 37px !important;
+    margin-block: 1px !important;
+  }
+  .secondary-tabs {
+    padding: 5px 2px 6px !important;
+    gap: 6px !important;
+  }
+  .secondary-tabs > .secondary-tab {
+    min-height: 38px !important;
+  }
+  .book-source-panel .book-chapter-tabs {
+    padding: 5px 2px 6px !important;
+  }
+}
