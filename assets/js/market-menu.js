@@ -7,6 +7,9 @@
     var refresh = document.getElementById("library-market-refresh");
     if (!panel || !nav || panel.dataset.marketGestureReady === "true") return;
     panel.dataset.marketGestureReady = "true";
+    // Detach the temporary panel from the navigation/layout tree entirely.
+    // A fixed overlay living inside a styled wrapper can still inherit odd layout/positioning.
+    if (panel.parentElement !== document.body) document.body.appendChild(panel);
     var startX = 0, startY = 0, tracking = false, threshold = 64;
 
     var closeTimer = null;
@@ -19,7 +22,7 @@
         panel.hidden = false;
         panel.classList.remove("is-closing");
         var rect = nav.getBoundingClientRect();
-        panel.style.top = Math.max(0, rect.bottom) + "px";
+        panel.style.setProperty("top", Math.max(0, rect.bottom) + "px", "important");
       } else if (!panel.hidden) {
         panel.classList.add("is-closing");
         closeTimer = window.setTimeout(function () {
