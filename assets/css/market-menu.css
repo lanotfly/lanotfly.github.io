@@ -539,3 +539,29 @@ body.market-panel-open .content-wrapper__inner {
     scroll-margin-top: 12px;
   }
 }
+
+
+/* 2026-10-28: Market/News must sit above every navigation/player/content panel.
+   It intentionally covers Home/Radio/KJV/Podcast/Book while open; swipe up inside it to dismiss. */
+.site-nav-shell {
+  z-index: 2147483000 !important;
+}
+body > #library-market-panel.library-market-dropdown {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
+  overflow-y: auto !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  padding-top: max(10px, env(safe-area-inset-top)) !important;
+  padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  box-shadow: 0 14px 32px rgba(25, 18, 35, .32) !important;
+}
+#library-market-panel.library-market-dropdown[hidden] {
+  display: none !important;
+}
