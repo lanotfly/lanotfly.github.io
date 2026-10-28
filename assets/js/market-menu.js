@@ -36,7 +36,7 @@
         panel.hidden = false;
         panel.classList.remove("is-closing");
         var rect = nav.getBoundingClientRect();
-        var panelTop = Math.max(0, rect.bottom + 5);\n        panel.style.setProperty("top", panelTop + "px", "important");\n        panel.style.setProperty("max-height", Math.max(180, window.innerHeight - panelTop - 8) + "px", "important");
+        var panelTop = Math.max(0, rect.bottom + 4);\n        panel.style.setProperty("top", panelTop + "px", "important");\n        panel.style.setProperty("max-height", Math.max(180, window.innerHeight - panelTop - 8) + "px", "important");
       } else if (!panel.hidden) {
         panel.classList.add("is-closing");
         closeTimer = window.setTimeout(function () {
@@ -67,10 +67,10 @@
         tracking = panel.contains(event.target);
       } else {
         // Open only from the narrow edge strips in the upper third of the phone screen.
-        var inUpperThird = touch.clientY <= window.innerHeight / 3;
         var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
           touch.clientX >= window.innerWidth * 0.90;
-        tracking = inUpperThird && inSideStrip;
+        // Edge gestures work from any vertical position, not only the top third.
+        tracking = inSideStrip;
       }
     }, { passive: true });
 
