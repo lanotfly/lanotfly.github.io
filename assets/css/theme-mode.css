@@ -798,3 +798,58 @@ html[data-theme="dark"] .library-pull-action {
   .library-pull-actions { gap: 7px; padding: 6px; }
   .library-pull-action { min-width: 120px; height: 46px; padding: 0 14px; }
 }
+
+
+/* 2026-10-28 FINAL NAV AUDIT:
+   The remaining blur was in the late-loaded theme stylesheet's .site-theme-toggle
+   (rgba background + backdrop-filter: blur(10px)). Keep the entire first row opaque. */
+.site-theme-toggle,
+.site-nav-shell .site-theme-toggle,
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+.site-nav-shell {
+  background: var(--theme-page, #f7f8fc) !important;
+  background-color: var(--theme-page, #f7f8fc) !important;
+  background-image: none !important;
+}
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  background: var(--theme-page, #f7f8fc) !important;
+  background-color: var(--theme-page, #f7f8fc) !important;
+  background-image: none !important;
+}
+.site-nav-shell .site-theme-toggle {
+  background: var(--theme-surface, #fff) !important;
+  background-color: var(--theme-surface, #fff) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.site-nav-shell .site-tab-links .site-tab {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background-image: none !important;
+}
+body[data-theme="dark"] .site-nav-shell,
+body[data-theme="dark"] .site-nav-shell .site-tabs,
+body[data-theme="dark"] .site-nav-shell .site-tab-links {
+  background: var(--theme-page, #111318) !important;
+  background-color: var(--theme-page, #111318) !important;
+}
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--home { background-color: #30263d !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--data { background-color: #26344d !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--algorithm { background-color: #493725 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--ai { background-color: #203b30 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--book-group { background-color: #203b30 !important; }
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--radio-group,
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--niv,
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--podcast { background-color: #30263d !important; }
+body[data-theme="dark"] .site-nav-shell .site-theme-toggle {
+  background: var(--theme-surface, #1b1f28) !important;
+  background-color: var(--theme-surface, #1b1f28) !important;
+}
