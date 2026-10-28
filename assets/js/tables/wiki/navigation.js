@@ -51,6 +51,29 @@
       bookGroup.style.removeProperty('border-style');
     }
   }
+  /* Keep every real audio element attached to the document across soft page swaps.
+     Audio elements nested in replaceable article/panel markup are otherwise paused by
+     Safari when their parent subtree is removed. The player controls continue to find
+     them by ID, so a single persistent host outside .content-wrapper__inner is safe. */
+  function preserveAudioElements(){
+    var host=document.getElementById('library-persistent-audio-host');
+    if(!host){
+      host=document.createElement('div');
+      host.id='library-persistent-audio-host';
+      host.setAttribute('aria-hidden','true');
+      host.style.cssText='position:fixed;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);pointer-events:none;opacity:0;';
+      document.body.appendChild(host);
+    }
+    [
+      'radio4-audio','nhk-radio-audio','niv-bible-audio',
+      'podcast-bbc-audio','podcast-chronicle-audio',
+      'podcast-english-audio','podcast-japanese-audio'
+    ].forEach(function(id){
+      var audio=document.getElementById(id);
+      if(audio && audio.parentNode!==host) host.appendChild(audio);
+    });
+  }
+  preserveAudioElements();
   updatePrimaryActive(window.location.pathname);
   /* Let the Podcast overlay temporarily clear the underlying wiki selection. */
   window.LibraryUpdatePrimaryActive = updatePrimaryActive;
