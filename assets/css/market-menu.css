@@ -304,3 +304,29 @@ body > #library-market-panel.library-market-dropdown {
     font-size: 13px !important;
   }
 }
+
+
+/* Keep the two primary Market/News tabs visible above the scrolling panel content. */
+#library-market-panel > .home-dashboard-tabs {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 5 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: #fbf9fe !important;
+  padding: 2px 0 8px !important;
+}
+#library-market-panel > .home-dashboard-tabs > #home-market-tab,
+#library-market-panel > .home-dashboard-tabs > #home-news-tab {
+  display: inline-flex !important;
+  min-width: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+}
+#library-market-panel #home-news-view:not([hidden]) {
+  display: block !important;
+  min-height: 140px !important;
+}
