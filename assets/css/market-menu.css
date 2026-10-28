@@ -695,3 +695,77 @@ body > #library-market-panel.library-market-dropdown {
     font-size: 12px !important;
   }
 }
+
+
+/* 2026-10-28 FIX: eliminate translucent/sticky-glass appearance across the entire nav.
+   Use opaque paints on the shell and all descendants, including active tabs. */
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links,
+.site-nav-shell .site-tab-links .site-tab,
+.site-nav-shell .site-tab-links .site-tab:hover,
+.site-nav-shell .site-tab-links .site-tab:focus,
+.site-nav-shell .site-tab-links .site-tab.is-active,
+.site-nav-shell .site-tab-links .site-tab[aria-expanded="true"] {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+.site-nav-shell {
+  -webkit-transform: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.site-nav-shell::before,
+.site-nav-shell::after,
+.site-nav-shell *::before,
+.site-nav-shell *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background-image: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+/* Preserve the tabs' own solid state colors, but never let them become translucent. */
+.site-nav-shell .site-tab-links .site-tab {
+  background-color: #f6f3fa !important;
+}
+.site-nav-shell .site-tab-links .site-tab.is-active,
+.site-nav-shell .site-tab-links .site-tab[aria-expanded="true"] {
+  background-color: #e7def2 !important;
+}
+
+/* News: compact rows, with an actual visible gap between adjacent items. */
+#library-market-panel #home-news-view .home-news-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  row-gap: 7px !important;
+}
+#library-market-panel #home-news-view .home-news-item {
+  margin: 0 !important;
+}
+#library-market-panel #home-news-view .home-news-item__title-row {
+  min-height: 32px !important;
+  height: auto !important;
+  padding: 5px 9px !important;
+  line-height: 1.25 !important;
+  gap: 7px !important;
+}
+#library-market-panel #home-news-view .home-news-item__title {
+  font-size: .82rem !important;
+  line-height: 1.25 !important;
+}
+@media (max-width: 600px) {
+  #library-market-panel #home-news-view .home-news-list {
+    gap: 7px !important;
+    row-gap: 7px !important;
+  }
+  #library-market-panel #home-news-view .home-news-item__title-row {
+    min-height: 32px !important;
+    padding: 5px 8px !important;
+  }
+}
