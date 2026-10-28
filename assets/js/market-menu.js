@@ -36,7 +36,9 @@
         panel.hidden = false;
         panel.classList.remove("is-closing");
         var rect = nav.getBoundingClientRect();
-        var panelTop = Math.max(0, rect.bottom + 4);\n        panel.style.setProperty("top", panelTop + "px", "important");\n        panel.style.setProperty("max-height", Math.max(180, window.innerHeight - panelTop - 8) + "px", "important");
+        var panelTop = Math.max(0, rect.bottom + 4);
+        panel.style.setProperty("top", panelTop + "px", "important");
+        panel.style.setProperty("max-height", Math.max(180, window.innerHeight - panelTop - 8) + "px", "important");
       } else if (!panel.hidden) {
         panel.classList.add("is-closing");
         closeTimer = window.setTimeout(function () {
