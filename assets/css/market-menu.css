@@ -489,3 +489,53 @@ body > #library-market-panel.library-market-dropdown {
     padding-bottom: 4px !important;
   }
 }
+
+
+/* 2026-10-28: dropdown must overlay all page panels, while the first nav row stays above it. */
+.site-nav-shell {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2147483646 !important;
+  isolation: isolate !important;
+}
+body > #library-market-panel.library-market-dropdown {
+  position: fixed !important;
+  z-index: 2147483645 !important;
+  top: var(--market-panel-top, 0px);
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 14px 32px rgba(25, 18, 35, .28) !important;
+}
+body.market-panel-open > .content-wrapper,
+body.market-panel-open > main,
+body.market-panel-open .content-wrapper__inner {
+  position: relative;
+  z-index: auto !important;
+}
+.site-nav-shell .site-tab-links,
+.site-nav-shell .site-tabs {
+  position: relative !important;
+  z-index: 1 !important;
+}
+@media (max-width: 700px) {
+  /* Give Radio/Book secondary rows a clear visual gap below the primary row. */
+  .site-nav-shell {
+    margin-bottom: 16px !important;
+    padding-bottom: 9px !important;
+  }
+  .site-nav-shell + .radio-source-tabs,
+  .site-nav-shell + .book-source-panel,
+  .site-nav-shell + .book-source-tabs,
+  .site-nav-shell + .radio-source-panel {
+    margin-top: 12px !important;
+  }
+  .radio-source-tabs,
+  .book-source-panel .book-source-tabs,
+  .book-source-panel .book-chapter-tabs {
+    scroll-margin-top: 12px;
+  }
+}
