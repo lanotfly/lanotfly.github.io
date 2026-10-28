@@ -3,6 +3,7 @@
   'use strict';
   if(window.__homeNewsInstalled)return;
   window.__homeNewsInstalled=true;
+  function initNewsPanel(){
   // Keep all controls and views scoped to the floating overlay; the Home page has its own news section.
   var panelRoot=document.getElementById('library-market-panel');
   if(!panelRoot)return;
@@ -99,4 +100,7 @@
   panelRoot.querySelectorAll('[data-news-bulk-toggle]').forEach(function(button){syncBulkToggle(button,true);button.addEventListener('click',function(){var id=button.getAttribute('data-news-bulk-toggle');var list=panelRoot.querySelector('[data-news-list="'+id+'"]');if(!list)return;var cards=Array.prototype.slice.call(list.querySelectorAll('details.home-news-item'));var expand=cards.some(function(card){return !card.open;});cards.forEach(function(card){card.open=expand;});syncBulkToggle(button,!expand);});});
   activateTop('market');
   activateSource('japanese');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initNewsPanel,{once:true});
+  else initNewsPanel();
 })(window,document);
