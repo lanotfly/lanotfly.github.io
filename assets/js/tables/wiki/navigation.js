@@ -293,7 +293,7 @@
     document.body.appendChild(chapterDrawer);document.body.appendChild(chapterHandle);
     var side='right';try{side=localStorage.getItem('library_book_handle_side')||'right';}catch(_){}
     placeChapterHandle(side);
-    try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop)chapterHandle.style.top=savedTop;}catch(_){}
+    try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop){chapterHandle.style.top=savedTop;chapterHandle.style.transform='none';}}catch(_){}
     chapterHandle.addEventListener('click',function(){if(chapterHandle.dataset.dragged==='1'){chapterHandle.dataset.dragged='0';return;}if(chapterDrawerOpen)closeChapterDrawer();else openChapterDrawer();});
     chapterDrawer.querySelector('.book-drawer-close').addEventListener('click',closeChapterDrawer);
     window.addEventListener('resize',function(){if(chapterHandle){var r=chapterHandle.getBoundingClientRect();chapterHandle.style.top=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,r.top))+'px';}});
