@@ -6,6 +6,20 @@
     var nav = document.querySelector(".site-nav-shell .site-tabs");
     var refresh = document.getElementById("library-market-refresh");
     if (!panel || !nav || panel.dataset.marketGestureReady === "true") return;
+    // Fallback tab switching: keep News usable even if the RSS initializer fails.
+    panel.addEventListener("click", function (event) {
+      var tab = event.target.closest("[data-home-panel-tab]");
+      if (!tab || !panel.contains(tab)) return;
+      var id = tab.getAttribute("data-home-panel-tab");
+      panel.querySelectorAll("[data-home-panel-tab]").forEach(function (item) {
+        var active = item === tab;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      panel.querySelectorAll("[data-home-panel-view]").forEach(function (view) {
+        view.hidden = view.getAttribute("data-home-panel-view") !== id;
+      });
+    });
     panel.dataset.marketGestureReady = "true";
     // Detach the temporary panel from the navigation/layout tree entirely.
     // A fixed overlay living inside a styled wrapper can still inherit odd layout/positioning.
