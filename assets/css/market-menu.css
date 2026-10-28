@@ -17,47 +17,15 @@
 .site-nav-shell .site-tab-links {
   grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
 }
-.market-pull-handle-wrap {
-  display: flex;
-  justify-content: center;
+.market-pull-gesture-anchor {
+  display: block;
   width: 100%;
+  height: 0;
   margin: 0;
-  line-height: 1;
-}
-.market-pull-handle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  width: 72px;
-  height: 20px;
-  padding: 0 12px 2px;
+  padding: 0;
   border: 0;
-  border-radius: 0 0 9px 9px;
-  background: #f3eef9;
-  color: #705493;
-  box-shadow: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  pointer-events: none;
 }
-.market-pull-handle__line {
-  display: block;
-  width: 27px;
-  height: 3px;
-  border-radius: 2px;
-  background: currentColor;
-  opacity: .45;
-}
-.market-pull-handle__chevron {
-  display: block;
-  height: 11px;
-  font-size: 17px;
-  line-height: 10px;
-  transition: transform .22s ease;
-}
-.market-pull-handle[aria-expanded="true"] .market-pull-handle__chevron { transform: rotate(180deg); }
-.market-pull-handle:focus-visible { outline: 2px solid #9581b3; outline-offset: 2px; }
 .library-market-dropdown {
   animation: market-panel-drop .24s ease-out both;
   width: 100%;
@@ -188,5 +156,5 @@
 }
 @media (max-width: 700px) {
   .site-nav-shell .site-tab-links { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
-  .market-pull-handle { height: 22px; }
+
 }
