@@ -1,4 +1,20 @@
-
-#library-book-chapter-handle{position:fixed;z-index:99999;top:48%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:7px;width:42px;min-height:112px;padding:12px 8px;border:1px solid #b7d9c4;border-radius:12px 0 0 12px;color:#175b3b;background:#e6f5eb;box-shadow:0 3px 14px rgba(20,50,35,.2);writing-mode:vertical-rl;touch-action:none;cursor:grab;user-select:none;transition:left .22s,right .22s,width .18s,min-height .18s}
-#library-book-chapter-handle[hidden]{display:none!important}#library-book-chapter-handle[data-side=left]{border-radius:0 12px 12px 0}#library-book-chapter-handle .book-handle-grip{font-size:17px;opacity:.65}#library-book-chapter-handle .book-handle-label{font-size:13px;font-weight:750}#library-book-chapter-handle.is-expanded{width:32px;min-height:76px;background:#d3f0de}#library-book-chapter-handle.is-expanded .book-handle-label,#library-book-chapter-handle.is-expanded .book-handle-grip{display:none}
-#library-book-chapter-drawer{z-index:99998}#library-book-chapter-drawer.is-open{visibility:visible}:root[data-theme=dark] #library-book-chapter-handle{color:#c2f3d5;background:#203b30;border-color:#438767}
+/* Compact Book chapter popover; opens on the same edge as its handle. */
+#library-book-chapter-handle{position:fixed;z-index:99999;top:48%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:7px;width:36px;min-height:104px;padding:12px 7px;border:1px solid #b7d9c4;border-radius:12px 0 0 12px;color:#175b3b;background:#e6f5eb;box-shadow:0 3px 14px rgba(20,50,35,.2);writing-mode:vertical-rl;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;transition:left .22s,right .22s,top .18s,background .18s}
+#library-book-chapter-handle[hidden]{display:none!important}
+#library-book-chapter-handle[data-side=left]{border-radius:0 12px 12px 0}
+#library-book-chapter-handle .book-handle-grip{font-size:17px;opacity:.65}
+#library-book-chapter-handle .book-handle-label{font-size:13px;font-weight:750}
+#library-book-chapter-handle.is-expanded{width:30px;min-height:70px;background:#d3f0de}
+#library-book-chapter-handle.is-expanded .book-handle-label,#library-book-chapter-handle.is-expanded .book-handle-grip{display:none}
+#library-book-chapter-drawer{position:fixed;z-index:99998;top:50%;bottom:auto;left:8px;right:auto;width:min(72vw,290px);max-height:min(68vh,560px);padding:12px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;color:var(--theme-text,#20283a);background:var(--theme-surface,#fff);border:1px solid var(--theme-border,#dce3ee);border-radius:14px;box-shadow:0 8px 28px rgba(20,30,50,.22);transform:translateY(-50%) scale(.98);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,transform .18s ease,visibility .18s;overscroll-behavior:contain}
+#library-book-chapter-drawer[data-side=right]{left:auto;right:8px}
+#library-book-chapter-drawer.is-open{transform:translateY(-50%) scale(1);opacity:1;visibility:visible;pointer-events:auto}
+#library-book-chapter-drawer .book-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 9px;border-bottom:1px solid var(--theme-border,#dce3ee)}
+#library-book-chapter-drawer .book-drawer-title{font-size:15px;font-weight:750}
+#library-book-chapter-drawer .book-drawer-close{flex-shrink:0;width:32px;height:32px;border:1px solid var(--theme-border,#dce3ee);border-radius:7px;background:var(--theme-surface-soft,#f1f4fa);color:var(--theme-text,#20283a);font-size:22px;line-height:1}
+#library-book-chapter-drawer .book-drawer-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;min-height:0;max-height:calc(min(68vh,560px) - 64px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#library-book-chapter-drawer .book-drawer-link{display:block;padding:9px 10px;border:1px solid var(--theme-border,#dce3ee);border-radius:8px;color:var(--theme-text,#20283a);background:var(--theme-surface-soft,#f1f4fa);text-decoration:none;font-size:13px;line-height:1.35}
+#library-book-chapter-drawer .book-drawer-link.is-current{border:2px solid #18734b;padding:8px 9px;color:#18734b;font-weight:700;background:var(--theme-surface,#fff)}
+:root[data-theme=dark] #library-book-chapter-handle{color:#c2f3d5;background:#203b30;border-color:#438767}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-link.is-current{color:#a9e8c3;border-color:#72c89a}
+@media(max-width:360px){#library-book-chapter-drawer{width:min(78vw,270px);padding:10px}}
