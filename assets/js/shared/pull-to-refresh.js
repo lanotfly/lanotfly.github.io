@@ -2,14 +2,9 @@
 (function(){
   if(window.__libraryPullToRefreshInstalled)return;
   window.__libraryPullToRefreshInstalled=true;
-  var startX=0,startY=0,tracking=false,toolbar=null,nav=null;
-  var revealThreshold=55,navRestOffset=70;
+  var startX=0,startY=0,tracking=false,toolbar=null;
+  var revealThreshold=55;
   function atTop(){return (window.scrollY||document.documentElement.scrollTop||0)<=2;}
-  function getNav(){if(!nav)nav=document.querySelector('.site-nav-shell');return nav;}
-  function moveNav(y){
-    var el=getNav();
-    if(el)el.style.transform=y>0?'translateY('+Math.round(y)+'px)':'';
-  }
   function getToolbar(){
     if(toolbar)return toolbar;
     toolbar=document.createElement('div');
@@ -27,12 +22,11 @@
   }
   function reveal(){
     getToolbar().classList.add('is-visible');
-    moveNav(navRestOffset);
     document.body.classList.remove('library-pull-refresh-zone-active');
   }
   function hide(){
     if(toolbar){toolbar.classList.remove('is-visible','is-pulling');toolbar.style.removeProperty('--pull-progress');}
-    moveNav(0);
+    
   }
   function reset(){
     tracking=false;
@@ -52,8 +46,7 @@
     var dx=event.touches[0].clientX-startX,dy=event.touches[0].clientY-startY;
     if(Math.abs(dx)>Math.max(25,dy*.7)){reset();moveNav(0);if(toolbar)toolbar.classList.remove('is-pulling');return;}
     if(dy>12&&atTop()){
-      moveNav(dy>=revealThreshold?navRestOffset:Math.min(navRestOffset,dy));
-      if(dy>=revealThreshold){
+            if(dy>=revealThreshold){
         var el=getToolbar();
         el.style.setProperty('--pull-progress',Math.min(1,dy/80));
         el.classList.add('is-pulling');
