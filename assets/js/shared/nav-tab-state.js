@@ -1,141 +1,101 @@
-/* One shared owner for primary navigation colors and active state. */
 (function (window, document) {
   'use strict';
   if (window.LibraryNavTabState) return;
 
-  var audioSelectors = [
-    ['#library-radio-toggle', 'radio'],
-    ['#niv-bible-toggle', 'kjv'],
-    ['#library-podcast-toggle', 'podcast']
+  /* Navigation styling owns colors only. It never opens/closes panels or touches audio. */
+  var audio = [
+    { selector: '#library-radio-toggle, #radio4-toggle, #nhk-radio-toggle', id: 'radio', palette: 'audio' },
+    { selector: '#niv-bible-toggle', id: 'kjv', palette: 'audio' },
+    { selector: '#library-podcast-toggle', id: 'podcast', palette: 'audio' }
   ];
-  var pale = { background: '#f3eef9', color: '#705493', border: '#cbb9df' };
-  var active = { background: '#e9def5', color: '#50386a', border: '#9581b3' };
+  var reading = [
+    { selector: '.site-tab--home', id: 'home' },
+    { selector: '#library-book-toggle, .book-secondary-link, .book-chapter-link', id: 'book' }
+  ];
+  var colors = {
+    audio: { normal: ['#f3eef9', '#705493', '#cbb9df'], active: ['#e9def5', '#50386a', '#9581b3'] },
+    reading: { normal: ['#edf6ed', '#477653', '#c5dfc7'], active: ['#d9ecd9', '#285d37', '#83b78b'] }
+  };
 
-  function setImportant(el, palette, activeState) {
+  function paint(el, palette, selected) {
     if (!el) return;
-    function setIfDifferent(property, value) {
-      if (el.style.getPropertyValue(property) !== value ||
-          el.style.getPropertyPriority(property) !== 'important') {
-        el.style.setProperty(property, value, 'important');
-      }
-    }
-    setIfDifferent('background-color', palette.background);
-    setIfDifferent('color', palette.color);
-    setIfDifferent('border-color', palette.border);
-    setIfDifferent('border-style', 'solid');
-    setIfDifferent('border-width', activeState ? '2px' : '1px');
-    setIfDifferent('box-shadow', 'none');
-    if (el.classList.contains('nav-state-active') !== !!activeState) {
-      el.classList.toggle('nav-state-active', !!activeState);
-    }
+    var values = selected ? palette.active : palette.normal;
+    el.style.setProperty('background-color', values[0], 'important');
+    el.style.setProperty('color', values[1], 'important');
+    el.style.setProperty('border-color', values[2], 'important');
+    el.style.setProperty('border-style', 'solid', 'important');
+    el.style.setProperty('border-width', selected ? '2px' : '1px', 'important');
+    el.style.setProperty('box-shadow', 'none', 'important');
+    el.classList.toggle('nav-state-active', !!selected);
   }
 
   function removeLegacyDivider() {
-    document.querySelectorAll(
-      '.site-nav-row-divider, .site-nav-row-divider--wiki-bottom'
-    ).forEach(function (el) { el.remove(); });
+    document.querySelectorAll('.site-nav-row-divider, .site-nav-row-divider--wiki-bottom')
+      .forEach(function (el) { el.remove(); });
   }
 
-  function apply(reason, clickedTab) {
+  function apply(family, selected) {
     var shell = document.querySelector('.site-nav-shell');
     if (!shell) return;
-
-    var selected = null;
-    if (clickedTab) {
-      selected = clickedTab;
-    } else if (shell.getAttribute('data-active-family') === 'audio') {
-      selected = shell.getAttribute('data-active-audio-tab');
-    } else {
-      /* Recover the active audio family from accessible state if a legacy script
-         has not restored the shared data attributes yet (notably after login). */
-      var radio = shell.querySelector('#library-radio-toggle');
-      var kjv = shell.querySelector('#niv-bible-toggle');
-      var podcast = shell.querySelector('#library-podcast-toggle');
-      if (radio && radio.getAttribute('aria-expanded') === 'true') selected = 'radio';
-      else if (kjv && (kjv.getAttribute('aria-expanded') === 'true' ||
-                       kjv.getAttribute('aria-pressed') === 'true')) selected = 'kjv';
-      else if (podcast && podcast.getAttribute('aria-expanded') === 'true') selected = 'podcast';
+    if (family !== 'audio' && family !== 'reading') {
+      family = shell.getAttribute('data-active-family') || 'reading';
+      selected = family === 'audio'
+        ? (shell.getAttribute('data-active-audio-tab') || 'radio')
+        : (shell.getAttribute('data-active-reading-tab') || 'home');
     }
+    shell.setAttribute('data-active-family', family);
+    if (family === 'audio') shell.setAttribute('data-active-audio-tab', selected);
+    else shell.setAttribute('data-active-reading-tab', selected);
 
-    audioSelectors.forEach(function (item) {
-      var button = shell.querySelector(item[0]);
-      var isActive = !!selected && selected === item[1];
-      setImportant(button, isActive ? active : pale, isActive);
+    audio.forEach(function (item) {
+      var isSelected = family === 'audio' && item.id === selected;
+      document.querySelectorAll(item.selector).forEach(function (el) {
+        paint(el, colors.audio, isSelected);
+      });
     });
-
-    if (selected) {
-      if (shell.getAttribute('data-active-family') !== 'audio') {
-        shell.setAttribute('data-active-family', 'audio');
-      }
-      if (shell.getAttribute('data-active-audio-tab') !== selected) {
-        shell.setAttribute('data-active-audio-tab', selected);
-      }
-    }
-
+    reading.forEach(function (item) {
+      var isSelected = family === 'reading' && item.id === selected;
+      document.querySelectorAll(item.selector).forEach(function (el) {
+        paint(el, colors.reading, isSelected);
+      });
+    });
     removeLegacyDivider();
   }
 
   function handleClick(event) {
     var target = event.target && event.target.closest && event.target.closest(
-      '#library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle'
+      '#library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle, .site-tab--home, #library-book-toggle, .book-secondary-link, .book-chapter-link'
     );
     if (!target) return;
-    var selected = target.matches('#library-radio-toggle, #radio4-toggle, #nhk-radio-toggle')
-      ? 'radio'
-      : target.matches('#niv-bible-toggle') ? 'kjv' : 'podcast';
-    apply('click', selected);
-    /* Re-apply after existing playback handlers have updated aria/class state. */
-    window.requestAnimationFrame(function () { apply('click-settled', selected); });
+    var audioItem = audio.find(function (item) { return target.matches(item.selector); });
+    if (audioItem) {
+      apply('audio', audioItem.id);
+    } else {
+      var readingItem = reading.find(function (item) { return target.matches(item.selector); });
+      if (readingItem) apply('reading', readingItem.id);
+    }
   }
 
-  var api = {
-    refresh: function () { apply('manual-refresh', null); },
+  function initialState() {
+    var path = window.location.pathname || '/';
+    if (/^\/(data|algorithms|linux|cloud)(\/|$)/.test(path)) return ['reading', 'book'];
+    var shell = document.querySelector('.site-nav-shell');
+    if (shell && shell.getAttribute('data-active-family') === 'audio') {
+      return ['audio', shell.getAttribute('data-active-audio-tab') || 'radio'];
+    }
+    return ['reading', 'home'];
+  }
+
+  window.LibraryNavTabState = {
+    refresh: function () { var state = initialState(); apply(state[0], state[1]); },
     apply: apply
   };
-  window.LibraryNavTabState = api;
-
-  function scheduleSettledRefresh(reason) {
-    /* Run after deferred scripts and first-paint state restoration have settled. */
-    window.requestAnimationFrame(function () {
-      window.requestAnimationFrame(function () { apply(reason + '-settled', null); });
-    });
-    window.setTimeout(function () { apply(reason + '-delayed', null); }, 120);
-  }
-
+  document.addEventListener('click', handleClick, true);
   document.addEventListener('DOMContentLoaded', function () {
-    apply('dom-ready', null);
-    scheduleSettledRefresh('dom-ready');
-  });
-  window.addEventListener('load', function () {
-    apply('load', null);
-    scheduleSettledRefresh('load');
+    var state = initialState(); apply(state[0], state[1]);
   });
   window.addEventListener('pageshow', function () {
-    apply('pageshow', null);
-    scheduleSettledRefresh('pageshow');
+    var state = initialState(); apply(state[0], state[1]);
   });
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) scheduleSettledRefresh('visible');
-  });
-  document.addEventListener('click', handleClick, true);
-
-  /* Catch other legacy scripts changing inline styles or adding the old divider. */
-  if (window.MutationObserver && document.documentElement) {
-    var observer = new MutationObserver(function () {
-      if (observer._navRefreshQueued) return;
-      observer._navRefreshQueued = true;
-      window.requestAnimationFrame(function () {
-        observer._navRefreshQueued = false;
-        apply('mutation', null);
-      });
-    });
-    observer.observe(document.documentElement, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      attributeFilter: ['style', 'class', 'aria-expanded', 'aria-pressed', 'data-active-family', 'data-active-audio-tab']
-    });
-  }
-
-  apply('initial', null);
+  apply.apply(null, initialState());
 })(window, document);
