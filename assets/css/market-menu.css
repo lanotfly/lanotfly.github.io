@@ -878,3 +878,23 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
   z-index: 2147483000 !important;
   margin: 0 !important;
 }
+
+
+/* 2026-10-28: reclaim the oversized blank strip above the page title and top navigation. */
+.content-wrapper__inner {
+  padding-top: 0 !important;
+}
+.site-nav-shell {
+  margin-top: -18px !important;
+  margin-bottom: 4px !important;
+  padding-top: 0 !important;
+}
+.site-nav-shell .site-tabs {
+  padding-top: 0 !important;
+}
+@media (max-width: 600px) {
+  .site-nav-shell {
+    margin-top: -14px !important;
+    margin-bottom: 3px !important;
+  }
+}
