@@ -232,6 +232,9 @@
   }
 
   async function navigate(url, push){
+    /* Snapshot live audio before replacing article content. Reading-menu navigation must not pause an unrelated stream. */
+    var playingAudioIds = ['radio4-audio','nhk-radio-audio','niv-bible-audio','podcast-bbc-audio','podcast-chronicle-audio','podcast-english-audio','podcast-japanese-audio'];
+    var playingAudio = playingAudioIds.filter(function(id){ var el=document.getElementById(id); return !!(el && !el.paused); });
     var response = await fetch(url.href, { credentials: 'same-origin' });
     if (!response.ok) throw new Error('Navigation failed: ' + response.status);
     var doc = new DOMParser().parseFromString(await response.text(), 'text/html');
@@ -316,6 +319,15 @@
         runInsertedScripts(insertedNode);
       }
     });
+    /* Some page scripts reinitialize audio controls after soft navigation. Restore any stream that was already playing. */
+    if (playingAudio.length) {
+      window.setTimeout(function(){
+        playingAudio.forEach(function(id){
+          var el=document.getElementById(id);
+          if(el && el.paused){ var p=el.play(); if(p&&p.catch)p.catch(function(){}); }
+        });
+      }, 0);
+    }
     if (url.hash) {
       var target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
       if (target) target.scrollIntoView();
