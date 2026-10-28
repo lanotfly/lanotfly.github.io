@@ -1100,3 +1100,41 @@ html, body {
   z-index: auto !important;
 }
 
+/* Fix Book L2: keep all five section links in a visible grid.
+   The shared normal-flow rule must not turn this row into flex with 100%-width items. */
+.site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-auto-flow: row !important;
+  grid-auto-rows: minmax(28px, auto) !important;
+  gap: 4px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+}
+.site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link {
+  display: flex !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: initial !important;
+  grid-column: auto !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 700px) {
+  .site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+  }
+  .site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link {
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+    font-size: 10px !important;
+  }
+}
+
