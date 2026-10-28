@@ -201,22 +201,16 @@
     var bookButton=event.target.closest&&event.target.closest('#library-book-toggle');
     if(bookButton){
       var panel=document.getElementById('library-book-panel');
-      var second=panel&&panel.querySelector('.book-source-tabs');
-      var chapters=panel&&panel.querySelector('.book-chapter-tabs');
-      var level='2';
-      /* Book is a two-state switch: level 2 -> level 3, level 3 -> level 2.
-         If neither menu is currently visible (first open), start at level 2. */
-      if(panel&&!panel.hidden){
-        if(chapters&&!chapters.hidden) level='2';
-        else if(second&&!second.hidden) level='3';
-        else level=lastBookMenuLevel;
+      /* Book only toggles the compact L2 section picker. Chapter navigation lives in a separate edge-swipe drawer. */
+      if(panel && !panel.hidden){
+        panel.hidden=true;
+        bookButton.setAttribute('aria-expanded','false');
+        bookButton.classList.remove('is-open');
       }else{
-        /* Reopen the last-used temporary menu instead of always resetting to L2. */
-        level=lastBookMenuLevel;
+        lastBookMenuLevel='2';
+        try{localStorage.setItem('library_book_level','2');}catch(_){}
+        renderBookMenu(window.location.pathname,'2');
       }
-      lastBookMenuLevel=level;
-      try{localStorage.setItem('library_book_level',level);}catch(_){}
-      renderBookMenu(window.location.pathname,level);
     }
     var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
     if(bookLink){
@@ -244,6 +238,81 @@
     initialBookToggle.setAttribute('aria-expanded', 'false');
     initialBookToggle.classList.remove('is-open');
   }
+
+  /* Chapter drawer: revealed by a horizontal edge swipe, never by tapping Book. */
+  var chapterDrawer=null;
+  function currentBookPath(){
+    var path=window.location.pathname;
+    var book=bookForPath(path);
+    if(book)return path;
+    try{
+      var remembered=localStorage.getItem('library_last_book_menu_path');
+      if(remembered&&bookForPath(remembered))return remembered;
+    }catch(_){}
+    return safeRememberedPage('data')||safeRememberedPage('ai')||safeRememberedPage('algorithm')||safeRememberedPage('linux')||safeRememberedPage('kubernetes')||'/data/';
+  }
+  function closeChapterDrawer(){
+    if(!chapterDrawer)return;
+    chapterDrawer.classList.remove('is-open');
+    chapterDrawer.setAttribute('aria-hidden','true');
+    document.documentElement.classList.remove('book-chapter-drawer-open');
+  }
+  function openChapterDrawer(){
+    var path=currentBookPath(), book=bookForPath(path);
+    if(!book||!chapterDrawer)return;
+    chapterDrawer.querySelector('.book-drawer-title').textContent=book.label+' chapters';
+    var list=chapterDrawer.querySelector('.book-drawer-list');
+    list.replaceChildren();
+    var chapters=collectChapters(book);
+    var overview=document.createElement('a');
+    overview.className='book-drawer-link';
+    overview.href=book.root;
+    overview.textContent='Overview';
+    list.appendChild(overview);
+    chapters.forEach(function(chapter){
+      if(chapter.path.split(/[?#]/)[0]===book.root)return;
+      var a=document.createElement('a');
+      a.className='book-drawer-link';
+      a.href=chapter.path;
+      a.textContent=chapter.label;
+      if(path===chapter.path.split(/[?#]/)[0])a.classList.add('is-current');
+      list.appendChild(a);
+    });
+    chapterDrawer.classList.add('is-open');
+    chapterDrawer.setAttribute('aria-hidden','false');
+    document.documentElement.classList.add('book-chapter-drawer-open');
+  }
+  function initChapterDrawer(){
+    if(chapterDrawer)return;
+    chapterDrawer=document.createElement('aside');
+    chapterDrawer.id='library-book-chapter-drawer';
+    chapterDrawer.setAttribute('aria-hidden','true');
+    chapterDrawer.innerHTML='<div class="book-drawer-head"><strong class="book-drawer-title">Book chapters</strong><button type="button" class="book-drawer-close" aria-label="Close chapters">×</button></div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
+    document.body.appendChild(chapterDrawer);
+    chapterDrawer.querySelector('.book-drawer-close').addEventListener('click',closeChapterDrawer);
+    chapterDrawer.addEventListener('click',function(e){
+      var link=e.target.closest('a.book-drawer-link');
+      if(link){try{localStorage.setItem('library_last_book_menu_path',new URL(link.href,window.location.href).pathname);}catch(_){} closeChapterDrawer();}
+    });
+    var sx=0,sy=0,tracking=false;
+    document.addEventListener('touchstart',function(e){
+      if(!e.touches||e.touches.length!==1)return;
+      var t=e.touches[0];sx=t.clientX;sy=t.clientY;
+      if(chapterDrawer.classList.contains('is-open'))tracking=chapterDrawer.contains(e.target)||sx<24;
+      else tracking=(sx<24||sx>window.innerWidth-24);
+    },{passive:true});
+    document.addEventListener('touchend',function(e){
+      if(!tracking||!e.changedTouches||!e.changedTouches.length)return;
+      tracking=false;
+      var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+      if(Math.abs(dx)<64||Math.abs(dx)<Math.abs(dy)*1.2)return;
+      if(chapterDrawer.classList.contains('is-open')){
+        if(dx<0||dx>0)closeChapterDrawer();
+      }else openChapterDrawer();
+    },{passive:true});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeChapterDrawer();});
+  }
+  initChapterDrawer();
 
   function sameOriginPageLink(link){
     if (!link || !link.href || link.target || link.hasAttribute('download')) return false;
@@ -338,11 +407,14 @@
       try{localStorage.setItem('library_book_level','3');}catch(_){}
       if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
       if(bookToggleAfterNav){bookToggleAfterNav.setAttribute('aria-expanded','false');bookToggleAfterNav.classList.remove('is-open');}
-    }else if((wasBookPanelOpen || openBookAfterSecondaryNavigation)&&!isHomeDestination){
+    }else if(openBookAfterSecondaryNavigation&&!isHomeDestination){
       openBookAfterSecondaryNavigation=false;
-      lastBookMenuLevel='3';
-      try{localStorage.setItem('library_book_level','3');}catch(_){}
-      renderBookMenu(url.pathname,'3');
+      lastBookMenuLevel='2';
+      try{localStorage.setItem('library_book_level','2');}catch(_){}
+      if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
+      if(bookToggleAfterNav){bookToggleAfterNav.setAttribute('aria-expanded','false');bookToggleAfterNav.classList.remove('is-open');}
+    }else if(wasBookPanelOpen&&!isHomeDestination){
+      renderBookMenu(url.pathname,'2');
     }else{
       if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
       if(bookToggleAfterNav){
@@ -385,7 +457,18 @@
     /* Save the page being left before resolving the destination tab. */
     rememberPage(window.location.pathname);
     var primaryPath = resolvePrimaryTab(link, window.location.pathname);
-    var url = new URL(primaryPath || link.href, window.location.href);
+    var targetHref = primaryPath || link.href;
+    if(link.classList.contains('book-secondary-link')){
+      var targetBook=bookForPath(link.pathname||new URL(link.href,window.location.href).pathname);
+      if(targetBook){
+        var rememberedTarget=safeRememberedPage(targetBook.key==='algorithm'?'algorithm':targetBook.key==='ai'?'ai':targetBook.key==='cloud'?'kubernetes':targetBook.key==='linux'?'data':'data');
+        /* Linux and Cloud currently share their own roots; use the section-specific remembered URL when available. */
+        if(targetBook.key==='linux'){try{rememberedTarget=localStorage.getItem('library_last_page_linux')||null;}catch(_){} if(!rememberedTarget)rememberedTarget=targetBook.root;}
+        if(targetBook.key==='cloud'){try{rememberedTarget=localStorage.getItem('library_last_page_cloud')||null;}catch(_){} if(!rememberedTarget)rememberedTarget=targetBook.root;}
+        targetHref=rememberedTarget||targetBook.root;
+      }
+    }
+    var url = new URL(targetHref, window.location.href);
     if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return;
     if (url.pathname === window.location.pathname && url.search === window.location.search && !url.hash) {
       event.preventDefault();
