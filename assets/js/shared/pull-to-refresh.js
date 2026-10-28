@@ -1,9 +1,15 @@
-/* Pull down at the top to reveal refresh and theme controls instead of refreshing immediately. */
+/* Pulling down moves the main tabs with the gesture; action buttons appear above them after a deeper pull. */
 (function(){
   if(window.__libraryPullToRefreshInstalled)return;
   window.__libraryPullToRefreshInstalled=true;
-  var startX=0,startY=0,tracking=false,toolbar=null;
+  var startX=0,startY=0,tracking=false,toolbar=null,nav=null;
+  var revealThreshold=55,navRestOffset=70;
   function atTop(){return (window.scrollY||document.documentElement.scrollTop||0)<=2;}
+  function getNav(){if(!nav)nav=document.querySelector('.site-nav-shell');return nav;}
+  function moveNav(y){
+    var el=getNav();
+    if(el)el.style.transform=y>0?'translateY('+Math.round(y)+'px)':'';
+  }
   function getToolbar(){
     if(toolbar)return toolbar;
     toolbar=document.createElement('div');
@@ -21,10 +27,12 @@
   }
   function reveal(){
     getToolbar().classList.add('is-visible');
+    moveNav(navRestOffset);
     document.body.classList.remove('library-pull-refresh-zone-active');
   }
   function hide(){
-    if(toolbar)toolbar.classList.remove('is-visible');
+    if(toolbar){toolbar.classList.remove('is-visible','is-pulling');toolbar.style.removeProperty('--pull-progress');}
+    moveNav(0);
   }
   function reset(){
     tracking=false;
@@ -42,11 +50,14 @@
   document.addEventListener('touchmove',function(event){
     if(!tracking||!event.touches||!event.touches.length)return;
     var dx=event.touches[0].clientX-startX,dy=event.touches[0].clientY-startY;
-    if(Math.abs(dx)>Math.max(25,dy*.7)){reset();return;}
+    if(Math.abs(dx)>Math.max(25,dy*.7)){reset();moveNav(0);if(toolbar)toolbar.classList.remove('is-pulling');return;}
     if(dy>12&&atTop()){
-      var el=getToolbar();
-      el.style.setProperty('--pull-progress',Math.min(1,dy/55));
-      el.classList.add('is-pulling');
+      moveNav(Math.min(navRestOffset,dy));
+      if(dy>=revealThreshold){
+        var el=getToolbar();
+        el.style.setProperty('--pull-progress',Math.min(1,dy/80));
+        el.classList.add('is-pulling');
+      } else if(toolbar) toolbar.classList.remove('is-pulling');
       if(event.cancelable)event.preventDefault();
     }
   },{passive:false});
@@ -54,15 +65,16 @@
     if(!tracking||!event.changedTouches||!event.changedTouches.length)return;
     var dx=event.changedTouches[0].clientX-startX,dy=event.changedTouches[0].clientY-startY;
     tracking=false;
-    if(dy>=35&&dy>Math.abs(dx)*1.2&&atTop()){
+    if(dy>=revealThreshold&&dy>Math.abs(dx)*1.2&&atTop()){
       reveal();
       if(toolbar)toolbar.classList.remove('is-pulling');
       return;
     }
     if(toolbar)toolbar.classList.remove('is-pulling');
+    moveNav(0);
     reset();
   },{passive:true});
-  document.addEventListener('touchcancel',function(){if(toolbar)toolbar.classList.remove('is-pulling');reset();},{passive:true});
+  document.addEventListener('touchcancel',function(){if(toolbar)toolbar.classList.remove('is-pulling');moveNav(0);reset();},{passive:true});
   document.addEventListener('click',function(event){
     if(toolbar&&toolbar.classList.contains('is-visible')&&!event.target.closest('.library-pull-actions'))hide();
   });
