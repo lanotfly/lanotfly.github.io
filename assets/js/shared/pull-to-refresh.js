@@ -52,7 +52,7 @@
     var dx=event.touches[0].clientX-startX,dy=event.touches[0].clientY-startY;
     if(Math.abs(dx)>Math.max(25,dy*.7)){reset();moveNav(0);if(toolbar)toolbar.classList.remove('is-pulling');return;}
     if(dy>12&&atTop()){
-      moveNav(Math.min(navRestOffset,dy));
+      moveNav(dy>=revealThreshold?navRestOffset:Math.min(navRestOffset,dy));
       if(dy>=revealThreshold){
         var el=getToolbar();
         el.style.setProperty('--pull-progress',Math.min(1,dy/80));
