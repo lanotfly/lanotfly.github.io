@@ -445,3 +445,47 @@ body > #library-market-panel.library-market-dropdown {
     padding: 8px 9px !important;
   }
 }
+
+
+/* 2026-10-28: prevent the primary tab row from clipping at its top edge
+   and keep the page content from visually sliding behind the navigation. */
+.site-nav-shell {
+  box-sizing: border-box !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+  overflow: visible !important;
+  isolation: isolate !important;
+  background: var(--page-bg, #fff) !important;
+}
+.site-nav-shell .site-tabs {
+  box-sizing: border-box !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  overflow: visible !important;
+}
+.site-nav-shell .site-tab-links {
+  align-items: center !important;
+  overflow: visible !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+.site-nav-shell .site-tab-links .site-tab {
+  align-self: center !important;
+  transform: none !important;
+}
+body > #library-market-panel.library-market-dropdown {
+  margin-top: 0 !important;
+}
+@media (max-width: 700px) {
+  .site-nav-shell {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+    margin-bottom: 10px !important;
+  }
+  .site-nav-shell .site-tabs {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+}
