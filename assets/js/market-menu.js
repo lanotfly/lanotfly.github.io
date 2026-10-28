@@ -48,7 +48,16 @@
       var touch = event.touches[0];
       startX = touch.clientX;
       startY = touch.clientY;
-      tracking = nav.contains(event.target) || (!panel.hidden && panel.contains(event.target));
+      if (!panel.hidden) {
+        // While the overlay is open, an upward swipe that starts inside it closes it.
+        tracking = panel.contains(event.target);
+      } else {
+        // Open only from the narrow edge strips in the upper third of the phone screen.
+        var inUpperThird = touch.clientY <= window.innerHeight / 3;
+        var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
+          touch.clientX >= window.innerWidth * 0.90;
+        tracking = inUpperThird && inSideStrip;
+      }
     }, { passive: true });
 
     document.addEventListener("touchmove", function (event) {
