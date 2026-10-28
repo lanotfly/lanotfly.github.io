@@ -384,6 +384,15 @@
     if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return;
     if (url.pathname === window.location.pathname && url.search === window.location.search && !url.hash) {
       event.preventDefault();
+      if(link.classList.contains('book-chapter-link')){
+        closeBookAfterChapterNavigation=false;
+        lastBookMenuLevel='3';
+        try{localStorage.setItem('library_book_level','3');localStorage.setItem('library_last_book_menu_path',url.pathname);}catch(_){}
+        var samePathPanel=document.getElementById('library-book-panel');
+        var samePathToggle=document.getElementById('library-book-toggle');
+        if(samePathPanel)samePathPanel.hidden=true;
+        if(samePathToggle){samePathToggle.setAttribute('aria-expanded','false');samePathToggle.classList.remove('is-open','is-active');}
+      }
       return;
     }
     event.preventDefault();
