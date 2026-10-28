@@ -281,6 +281,7 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261028-1';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
     chapterDrawer.innerHTML='<div class="book-drawer-head"><strong class="book-drawer-title">Book chapters</strong><button type="button" class="book-drawer-close" aria-label="Close chapters">×</button></div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
