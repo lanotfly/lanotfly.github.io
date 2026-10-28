@@ -115,6 +115,15 @@
   var lastBookMenuLevel = '3';
   try { lastBookMenuLevel = localStorage.getItem('library_book_level') === '2' ? '2' : '3'; } catch (_) {}
   function collectChapters(book){
+    /* Prefer the section's cached index-page links while browsing a chapter.
+       This keeps Data, AI, Algorithm, Linux and Cloud menus from changing shape
+       depending on links present in an individual article. */
+    if(window.location.pathname!==book.root){
+      try{
+        var cached=JSON.parse(localStorage.getItem(chapterStoreKey(book))||'[]');
+        if(Array.isArray(cached)&&cached.length)return cached;
+      }catch(_){}
+    }
     var found=[], seen={};
     document.querySelectorAll('.content-wrapper__inner a[href]').forEach(function(a){
       if(a.closest('.site-nav-shell') || a.classList.contains('book-secondary-link'))return;
@@ -140,7 +149,12 @@
     if(bookToggle){bookToggle.setAttribute('aria-expanded','true');bookToggle.classList.add('is-open','is-active');}
     var book=bookForPath(pathname);
     if(!book && level==='3'){
-      var rememberedBookPath=safeRememberedPage('data')||safeRememberedPage('ai')||safeRememberedPage('algorithm')||safeRememberedPage('linux')||safeRememberedPage('kubernetes');
+      var rememberedBookPath=null;
+      try{
+        var lastMenuPath=localStorage.getItem('library_last_book_menu_path');
+        if(lastMenuPath && bookForPath(lastMenuPath)) rememberedBookPath=lastMenuPath;
+      }catch(_){}
+      rememberedBookPath=rememberedBookPath||safeRememberedPage('data')||safeRememberedPage('ai')||safeRememberedPage('algorithm')||safeRememberedPage('linux')||safeRememberedPage('kubernetes');
       pathname=rememberedBookPath||'/data/';
       book=bookForPath(pathname);
     }
