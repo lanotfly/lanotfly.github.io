@@ -2018,3 +2018,19 @@ html,body{max-width:100%;overflow-x:clip}
   margin:0!important;
   padding:0!important;
 }
+
+
+/* Podcast spacing: an empty live-status paragraph must not reserve vertical
+   space above the first episode row. Keep the count/filter bar close to list. */
+#library-podcast-panel .podcast-episode-panel__status:empty {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#library-podcast-panel .podcast-episode-panel__tools {
+  margin-bottom: 6px !important;
+  padding-bottom: 0 !important;
+}
+#library-podcast-panel .podcast-episode-scroll-frame {
+  margin-top: 0 !important;
+}
