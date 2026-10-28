@@ -2,13 +2,14 @@
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
       <a class="site-tab site-tab--home" href="/home/">Home</a>
-      <button class="site-tab site-tab--market" id="library-market-toggle" type="button" aria-expanded="false" aria-controls="library-market-panel" title="Open market information and news">Market</button>
+      
       <button class="site-tab site-tab--radio-group" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
       <button class="site-tab site-tab--niv" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span class="niv-button-label">KJV</span></button>
       <button class="site-tab site-tab--podcast" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-podcast-toggle" type="button" aria-expanded="false" aria-controls="library-podcast-panel" title="Choose from four podcasts"><span class="library-podcast-button-label">Podcast</span></button>
       <button class="site-tab site-tab--book-group" id="library-book-toggle" data-audio-resource="false" type="button" aria-expanded="false" aria-controls="library-book-panel" title="Browse the knowledge library">Book</button>
     </div>
   </nav>
+  <div class="market-pull-handle-wrap"><button class="market-pull-handle" id="library-market-toggle" type="button" aria-expanded="false" aria-controls="library-market-panel" aria-label="Open market information and news" title="Market information and news"><span class="market-pull-handle__line" aria-hidden="true"></span><span class="market-pull-handle__chevron" aria-hidden="true">⌄</span></button></div>
   <section id="library-market-panel" class="library-market-dropdown" aria-label="Market information and news" hidden>
   <nav class="secondary-tabs home-dashboard-tabs" role="tablist" aria-label="Market and news controls">
     <button type="button" class="secondary-tab is-active" id="home-market-tab" role="tab" aria-selected="true" aria-controls="home-market-view" data-home-panel-tab="market">Market</button>
