@@ -380,3 +380,68 @@ body > #library-market-panel.library-market-dropdown {
     padding: 8px 9px !important;
   }
 }
+
+
+/* Layout split: keep the main five-tab row above the temporary dropdown. */
+.site-nav-shell {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2147483001 !important;
+  background: #fff !important;
+}
+#library-market-panel.library-market-dropdown {
+  z-index: 2147483000 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  padding: 8px 10px 12px !important;
+  max-height: calc(100dvh - 58px) !important;
+  overflow-y: auto !important;
+}
+#library-market-panel > .home-dashboard-tabs {
+  position: sticky !important;
+  top: -8px !important;
+  z-index: 8 !important;
+  margin: 0 0 12px !important;
+  padding: 8px 0 10px !important;
+  border-bottom: 1px solid #e8e0ef !important;
+  background: #fbf9fe !important;
+}
+#library-market-panel #home-market-view,
+#library-market-panel #home-news-view {
+  padding-top: 3px !important;
+}
+#library-market-panel #home-news-view.home-news-panel {
+  margin-top: 0 !important;
+}
+#library-market-panel #home-news-view .home-news-list {
+  gap: 7px !important;
+}
+#library-market-panel #home-news-view .home-news-item__title-row {
+  min-height: 42px !important;
+  padding: 8px 10px !important;
+  gap: 9px !important;
+}
+#library-market-panel #home-news-view .home-news-item__title {
+  font-size: .86rem !important;
+  line-height: 1.4 !important;
+}
+#library-market-panel #home-news-view .home-news-item {
+  border-radius: 8px !important;
+}
+@media (max-width: 520px) {
+  #library-market-panel.library-market-dropdown {
+    padding: 7px 8px 10px !important;
+    max-height: calc(100dvh - 50px) !important;
+  }
+  #library-market-panel > .home-dashboard-tabs {
+    margin-bottom: 10px !important;
+    padding: 7px 0 8px !important;
+  }
+  #library-market-panel #home-news-view .home-news-list {
+    gap: 6px !important;
+  }
+  #library-market-panel #home-news-view .home-news-item__title-row {
+    min-height: 41px !important;
+    padding: 8px 9px !important;
+  }
+}
