@@ -259,6 +259,7 @@
     var path=currentBookPath(), book=bookForPath(path);
     if(!book||!chapterDrawer)return;
     chapterDrawer.querySelector('.book-drawer-title').textContent=book.label+' chapters';
+    chapterDrawer.dataset.side=chapterHandle.dataset.side||'right';
     var list=chapterDrawer.querySelector('.book-drawer-list');
     list.replaceChildren();
     var overview=document.createElement('a');overview.className='book-drawer-link';overview.href=book.root;overview.textContent='Overview';list.appendChild(overview);
@@ -277,6 +278,7 @@
     chapterHandle.dataset.side=side;
     chapterHandle.style.left=side==='left'?'0':'auto';
     chapterHandle.style.right=side==='right'?'0':'auto';
+    chapterDrawer.dataset.side=side;
     try{localStorage.setItem('library_book_handle_side',side);}catch(_){}
   }
   function initChapterDrawer(){
@@ -291,33 +293,37 @@
     document.body.appendChild(chapterDrawer);document.body.appendChild(chapterHandle);
     var side='right';try{side=localStorage.getItem('library_book_handle_side')||'right';}catch(_){}
     placeChapterHandle(side);
+    try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop)chapterHandle.style.top=savedTop;}catch(_){}
     chapterHandle.addEventListener('click',function(){if(chapterHandle.dataset.dragged==='1'){chapterHandle.dataset.dragged='0';return;}if(chapterDrawerOpen)closeChapterDrawer();else openChapterDrawer();});
     chapterDrawer.querySelector('.book-drawer-close').addEventListener('click',closeChapterDrawer);
+    window.addEventListener('resize',function(){if(chapterHandle){var r=chapterHandle.getBoundingClientRect();chapterHandle.style.top=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,r.top))+'px';}});
     chapterDrawer.addEventListener('click',function(e){
       var link=e.target.closest('a.book-drawer-link');
       if(link){try{localStorage.setItem('library_last_book_menu_path',new URL(link.href,window.location.href).pathname);}catch(_){}closeChapterDrawer();}
     });
-    var sx=0,sy=0,baseLeft=0,dragging=false,moved=false;
+    var sy=0,baseTop=0,dragging=false,moved=false;
     chapterHandle.addEventListener('pointerdown',function(e){
       if(e.button!==undefined&&e.button!==0)return;
-      dragging=true;moved=false;sx=e.clientX;sy=e.clientY;
-      var rect=chapterHandle.getBoundingClientRect();baseLeft=rect.left;
+      dragging=true;moved=false;sy=e.clientY;
+      var rect=chapterHandle.getBoundingClientRect();baseTop=rect.top;
       chapterHandle.setPointerCapture&&chapterHandle.setPointerCapture(e.pointerId);
     });
     chapterHandle.addEventListener('pointermove',function(e){
       if(!dragging)return;
-      var dx=e.clientX-sx,dy=e.clientY-sy;
-      if(Math.abs(dx)>7||Math.abs(dy)>7)moved=true;
+      var dy=e.clientY-sy;
+      if(Math.abs(dy)>7)moved=true;
       if(!moved)return;
       chapterHandle.style.transition='none';
-      chapterHandle.style.left=Math.max(0,Math.min(window.innerWidth-chapterHandle.offsetWidth,baseLeft+dx))+'px';
-      chapterHandle.style.right='auto';
+      var nextTop=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,baseTop+dy));
+      chapterHandle.style.top=nextTop+'px';
+      chapterHandle.style.transform='none';
     });
     function finishDrag(){
       if(!dragging)return;dragging=false;
       if(moved){
         var rect=chapterHandle.getBoundingClientRect();
-        placeChapterHandle(rect.left+rect.width/2<window.innerWidth/2?'left':'right');
+        chapterHandle.style.top=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,rect.top))+'px';
+        try{localStorage.setItem('library_book_handle_top',chapterHandle.style.top);}catch(_){}
         chapterHandle.style.transition='';
         chapterHandle.dataset.dragged='1';
         window.setTimeout(function(){chapterHandle.dataset.dragged='0';},250);
