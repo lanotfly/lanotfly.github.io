@@ -617,3 +617,81 @@ body > #library-market-panel.library-market-dropdown {
 .site-nav-shell .site-tab-links {
   background-image: none !important;
 }
+
+
+/* 2026-10-28: hard reset glass rendering on the whole primary nav and every tab. */
+.site-nav-shell,
+.site-nav-shell *,
+.site-nav-shell::before,
+.site-nav-shell::after,
+.site-nav-shell *::before,
+.site-nav-shell *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  background-color: var(--page-bg, #fff) !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+.site-nav-shell .site-tab {
+  opacity: 1 !important;
+  background-image: none !important;
+}
+
+
+/* 2026-10-28: keep all market categories inside the single large panel.
+   Remove the nested cards and render FX quotes as a three-column grid. */
+#library-market-panel .home-market-groups {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+#library-market-panel .home-market-group {
+  width: 100% !important;
+  padding: 7px 2px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#library-market-panel .home-market-group .home-market-section-label {
+  margin: 0 0 5px !important;
+  padding: 3px 2px 5px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #e9e2f0 !important;
+}
+#library-market-panel .home-market-group .fx-bar__rates,
+#library-market-panel .home-market-group .home-market-list .fx-bar__rates {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 5px 10px !important;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+#library-market-panel .home-market-group .fx-bar__rate {
+  min-width: 0 !important;
+  padding: 5px 2px !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 4px !important;
+}
+#library-market-panel .home-market-group .fx-bar__pair {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+@media (max-width: 380px) {
+  #library-market-panel .home-market-group .fx-bar__rates {
+    gap: 5px 5px !important;
+  }
+  #library-market-panel .home-market-group .fx-bar__rate {
+    font-size: 12px !important;
+  }
+}
