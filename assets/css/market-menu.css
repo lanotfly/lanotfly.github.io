@@ -843,3 +843,38 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
     column-gap: 8px !important;
   }
 }
+
+/* NAV POSITION RESET: keep the first row near the top; dropdown alone overlays it. */
+.site-nav-shell {
+  position: relative !important;
+  top: auto !important;
+  margin: 0 auto 6px !important;
+  padding: 1px 7px 4px !important;
+  contain: none !important;
+  isolation: auto !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+.site-nav-shell .site-tabs {
+  margin: 0 !important;
+  padding: 1px 0 !important;
+  overflow: visible !important;
+}
+.site-nav-shell .site-tab-links {
+  padding: 2px 1px !important;
+  gap: 5px !important;
+  overflow: visible !important;
+}
+.site-nav-shell .site-tab-links .site-tab {
+  min-height: 37px !important;
+  margin-block: 0 !important;
+  transform: none !important;
+}
+#library-market-panel.library-market-dropdown {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 2147483000 !important;
+  margin: 0 !important;
+}
