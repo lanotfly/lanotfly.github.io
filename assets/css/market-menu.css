@@ -213,7 +213,7 @@
 #library-market-panel.library-market-dropdown {
   position: fixed !important;
   inset-inline: 0 !important;
-  top: var(--library-market-panel-top, 48px) !important;
+  top: 0 !important;
   z-index: 2147483000 !important;
   width: 100vw !important;
   max-width: none !important;
@@ -222,4 +222,24 @@
 }
 #library-market-panel.library-market-dropdown[hidden] {
   display: none !important;
+}
+
+/* The navigation row must have no placeholder/second row below it. */
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  height: auto !important;
+  min-height: 0 !important;
+  margin-bottom: 0 !important;
+}
+.site-nav-shell::after,
+.site-nav-shell .site-tabs::after {
+  content: none !important;
+  display: none !important;
+}
+body > #library-market-panel.library-market-dropdown {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 2147483000 !important;
 }
