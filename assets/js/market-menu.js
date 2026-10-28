@@ -9,8 +9,30 @@
     panel.dataset.marketGestureReady = "true";
     var startX = 0, startY = 0, tracking = false, threshold = 64;
 
+    var closeTimer = null;
     function setOpen(open) {
-      panel.hidden = !open;
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      if (open) {
+        panel.hidden = false;
+        panel.classList.remove("is-closing");
+        var rect = nav.getBoundingClientRect();
+        panel.style.top = Math.max(0, rect.bottom) + "px";
+      } else if (!panel.hidden) {
+        panel.classList.add("is-closing");
+        closeTimer = window.setTimeout(function () {
+          if (panel.classList.contains("is-closing")) {
+            panel.hidden = true;
+            panel.classList.remove("is-closing");
+          }
+          closeTimer = null;
+        }, 185);
+      } else {
+        panel.hidden = true;
+        panel.classList.remove("is-closing");
+      }
       var snapshot = panel.querySelector(".home-market-panel");
       if (snapshot && open) snapshot.classList.remove("is-collapsed");
       document.documentElement.classList.toggle("market-panel-open", open);
