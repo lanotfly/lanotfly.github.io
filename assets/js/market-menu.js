@@ -35,10 +35,11 @@
       if (open) {
         panel.hidden = false;
         panel.classList.remove("is-closing");
-        var rect = nav.getBoundingClientRect();
-        var panelTop = Math.max(0, rect.bottom + 4);
-        panel.style.setProperty("top", panelTop + "px", "important");
-        panel.style.setProperty("max-height", Math.max(180, window.innerHeight - panelTop - 8) + "px", "important");
+        var panelTop = 0;
+        panel.style.setProperty("top", "0px", "important");
+        panel.style.setProperty("left", "0px", "important");
+        panel.style.setProperty("right", "0px", "important");
+        panel.style.setProperty("max-height", "100dvh", "important");
       } else if (!panel.hidden) {
         panel.classList.add("is-closing");
         closeTimer = window.setTimeout(function () {
