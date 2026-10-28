@@ -899,15 +899,16 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
   -webkit-mask-image: none !important;
   mask-image: none !important;
   box-sizing: border-box !important;
-  padding: 7px 8px 8px !important;
+  padding: 1px 8px 2px !important;
   margin-top: 0 !important;
+  margin-bottom: 4px !important;
 }
 .site-nav-shell .site-tabs {
   overflow: visible !important;
   box-sizing: border-box !important;
   height: auto !important;
   min-height: 0 !important;
-  padding: 5px 2px !important;
+  padding: 1px 2px !important;
   margin: 0 !important;
 }
 .site-nav-shell .site-tab-links {
@@ -965,14 +966,14 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
 }
 @media (max-width: 700px) {
   .site-nav-shell {
-    padding: 6px 8px 7px !important;
+    padding: 1px 8px 2px !important;
   }
   .site-nav-shell .site-tabs {
-    padding: 4px 1px !important;
+    padding: 1px 1px !important;
   }
   .site-nav-shell .site-tab-links {
-    padding: 3px 2px !important;
-    gap: 6px !important;
+    padding: 2px 2px !important;
+    gap: 5px !important;
   }
   .site-nav-shell .site-tab-links .site-tab {
     min-height: 37px !important;
