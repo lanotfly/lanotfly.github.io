@@ -769,3 +769,77 @@ body > #library-market-panel.library-market-dropdown {
     padding: 5px 8px !important;
   }
 }
+
+
+/* 2026-10-28 polish: opaque first paint on iOS Safari and balanced quote columns. */
+.site-nav-shell {
+  position: relative !important;
+  top: auto !important;
+  background: var(--theme-page, #f7f8fc) !important;
+  background-color: var(--theme-page, #f7f8fc) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-transform: translateZ(0);
+  transform: none !important;
+  isolation: isolate !important;
+  contain: paint !important;
+}
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  background: var(--theme-page, #f7f8fc) !important;
+  background-color: var(--theme-page, #f7f8fc) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.site-nav-shell .site-tab-links .site-tab,
+.site-nav-shell .site-tab-links .site-tab::before,
+.site-nav-shell .site-tab-links .site-tab::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+body[data-theme="dark"] .site-nav-shell,
+body[data-theme="dark"] .site-nav-shell .site-tabs,
+body[data-theme="dark"] .site-nav-shell .site-tab-links {
+  background: var(--theme-page, #111318) !important;
+  background-color: var(--theme-page, #111318) !important;
+}
+
+/* Each market category becomes a balanced grid: two quotes use two equal columns,
+   while the FX category naturally uses three. The category heading spans the row. */
+#library-market-panel .home-market-group {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr)) !important;
+  align-items: center !important;
+  column-gap: 16px !important;
+  row-gap: 2px !important;
+}
+#library-market-panel .home-market-group > .home-market-section-label {
+  grid-column: 1 / -1 !important;
+}
+#library-market-panel .home-market-group > .fx-bar__rate {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#library-market-panel .home-market-group > .fx-bar__rate > .fx-bar__pair {
+  text-align: left !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+#library-market-panel .home-market-group > .fx-bar__rate > .fx-bar__value {
+  text-align: right !important;
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+}
+@media (max-width: 380px) {
+  #library-market-panel .home-market-group {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 125px), 1fr)) !important;
+    column-gap: 8px !important;
+  }
+}
