@@ -1,4 +1,4 @@
-/* Pulling down moves the main tabs with the gesture; action buttons appear above them after a deeper pull. */
+/* Pull down to reveal a small overlay menu; the page and navigation stay in place. */
 (function(){
   if(window.__libraryPullToRefreshInstalled)return;
   window.__libraryPullToRefreshInstalled=true;
@@ -26,7 +26,6 @@
   }
   function hide(){
     if(toolbar){toolbar.classList.remove('is-visible','is-pulling');toolbar.style.removeProperty('--pull-progress');}
-    
   }
   function reset(){
     tracking=false;
