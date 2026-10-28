@@ -1,4 +1,4 @@
-/* Shared Market dropdown: full-width panel, square controls, no frosted-glass blur. */
+/* Shared slide-down Market panel: five-tab navigation, full-width market data, no frosted-glass blur. */
 .site-nav-shell,
 .site-nav-shell .site-tabs,
 .site-nav-shell .site-tabs,
@@ -15,26 +15,51 @@
   filter: none !important;
 }
 .site-nav-shell .site-tab-links {
-  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
 }
-.site-nav-shell .site-tab--market {
-  display: inline-flex !important;
+.market-pull-handle-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  line-height: 1;
+}
+.market-pull-handle {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 0;
-  color: #62458a !important;
-  background: #f3eef9 !important;
-  border: 1px solid #d6c7e8 !important;
-  box-shadow: none !important;
+  gap: 0;
+  width: 72px;
+  height: 20px;
+  padding: 0 12px 2px;
+  border: 0;
+  border-radius: 0 0 9px 9px;
+  background: #f3eef9;
+  color: #705493;
+  box-shadow: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-.site-nav-shell .site-tab--market:hover,
-.site-nav-shell .site-tab--market[aria-expanded="true"] {
-  color: #50386a !important;
-  background: #e9def5 !important;
-  border-color: #9581b3 !important;
+.market-pull-handle__line {
+  display: block;
+  width: 27px;
+  height: 3px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: .45;
 }
+.market-pull-handle__chevron {
+  display: block;
+  height: 11px;
+  font-size: 17px;
+  line-height: 10px;
+  transition: transform .22s ease;
+}
+.market-pull-handle[aria-expanded="true"] .market-pull-handle__chevron { transform: rotate(180deg); }
+.market-pull-handle:focus-visible { outline: 2px solid #9581b3; outline-offset: 2px; }
 .library-market-dropdown {
+  animation: market-panel-drop .24s ease-out both;
   width: 100%;
   max-width: none;
   box-sizing: border-box;
@@ -46,6 +71,10 @@
   color: #263238;
 }
 .library-market-dropdown[hidden] { display: none !important; }
+@keyframes market-panel-drop {
+  from { opacity: 0; transform: translateY(-9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .library-market-dropdown .home-dashboard-tabs {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -119,6 +148,6 @@
   .library-market-dropdown .home-dashboard-tabs .home-theme-label { display: none; }
 }
 @media (max-width: 700px) {
-  .site-nav-shell .site-tab-links { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
-  .site-nav-shell .site-tab-links .site-tab--market { grid-column: span 1 !important; }
+  .site-nav-shell .site-tab-links { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+  .market-pull-handle { height: 22px; }
 }
