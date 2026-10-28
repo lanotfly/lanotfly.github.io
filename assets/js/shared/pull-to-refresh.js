@@ -28,7 +28,6 @@
   }
   function reset(){
     tracking=false;
-    document.body.classList.remove('library-pull-refresh-zone-active');
   }
   document.addEventListener('touchstart',function(event){
     if(!event.touches||event.touches.length!==1||!atTop())return;
