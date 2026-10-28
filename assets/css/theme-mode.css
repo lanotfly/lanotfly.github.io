@@ -694,3 +694,65 @@ body[data-theme="dark"] .wiki-wrap svg text[fill="#62708a" i] { fill: #b0b9ca !i
   .site-nav-shell .site-theme-control,
   .site-nav-shell .site-theme-toggle { flex-basis: 28px !important; width: 28px !important; min-width: 28px !important; height: 30px !important; }
 }
+
+
+/* Mobile pull-down action strip: hidden until the user pulls down at page top. */
+.library-pull-actions {
+  position: fixed;
+  z-index: 10001;
+  top: max(8px, env(safe-area-inset-top));
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px;
+  border: 1px solid var(--theme-border, #dce3ee);
+  border-radius: 10px;
+  background: var(--theme-surface, #fff);
+  box-shadow: 0 5px 22px rgba(20,30,50,.18);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -150%);
+  transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
+}
+.library-pull-actions.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+.library-pull-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 104px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--theme-border, #dce3ee);
+  border-radius: 7px;
+  background: var(--theme-surface-soft, #f1f4fa);
+  color: var(--theme-text, #20283a);
+  font: 650 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.library-pull-action > span:first-child { font-size: 19px; line-height: 1; }
+.library-pull-action--refresh { border-color: #b9d8c3; }
+.library-pull-action--theme { border-color: #cbb9df; }
+html[data-theme="dark"] .library-pull-actions {
+  background: #1b1f28;
+  border-color: #465168;
+}
+html[data-theme="dark"] .library-pull-action {
+  background: #232936;
+  color: #edf0f7;
+  border-color: #465168;
+}
+@media (max-width: 700px) {
+  .site-nav-shell .site-theme-control { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .library-pull-actions { transition: none; }
+}
