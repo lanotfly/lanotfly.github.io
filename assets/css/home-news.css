@@ -128,3 +128,18 @@
 .home-news-item__title{font-size:.82rem;line-height:1.25}
 .home-news-item__chevron{font-size:13px}
 @media(max-width:600px){.home-news-item__title-row{min-height:34px;padding:5px 8px}.home-news-item__title{font-size:.81rem;line-height:1.25}}
+
+
+/* 2026-10-28: slightly shorter News rows, with a little breathing room. */
+#library-market-panel #home-news-view .home-news-list,
+.home-news-list { gap: 5px !important; }
+#library-market-panel #home-news-view .home-news-item__title-row,
+.home-news-item__title-row {
+  min-height: 34px !important;
+  padding: 5px 9px !important;
+  line-height: 1.25 !important;
+}
+@media (max-width: 600px) {
+  #library-market-panel #home-news-view .home-news-item__title-row,
+  .home-news-item__title-row { min-height: 34px !important; padding: 5px 8px !important; }
+}
