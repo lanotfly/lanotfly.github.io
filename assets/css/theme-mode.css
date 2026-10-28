@@ -990,3 +990,23 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
     padding: 5px 2px 6px !important;
   }
 }
+
+
+/* 2026-10-28 FINAL TOP-SPACING FIX: remove theme wrapper's reserved top strip.
+   Keep the navigation in normal document flow so it cannot overlap article content. */
+html, body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.content-wrapper {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.content-wrapper__inner {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.site-nav-shell {
+  margin-top: 0 !important;
+  transform: none !important;
+}
