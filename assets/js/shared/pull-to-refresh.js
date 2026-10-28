@@ -22,7 +22,6 @@
   }
   function reveal(){
     getToolbar().classList.add('is-visible');
-    document.body.classList.remove('library-pull-refresh-zone-active');
   }
   function hide(){
     if(toolbar){toolbar.classList.remove('is-visible','is-pulling');toolbar.style.removeProperty('--pull-progress');}
@@ -38,12 +37,11 @@
     startX=event.touches[0].clientX;
     startY=event.touches[0].clientY;
     tracking=true;
-    document.body.classList.add('library-pull-refresh-zone-active');
   },{passive:true});
   document.addEventListener('touchmove',function(event){
     if(!tracking||!event.touches||!event.touches.length)return;
     var dx=event.touches[0].clientX-startX,dy=event.touches[0].clientY-startY;
-    if(Math.abs(dx)>Math.max(25,dy*.7)){reset();moveNav(0);if(toolbar)toolbar.classList.remove('is-pulling');return;}
+    if(Math.abs(dx)>Math.max(25,dy*.7)){reset();if(toolbar)toolbar.classList.remove('is-pulling');return;}
     if(dy>12&&atTop()){
             if(dy>=revealThreshold){
         var el=getToolbar();
@@ -63,10 +61,9 @@
       return;
     }
     if(toolbar)toolbar.classList.remove('is-pulling');
-    moveNav(0);
     reset();
   },{passive:true});
-  document.addEventListener('touchcancel',function(){if(toolbar)toolbar.classList.remove('is-pulling');moveNav(0);reset();},{passive:true});
+  document.addEventListener('touchcancel',function(){if(toolbar)toolbar.classList.remove('is-pulling');reset();},{passive:true});
   document.addEventListener('click',function(event){
     if(toolbar&&toolbar.classList.contains('is-visible')&&!event.target.closest('.library-pull-actions'))hide();
   });
