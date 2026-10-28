@@ -112,6 +112,7 @@
   }
   function chapterStoreKey(book){return 'library_book_chapters_'+book.key;}
   var closeBookAfterChapterNavigation = false;
+  var openBookAfterSecondaryNavigation = false;
   var lastBookMenuLevel = '3';
   try { lastBookMenuLevel = localStorage.getItem('library_book_level') === '2' ? '2' : '3'; } catch (_) {}
   function collectChapters(book){
@@ -219,6 +220,7 @@
     }
     var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
     if(bookLink){
+      openBookAfterSecondaryNavigation=true;
       lastBookMenuLevel='3';
       try{localStorage.setItem('library_book_level','3');}catch(_){}
       /* L2 selection opens that section's L3 menu. */
@@ -336,8 +338,11 @@
       try{localStorage.setItem('library_book_level','3');}catch(_){}
       if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
       if(bookToggleAfterNav){bookToggleAfterNav.setAttribute('aria-expanded','false');bookToggleAfterNav.classList.remove('is-open');}
-    }else if(wasBookPanelOpen&&!isHomeDestination){
-      renderBookMenu(url.pathname,bookLevel);
+    }else if((wasBookPanelOpen || openBookAfterSecondaryNavigation)&&!isHomeDestination){
+      openBookAfterSecondaryNavigation=false;
+      lastBookMenuLevel='3';
+      try{localStorage.setItem('library_book_level','3');}catch(_){}
+      renderBookMenu(url.pathname,'3');
     }else{
       if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
       if(bookToggleAfterNav){
