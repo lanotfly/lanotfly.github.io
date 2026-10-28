@@ -1138,3 +1138,81 @@ html, body {
   }
 }
 
+
+
+/* 2026-10-28 BOOK NAV CONSISTENCY:
+   Use one pale-green reading palette for Home, Book, all Book sections and chapter links.
+   Keep L2 as a five-column grid and make L3 chapter items visually consistent. */
+.site-nav-shell .site-tab-links .site-tab--home,
+.site-nav-shell .site-tab-links .site-tab--book-group {
+  color: #18734b !important;
+  background: #e5f8ed !important;
+  border: 1px solid #a8e2c0 !important;
+  box-shadow: none !important;
+}
+.site-nav-shell .site-tab-links .site-tab--home.is-active,
+.site-nav-shell .site-tab-links .site-tab--home:hover,
+.site-nav-shell .site-tab-links .site-tab--book-group.is-active,
+.site-nav-shell .site-tab-links .site-tab--book-group.is-open,
+.site-nav-shell .site-tab-links .site-tab--book-group[aria-expanded="true"] {
+  color: #115638 !important;
+  background: #d3f2df !important;
+  border: 2px solid #18734b !important;
+  box-shadow: none !important;
+}
+.site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link,
+.site-nav-shell > #library-book-panel:not([hidden]) .book-chapter-tabs > .book-chapter-link {
+  color: #18734b !important;
+  background: #eaf8ef !important;
+  border: 1px dashed #a8d9ba !important;
+  border-radius: 8px !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+.site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link.is-active,
+.site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link[aria-current="page"],
+.site-nav-shell > #library-book-panel:not([hidden]) .book-chapter-tabs > .book-chapter-link.is-active {
+  color: #115638 !important;
+  background: #d3f2df !important;
+  border: 2px solid #18734b !important;
+  font-weight: 750 !important;
+}
+.site-nav-shell > #library-book-panel:not([hidden]) .book-chapter-tabs > .book-chapter-book-label {
+  color: #18734b !important;
+  border-color: #a8d9ba !important;
+  background: #eaf8ef !important;
+}
+@media (max-width: 700px) {
+  .site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link {
+    min-height: 36px !important;
+    padding: 6px 1px !important;
+    font-size: 10px !important;
+  }
+}
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--home,
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--book-group {
+  color: #c2f3d5 !important;
+  background: #203b30 !important;
+  border-color: #438767 !important;
+}
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--home.is-active,
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--book-group.is-open,
+body[data-theme="dark"] .site-nav-shell .site-tab-links .site-tab--book-group[aria-expanded="true"] {
+  color: #d8f7e4 !important;
+  background: #284b3b !important;
+  border-color: #72c89a !important;
+}
+body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link,
+body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .book-chapter-tabs > .book-chapter-link,
+body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .book-chapter-tabs > .book-chapter-book-label {
+  color: #c2f3d5 !important;
+  background: #203b30 !important;
+  border-color: #438767 !important;
+}
+body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link.is-active,
+body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .book-source-tabs:not([hidden]) > .book-secondary-link[aria-current="page"],
+body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .book-chapter-tabs > .book-chapter-link.is-active {
+  color: #e1f9e9 !important;
+  background: #284b3b !important;
+  border-color: #72c89a !important;
+}
