@@ -24,10 +24,12 @@
       document.getElementById('library-podcast-panel')
     ].filter(Boolean);
 
+    var anchor = shell;
     orderedPanels.forEach(function (panel) {
-      if (panel.parentElement !== inner) {
-        inner.insertBefore(panel, shell.nextSibling);
+      if (panel.parentElement !== inner || panel.previousElementSibling !== anchor) {
+        inner.insertBefore(panel, anchor.nextSibling);
       }
+      anchor = panel;
     });
 
     /* Make the layout contract observable for debugging without changing state. */
