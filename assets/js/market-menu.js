@@ -68,8 +68,11 @@
       startX = touch.clientX;
       startY = touch.clientY;
       if (!panel.hidden) {
-        // While the overlay is open, an upward swipe that starts inside it closes it.
-        tracking = panel.contains(event.target);
+        // Only the outer 10% strips dismiss the overlay. Gestures in the middle
+        // are left untouched so the panel's own scroll container can move.
+        var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
+          touch.clientX >= window.innerWidth * 0.90;
+        tracking = inSideStrip && panel.contains(event.target);
       } else {
         // Open from either narrow screen-edge strip, at any vertical position.
         var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
