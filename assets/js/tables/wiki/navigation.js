@@ -111,6 +111,9 @@
     return null;
   }
   function chapterStoreKey(book){return 'library_book_chapters_'+book.key;}
+  var closeBookAfterChapterNavigation = false;
+  var lastBookMenuLevel = '3';
+  try { lastBookMenuLevel = localStorage.getItem('library_book_level') === '2' ? '2' : '3'; } catch (_) {}
   function collectChapters(book){
     var found=[], seen={};
     document.querySelectorAll('.content-wrapper__inner a[href]').forEach(function(a){
@@ -191,18 +194,31 @@
       if(panel&&!panel.hidden){
         if(chapters&&!chapters.hidden) level='2';
         else if(second&&!second.hidden) level='3';
-        else { try{level=localStorage.getItem('library_book_level')||'2';}catch(_){} }
+        else level=lastBookMenuLevel;
       }else{
-        /* First tap after Book is closed always starts at level 2. */
-        level='2';
+        /* Reopen the last-used temporary menu instead of always resetting to L2. */
+        level=lastBookMenuLevel;
       }
+      lastBookMenuLevel=level;
       try{localStorage.setItem('library_book_level',level);}catch(_){}
       renderBookMenu(window.location.pathname,level);
     }
     var bookLink=event.target.closest&&event.target.closest('.book-secondary-link');
-    if(bookLink){try{localStorage.setItem('library_book_level','3');}catch(_){} var targetPath;try{targetPath=new URL(bookLink.href,window.location.href).pathname;}catch(_){} if(targetPath===window.location.pathname)renderBookMenu(window.location.pathname,'3');}
+    if(bookLink){
+      lastBookMenuLevel='3';
+      try{localStorage.setItem('library_book_level','3');}catch(_){}
+      /* L2 selection opens that section's L3 menu. */
+    }
     var chapterLink=event.target.closest&&event.target.closest('.book-chapter-link');
-    if(chapterLink){try{localStorage.setItem('library_book_level','3');}catch(_){}}
+    if(chapterLink){
+      lastBookMenuLevel='3';
+      closeBookAfterChapterNavigation=true;
+      try{
+        localStorage.setItem('library_book_level','3');
+        var chapterUrl=new URL(chapterLink.href,window.location.href);
+        localStorage.setItem('library_last_book_menu_path',chapterUrl.pathname);
+      }catch(_){}
+    }
   },true);
   /* Keep Book closed on page load. Its first tap always opens level 2. */
   var initialBookPanel = document.getElementById('library-book-panel');
@@ -299,7 +315,14 @@
     var bookPanelAfterNav=document.getElementById('library-book-panel');
     var bookToggleAfterNav=document.getElementById('library-book-toggle');
     var isHomeDestination=url.pathname==='/'||url.pathname==='/home/';
-    if(wasBookPanelOpen&&!isHomeDestination){
+    if(closeBookAfterChapterNavigation){
+      /* A chosen L3 chapter is the final destination: hide temporary menus and leave the article visible. */
+      closeBookAfterChapterNavigation=false;
+      lastBookMenuLevel='3';
+      try{localStorage.setItem('library_book_level','3');}catch(_){}
+      if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
+      if(bookToggleAfterNav){bookToggleAfterNav.setAttribute('aria-expanded','false');bookToggleAfterNav.classList.remove('is-open');}
+    }else if(wasBookPanelOpen&&!isHomeDestination){
       renderBookMenu(url.pathname,bookLevel);
     }else{
       if(bookPanelAfterNav)bookPanelAfterNav.hidden=true;
