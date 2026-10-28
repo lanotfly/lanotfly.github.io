@@ -853,3 +853,37 @@ body[data-theme="dark"] .site-nav-shell .site-theme-toggle {
   background: var(--theme-surface, #1b1f28) !important;
   background-color: var(--theme-surface, #1b1f28) !important;
 }
+
+
+/* Last-resort safety rule: disable backdrop blur on every element.
+   The navigation row must never produce the iOS frosted-glass appearance. */
+*, *::before, *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.site-nav-shell,
+.site-nav-shell::before,
+.site-nav-shell::after,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links,
+.site-nav-shell .site-tab-links::before,
+.site-nav-shell .site-tab-links::after,
+.site-nav-shell .site-tab-links .site-tab,
+.site-nav-shell .site-tab-links .site-tab::before,
+.site-nav-shell .site-tab-links .site-tab::after {
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  background-color: var(--theme-page, #f7f8fc) !important;
+}
+body[data-theme="dark"] .site-nav-shell,
+body[data-theme="dark"] .site-nav-shell .site-tabs,
+body[data-theme="dark"] .site-nav-shell .site-tab-links {
+  background-color: var(--theme-page, #111318) !important;
+}
