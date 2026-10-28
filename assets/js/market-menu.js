@@ -68,7 +68,7 @@
         // While the overlay is open, an upward swipe that starts inside it closes it.
         tracking = panel.contains(event.target);
       } else {
-        // Open only from the narrow edge strips in the upper third of the phone screen.
+        // Open from either narrow screen-edge strip, at any vertical position.
         var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
           touch.clientX >= window.innerWidth * 0.90;
         // Edge gestures work from any vertical position, not only the top third.
