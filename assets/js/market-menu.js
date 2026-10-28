@@ -39,6 +39,8 @@
         panel.style.setProperty("top", "0px", "important");
         panel.style.setProperty("left", "0px", "important");
         panel.style.setProperty("right", "0px", "important");
+        panel.style.setProperty("bottom", "auto", "important");
+        panel.style.setProperty("height", "auto", "important");
         panel.style.setProperty("max-height", "100dvh", "important");
       } else if (!panel.hidden) {
         panel.classList.add("is-closing");
