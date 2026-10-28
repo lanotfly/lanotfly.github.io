@@ -177,3 +177,21 @@
   .home-market-list .fx-bar__value[data-fx-value]{gap:4px!important}
   .home-market-list .fx-bar__value [data-market-price]{margin-right:3px!important}
 }
+
+
+/* Home market overview: no individual quote tiles; keep the values aligned. */
+.home-market-list .fx-bar__rates {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px 10px !important;
+}
+.home-market-list .fx-bar__rate {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 4px 2px !important;
+}
+@media(max-width:380px) {
+  .home-market-list .fx-bar__rates { gap: 6px 5px !important; }
+  .home-market-list .fx-bar__rate { padding: 4px 1px !important; }
+}
