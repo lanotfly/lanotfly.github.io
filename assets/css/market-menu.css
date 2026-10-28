@@ -17,15 +17,6 @@
 .site-nav-shell .site-tab-links {
   grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
 }
-.market-pull-gesture-anchor {
-  display: block;
-  width: 100%;
-  height: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  pointer-events: none;
-}
 .library-market-dropdown {
   animation: market-panel-drop .24s ease-out both;
   width: 100%;
