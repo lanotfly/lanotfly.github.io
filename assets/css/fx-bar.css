@@ -240,3 +240,40 @@
     font-size: 8.5px !important;
   }
 }
+
+
+/* 2026-10-28: center the market snapshot instead of stretching quotes to the edges.
+   Equal-width columns keep Shanghai, Nikkei and other indices evenly distributed,
+   with comfortable, matching whitespace on both sides. */
+.home-market-panel {
+  width: min(100%, 960px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.home-market-panel .home-market-list .fx-bar__rates {
+  width: 100% !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  justify-content: center !important;
+  column-gap: clamp(10px, 2vw, 22px) !important;
+}
+#library-market-panel .home-market-groups {
+  width: min(100%, 960px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#library-market-panel .home-market-group .fx-bar__rates,
+#library-market-panel .home-market-group .home-market-list .fx-bar__rates {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  justify-content: center !important;
+  column-gap: clamp(10px, 2vw, 22px) !important;
+}
+@media (max-width: 520px) {
+  .home-market-panel {
+    width: 100% !important;
+  }
+  .home-market-panel .home-market-list .fx-bar__rates,
+  #library-market-panel .home-market-group .fx-bar__rates,
+  #library-market-panel .home-market-group .home-market-list .fx-bar__rates {
+    column-gap: 8px !important;
+  }
+}
