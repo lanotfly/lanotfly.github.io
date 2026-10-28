@@ -200,3 +200,26 @@
 .library-market-dropdown #home-news-view[hidden] {
   display: none !important;
 }
+
+
+/* Final layout override: the temporary menu must never reserve document-flow space. */
+.site-nav-shell {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.site-nav-shell .site-tabs {
+  margin-bottom: 0 !important;
+}
+#library-market-panel.library-market-dropdown {
+  position: fixed !important;
+  inset-inline: 0 !important;
+  top: var(--library-market-panel-top, 48px) !important;
+  z-index: 2147483000 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  transform-origin: top center;
+}
+#library-market-panel.library-market-dropdown[hidden] {
+  display: none !important;
+}
