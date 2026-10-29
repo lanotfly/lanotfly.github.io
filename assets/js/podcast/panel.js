@@ -31,6 +31,13 @@
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
   function audioFor(feedId) { return document.getElementById('podcast-' + feedId + '-audio'); }
+  function absoluteAudioUrl(url) {
+    try { return new URL(String(url || ''), document.baseURI).href; }
+    catch (_) { return String(url || ''); }
+  }
+  function sameAudioSource(audio, url) {
+    return !!audio && !!url && absoluteAudioUrl(audio.currentSrc || audio.src) === absoluteAudioUrl(url);
+  }
   function episodeIdentity(episode) { return String(episode.link || episode.title || episode.audioUrl || '').toLowerCase(); }
   function storageKey(feed, episode) {
     return 'personal-library-podcast-played:' + feed.id + ':' + episodeIdentity(episode);
@@ -195,7 +202,7 @@
       if (episode && episode.link) window.open(episode.link, '_blank', 'noopener');
       return;
     }
-    if (current.feed === feed.id && current.index === index && audio.src === episode.audioUrl) {
+    if (current.feed === feed.id && current.index === index && sameAudioSource(audio, episode.audioUrl)) {
       if (!audio.paused && !audio.ended) {
         audio.pause();
         renderAll();
@@ -218,7 +225,7 @@
     });
     current = { feed: feed.id, index: index };
     try { localStorage.setItem(selectedEpisodeKey(feed), episodeIdentity(episode)); } catch (_) {}
-    audio.src = episode.audioUrl;
+    audio.src = absoluteAudioUrl(episode.audioUrl);
     audio.dataset.restoreSrc = '';
     audio.dataset.episodeTitle = episode.title || feed.title;
     audio.dataset.episodeArtist = feed.title;
@@ -593,6 +600,32 @@
       }
     });
     loaded = true;
+    /* Restore the last selected episode before the first user interaction. This also
+       installs fresh Media Session handlers after a page/app reload, instead of
+       leaving iOS with stale Now Playing metadata and no live Play callback. */
+    var restoreFeed = getFeed(activeFeed);
+    var restoreIdentity = '';
+    try { restoreIdentity = localStorage.getItem(selectedEpisodeKey(restoreFeed)) || ''; } catch (_) {}
+    var restoreIndex = restoreIdentity
+      ? (episodesByFeed[restoreFeed.id] || []).findIndex(function (episode) { return episodeIdentity(episode) === restoreIdentity; })
+      : -1;
+    if (restoreIndex >= 0) {
+      current = { feed: restoreFeed.id, index: restoreIndex };
+      var restoreEpisode = episodesByFeed[restoreFeed.id][restoreIndex];
+      var restoreAudio = audioFor(restoreFeed.id);
+      if (restoreAudio && window.LibraryAudioIdentity && typeof window.LibraryAudioIdentity.setNowPlaying === 'function') {
+        window.LibraryAudioIdentity.setNowPlaying(
+          restoreFeed.id === 'bbc' ? 'podcastBbc' : restoreFeed.id === 'chronicle' ? 'podcastChronicle' : 'podcastFeed',
+          restoreAudio,
+          {
+            title: restoreEpisode.title || restoreFeed.title,
+            artist: restoreFeed.title,
+            album: restoreFeed.title,
+            artwork: (root.querySelector('[data-podcast-artwork="' + restoreFeed.id + '"]') || {}).src || ''
+          }
+        );
+      }
+    }
     renderAll();
     if (pendingAutoplay && !root.hidden) {
       pendingAutoplay = false;
