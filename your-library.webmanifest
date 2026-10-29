@@ -9,10 +9,16 @@
   "theme_color": "#ffffff",
   "icons": [
     {
+      "src": "/assets/images/your-library-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/assets/images/your-library-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
