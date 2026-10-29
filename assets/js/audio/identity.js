@@ -35,8 +35,25 @@
       /* Clear transport actions from the previous source before installing this source's controls. */
       try{navigator.mediaSession.setActionHandler('previoustrack',null);navigator.mediaSession.setActionHandler('nexttrack',null);}catch(_){}
       if(audio){
-        navigator.mediaSession.setActionHandler('play',function(){if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo(id==='kjv'?'bible':id==='radio4'?'radio4':id==='nhk'?'nhk':'podcast');audio.play().catch(function(){});});
-        navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});
+        navigator.mediaSession.setActionHandler('play',function(){
+          /* Route Podcast Play through its engine so stale media elements are not resumed. */
+          if((id==='podcastBbc'||id==='podcastChronicle'||id==='podcastFeed')&&typeof window.LibraryPodcastResumeCurrent==='function'){
+            window.LibraryPodcastResumeCurrent(audio);
+            return;
+          }
+          if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo(id==='kjv'?'bible':id==='radio4'?'radio4':id==='nhk'?'nhk':'podcast');
+          var result;
+          try{result=audio.play();}catch(error){result=Promise.reject(error);}
+          if(result&&result.then)result.then(function(){
+            try{navigator.mediaSession.playbackState='playing';}catch(_){}
+          }).catch(function(){
+            try{navigator.mediaSession.playbackState='paused';}catch(_){}
+          });
+        });
+        navigator.mediaSession.setActionHandler('pause',function(){
+          audio.pause();
+          try{navigator.mediaSession.playbackState='paused';}catch(_){}
+        });
       }
       navigator.mediaSession.playbackState=audio&&!audio.paused?'playing':'paused';
     }catch(_){}
