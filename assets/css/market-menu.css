@@ -880,12 +880,13 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
 }
 
 
-/* 2026-10-28: reclaim the oversized blank strip above the page title and top navigation. */
+/* 2026-10-29: respect the iOS standalone-Web-App status-bar safe area.
+   Avoid negative top margins that can pull the first navigation row under the system status bar. */
 .content-wrapper__inner {
   padding-top: 0 !important;
 }
 .site-nav-shell {
-  margin-top: -18px !important;
+  margin-top: max(0px, env(safe-area-inset-top, 0px)) !important;
   margin-bottom: 4px !important;
   padding-top: 0 !important;
 }
@@ -894,7 +895,7 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
 }
 @media (max-width: 600px) {
   .site-nav-shell {
-    margin-top: -14px !important;
+    margin-top: max(0px, env(safe-area-inset-top, 0px)) !important;
     margin-bottom: 3px !important;
   }
 }
