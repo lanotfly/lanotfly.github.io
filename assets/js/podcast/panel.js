@@ -462,16 +462,23 @@
       if (listModules[feed.id]) listModules[feed.id].render();
       var mode = filters[feed.id] || 'unplayed';
       var nextIndex = -1;
-      for (var i = finishedIndex + 1; i < queue.length; i += 1) {
-        var nextIsPlayed = isPlayed(feed, queue[i]);
+      /* Search forward through the queue and wrap to the beginning.
+         This avoids stopping just because the remembered/current episode is
+         near the end of the feed, while still respecting the selected filter. */
+      for (var offset = 1; offset < queue.length; offset += 1) {
+        var candidateIndex = (finishedIndex + offset) % queue.length;
+        var nextIsPlayed = isPlayed(feed, queue[candidateIndex]);
         if (mode === 'all' || (mode === 'played' && nextIsPlayed) || (mode === 'unplayed' && !nextIsPlayed)) {
-          nextIndex = i;
+          nextIndex = candidateIndex;
           break;
         }
       }
       renderAll();
       if (nextIndex >= 0) {
         playEpisode(feed, nextIndex);
+      } else {
+        var finishedStatus = root.querySelector('[data-podcast-status="' + feed.id + '"]');
+        if (finishedStatus) finishedStatus.textContent = 'No more episodes in this filter.';
       }
     });
     audio.addEventListener('loadedmetadata', function () {
