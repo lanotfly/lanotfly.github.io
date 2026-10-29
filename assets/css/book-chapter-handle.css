@@ -10,6 +10,9 @@
 #library-book-chapter-drawer[data-side=right]{left:auto;right:8px}
 #library-book-chapter-drawer.is-open{transform:translateY(-50%) scale(1);opacity:1;visibility:visible;pointer-events:auto}
 #library-book-chapter-drawer .book-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 9px;border-bottom:1px solid var(--theme-border,#dce3ee)}
+#library-book-chapter-drawer .book-drawer-book-label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:750;color:var(--theme-muted,#68758b)}
+#library-book-chapter-drawer .book-drawer-book-select{width:100%;min-height:40px;padding:8px 10px;border:1px solid #b7d9c4;border-radius:8px;background:var(--theme-surface-soft,#f1f4fa);color:var(--theme-text,#20283a);font:inherit;font-size:14px;outline-offset:2px}
+#library-book-chapter-drawer .book-drawer-section-label{font-size:12px;font-weight:750;letter-spacing:.04em;color:var(--theme-muted,#68758b);padding-top:2px}
 #library-book-chapter-drawer .book-drawer-title{font-size:15px;font-weight:750}
 #library-book-chapter-drawer .book-drawer-close{flex-shrink:0;width:32px;height:32px;border:1px solid var(--theme-border,#dce3ee);border-radius:7px;background:var(--theme-surface-soft,#f1f4fa);color:var(--theme-text,#20283a);font-size:22px;line-height:1}
 #library-book-chapter-drawer .book-drawer-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;min-height:0;max-height:calc(min(68vh,560px) - 64px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
