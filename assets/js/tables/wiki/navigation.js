@@ -432,50 +432,26 @@
     var currentKjvPanel = currentInner.querySelector('#niv-bible-panel');
     var nextKjvPanel = nextInner.querySelector('#niv-bible-panel');
     if (!currentNav || !nextNav) {
-      /* Do not fall back to a full document load: Safari stops live audio on reload.
-         All pages using the default layout have the same shared navigation shell. */
+      /* A page without the shared shell is not safe to swap in place. */
       throw new Error('Shared navigation shell missing');
     }
-    var rules = Array.from(currentInner.children).filter(function(el){ return el.tagName === 'HR'; });
-    var nextRules = Array.from(nextInner.children).filter(function(el){ return el.tagName === 'HR'; });
     var newNodes = [];
-    if (rules.length >= 2 && nextRules.length >= 2) {
-      var currentTopRule = rules[0];
-      var currentBottomRule = rules[rules.length - 1];
-      var nextTopRule = nextRules[0];
-      var nextBottomRule = nextRules[nextRules.length - 1];
-      var node = nextTopRule.nextSibling;
-      while (node && node !== nextBottomRule) {
-        /* Keep shared panels and their audio elements alive across reader navigation. */
-        if (node !== nextNav && node !== nextPodcastEpisodePanel && node !== nextPodcastPanel && node !== nextKjvPanel) {
-          newNodes.push(node.cloneNode(true));
-        }
-        node = node.nextSibling;
+    /* Always replace page content structurally instead of relying on HR markers.
+       Home and chapter pages do not have a guaranteed number of HR elements.
+       Preserve the shared navigation, audio panels and footer so reader-only
+       navigation never causes a full document reload that interrupts playback. */
+    var keepCurrent = [currentNav, currentPodcastEpisodePanel, currentPodcastPanel, currentKjvPanel].filter(Boolean);
+    var keepNext = [nextNav, nextPodcastEpisodePanel, nextPodcastPanel, nextKjvPanel].filter(Boolean);
+    Array.from(nextInner.childNodes).forEach(function(child){
+      if (keepNext.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) {
+        newNodes.push(child.cloneNode(true));
       }
-      node = currentTopRule.nextSibling;
-      while (node && node !== currentBottomRule) {
-        var next = node.nextSibling;
-        if (node !== currentNav && node !== currentPodcastEpisodePanel && node !== currentPodcastPanel && node !== currentKjvPanel) node.remove();
-        node = next;
-      }
-      newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, currentBottomRule); });
-    } else {
-      /* Some pages (notably Home and individual chapters) do not have two HR
-         boundaries. Replace only page content, never the shared player/navigation,
-         so a click cannot trigger a full reload and interrupt playback. */
-      var keepCurrent = [currentNav, currentPodcastEpisodePanel, currentPodcastPanel, currentKjvPanel].filter(Boolean);
-      var keepNext = [nextNav, nextPodcastEpisodePanel, nextPodcastPanel, nextKjvPanel].filter(Boolean);
-      Array.from(nextInner.childNodes).forEach(function(child){
-        if (keepNext.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) {
-          newNodes.push(child.cloneNode(true));
-        }
-      });
-      Array.from(currentInner.childNodes).forEach(function(child){
-        if (keepCurrent.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) child.remove();
-      });
-      var footer = currentInner.querySelector(':scope > .footer');
-      newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, footer || null); });
-    }
+    });
+    Array.from(currentInner.childNodes).forEach(function(child){
+      if (keepCurrent.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) child.remove();
+    });
+    var footer = currentInner.querySelector(':scope > .footer');
+    newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, footer || null); });
 
     document.querySelectorAll('link[data-library-page-style="true"]').forEach(function(link){ link.remove(); });
     doc.querySelectorAll('link[rel="stylesheet"]').forEach(function(link){
