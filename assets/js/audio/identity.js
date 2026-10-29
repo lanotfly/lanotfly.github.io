@@ -45,6 +45,21 @@
     if(activeId!==id||!audio||!audio.paused)return;
     try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='paused';}catch(_){}
   }
+  /* Keep the system transport state tied to real media events, not just UI taps. */
+  document.addEventListener('pause',function(event){
+    var audio=event.target;
+    if(!audio||audio.tagName!=='AUDIO')return;
+    if(activeId && audio.dataset && audio.dataset.episodeTitle && audio.paused){
+      try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='paused';}catch(_){}
+    }
+  },true);
+  document.addEventListener('playing',function(event){
+    var audio=event.target;
+    if(!audio||audio.tagName!=='AUDIO')return;
+    if(activeId && !audio.paused){
+      try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='playing';}catch(_){}
+    }
+  },true);
   function ensureButtonIcon(button,src,alt){
     if(!button)return;
     var img=button.querySelector('[data-audio-identity-icon]');
