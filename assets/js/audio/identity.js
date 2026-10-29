@@ -13,6 +13,7 @@
     podcast:{title:'Podcast',artist:'Personal Library',album:'Personal Library Podcast',artwork:''}
   };
   var activeId=null;
+  var activeAudio=null;
   function absolute(url){try{return new URL(url,window.location.href).href;}catch(_){return fallback;}}
   function validArtwork(url){return typeof url==='string'&&url.trim()&&(/^https?:\/\//i.test(absolute(url))||/^data:image\/png;base64,/i.test(url));}
   function artworkList(url){
@@ -29,6 +30,7 @@
       artwork:artworkList(details.artwork||base.artwork)
     };
     activeId=id;
+    activeAudio=audio||null;
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{
       navigator.mediaSession.metadata=new MediaMetadata(meta);
@@ -66,14 +68,14 @@
   document.addEventListener('pause',function(event){
     var audio=event.target;
     if(!audio||audio.tagName!=='AUDIO')return;
-    if(activeId && audio.dataset && audio.dataset.episodeTitle && audio.paused){
+    if(audio===activeAudio && audio.paused){
       try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='paused';}catch(_){}
     }
   },true);
   document.addEventListener('playing',function(event){
     var audio=event.target;
     if(!audio||audio.tagName!=='AUDIO')return;
-    if(activeId && !audio.paused){
+    if(audio===activeAudio && !audio.paused){
       try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='playing';}catch(_){}
     }
   },true);
