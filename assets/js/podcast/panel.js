@@ -174,8 +174,8 @@
         link.removeAttribute('aria-current');
       });
       setActiveTab(activeTab || 'bbc');
-      pendingAutoplay = true;
-      if (loaded && pendingAutoplay) { pendingAutoplay = false; playDefaultEpisode(activeFeed); }
+      /* Opening the visual panel must not toggle or restart an audio source. */
+      pendingAutoplay = false;
     } else {
       /* Hiding a visual panel is not an audio-source switch. Keep the current
          episode playing in the background; only an actual audio resource
@@ -252,9 +252,11 @@
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
       } catch (_) {}
       renderAll();
-    }).catch(function () {
+    }).catch(function (playError) {
+      if (current.feed !== feed.id || current.index !== index) return;
       var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
-      if (status) status.textContent = 'Playback did not start. Reopen the app or tap the episode to resume.';
+      var reason = playError && playError.name ? ' (' + playError.name + ')' : '';
+      if (status) status.textContent = 'Playback did not start' + reason + '. Open the app and tap Play to resume.';
       try {
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
       } catch (_) {}
@@ -270,6 +272,52 @@
     var remembered = identity ? all.findIndex(function (episode) { return episodeIdentity(episode) === identity; }) : -1;
     playEpisode(feed, remembered >= 0 ? remembered : 0);
   }
+
+  /* Bluetooth / iOS Media Session Play should resume the real current episode
+     and must not toggle a currently playing item off. */
+  window.LibraryPodcastResumeCurrent = function (fallbackAudio) {
+    var feed = current.feed ? getFeed(current.feed) : getFeed(activeFeed);
+    var index = current.feed === feed.id ? current.index : -1;
+    if (index < 0) {
+      var all = episodesByFeed[feed.id] || [];
+      var identity = '';
+      try { identity = localStorage.getItem(selectedEpisodeKey(feed)) || ''; } catch (_) {}
+      index = identity ? all.findIndex(function (episode) { return episodeIdentity(episode) === identity; }) : -1;
+      if (index < 0) index = 0;
+    }
+    var episode = (episodesByFeed[feed.id] || [])[index];
+    var audio = audioFor(feed.id) || fallbackAudio;
+    if (!episode || !audio) return;
+    if (current.feed !== feed.id || current.index !== index || audio.src !== episode.audioUrl) {
+      playEpisode(feed, index);
+      return;
+    }
+    if (!audio.paused && !audio.ended) return;
+    stopOtherAudio();
+    var result;
+    try { result = audio.play(); } catch (error) { result = Promise.reject(error); }
+    if (result && result.then) result.then(function () {
+      if (window.LibraryAudioIdentity) {
+        window.LibraryAudioIdentity.setNowPlaying(
+          feed.id === 'bbc' ? 'podcastBbc' : feed.id === 'chronicle' ? 'podcastChronicle' : 'podcastFeed',
+          audio,
+          {
+            title: episode.title || feed.title,
+            artist: feed.title,
+            album: feed.title,
+            artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-podcast-artwork="' + feed.id + '"]') || {}).src || '')
+          }
+        );
+      }
+      renderAll();
+    }).catch(function (error) {
+      var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
+      var reason = error && error.name ? ' (' + error.name + ')' : '';
+      if (status) status.textContent = 'Could not resume from lock screen' + reason + '. Open the app and tap Play.';
+      try { if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused'; } catch (_) {}
+      renderAll();
+    });
+  };
   function render(feed) {
     syncFilterOptions(feed);
     /* The heading beside the artwork is the current episode title, like the shared Podcast panel. */
