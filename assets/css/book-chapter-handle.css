@@ -1,23 +1,31 @@
-/* Compact Book chapter popover; opens on the same edge as its handle. */
-#library-book-chapter-handle{position:fixed;z-index:99999;top:48%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:7px;width:36px;min-height:104px;padding:12px 7px;border:1px solid #b7d9c4;border-radius:12px 0 0 12px;color:#175b3b;background:#e6f5eb;box-shadow:0 3px 14px rgba(20,50,35,.2);writing-mode:vertical-rl;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;transition:left .22s,right .22s,top .18s,background .18s}
+/* Soft green Reading drawer visually attached to the draggable edge handle. */
+#library-book-chapter-handle{position:fixed;z-index:99999;top:48%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:7px;width:36px;min-height:104px;padding:12px 7px;border:1px solid #b7d9c4;border-radius:12px 0 0 12px;color:#175b3b;background:#e6f5eb;box-shadow:0 3px 14px rgba(20,50,35,.16);writing-mode:vertical-rl;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;transition:left .22s,right .22s,top .18s,background .18s}
 #library-book-chapter-handle[hidden]{display:none!important}
 #library-book-chapter-handle[data-side=left]{border-radius:0 12px 12px 0}
-#library-book-chapter-handle .book-handle-grip{font-size:17px;opacity:.65}
+#library-book-chapter-handle .book-handle-grip{font-size:17px;opacity:.55}
 #library-book-chapter-handle .book-handle-label{font-size:13px;font-weight:750}
-#library-book-chapter-handle.is-expanded{width:30px;min-height:70px;background:#d3f0de}
-#library-book-chapter-handle.is-expanded .book-handle-label,#library-book-chapter-handle.is-expanded .book-handle-grip{display:none}
-#library-book-chapter-drawer{position:fixed;z-index:99998;top:50%;bottom:auto;left:8px;right:auto;width:min(72vw,290px);max-height:min(68vh,560px);padding:12px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;color:var(--theme-text,#20283a);background:var(--theme-surface,#fff);border:1px solid var(--theme-border,#dce3ee);border-radius:14px;box-shadow:0 8px 28px rgba(20,30,50,.22);transform:translateY(-50%) scale(.98);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,transform .18s ease,visibility .18s;overscroll-behavior:contain}
-#library-book-chapter-drawer[data-side=right]{left:auto;right:8px}
-#library-book-chapter-drawer.is-open{transform:translateY(-50%) scale(1);opacity:1;visibility:visible;pointer-events:auto}
-#library-book-chapter-drawer .book-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 9px;border-bottom:1px solid var(--theme-border,#dce3ee)}
-#library-book-chapter-drawer .book-drawer-book-label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:750;color:var(--theme-muted,#68758b)}
-#library-book-chapter-drawer .book-drawer-book-select{width:100%;min-height:40px;padding:8px 10px;border:1px solid #b7d9c4;border-radius:8px;background:var(--theme-surface-soft,#f1f4fa);color:var(--theme-text,#20283a);font:inherit;font-size:14px;outline-offset:2px}
-#library-book-chapter-drawer .book-drawer-section-label{font-size:12px;font-weight:750;letter-spacing:.04em;color:var(--theme-muted,#68758b);padding-top:2px}
-#library-book-chapter-drawer .book-drawer-title{font-size:15px;font-weight:750}
-#library-book-chapter-drawer .book-drawer-close{flex-shrink:0;width:32px;height:32px;border:1px solid var(--theme-border,#dce3ee);border-radius:7px;background:var(--theme-surface-soft,#f1f4fa);color:var(--theme-text,#20283a);font-size:22px;line-height:1}
+#library-book-chapter-handle.is-expanded{width:36px;min-height:104px;background:#d9f0e1}
+#library-book-chapter-handle.is-expanded .book-handle-chevron{transform:rotate(180deg)}
+#library-book-chapter-handle .book-handle-chevron{transition:transform .22s ease}
+#library-book-chapter-drawer{position:fixed;z-index:99998;top:50%;bottom:auto;left:36px;right:auto;width:min(72vw,290px);max-height:min(68vh,560px);padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;color:var(--theme-text,#234331);background:linear-gradient(150deg,#fbfefc,#f0faf3);border:1px solid #b7d9c4;border-radius:14px;box-shadow:0 8px 26px rgba(31,83,53,.14);transform:translateY(-50%) translateX(-10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,transform .24s cubic-bezier(.2,.75,.25,1),visibility .24s;overscroll-behavior:contain}
+#library-book-chapter-drawer[data-side=right]{left:auto;right:36px;transform:translateY(-50%) translateX(10px);border-top-right-radius:0;border-bottom-right-radius:0}
+#library-book-chapter-drawer[data-side=left]{border-top-left-radius:0;border-bottom-left-radius:0}
+#library-book-chapter-drawer.is-open{transform:translateY(-50%) translateX(0);opacity:1;visibility:visible;pointer-events:auto}
+#library-book-chapter-drawer .book-drawer-head{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:2px 2px 10px;border-bottom:1px solid #d4e8da}
+#library-book-chapter-drawer .book-drawer-book-label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:750;color:#598067}
+#library-book-chapter-drawer .book-drawer-book-select{width:100%;min-height:40px;padding:8px 10px;border:1px solid #b9d9c4;border-radius:9px;background:rgba(255,255,255,.86);color:var(--theme-text,#20283a);font:inherit;font-size:14px;outline-offset:2px}
+#library-book-chapter-drawer .book-drawer-section-label{font-size:12px;font-weight:750;letter-spacing:.04em;color:#598067;padding-top:2px}
+#library-book-chapter-drawer .book-drawer-title{font-size:15px;font-weight:750;color:#285d3c}
 #library-book-chapter-drawer .book-drawer-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;min-height:0;max-height:calc(min(68vh,560px) - 64px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-#library-book-chapter-drawer .book-drawer-link{display:block;padding:9px 10px;border:1px solid var(--theme-border,#dce3ee);border-radius:8px;color:var(--theme-text,#20283a);background:var(--theme-surface-soft,#f1f4fa);text-decoration:none;font-size:13px;line-height:1.35}
-#library-book-chapter-drawer .book-drawer-link.is-current{border:2px solid #18734b;padding:8px 9px;color:#18734b;font-weight:700;background:var(--theme-surface,#fff)}
+#library-book-chapter-drawer .book-drawer-link{display:block;padding:9px 10px;border:1px solid #d8e9dd;border-radius:9px;color:#315c42;background:rgba(255,255,255,.76);text-decoration:none;font-size:13px;line-height:1.35;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+#library-book-chapter-drawer .book-drawer-link:active{transform:scale(.99)}
+#library-book-chapter-drawer .book-drawer-link.is-current{border:1px solid #72b68a;padding:9px 10px;color:#175b3b;font-weight:750;background:#e3f5e9}
 :root[data-theme=dark] #library-book-chapter-handle{color:#c2f3d5;background:#203b30;border-color:#438767}
-:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-link.is-current{color:#a9e8c3;border-color:#72c89a}
-@media(max-width:360px){#library-book-chapter-drawer{width:min(78vw,270px);padding:10px}}
+:root[data-theme=dark] #library-book-chapter-drawer{color:#d9f2e1;background:linear-gradient(150deg,#20382b,#1b3025);border-color:#438767}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-head{border-color:#345a43}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-title{color:#c2f3d5}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-book-label,:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-section-label{color:#9bc9aa}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-book-select{background:#243b2e;border-color:#477c59;color:#e5f5e9}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-link{background:#263e30;border-color:#395f46;color:#d9f2e1}
+:root[data-theme=dark] #library-book-chapter-drawer .book-drawer-link.is-current{color:#d5f5df;border-color:#72c89a;background:#294c38}
+@media(max-width:360px){#library-book-chapter-drawer{width:min(78vw,270px);padding:10px}#library-book-chapter-drawer[data-side=right]{right:36px}#library-book-chapter-drawer[data-side=left]{left:36px}}
