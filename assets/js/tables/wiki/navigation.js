@@ -302,6 +302,7 @@
       selector.value=book.key;
     }
     chapterDrawer.dataset.side=chapterHandle.dataset.side||'right';
+    positionChapterDrawer();
     var list=chapterDrawer.querySelector('.book-drawer-list');
     list.replaceChildren();
     var overview=document.createElement('a');overview.className='book-drawer-link';overview.href=book.root;overview.textContent='Overview';
@@ -316,6 +317,22 @@
     chapterDrawerOpen=true;chapterDrawer.classList.add('is-open');chapterDrawer.setAttribute('aria-hidden','false');
     chapterHandle.classList.add('is-expanded');chapterHandle.setAttribute('aria-expanded','true');
     document.documentElement.classList.add('book-chapter-drawer-open');
+  }
+  function positionChapterDrawer(){
+    if(!chapterHandle||!chapterDrawer)return;
+    var r=chapterHandle.getBoundingClientRect();
+    var gap=0;
+    chapterDrawer.style.top='auto';
+    chapterDrawer.style.bottom=Math.max(8,window.innerHeight-r.top+gap)+'px';
+    chapterDrawer.style.maxHeight=Math.max(180,Math.min(window.innerHeight-24,r.top-12))+'px';
+  }
+  function moveHandleTo(top){
+    if(!chapterHandle)return;
+    var minTop=Math.max(12,Math.round(window.innerHeight*0.12));
+    var maxTop=Math.max(minTop,Math.min(Math.round(window.innerHeight*0.62),window.innerHeight-chapterHandle.offsetHeight-12));
+    var next=Math.max(minTop,Math.min(maxTop,top));
+    chapterHandle.style.top=next+'px';chapterHandle.style.transform='none';
+    if(chapterDrawerOpen)positionChapterDrawer();
   }
   function placeChapterHandle(side){
     if(!chapterHandle)return;
@@ -337,7 +354,7 @@
     document.body.appendChild(chapterDrawer);document.body.appendChild(chapterHandle);
     var side='right';try{side=localStorage.getItem('library_book_handle_side')||'right';}catch(_){}
     placeChapterHandle(side);
-    try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop){chapterHandle.style.top=savedTop;chapterHandle.style.transform='none';}}catch(_){}
+    try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop){moveHandleTo(parseFloat(savedTop));}}catch(_){}
     chapterHandle.addEventListener('click',function(){if(chapterHandle.dataset.dragged==='1'){chapterHandle.dataset.dragged='0';return;}if(chapterDrawerOpen)closeChapterDrawer();else openChapterDrawer();});
     chapterDrawer.querySelector('.book-drawer-book-select').addEventListener('change',function(){
       var selected=bookSections.find(function(item){return item.key===this.value;},this);
@@ -346,7 +363,19 @@
       var target=new URL(remembered||selected.root,window.location.href);
       navigate(target,true).then(function(){openChapterDrawer();}).catch(function(){window.location.href=target.href;});
     });
-    window.addEventListener('resize',function(){if(chapterHandle){var r=chapterHandle.getBoundingClientRect();chapterHandle.style.top=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,r.top))+'px';}});
+    window.addEventListener('resize',function(){if(chapterHandle){moveHandleTo(chapterHandle.getBoundingClientRect().top);if(chapterDrawerOpen)positionChapterDrawer();}});
+    document.addEventListener('pointerdown',function(e){
+      if(!chapterDrawerOpen)return;
+      if(chapterDrawer.contains(e.target)||chapterHandle.contains(e.target))return;
+      closeChapterDrawer();
+    },true);
+    chapterDrawer.addEventListener('pointerdown',function(e){
+      if(e.target.closest('a,select,label'))return;
+      var sy=e.clientY, base=chapterHandle.getBoundingClientRect().top, moved=false;
+      function onMove(ev){var dy=ev.clientY-sy;if(Math.abs(dy)>5)moved=true;if(moved)moveHandleTo(base+dy);}
+      function onUp(){document.removeEventListener('pointermove',onMove);document.removeEventListener('pointerup',onUp);if(moved){try{localStorage.setItem('library_book_handle_top',chapterHandle.style.top);}catch(_){}}}
+      document.addEventListener('pointermove',onMove);document.addEventListener('pointerup',onUp,{once:true});
+    });
     chapterDrawer.addEventListener('click',function(e){
       var link=e.target.closest('a.book-drawer-link');
       if(link){try{localStorage.setItem('library_last_book_menu_path',new URL(link.href,window.location.href).pathname);}catch(_){}closeChapterDrawer();}
@@ -365,14 +394,13 @@
       if(!moved)return;
       chapterHandle.style.transition='none';
       var nextTop=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,baseTop+dy));
-      chapterHandle.style.top=nextTop+'px';
-      chapterHandle.style.transform='none';
+      moveHandleTo(nextTop);
     });
     function finishDrag(){
       if(!dragging)return;dragging=false;
       if(moved){
         var rect=chapterHandle.getBoundingClientRect();
-        chapterHandle.style.top=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,rect.top))+'px';
+        moveHandleTo(rect.top);
         try{localStorage.setItem('library_book_handle_top',chapterHandle.style.top);}catch(_){}
         chapterHandle.style.transition='';
         chapterHandle.dataset.dragged='1';
