@@ -369,10 +369,9 @@
     chapterHandle.addEventListener('pointercancel',finishDrag);
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeChapterDrawer();});
     function updateHandleVisibility(){
-      var path=window.location.pathname;
-      var onBook=!!bookForPath(path);
-      chapterHandle.hidden=!onBook;
-      if(!onBook)closeChapterDrawer();
+      /* The floating Reading entry replaces the removed top-level Book tab,
+         so it must remain reachable from Home and audio pages as well. */
+      chapterHandle.hidden=false;
     }
     updateHandleVisibility();
     window.addEventListener('popstate',updateHandleVisibility);
