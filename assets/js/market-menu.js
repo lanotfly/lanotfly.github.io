@@ -68,19 +68,19 @@
       startX = touch.clientX;
       startY = touch.clientY;
       if (!panel.hidden) {
-        // Only the outer 10% strips dismiss the overlay. Gestures in the middle
+        // Only the outer 15% strips dismiss the overlay. Gestures in the middle
         // are left untouched so the panel's own scroll container can move.
-        var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
-          touch.clientX >= window.innerWidth * 0.90;
+        var inSideStrip = touch.clientX <= window.innerWidth * 0.15 ||
+          touch.clientX >= window.innerWidth * 0.85;
         var marketView = panel.querySelector('[data-home-panel-view="market"]');
         var touchingMarketView = !!(marketView && !marketView.hidden && marketView.contains(event.target));
         /* News already dismisses from the edges. Make Market Info equally easy:
            an upward swipe in either side strip or on the visible market view closes it. */
         tracking = panel.contains(event.target) && (inSideStrip || touchingMarketView);
       } else {
-        // Open from either narrow screen-edge strip, at any vertical position.
-        var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
-          touch.clientX >= window.innerWidth * 0.90;
+        // Open from either screen-edge strip, at any vertical position.
+        var inSideStrip = touch.clientX <= window.innerWidth * 0.15 ||
+          touch.clientX >= window.innerWidth * 0.85;
         // Edge gestures work from any vertical position, not only the top third.
         tracking = inSideStrip;
       }
