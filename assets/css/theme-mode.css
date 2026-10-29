@@ -1247,3 +1247,42 @@ body[data-theme="dark"] .site-nav-shell > #library-book-panel:not([hidden]) .boo
 #library-book-chapter-drawer .book-drawer-link { display:block; padding:10px 12px; border:1px solid var(--theme-border,#dce3ee); border-radius:8px; color:var(--theme-text,#20283a); background:var(--theme-surface-soft,#f1f4fa); text-decoration:none; font-size:14px; line-height:1.35; }
 #library-book-chapter-drawer .book-drawer-link.is-current { border:2px solid #18734b; padding:9px 11px; color:#18734b; font-weight:700; background:var(--theme-surface,#fff); }
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link.is-current { color:#a9e8c3; border-color:#72c89a; }
+
+/* 2026-10-29: iOS Safari top-row clarity fix.
+   Keep the page canvas and primary navigation fully opaque while content scrolls beneath it. */
+html, body {
+  background-color: var(--theme-page, #f7f8fc) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.site-nav-shell,
+.site-nav-shell *,
+.site-nav-shell::before,
+.site-nav-shell::after,
+.site-nav-shell *::before,
+.site-nav-shell *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.site-nav-shell,
+.site-nav-shell .site-tabs,
+.site-nav-shell .site-tab-links {
+  background: var(--theme-page, #f7f8fc) !important;
+  background-color: var(--theme-page, #f7f8fc) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.site-nav-shell .site-tab-links .site-tab {
+  text-shadow: none !important;
+  -webkit-text-fill-color: currentColor;
+}
+body[data-theme="dark"] html,
+body[data-theme="dark"],
+body[data-theme="dark"] .site-nav-shell,
+body[data-theme="dark"] .site-nav-shell .site-tabs,
+body[data-theme="dark"] .site-nav-shell .site-tab-links {
+  background-color: var(--theme-page, #111318) !important;
+}
