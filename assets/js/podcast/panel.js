@@ -297,7 +297,7 @@
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id) || fallbackAudio;
     if (!episode || !audio) return;
-    if (current.feed !== feed.id || current.index !== index || audio.src !== episode.audioUrl) {
+    if (current.feed !== feed.id || current.index !== index || !sameAudioSource(audio, episode.audioUrl)) {
       playEpisode(feed, index);
       return;
     }
