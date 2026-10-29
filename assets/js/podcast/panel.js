@@ -225,10 +225,39 @@
     audio.dataset.episodeArtwork = (root.querySelector('[data-podcast-artwork="' + feed.id + '"]') || {}).src || '';
     audio.load();
     renderAll();
-    var promise = audio.play();
-    if (promise && promise.catch) promise.catch(function () {
+    var promise;
+    try {
+      /* A background/lock-screen track change can leave iOS showing stale
+         Now Playing state even when the new source has not fully started.
+         Keep the active source and Media Session in sync after play resolves. */
+      promise = audio.play();
+    } catch (playError) {
+      promise = Promise.reject(playError);
+    }
+    if (promise && promise.then) promise.then(function () {
+      if (current.feed !== feed.id || current.index !== index) return;
+      if (window.LibraryAudioIdentity && typeof window.LibraryAudioIdentity.setNowPlaying === 'function') {
+        window.LibraryAudioIdentity.setNowPlaying(
+          feed.id === 'bbc' ? 'podcastBbc' : feed.id === 'chronicle' ? 'podcastChronicle' : 'podcastFeed',
+          audio,
+          {
+            title: episode.title || feed.title,
+            artist: feed.title,
+            album: feed.title,
+            artwork: audio.dataset.episodeArtwork || ((root.querySelector('[data-podcast-artwork="' + feed.id + '"]') || {}).src || '')
+          }
+        );
+      }
+      try {
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+      } catch (_) {}
+      renderAll();
+    }).catch(function () {
       var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
-      if (status) status.textContent = 'Autoplay was blocked by your browser. Tap the episode to start playback.';
+      if (status) status.textContent = 'Playback did not start. Reopen the app or tap the episode to resume.';
+      try {
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+      } catch (_) {}
       renderAll();
     });
   }
