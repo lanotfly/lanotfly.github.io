@@ -322,9 +322,10 @@
     if(!chapterHandle||!chapterDrawer)return;
     var r=chapterHandle.getBoundingClientRect();
     var gap=0;
-    chapterDrawer.style.top='auto';
-    chapterDrawer.style.bottom=Math.max(8,window.innerHeight-r.top+gap)+'px';
-    chapterDrawer.style.maxHeight=Math.max(180,Math.min(window.innerHeight-24,r.top-12))+'px';
+    chapterDrawer.style.bottom='auto';
+    /* Align the drawer's top edge with the floating Reading handle's top edge. */
+    chapterDrawer.style.top=Math.max(8,Math.min(window.innerHeight-120,r.top))+'px';
+    chapterDrawer.style.maxHeight=Math.max(180,window.innerHeight-Math.max(8,r.top)-12)+'px';
   }
   function moveHandleTo(top){
     if(!chapterHandle)return;
