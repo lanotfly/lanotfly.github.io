@@ -72,7 +72,11 @@
         // are left untouched so the panel's own scroll container can move.
         var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
           touch.clientX >= window.innerWidth * 0.90;
-        tracking = inSideStrip && panel.contains(event.target);
+        var marketView = panel.querySelector('[data-home-panel-view="market"]');
+        var touchingMarketView = !!(marketView && !marketView.hidden && marketView.contains(event.target));
+        /* News already dismisses from the edges. Make Market Info equally easy:
+           an upward swipe in either side strip or on the visible market view closes it. */
+        tracking = panel.contains(event.target) && (inSideStrip || touchingMarketView);
       } else {
         // Open from either narrow screen-edge strip, at any vertical position.
         var inSideStrip = touch.clientX <= window.innerWidth * 0.10 ||
