@@ -133,9 +133,24 @@
   var lastBookMenuLevel = '3';
   try { lastBookMenuLevel = localStorage.getItem('library_book_level') === '2' ? '2' : '3'; } catch (_) {}
   function collectChapters(book){
-    /* Prefer the section's cached index-page links while browsing a chapter.
-       This keeps Data, AI, Algorithm, Linux and Cloud menus from changing shape
-       depending on links present in an individual article. */
+    /* Data's chapter index is canonical and must not be inferred from prev/next
+       links on an individual chapter page. This guarantees the complete list. */
+    if(book.key==='data'){
+      return [
+        {label:'Arrays & Strings',path:'/data/array-string/'},
+        {label:'Hash Table — dict & set',path:'/data/hash-table/'},
+        {label:'Linked List',path:'/data/linked-list/'},
+        {label:'Stack & Queue',path:'/data/stack-queue/'},
+        {label:'Tree & Binary Search Tree',path:'/data/tree-bst/'},
+        {label:'Heap / Priority Queue',path:'/data/heap/'},
+        {label:'Graph',path:'/data/graph/'},
+        {label:'Trie (Prefix Tree)',path:'/data/trie/'},
+        {label:'Union-Find (Disjoint Set)',path:'/data/union-find/'},
+        {label:'Sorting & Binary Search',path:'/data/sorting-binary-search/'}
+      ];
+    }
+    /* Other books may use their cached index links, but never derive a chapter
+       menu from the limited prev/next links on an individual article. */
     if(window.location.pathname!==book.root){
       try{
         var cached=JSON.parse(localStorage.getItem(chapterStoreKey(book))||'[]');
@@ -416,36 +431,51 @@
     var nextPodcastPanel = nextInner.querySelector('#library-podcast-panel');
     var currentKjvPanel = currentInner.querySelector('#niv-bible-panel');
     var nextKjvPanel = nextInner.querySelector('#niv-bible-panel');
+    if (!currentNav || !nextNav) {
+      /* Do not fall back to a full document load: Safari stops live audio on reload.
+         All pages using the default layout have the same shared navigation shell. */
+      throw new Error('Shared navigation shell missing');
+    }
     var rules = Array.from(currentInner.children).filter(function(el){ return el.tagName === 'HR'; });
     var nextRules = Array.from(nextInner.children).filter(function(el){ return el.tagName === 'HR'; });
-    if (!currentNav || !nextNav || rules.length < 2 || nextRules.length < 2) {
-      window.location.href = url.href;
-      return;
-    }
-
-    var currentTopRule = rules[0];
-    var currentBottomRule = rules[rules.length - 1];
-    var nextTopRule = nextRules[0];
-    var nextBottomRule = nextRules[nextRules.length - 1];
     var newNodes = [];
-    var node = nextTopRule.nextSibling;
-    while (node && node !== nextBottomRule) {
-      /* Keep the shared navigation, audio elements, and podcast panel alive.
-         Replacing them during soft navigation leaves playback/listeners attached
-         to detached DOM nodes, which can make the episode list appear empty. */
-      if (node !== nextNav && node !== nextPodcastEpisodePanel && node !== nextPodcastPanel && node !== nextKjvPanel) {
-        newNodes.push(node.cloneNode(true));
+    if (rules.length >= 2 && nextRules.length >= 2) {
+      var currentTopRule = rules[0];
+      var currentBottomRule = rules[rules.length - 1];
+      var nextTopRule = nextRules[0];
+      var nextBottomRule = nextRules[nextRules.length - 1];
+      var node = nextTopRule.nextSibling;
+      while (node && node !== nextBottomRule) {
+        /* Keep shared panels and their audio elements alive across reader navigation. */
+        if (node !== nextNav && node !== nextPodcastEpisodePanel && node !== nextPodcastPanel && node !== nextKjvPanel) {
+          newNodes.push(node.cloneNode(true));
+        }
+        node = node.nextSibling;
       }
-      node = node.nextSibling;
+      node = currentTopRule.nextSibling;
+      while (node && node !== currentBottomRule) {
+        var next = node.nextSibling;
+        if (node !== currentNav && node !== currentPodcastEpisodePanel && node !== currentPodcastPanel && node !== currentKjvPanel) node.remove();
+        node = next;
+      }
+      newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, currentBottomRule); });
+    } else {
+      /* Some pages (notably Home and individual chapters) do not have two HR
+         boundaries. Replace only page content, never the shared player/navigation,
+         so a click cannot trigger a full reload and interrupt playback. */
+      var keepCurrent = [currentNav, currentPodcastEpisodePanel, currentPodcastPanel, currentKjvPanel].filter(Boolean);
+      var keepNext = [nextNav, nextPodcastEpisodePanel, nextPodcastPanel, nextKjvPanel].filter(Boolean);
+      Array.from(nextInner.childNodes).forEach(function(child){
+        if (keepNext.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) {
+          newNodes.push(child.cloneNode(true));
+        }
+      });
+      Array.from(currentInner.childNodes).forEach(function(child){
+        if (keepCurrent.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) child.remove();
+      });
+      var footer = currentInner.querySelector(':scope > .footer');
+      newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, footer || null); });
     }
-
-    node = currentTopRule.nextSibling;
-    while (node && node !== currentBottomRule) {
-      var next = node.nextSibling;
-      if (node !== currentNav && node !== currentPodcastEpisodePanel && node !== currentPodcastPanel && node !== currentKjvPanel) node.remove();
-      node = next;
-    }
-    newNodes.forEach(function(newNode){ currentInner.insertBefore(newNode, currentBottomRule); });
 
     document.querySelectorAll('link[data-library-page-style="true"]').forEach(function(link){ link.remove(); });
     doc.querySelectorAll('link[rel="stylesheet"]').forEach(function(link){
