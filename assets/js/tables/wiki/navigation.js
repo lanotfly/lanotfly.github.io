@@ -312,13 +312,13 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
-    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261028-1';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261029-1';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
     chapterDrawer.innerHTML='<div class="book-drawer-head"><strong class="book-drawer-title">Reading</strong><button type="button" class="book-drawer-close" aria-label="Close reading navigation">×</button></div><label class="book-drawer-book-label">Book<select class="book-drawer-book-select" aria-label="Choose a book"></select></label><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
     chapterHandle=document.createElement('button');chapterHandle.type='button';chapterHandle.id='library-book-chapter-handle';
-    chapterHandle.setAttribute('aria-label','Open Book chapter directory');chapterHandle.setAttribute('aria-expanded','false');
-    chapterHandle.innerHTML='<span class="book-handle-grip" aria-hidden="true">⠿</span><span class="book-handle-label">Chapters</span><span class="book-handle-chevron" aria-hidden="true">‹</span>';
+    chapterHandle.setAttribute('aria-label','Open reading navigation');chapterHandle.setAttribute('aria-expanded','false');
+    chapterHandle.innerHTML='<span class="book-handle-grip" aria-hidden="true">⠿</span><span class="book-handle-label">Reading</span><span class="book-handle-chevron" aria-hidden="true">‹</span>';
     document.body.appendChild(chapterDrawer);document.body.appendChild(chapterHandle);
     var side='right';try{side=localStorage.getItem('library_book_handle_side')||'right';}catch(_){}
     placeChapterHandle(side);
