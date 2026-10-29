@@ -226,6 +226,8 @@
     current = { feed: feed.id, index: index };
     try { localStorage.setItem(selectedEpisodeKey(feed), episodeIdentity(episode)); } catch (_) {}
     audio.src = absoluteAudioUrl(episode.audioUrl);
+    audio.dataset.podcastSourceChangedAt = String(Date.now());
+    audio.dataset.podcastLastProgressAt = audio.dataset.podcastSourceChangedAt;
     audio.dataset.restoreSrc = '';
     audio.dataset.episodeTitle = episode.title || feed.title;
     audio.dataset.episodeArtist = feed.title;
@@ -299,9 +301,19 @@
       playEpisode(feed, index);
       return;
     }
-    if (!audio.paused && !audio.ended) return;
+    if (!audio.paused && !audio.ended) {
+      var sourceChangedAt = Number(audio.dataset.podcastSourceChangedAt || 0);
+      var lastProgressAt = Number(audio.dataset.podcastLastProgressAt || sourceChangedAt || 0);
+      var appearsStalled = sourceChangedAt > 0 && Date.now() - sourceChangedAt > 8000 && Date.now() - lastProgressAt > 8000;
+      if (!appearsStalled) return;
+      /* iOS can report a successful play() while a background-switched source is silent.
+         A fresh lock-screen Play gesture gets one chance to reload that same source. */
+      try { audio.pause(); audio.load(); } catch (_) {}
+    }
     stopOtherAudio();
     var result;
+    audio.dataset.podcastSourceChangedAt = String(Date.now());
+    audio.dataset.podcastLastProgressAt = audio.dataset.podcastSourceChangedAt;
     try { result = audio.play(); } catch (error) { result = Promise.reject(error); }
     if (result && result.then) result.then(function () {
       if (window.LibraryAudioIdentity) {
@@ -525,7 +537,11 @@
       if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.stop(heading);
       renderAll();
     });
-    audio.addEventListener('timeupdate', function () { savePosition(feed, false); updateProgress(feed); });
+    audio.addEventListener('timeupdate', function () {
+      audio.dataset.podcastLastProgressAt = String(Date.now());
+      savePosition(feed, false);
+      updateProgress(feed);
+    });
     audio.addEventListener('seeking', function () { updateProgress(feed); });
     audio.addEventListener('ended', function () {
       savePosition(feed, true);
