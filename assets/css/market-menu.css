@@ -1058,3 +1058,46 @@ body > #library-market-panel.library-market-dropdown {
     padding-bottom: 8px !important;
   }
 }
+
+/* 2026-10-30: balanced centered tiles inside the pull-down market panel.
+   Each group becomes a wrapping flex row, so a 2-quote group splits 50/50
+   and the 3-quote FX group splits into thirds — every row fills the panel
+   width evenly and the FX group no longer wraps with a gap. Tiles are
+   frosted glass chips with the quote centered: pair on top, value below. */
+#library-market-panel .home-market-group {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: stretch !important;
+  gap: 7px !important;
+}
+#library-market-panel .home-market-group > .home-market-section-label {
+  flex: 0 0 100% !important;
+}
+#library-market-panel .home-market-group .fx-bar__rate {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 2px !important;
+  padding: 7px 6px !important;
+  background: rgba(255, 255, 255, .42) !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45) !important;
+}
+#library-market-panel .home-market-group .fx-bar__pair {
+  text-align: center !important;
+}
+#library-market-panel .home-market-group .fx-bar__value {
+  align-items: center !important;
+  text-align: center !important;
+  font-size: 13px !important;
+}
+:root[data-theme="dark"] #library-market-panel .home-market-group .fx-bar__rate {
+  background: rgba(255, 255, 255, .13) !important;
+  border-color: rgba(255, 255, 255, .25) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15) !important;
+}
