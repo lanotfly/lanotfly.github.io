@@ -2024,3 +2024,84 @@ html,body{max-width:100%;overflow-x:clip}
 #library-podcast-panel .podcast-episode-scroll-frame {
   margin-top: 0 !important;
 }
+
+/* 2026-10-30: compact folded audio bars. When a Podcast feed's episode list
+   (or the KJV chapter list) is folded away, the remaining bar is only a
+   summary strip, so it shrinks: smaller artwork, no eyebrow line, slimmer
+   progress slider and buttons, tighter padding. The expanded state is
+   untouched. Folded state is detected from the hidden list frame, the
+   same :has() pattern already used elsewhere in this stylesheet. */
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+  padding: 8px 10px !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__heading {
+  margin-bottom: 3px !important;
+  gap: 6px !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity {
+  gap: 8px !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
+  flex-basis: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__eyebrow {
+  display: none !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__title {
+  font-size: 13px !important;
+  margin-top: 0 !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__title.is-marquee .podcast-title-marquee__text {
+  animation: none !important;
+  transform: none !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-playback-progress {
+  margin: 2px 0 0 !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-progress-slider {
+  height: 10px !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-list-toggle {
+  flex-basis: 30px !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+}
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-bulk-menu__toggle {
+  flex-basis: 30px !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+}
+@media (max-width: 700px) {
+  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
+    flex-basis: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 7px !important;
+  }
+  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__title {
+    font-size: 12.5px !important;
+  }
+}
+/* KJV folded bar: same treatment. */
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) {
+  padding: 8px 10px !important;
+}
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-panel__heading {
+  margin-bottom: 3px !important;
+}
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress {
+  height: 14px !important;
+}
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-queue-toggle {
+  flex-basis: 30px !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+}
