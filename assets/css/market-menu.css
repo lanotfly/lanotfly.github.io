@@ -1264,3 +1264,26 @@ body > #library-market-panel.library-market-dropdown {
   align-items: center !important;
   gap: 6px !important;
 }
+
+/* 2026-10-31: fit EVERYTHING. The 46dvh window clipped the last market
+   row and the fifth news item on tall phones, so the window grows back
+   a little and the inner spacing gives up the rest: slimmer group
+   padding (11px was the biggest single sink), slimmer tiles, and
+   shorter news rows. The panel also opens 4px higher. */
+#library-market-panel #home-market-view,
+#library-market-panel #home-news-view {
+  height: clamp(296px, 48dvh, 412px) !important;
+}
+@media (max-width: 520px) {
+  #library-market-panel .home-market-group { padding: 8px 10px !important; }
+  #library-market-panel.library-market-dropdown { padding: 6px 8px 8px !important; }
+}
+#library-market-panel .home-market-groups { gap: 2px !important; }
+#library-market-panel .home-market-group { gap: 2px !important; }
+#library-market-panel .home-market-group .fx-bar__rate { padding: 2px 5px !important; }
+#library-market-panel .home-market-panel__heading { margin-bottom: 2px !important; }
+#library-market-panel #home-news-view .home-news-list { gap: 4px !important; }
+#library-market-panel #home-news-view .home-news-item__title-row {
+  min-height: 38px !important;
+  padding: 6px 10px !important;
+}
