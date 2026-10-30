@@ -447,10 +447,38 @@
     });
   });
 
+  function anyPodcastPlaying() {
+    return feeds.some(function (feed) {
+      var audio = audioFor(feed.id);
+      return !!audio && !audio.paused && !audio.ended;
+    });
+  }
   mainToggle.addEventListener('click', function () {
-    /* Podcast is persistent like Radio and KJV: tapping it must not hide its player.
-       If already open, the remembered episode can toggle playback via playDefaultEpisode. */
+    var wasOpen = !root.hidden;
     setPodcastOpen(true);
+    /* Selecting Podcast is an audio-source switch, exactly like Radio and
+       KJV: pause the outgoing source, close its panel, then play. Only
+       opening the panel left Radio/KJV audio running underneath and never
+       started a podcast, which read as "the audio did not switch". */
+    if (wasOpen && current.feed && current.index >= 0) {
+      var currentAudio = audioFor(current.feed);
+      if (currentAudio && !currentAudio.paused && !currentAudio.ended) {
+        /* Panel already open and this episode is playing: toggle to pause,
+           the same convention as the Radio and KJV buttons. */
+        currentAudio.pause();
+        renderAll();
+        return;
+      }
+    }
+    /* Podcast is already the live source (e.g. background or lock-screen
+       playback with the panel closed): just reveal the panel. */
+    if (anyPodcastPlaying()) return;
+    /* stopOtherAudio() routes through LibraryAudioCoordinator.switchTo,
+       which pauses Radio/KJV and hides the KJV panel; setPodcastOpen(true)
+       above already closed the Radio panel. */
+    stopOtherAudio();
+    if (loaded) playDefaultEpisode(activeFeed);
+    else pendingAutoplay = true;
   });
   /* Every podcast feed uses the same list-collapse control, expanded by default. */
   root.querySelectorAll('[data-podcast-collapse]').forEach(function (button) {
@@ -469,11 +497,15 @@
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-podcast-tab');
       if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(nextFeed) < 0) return;
+      /* Compare BEFORE setActiveFeed: it rewrites activeTab and activeFeed,
+         so checking afterwards always reported "already selected" and the
+         stop-then-play switch path below could never run. */
+      var alreadySelectedPodcastTab = activeTab === nextFeed && nextFeed === activeFeed;
       /* Remember the chosen show immediately, even if playback has not started yet. */
       setActiveFeed(nextFeed);
-      var alreadySelectedPodcastTab = activeTab === nextFeed;
-      if (alreadySelectedPodcastTab && nextFeed === activeFeed) {
-        playDefaultEpisode(nextFeed);
+      if (alreadySelectedPodcastTab) {
+        if (loaded) playDefaultEpisode(nextFeed);
+        else pendingAutoplay = true;
         return;
       }
       stopAllPodcasts(true);

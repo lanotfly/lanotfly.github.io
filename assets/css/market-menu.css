@@ -1036,3 +1036,25 @@ body > #library-market-panel.library-market-dropdown {
     background: linear-gradient(165deg, #d9f5e1 0%, #b5e4c4 55%, #93d3a8 100%) !important;
   }
 }
+
+/* 2026-10-30: trim the pull-down panel's dead space at the bottom.
+   The inner Market/News cards keep their on-page margins (18px bottom)
+   and the News view a forced min-height; inside the dropdown those only
+   add an empty glass strip under the content, most visible on phones. */
+#library-market-panel .home-market-panel {
+  margin: 0 !important;
+}
+#library-market-panel #home-news-view.home-news-panel {
+  margin: 0 !important;
+}
+#library-market-panel #home-news-view:not([hidden]) {
+  min-height: 0 !important;
+}
+body > #library-market-panel.library-market-dropdown {
+  padding-bottom: 10px !important;
+}
+@media (max-width: 520px) {
+  body > #library-market-panel.library-market-dropdown {
+    padding-bottom: 8px !important;
+  }
+}
