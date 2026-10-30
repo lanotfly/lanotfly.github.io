@@ -1336,3 +1336,9 @@ body > #library-market-panel.library-market-dropdown {
 }
 #library-market-panel .home-news-source-tabs { margin-bottom: 4px !important; }
 #library-market-panel .home-news-heading { margin-top: 0 !important; }
+
+/* 2026-10-31: News spacing balance — the slimmed rows were too cramped
+   and left a dead band at the bottom. Give the list its breathing room
+   back out of that leftover: slightly taller rows, real gaps. */
+#library-market-panel #home-news-view .home-news-list { gap: 4px !important; }
+#library-market-panel #home-news-view .home-news-item__title-row { min-height: 33px !important; }
