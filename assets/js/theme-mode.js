@@ -20,8 +20,11 @@
     if (document.body) document.body.setAttribute("data-theme", theme);
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", dark ? "#111318" : "#ffffff");
+    if (!button || !document.contains(button)) button = document.getElementById("site-theme-toggle");
     if (button) {
-      button.innerHTML = '<span class="theme-yinyang" aria-hidden="true">☯</span>';
+      var label = button.querySelector(".theme-toggle-label");
+      if (label) label.textContent = dark ? "Light mode" : "Dark mode";
+      else if (!button.querySelector(".theme-yinyang")) button.innerHTML = '<span class="theme-yinyang" aria-hidden="true">☯</span>';
       button.setAttribute("aria-label", "Switch to " + (dark ? "light" : "dark") + " mode");
       button.setAttribute("title", "Switch to " + (dark ? "light" : "dark") + " mode");
       button.setAttribute("aria-pressed", dark ? "true" : "false");
@@ -35,22 +38,24 @@
 
   function init() {
     button = document.getElementById("site-theme-toggle");
-    if (button) {
-      button.addEventListener("click", function () {
-        mode = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        if (button) {
-          var yinYang = button.querySelector(".theme-yinyang");
-          if (yinYang) {
-            yinYang.classList.remove("is-spinning");
-            void yinYang.offsetWidth;
-            yinYang.classList.add("is-spinning");
-            window.setTimeout(function () { if (yinYang) yinYang.classList.remove("is-spinning"); }, 260);
-          }
-        }
-        saveMode();
-      });
-      applyTheme();
-    }
+    // Delegated binding: the toggle lives inside the Book chapter drawer,
+    // which navigation.js creates dynamically, so it may not exist yet —
+    // and there must never be two competing handlers for it.
+    document.addEventListener("click", function (event) {
+      var toggle = event.target && event.target.closest ? event.target.closest("#site-theme-toggle") : null;
+      if (!toggle) return;
+      button = toggle;
+      mode = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      var yinYang = toggle.querySelector(".theme-yinyang");
+      if (yinYang) {
+        yinYang.classList.remove("is-spinning");
+        void yinYang.offsetWidth;
+        yinYang.classList.add("is-spinning");
+        window.setTimeout(function () { yinYang.classList.remove("is-spinning"); }, 260);
+      }
+      saveMode();
+    });
+    applyTheme();
     if (media) {
       var onSystemChange = function () {
         try { if (!localStorage.getItem(key)) { mode = media.matches ? "dark" : "light"; applyTheme(); } } catch (error) {}

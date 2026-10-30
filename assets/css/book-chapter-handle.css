@@ -72,3 +72,43 @@
   border-color: rgba(255, 255, 255, .2) !important;
   color: #dcefe1 !important;
 }
+
+/* 2026-10-30: long strip theme toggle at the top of the drawer — the
+   light/dark switch lives with the reader now, not in the pull-down panel.
+   Its clicks are handled by theme-mode.js (delegated #site-theme-toggle). */
+#library-book-chapter-drawer .book-drawer-theme-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 40px !important;
+  padding: 9px 12px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, .45) !important;
+  color: #285d3c !important;
+  font: inherit !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+#library-book-chapter-drawer .book-drawer-theme-toggle .theme-yinyang {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 1;
+}
+#library-book-chapter-drawer .theme-yinyang.is-spinning {
+  animation: book-theme-yinyang-spin .26s ease-in-out;
+}
+@keyframes book-theme-yinyang-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(180deg); }
+}
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-theme-toggle {
+  background: rgba(255, 255, 255, .1) !important;
+  border-color: rgba(255, 255, 255, .2) !important;
+  color: #dcefe1 !important;
+}

@@ -1164,7 +1164,40 @@ body > #library-market-panel.library-market-dropdown {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
-/* With the Refresh button removed, the panel header is one row of three. */
+/* With Refresh and Theme both gone, the panel header is one row of two. */
 #library-market-panel .home-dashboard-tabs {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* 2026-10-30: compact Market view — squeeze out the empty space so the
+   Market window sits in the same height class as News: tighter card
+   padding, a shorter heading row, narrower group gaps and slimmer tiles. */
+#library-market-panel .home-market-panel {
+  padding: 8px 10px 7px !important;
+}
+#library-market-panel .home-market-panel__heading {
+  margin-bottom: 4px !important;
+}
+#library-market-panel .home-market-panel__heading h2 {
+  font-size: 14.5px !important;
+}
+#library-market-panel .home-market-panel__heading .eyebrow {
+  margin-bottom: 0 !important;
+}
+#library-market-panel .home-market-panel .fx-bar__refresh {
+  width: 24px !important;
+  height: 24px !important;
+}
+#library-market-panel .home-market-groups {
+  gap: 6px !important;
+}
+#library-market-panel .home-market-group {
+  gap: 5px !important;
+}
+#library-market-panel .home-market-group > .home-market-section-label {
+  padding-bottom: 2px !important;
+}
+#library-market-panel .home-market-group .fx-bar__rate {
+  padding: 4px 5px !important;
+  gap: 1px !important;
 }
