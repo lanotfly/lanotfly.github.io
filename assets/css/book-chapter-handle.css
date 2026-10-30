@@ -112,3 +112,41 @@
   border-color: rgba(255, 255, 255, .2) !important;
   color: #dcefe1 !important;
 }
+
+/* 2026-10-30: theme toggle moves into the book-select row; the drawer glass
+   turns mostly opaque so the book list and chapters stay readable; the
+   panel is capped at half the screen — book row, toggle and about five
+   chapters visible, the rest scrolls inside the chapter list. */
+#library-book-chapter-drawer {
+  max-height: min(50vh, 480px) !important;
+  background: linear-gradient(150deg, rgba(246, 252, 247, .9), rgba(228, 245, 233, .85)) !important;
+}
+#library-book-chapter-drawer .book-drawer-list {
+  max-height: 200px !important;
+}
+#library-book-chapter-drawer .book-drawer-book-row {
+  display: flex !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+}
+#library-book-chapter-drawer .book-drawer-book-row .book-drawer-book-select {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+#library-book-chapter-drawer .book-drawer-theme-toggle {
+  width: auto !important;
+  flex: 0 0 auto !important;
+  min-height: 40px !important;
+  padding: 8px 10px !important;
+  background: rgba(255, 255, 255, .65) !important;
+}
+#library-book-chapter-drawer .book-drawer-link { background: rgba(255, 255, 255, .78) !important; }
+#library-book-chapter-drawer .book-drawer-book-select { background: rgba(255, 255, 255, .85) !important; }
+#library-book-chapter-handle { background: rgba(230, 245, 235, .85) !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer {
+  background: linear-gradient(150deg, rgba(16, 44, 27, .88), rgba(9, 30, 17, .85)) !important;
+}
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-theme-toggle { background: rgba(255, 255, 255, .14) !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link { background: rgba(255, 255, 255, .12) !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-select { background: rgba(255, 255, 255, .14) !important; }
+:root[data-theme="dark"] #library-book-chapter-handle { background: rgba(18, 48, 30, .85) !important; }

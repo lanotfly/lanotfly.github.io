@@ -301,6 +301,8 @@
       });
       selector.value=book.key;
     }
+    var themeToggle=chapterDrawer.querySelector('.book-drawer-theme-toggle');
+    if(themeToggle){var isDark=document.documentElement.getAttribute('data-theme')==='dark';themeToggle.setAttribute('aria-pressed',isDark?'true':'false');themeToggle.setAttribute('aria-label','Switch to '+(isDark?'light':'dark')+' mode');var themeLabel=themeToggle.querySelector('.theme-toggle-label');if(themeLabel)themeLabel.textContent=isDark?'Light mode':'Dark mode';}
     chapterDrawer.dataset.side=chapterHandle.dataset.side||'right';
     positionChapterDrawer();
     var list=chapterDrawer.querySelector('.book-drawer-list');
@@ -345,10 +347,10 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
-    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-2';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-3';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
-    chapterDrawer.innerHTML='<button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-yinyang" aria-hidden="true">☯</span><span class="theme-toggle-label">Dark mode</span></button><div class="book-drawer-head"><strong class="book-drawer-title">Reading</strong></div><label class="book-drawer-book-label">Book<select class="book-drawer-book-select" aria-label="Choose a book"></select></label><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
+    chapterDrawer.innerHTML='<div class="book-drawer-head"><strong class="book-drawer-title">Reading</strong></div><div class="book-drawer-book-label">Book</div><div class="book-drawer-book-row"><select class="book-drawer-book-select" aria-label="Choose a book"></select><button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-yinyang" aria-hidden="true">☯</span><span class="theme-toggle-label">Dark mode</span></button></div><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
     chapterHandle=document.createElement('button');chapterHandle.type='button';chapterHandle.id='library-book-chapter-handle';
     chapterHandle.setAttribute('aria-label','Open reading navigation');chapterHandle.setAttribute('aria-expanded','false');
     chapterHandle.innerHTML='<span class="book-handle-grip" aria-hidden="true">⠿</span><span class="book-handle-label">Reading</span><span class="book-handle-chevron" aria-hidden="true">‹</span>';
