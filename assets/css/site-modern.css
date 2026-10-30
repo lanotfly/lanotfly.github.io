@@ -2177,15 +2177,34 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-episode-panel .podcast-episode-panel__identity { position: relative; }
 .podcast-episode-panel__artwork { cursor: pointer; }
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity::after {
-  content: '▶';
-  position: absolute; left: 20px; bottom: -3px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: #50386a; color: #fff;
-  font-size: 8px; line-height: 16px; text-align: center;
-  box-shadow: 0 1px 4px rgba(30, 16, 48, .35);
+  content: '';
+  position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+  width: 21px; height: 21px; border-radius: 50%;
+  background-color: rgba(255, 255, 255, .30);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6.5v11l9-5.5z' fill='%233c2456' fill-opacity='0.12' stroke='%233c2456' stroke-width='1.9' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 13px 13px; background-position: center; background-repeat: no-repeat;
+  border: 1px solid rgba(255, 255, 255, .70);
+  box-shadow: 0 1px 5px rgba(31, 16, 52, .28);
+  backdrop-filter: blur(3px) saturate(1.5);
+  -webkit-backdrop-filter: blur(3px) saturate(1.5);
   pointer-events: none;
 }
-.podcast-episode-panel[data-playing="true"]:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity::after { content: '❚❚'; font-size: 6px; }
+.podcast-episode-panel[data-playing="true"]:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.5 6h3v12h-3zM13.5 6h3v12h-3z' fill='%233c2456' fill-opacity='0.12' stroke='%233c2456' stroke-width='1.7'/%3E%3C/svg%3E");
+}
+/* The KJV mini button wears the same frosted-glass face. */
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
+  background-color: rgba(255, 255, 255, .30) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6.5v11l9-5.5z' fill='%233c2456' fill-opacity='0.12' stroke='%233c2456' stroke-width='1.9' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 15px 15px; background-position: center; background-repeat: no-repeat;
+  border: 1px solid rgba(255, 255, 255, .70) !important;
+  backdrop-filter: blur(3px) saturate(1.5);
+  -webkit-backdrop-filter: blur(3px) saturate(1.5);
+  font-size: 0 !important; color: transparent !important;
+}
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle[aria-pressed="true"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.5 6h3v12h-3zM13.5 6h3v12h-3z' fill='%233c2456' fill-opacity='0.12' stroke='%233c2456' stroke-width='1.7'/%3E%3C/svg%3E");
+}
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress-wrap,
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) #niv-bible-book-select { display: none !important; }
 .niv-bible-mini-toggle { display: none; }

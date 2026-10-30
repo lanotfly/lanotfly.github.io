@@ -516,14 +516,17 @@
   /* Every podcast feed uses the same list-collapse control, expanded by default. */
   root.querySelectorAll('[data-podcast-collapse]').forEach(function (button) {
     button.addEventListener('click', function () {
-      var frame = document.getElementById(button.getAttribute('aria-controls'));
-      if (!frame) return;
       var expanded = button.getAttribute('aria-expanded') !== 'true';
-      button.setAttribute('aria-expanded', String(expanded));
-      button.classList.toggle('is-collapsed', !expanded);
-      button.setAttribute('aria-label', expanded ? 'Collapse episode list' : 'Expand episode list');
-      button.title = expanded ? 'Collapse episode list' : 'Expand episode list';
-      frame.hidden = !expanded;
+      /* Folding is global: every feed shares one list state, so switching
+         to another podcast never resurrects an expanded list. */
+      root.querySelectorAll('[data-podcast-collapse]').forEach(function (b) {
+        var frame = document.getElementById(b.getAttribute('aria-controls'));
+        b.setAttribute('aria-expanded', String(expanded));
+        b.classList.toggle('is-collapsed', !expanded);
+        b.setAttribute('aria-label', expanded ? 'Collapse episode list' : 'Expand episode list');
+        b.title = expanded ? 'Collapse episode list' : 'Expand episode list';
+        if (frame) frame.hidden = !expanded;
+      });
     });
   });
   root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
