@@ -509,18 +509,7 @@
     playBtn.setAttribute('aria-label', 'Play or pause ' + feed.title);
     playBtn.innerHTML = '<svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6.5v11l9-5.5z" fill="rgba(60,36,86,.12)" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="rgba(60,36,86,.12)" stroke="currentColor" stroke-width="1.7"/></svg>';
     playBtn.addEventListener('click', function () { toggleFeedPlayback(feed); });
-    var skipBtn = document.createElement('button');
-    skipBtn.type = 'button';
-    skipBtn.className = 'podcast-mini-btn podcast-mini-skip';
-    skipBtn.setAttribute('aria-label', 'Skip back 30 seconds');
-    skipBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.1 12a7.9 7.9 0 1 0 2.3-5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.4 2.8v3.6h3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="15.6" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor">30</text></svg>';
-    skipBtn.addEventListener('click', function () {
-      var a = audioFor(feed.id);
-      if (!a || !a.src) return;
-      a.currentTime = Math.max(0, a.currentTime - 30);
-    });
     actions.insertBefore(playBtn, actions.firstChild);
-    actions.insertBefore(skipBtn, playBtn.nextSibling);
   });
   /* Set when the reader taps Home or a book chapter: lists reopen folded. */
   function consumeFoldFlag() {

@@ -93,22 +93,6 @@
         if(tools)tools.hidden=collapsed;
       });
     }
-    var miniSkip=document.getElementById('niv-bible-mini-skip');
-    if(!miniSkip&&heading){
-      miniSkip=document.createElement('button');
-      miniSkip.id='niv-bible-mini-skip';
-      miniSkip.className='niv-bible-mini-skip';
-      miniSkip.type='button';
-      miniSkip.setAttribute('aria-label','Skip back 30 seconds');
-      miniSkip.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.1 12a7.9 7.9 0 1 0 2.3-5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.4 2.8v3.6h3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="15.6" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor">30</text></svg>';
-      var mtEl=document.getElementById('niv-bible-mini-toggle');
-      if(mtEl&&mtEl.parentNode===heading)mtEl.insertAdjacentElement('afterend',miniSkip);
-      else heading.appendChild(miniSkip);
-      miniSkip.addEventListener('click',function(){
-        if(!audio.src)return;
-        audio.currentTime=Math.max(0,audio.currentTime-30);
-      });
-    }
     ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);});
     anchor.parentNode.insertBefore(tools,anchor.nextSibling);
     anchor.parentNode.insertBefore(queueFrame,tools.nextSibling);
