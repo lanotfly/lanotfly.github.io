@@ -36,8 +36,8 @@
         panel.classList.remove("is-closing");
         var panelTop = 0;
         panel.style.setProperty("top", "4px", "important");
-        panel.style.setProperty("left", "5vw", "important");
-        panel.style.setProperty("right", "5vw", "important");
+        panel.style.setProperty("left", "3vw", "important");
+        panel.style.setProperty("right", "3vw", "important");
         panel.style.setProperty("bottom", "auto", "important");
         panel.style.setProperty("height", "auto", "important");
         panel.style.setProperty("max-height", "calc(100dvh - 3vh - 4px)", "important");

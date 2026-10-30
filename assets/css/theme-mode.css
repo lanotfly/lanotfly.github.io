@@ -1280,3 +1280,12 @@ body[data-theme="dark"] .site-nav-shell .site-tabs,
 body[data-theme="dark"] .site-nav-shell .site-tab-links {
   background-color: var(--theme-page, #111318) !important;
 }
+
+/* Diagram lightbox: the Close pill gets a true dark-mode face (dark glass,
+   light text) instead of the white light-mode pill. */
+:root[data-theme="dark"] .diagram-lightbox__close {
+  background: #1c2331 !important;
+  color: #e9eef7 !important;
+  border: 1px solid rgba(255, 255, 255, .30) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .45) !important;
+}

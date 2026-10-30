@@ -74,7 +74,7 @@
     if(doc.querySelector('parsererror'))throw new Error('RSS feed could not be parsed.');
     var items=Array.prototype.slice.call(doc.getElementsByTagName('item'));
     if(!items.length)items=Array.prototype.slice.call(doc.getElementsByTagName('entry'));
-    return items.slice(0,5).map(function(item){return makeItem(item,lang);}).filter(Boolean);
+    return items.slice(0,30).map(function(item){return makeItem(item,lang);}).filter(Boolean);
   }
   function loadFeed(lang,force){
     var list=panelRoot.querySelector('[data-news-list="'+lang+'"]');

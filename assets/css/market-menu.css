@@ -1099,9 +1099,9 @@ body > #library-market-panel.library-market-dropdown {
    frosted-glass sheet floating over the page (the page shows through the
    gaps and the ~50% transparent border ring) instead of a full-bleed slab. */
 body > #library-market-panel.library-market-dropdown {
-  top: 8px !important;
-  left: 5vw !important;
-  right: 5vw !important;
+  top: 4px !important;
+  left: 3vw !important;
+  right: 3vw !important;
   width: auto !important;
   border: 1px solid rgba(255, 255, 255, .5) !important;
   border-radius: 22px !important;
@@ -1342,3 +1342,33 @@ body > #library-market-panel.library-market-dropdown {
    back out of that leftover: slightly taller rows, real gaps. */
 #library-market-panel #home-news-view .home-news-list { gap: 4px !important; }
 #library-market-panel #home-news-view .home-news-item__title-row { min-height: 33px !important; }
+
+/* 2026-10-31: richer frosted edge for the wider sheet — a brighter rim,
+   an inner glass glow, and a deeper float shadow (dark variant below). */
+body > #library-market-panel.library-market-dropdown {
+  border: 1px solid rgba(255, 255, 255, .72) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .85),
+    inset 0 0 0 1px rgba(255, 255, 255, .14),
+    inset 0 -16px 30px rgba(255, 255, 255, .10),
+    0 24px 50px rgba(9, 50, 28, .26),
+    0 4px 14px rgba(9, 50, 28, .12) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) brightness(1.05) !important;
+  backdrop-filter: blur(24px) saturate(190%) brightness(1.05) !important;
+}
+:root[data-theme="dark"] body > #library-market-panel.library-market-dropdown {
+  border-color: rgba(255, 255, 255, .30) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 0 0 1px rgba(255, 255, 255, .07),
+    0 24px 50px rgba(0, 0, 0, .55),
+    0 4px 14px rgba(0, 0, 0, .35) !important;
+}
+/* 2026-10-31: expanding a story stretches the News view toward the bottom
+   of the screen so the article reads top-to-bottom; the sheet keeps its
+   rounded corners and never leaves the screen. Collapsing the story (or
+   switching to Market) returns the shared compact height. */
+#library-market-panel #home-news-view { transition: height .25s ease; }
+#library-market-panel:has(.home-news-item[open]) #home-news-view {
+  height: calc(97dvh - 76px) !important;
+}
