@@ -1201,3 +1201,35 @@ body > #library-market-panel.library-market-dropdown {
   padding: 4px 5px !important;
   gap: 1px !important;
 }
+
+/* 2026-10-30: second Market squeeze — remove the remaining middle slack so
+   the Market window matches the News window's length: no surviving card
+   margins, the section label loses its double spacing (margin + flex gap),
+   the heading's refresh column becomes a single row, tiles get a tighter
+   line-height, and the rates list itself carries no padding. */
+#library-market-panel #home-market-view .home-market-panel {
+  margin: 0 !important;
+  padding: 7px 10px 6px !important;
+}
+#library-market-panel .home-market-panel__refresh {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+#library-market-panel .home-market-list {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#library-market-panel .home-market-groups {
+  gap: 5px !important;
+}
+#library-market-panel .home-market-group {
+  gap: 4px !important;
+}
+#library-market-panel .home-market-group > .home-market-section-label {
+  margin: 0 !important;
+  padding: 2px 2px 3px !important;
+}
+#library-market-panel .home-market-group .fx-bar__rate {
+  line-height: 1.25 !important;
+}

@@ -24,7 +24,7 @@
     if (button) {
       var label = button.querySelector(".theme-toggle-label");
       if (label) label.textContent = dark ? "Light mode" : "Dark mode";
-      else if (!button.querySelector(".theme-yinyang")) button.innerHTML = '<span class="theme-yinyang" aria-hidden="true">☯</span>';
+      else button.textContent = dark ? "Light mode" : "Dark mode";
       button.setAttribute("aria-label", "Switch to " + (dark ? "light" : "dark") + " mode");
       button.setAttribute("title", "Switch to " + (dark ? "light" : "dark") + " mode");
       button.setAttribute("aria-pressed", dark ? "true" : "false");
@@ -46,13 +46,6 @@
       if (!toggle) return;
       button = toggle;
       mode = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      var yinYang = toggle.querySelector(".theme-yinyang");
-      if (yinYang) {
-        yinYang.classList.remove("is-spinning");
-        void yinYang.offsetWidth;
-        yinYang.classList.add("is-spinning");
-        window.setTimeout(function () { yinYang.classList.remove("is-spinning"); }, 260);
-      }
       saveMode();
     });
     applyTheme();
