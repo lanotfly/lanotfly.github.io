@@ -1287,3 +1287,35 @@ body > #library-market-panel.library-market-dropdown {
   min-height: 38px !important;
   padding: 6px 10px !important;
 }
+
+/* 2026-10-31: News — compact the UPPER part so all five headlines fit.
+   The source tabs, heading and status line give up their slack; the
+   list itself keeps its size. */
+#library-market-panel #home-news-view.home-news-panel {
+  padding: 8px 10px 7px !important;
+}
+#library-market-panel .home-news-source-tabs {
+  margin-bottom: 6px !important;
+}
+#library-market-panel .home-news-source-tabs .secondary-tab {
+  min-height: 32px !important;
+  padding: 5px 8px !important;
+}
+#library-market-panel .home-news-heading {
+  margin-bottom: 4px !important;
+}
+#library-market-panel .home-news-heading h2 {
+  font-size: .95rem !important;
+}
+#library-market-panel #home-news-view .home-news-status {
+  margin: 2px 0 4px !important;
+}
+#library-market-panel #home-news-view .home-news-list { gap: 3px !important; }
+#library-market-panel #home-news-view .home-news-item__title-row {
+  min-height: 36px !important;
+}
+/* The base stylesheet also gives each news item 11px of vertical padding
+   around its title row — inside the panel that padding is pure slack. */
+#library-market-panel #home-news-view .home-news-item {
+  padding: 5px 10px !important;
+}
