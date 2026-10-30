@@ -13,8 +13,8 @@
     { selector: '#library-book-toggle, .book-secondary-link, .book-chapter-link', id: 'book' }
   ];
   var colors = {
-    audio: { normal: ['#f3eef9', '#705493', '#cbb9df'], active: ['#e9def5', '#50386a', '#9581b3'] },
-    reading: { normal: ['#edf6ed', '#477653', '#c5dfc7'], active: ['#d9ecd9', '#285d37', '#83b78b'] }
+    audio: { normal: ['#f3eef9', '#705493', '#cbb9df'], active: ['#e2d0f6', '#4a2f66', '#8a6bb0'] },
+    reading: { normal: ['#edf6ed', '#477653', '#c5dfc7'], active: ['#cdeccf', '#22522e', '#74a97c'] }
   };
 
   function paint(el, palette, selected) {
@@ -23,7 +23,7 @@
     el.style.setProperty('background-color', values[0], 'important');
     el.style.setProperty('color', values[1], 'important');
     el.style.setProperty('border-color', values[2], 'important');
-    el.style.setProperty('border-style', 'solid', 'important');
+    el.style.setProperty('border-style', selected ? 'solid' : 'dashed', 'important');
     el.style.setProperty('border-width', selected ? '2px' : '1px', 'important');
     el.style.setProperty('box-shadow', 'none', 'important');
     el.classList.toggle('nav-state-active', !!selected);

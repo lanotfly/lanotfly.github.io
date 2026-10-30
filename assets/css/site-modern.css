@@ -2105,3 +2105,27 @@ html,body{max-width:100%;overflow-x:clip}
   min-width: 30px !important;
   min-height: 30px !important;
 }
+
+/* 2026-10-30: frosted glass for the KJV and Podcast panels (~50% transparent),
+   matching the pull-down's Liquid Glass; dark mode gets a deep glass tint
+   instead of an opaque surface, so both themes read as the same material. */
+.niv-bible-panel,
+.podcast-episode-panel {
+  background: linear-gradient(150deg, rgba(252, 250, 255, .55), rgba(244, 240, 250, .42)) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 10px 26px rgba(35, 24, 49, .10) !important;
+}
+:root[data-theme="dark"] .niv-bible-panel,
+:root[data-theme="dark"] .podcast-episode-panel {
+  background: linear-gradient(150deg, rgba(52, 38, 74, .55), rgba(30, 24, 44, .5)) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 10px 26px rgba(0, 0, 0, .35) !important;
+}
+/* Dark mode: soften bright content images (podcast artwork, article and
+   diagram images) instead of leaving them at full daylight glare. There is
+   no separate dark artwork set, so a gentle filter is the honest swap. */
+:root[data-theme="dark"] .content-wrapper__inner img {
+  filter: brightness(.9) contrast(1.02);
+}

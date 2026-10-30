@@ -318,3 +318,16 @@
   background: rgba(255, 255, 255, .13) !important;
   border-color: rgba(255, 255, 255, .25) !important;
 }
+
+/* 2026-10-30: center the in-page market panel's quote cards too, so every
+   market module lines its info up the same centered way. */
+.library-market-panel .fx-bar__rate {
+  align-items: center !important;
+  text-align: center !important;
+}
+.library-market-panel .fx-bar__pair,
+.library-market-panel .fx-bar__value,
+.library-market-panel .fx-bar__meta {
+  text-align: center !important;
+  align-self: center !important;
+}

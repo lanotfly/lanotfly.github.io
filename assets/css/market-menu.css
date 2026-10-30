@@ -1101,3 +1101,38 @@ body > #library-market-panel.library-market-dropdown {
   border-color: rgba(255, 255, 255, .25) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15) !important;
 }
+
+/* 2026-10-30: floating glass frame for the pull-down. ~5% gaps on the left,
+   right and bottom and rounded corners all around, so the frame reads as a
+   frosted-glass sheet floating over the page (the page shows through the
+   gaps and the ~50% transparent border ring) instead of a full-bleed slab. */
+body > #library-market-panel.library-market-dropdown {
+  top: 8px !important;
+  left: 5vw !important;
+  right: 5vw !important;
+  width: auto !important;
+  border: 1px solid rgba(255, 255, 255, .5) !important;
+  border-radius: 22px !important;
+  max-height: calc(100dvh - 5vh - 8px) !important;
+}
+#library-market-panel > .home-dashboard-tabs {
+  border-radius: 20px 20px 14px 14px !important;
+}
+/* Centered composition: group labels centered above their centered tiles. */
+#library-market-panel .home-market-group > .home-market-section-label {
+  text-align: center !important;
+}
+/* News frame matches the Market frame exactly: same glass card, same padding,
+   so switching between Market and News never changes the panel's size. */
+#library-market-panel #home-news-view.home-news-panel {
+  background: linear-gradient(150deg, rgba(255, 255, 255, .55), rgba(226, 246, 233, .38) 55%, rgba(198, 238, 213, .42)) !important;
+  border: 1px solid rgba(255, 255, 255, .6) !important;
+  border-radius: 14px !important;
+  padding: 11px 12px 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), 0 10px 26px rgba(9, 50, 28, .12) !important;
+}
+:root[data-theme="dark"] #library-market-panel #home-news-view.home-news-panel {
+  background: linear-gradient(150deg, rgba(24, 92, 52, .5), rgba(12, 60, 34, .55)) !important;
+  border-color: rgba(255, 255, 255, .28) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 10px 26px rgba(0, 0, 0, .35) !important;
+}

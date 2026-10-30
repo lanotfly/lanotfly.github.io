@@ -29,3 +29,46 @@
 :root[data-theme=dark] #library-book-chapter-drawer .book-drawer-link{background:#263e30;border-color:#395f46;color:#d9f2e1}
 :root[data-theme=dark] #library-book-chapter-drawer .book-drawer-link.is-current{color:#d5f5df;border-color:#72c89a;background:#294c38}
 @media(max-width:360px){#library-book-chapter-drawer{width:min(78vw,270px);padding:10px}#library-book-chapter-drawer[data-side=right]{right:36px}#library-book-chapter-drawer[data-side=left]{left:36px}}
+
+/* 2026-10-30: frosted glass for the book/chapter drawer and its side handle
+   (~50% transparent), matching the site's other glass panels. */
+#library-book-chapter-drawer {
+  background: linear-gradient(150deg, rgba(240, 250, 243, .58), rgba(214, 240, 222, .45)) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(155%);
+  backdrop-filter: blur(16px) saturate(155%);
+  border-color: rgba(255, 255, 255, .55) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 12px 30px rgba(20, 50, 35, .18) !important;
+}
+#library-book-chapter-handle {
+  background: rgba(230, 245, 235, .55) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  border-color: rgba(255, 255, 255, .55) !important;
+}
+#library-book-chapter-drawer .book-drawer-link { background: rgba(255, 255, 255, .45) !important; }
+#library-book-chapter-drawer .book-drawer-book-select { background: rgba(255, 255, 255, .5) !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer {
+  background: linear-gradient(150deg, rgba(18, 48, 30, .6), rgba(10, 34, 20, .55)) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  color: #dcefe1 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 12px 30px rgba(0, 0, 0, .4) !important;
+}
+:root[data-theme="dark"] #library-book-chapter-handle {
+  background: rgba(18, 48, 30, .55) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  color: #bfe6cb !important;
+}
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-head { border-bottom-color: rgba(255, 255, 255, .14) !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-title { color: #bfe6cb !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-label,
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-section-label { color: #93bda0 !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link {
+  background: rgba(255, 255, 255, .08) !important;
+  border-color: rgba(255, 255, 255, .16) !important;
+  color: #dcefe1 !important;
+}
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-select {
+  background: rgba(255, 255, 255, .1) !important;
+  border-color: rgba(255, 255, 255, .2) !important;
+  color: #dcefe1 !important;
+}

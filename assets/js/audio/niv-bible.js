@@ -255,5 +255,25 @@
   if(progress){progress.addEventListener('input',function(){if(isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progress.value)/1000)*audio.duration;});}
   audio.addEventListener('ended',function(){try{localStorage.setItem('library_kjv_played:'+current.book+':'+current.chapter,'1');}catch(_){}if(queueModule)queueModule.render();nextChapter();});
   audio.addEventListener('error',function(){setStatus('');paint();});
+  /* Cross-tab progress: the last chapter/position lives in localStorage,
+     which Safari shares across tabs of this site. Save when the tab is
+     hidden, and adopt a newer saved position (written by another tab) when
+     this tab becomes visible again or hears the storage event — no server
+     involved. iOS keeps a home-screen web app's storage in a separate
+     container from Safari's; that boundary is the platform's. */
+  function adoptSavedChapter(){
+    if(!audio.paused)return;
+    var saved=savedChapter();
+    if(!saved||saved.book!==current.book||Number(saved.chapter)!==Number(current.chapter))return;
+    var time=Number(saved.time)||0;
+    if(time>0&&isFinite(audio.duration)&&audio.duration>0&&Math.abs(time-audio.currentTime)>3&&time<audio.duration-5){
+      try{audio.currentTime=time;}catch(_){}
+    }
+  }
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){remember(current.book,current.chapter,audio.currentTime);return;}
+    adoptSavedChapter();
+  });
+  window.addEventListener('storage',function(event){if(event.key===lastKey)adoptSavedChapter();});
   paint();
 })(window,document);

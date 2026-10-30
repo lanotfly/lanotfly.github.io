@@ -345,7 +345,7 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
-    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261029-3';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-1';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
     chapterDrawer.innerHTML='<div class="book-drawer-head"><strong class="book-drawer-title">Reading</strong></div><label class="book-drawer-book-label">Book<select class="book-drawer-book-select" aria-label="Choose a book"></select></label><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';

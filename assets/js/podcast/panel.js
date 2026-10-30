@@ -614,6 +614,13 @@
       }
     });
     audio.addEventListener('loadedmetadata', function () {
+      if (audio.dataset.adoptPosition) {
+        var adoptTo = Number(audio.dataset.adoptPosition);
+        delete audio.dataset.adoptPosition;
+        if (Number.isFinite(adoptTo) && adoptTo > 0 && Number.isFinite(audio.duration) && adoptTo < audio.duration - 5) {
+          try { audio.currentTime = adoptTo; } catch (_) {}
+        }
+      }
       var episode = (episodesByFeed[feed.id] || [])[current.index];
       if (current.feed === feed.id && episode && audio.dataset.restoreSrc !== episode.audioUrl) {
         audio.dataset.restoreSrc = episode.audioUrl;
@@ -629,6 +636,43 @@
   });
 
   window.addEventListener('pagehide', function () { feeds.forEach(function (feed) { savePosition(feed, true); }); });
+
+  /* Cross-tab progress: positions live in localStorage, which Safari shares
+     across tabs of this site (the IndexedDB store in storage.js is shared
+     the same way). Save when a tab is hidden, not only when it closes, and
+     adopt a newer position written by another tab when this tab becomes
+     visible again or hears the storage event — listening continues where
+     the other tab left off, with no server involved. (iOS keeps a
+     home-screen web app's storage in a separate container from Safari's;
+     that boundary is the platform's and cannot be crossed from the page.) */
+  function adoptSavedPosition(feed) {
+    if (!feed || current.feed !== feed.id || current.index < 0) return;
+    var audio = audioFor(feed.id);
+    var episode = (episodesByFeed[feed.id] || [])[current.index];
+    if (!audio || !episode || !audio.paused) return;
+    var saved = 0;
+    try { saved = Number(localStorage.getItem(positionKey(feed, episode)) || 0); } catch (_) {}
+    if (!Number.isFinite(saved) || saved <= 0) return;
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      if (Math.abs(saved - (audio.currentTime || 0)) > 3 && saved < audio.duration - 5) {
+        try { audio.currentTime = saved; } catch (_) {}
+        updateProgress(feed);
+      }
+    } else {
+      audio.dataset.adoptPosition = String(saved);
+    }
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      feeds.forEach(function (feed) { savePosition(feed, true); });
+    } else if (current.feed) {
+      adoptSavedPosition(getFeed(current.feed));
+    }
+  });
+  window.addEventListener('storage', function (event) {
+    if (!event.key || event.key.indexOf('personal-library-podcast-position:') !== 0) return;
+    if (current.feed) adoptSavedPosition(getFeed(current.feed));
+  });
 
   fetch('/assets/data/podcast.json?v=20261026-1', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('Unable to load Podcast cache');
