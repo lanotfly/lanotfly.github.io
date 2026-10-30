@@ -481,25 +481,47 @@
     if (loaded) playDefaultEpisode(activeFeed);
     else pendingAutoplay = true;
   });
-  /* The artwork doubles as the mini-bar play/pause toggle, and each feed
-     panel carries a data-playing flag the folded state badge reads. */
+  /* Mini-bar transport, modelled on the Apple Podcasts mini player: when a
+     feed is folded, the heading's right side carries a glass play/pause
+     button and a skip-forward-30 button. Each feed panel also carries a
+     data-playing flag that swaps the play button's icon. */
   function syncPlayingBadge(feed) {
     var section = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
     if (section) section.dataset.playing = String(!audioFor(feed.id).paused);
   }
-  root.querySelectorAll('[data-podcast-artwork]').forEach(function (img) {
-    img.addEventListener('click', function () {
-      var feed = getFeed(img.getAttribute('data-podcast-artwork'));
-      if (!feed) return;
-      var audio = audioFor(feed.id);
-      if (!audio.paused) { audio.pause(); return; }
-      if (current.feed === feed.id && current.index >= 0) {
-        if (window.LibraryAudioCoordinator) window.LibraryAudioCoordinator.switchTo('podcast:' + feed.id);
-        audio.play().catch(function () {});
-      } else {
-        playDefaultEpisode(feed.id);
-      }
+  function toggleFeedPlayback(feed) {
+    var audio = audioFor(feed.id);
+    if (!audio.paused) { audio.pause(); return; }
+    if (current.feed === feed.id && current.index >= 0) {
+      if (window.LibraryAudioCoordinator) window.LibraryAudioCoordinator.switchTo('podcast:' + feed.id);
+      audio.play().catch(function () {});
+    } else {
+      playDefaultEpisode(feed.id);
+    }
+  }
+  root.querySelectorAll('[data-podcast-feed-panel]').forEach(function (section) {
+    var feed = getFeed(section.getAttribute('data-podcast-feed-panel'));
+    var actions = section.querySelector('.podcast-panel-actions');
+    if (!feed || !actions) return;
+    var playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.className = 'podcast-mini-btn podcast-mini-play';
+    playBtn.setAttribute('aria-label', 'Play or pause ' + feed.title);
+    playBtn.innerHTML = '<svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6.5v11l9-5.5z" fill="rgba(60,36,86,.12)" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="rgba(60,36,86,.12)" stroke="currentColor" stroke-width="1.7"/></svg>';
+    playBtn.addEventListener('click', function () { toggleFeedPlayback(feed); });
+    var skipBtn = document.createElement('button');
+    skipBtn.type = 'button';
+    skipBtn.className = 'podcast-mini-btn podcast-mini-skip';
+    skipBtn.setAttribute('aria-label', 'Skip forward 30 seconds');
+    skipBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.9 12a7.9 7.9 0 1 1-2.3-5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17.6 2.8v3.6h-3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="15.6" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor">30</text></svg>';
+    skipBtn.addEventListener('click', function () {
+      var a = audioFor(feed.id);
+      if (!a || !a.src) return;
+      var d = Number.isFinite(a.duration) ? a.duration : a.currentTime + 30;
+      a.currentTime = Math.min(d, a.currentTime + 30);
     });
+    actions.insertBefore(playBtn, actions.firstChild);
+    actions.insertBefore(skipBtn, playBtn.nextSibling);
   });
   /* Set when the reader taps Home or a book chapter: lists reopen folded. */
   function consumeFoldFlag() {
