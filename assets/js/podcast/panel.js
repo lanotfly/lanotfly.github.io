@@ -512,13 +512,12 @@
     var skipBtn = document.createElement('button');
     skipBtn.type = 'button';
     skipBtn.className = 'podcast-mini-btn podcast-mini-skip';
-    skipBtn.setAttribute('aria-label', 'Skip forward 30 seconds');
-    skipBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.9 12a7.9 7.9 0 1 1-2.3-5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17.6 2.8v3.6h-3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="15.6" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor">30</text></svg>';
+    skipBtn.setAttribute('aria-label', 'Skip back 30 seconds');
+    skipBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.1 12a7.9 7.9 0 1 0 2.3-5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.4 2.8v3.6h3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="15.6" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor">30</text></svg>';
     skipBtn.addEventListener('click', function () {
       var a = audioFor(feed.id);
       if (!a || !a.src) return;
-      var d = Number.isFinite(a.duration) ? a.duration : a.currentTime + 30;
-      a.currentTime = Math.min(d, a.currentTime + 30);
+      a.currentTime = Math.max(0, a.currentTime - 30);
     });
     actions.insertBefore(playBtn, actions.firstChild);
     actions.insertBefore(skipBtn, playBtn.nextSibling);
