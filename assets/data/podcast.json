@@ -1549,15 +1549,6 @@
       "source": "BBC Global News Podcast"
     },
     {
-      "title": "Fifa scraps controversial investment plan",
-      "summary": "Fifa president Gianni Infantino has scrapped the controversial plan to sell off stakes in the World Cup and other football competitions to private investors following global outrage. He said it had become clear the project had \"created divisions\" that are \"no longer in the interest\" of its original objective. Also: Hugging Face, the tech company hacked by OpenAI's rogue agent, calls for accountability. The UN warns El Niño will intensify extreme weather in the coming months. A discovery in the Amazon rainforest sheds light on ancient indigenous civilisations. And the unlikely friendships forged in the animal world. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Illustration showing the FIFA logo, the numbers \"20%\" and a rising stock graph. Credit: REUTERS/Dado Ruvic",
-      "link": "https://www.bbc.co.uk/programmes/p0p22mzx",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p22mwh.mp3",
-      "date": "Sat, 01 Aug 2026 03:42:00 +0000",
-      "duration": "1575",
-      "source": "BBC Global News Podcast"
-    },
-    {
       "title": "The Global Story: British CPAC - Can MAGA politics be exported to the UK?",
       "summary": "The Conservative Political Action Conference (CPAC) is a mainstay of the US political calendar, a barometer of the Republican party mood, and has become, in recent years, a pro-Trump event, with a big budget and crowds in the thousands. Its first outing to the United Kingdom last week brought less of the bombast, but much the same flavour of politics, as figures from across the hard right assembled for debates on topics including migration, race, British identity and cryptocurrency, under the slogan ‘Save Britain. Save The West’. One of our producers, Hannah Moore, attended the conference to find a conservative movement reckoning with its identity, and divided on whether importing MAGA-style politics can unite the right. For more episodes, just search 'The Global Story' wherever you get your BBC Podcasts.",
       "link": "https://www.bbc.co.uk/programmes/p0p0q5ct",
@@ -17154,26 +17145,26 @@
   "feedStatus": {
     "bbc": {
       "ok": true,
-      "count": 289,
-      "checkedAt": "2026-10-29T23:58:32+00:00"
+      "count": 288,
+      "checkedAt": "2026-10-30T04:21:14+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1615,
-      "checkedAt": "2026-10-29T23:58:32+00:00"
+      "checkedAt": "2026-10-30T04:21:14+00:00"
     },
     "english": {
       "ok": true,
       "count": 422,
-      "checkedAt": "2026-10-29T23:58:34+00:00"
+      "checkedAt": "2026-10-30T04:21:15+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 762,
-      "checkedAt": "2026-10-29T23:58:34+00:00"
+      "checkedAt": "2026-10-30T04:21:16+00:00"
     }
   },
-  "updatedAt": "2026-10-29T23:58:34+00:00",
+  "updatedAt": "2026-10-30T04:21:16+00:00",
   "english": [
     {
       "title": "Hello Again!",
