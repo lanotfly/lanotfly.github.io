@@ -1136,3 +1136,35 @@ body > #library-market-panel.library-market-dropdown {
   border-color: rgba(255, 255, 255, .28) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 10px 26px rgba(0, 0, 0, .35) !important;
 }
+
+/* 2026-10-30: tile values truly centered. An older row-layout block pushed
+   each tile's value to the right edge (margin-left:auto + text-align:right
+   at higher specificity than the tile rules), and the FX value container
+   aligned its price/change stack to flex-end. Override both, at winning
+   specificity, so price and change sit centered in every tile. */
+#library-market-panel .home-market-group > .fx-bar__rate > .fx-bar__pair {
+  text-align: center !important;
+}
+#library-market-panel .home-market-group > .fx-bar__rate > .fx-bar__value {
+  text-align: center !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  align-self: center !important;
+}
+#library-market-panel .home-market-list .fx-bar__value,
+#library-market-panel .home-market-list .fx-bar__value[data-fx-value] {
+  align-items: center !important;
+  justify-content: center !important;
+}
+#library-market-panel .home-market-list .fx-bar__value [data-market-price],
+#library-market-panel .home-market-list .fx-rate-price,
+#library-market-panel .home-market-list .fx-bar__change,
+#library-market-panel .home-market-list .fx-rate-change {
+  text-align: center !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+/* With the Refresh button removed, the panel header is one row of three. */
+#library-market-panel .home-dashboard-tabs {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}

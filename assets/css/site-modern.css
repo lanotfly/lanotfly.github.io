@@ -2127,5 +2127,13 @@ html,body{max-width:100%;overflow-x:clip}
    diagram images) instead of leaving them at full daylight glare. There is
    no separate dark artwork set, so a gentle filter is the honest swap. */
 :root[data-theme="dark"] .content-wrapper__inner img {
-  filter: brightness(.9) contrast(1.02);
+  background: rgba(247, 249, 247, .96);
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+:root[data-theme="dark"] img.podcast-episode-panel__artwork {
+  background: none;
+  padding: 0;
+  filter: brightness(.92) contrast(1.02);
 }

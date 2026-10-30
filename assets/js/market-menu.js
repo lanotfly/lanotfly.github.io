@@ -41,7 +41,7 @@
         panel.style.setProperty("right", "5vw", "important");
         panel.style.setProperty("bottom", "auto", "important");
         panel.style.setProperty("height", "auto", "important");
-        panel.style.setProperty("max-height", "100dvh", "important");
+        panel.style.setProperty("max-height", "calc(100dvh - 5vh - 8px)", "important");
       } else if (!panel.hidden) {
         panel.classList.add("is-closing");
         closeTimer = window.setTimeout(function () {
@@ -105,6 +105,14 @@
       if (dy >= threshold && panel.hidden) setOpen(true);
       else if (dy <= -threshold && !panel.hidden) setOpen(false);
     }, { passive: true });
+
+    // Tapping anywhere outside the open panel dismisses it. The opening
+    // swipe is safe: its pointerdown fires while the panel is still hidden.
+    document.addEventListener("pointerdown", function (event) {
+      if (panel.hidden) return;
+      if (panel.contains(event.target)) return;
+      setOpen(false);
+    });
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && !panel.hidden) setOpen(false);
