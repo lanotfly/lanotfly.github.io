@@ -2223,10 +2223,11 @@ html,body{max-width:100%;overflow-x:clip}
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .podcast-episode-panel__title { order: -1; flex: 1 1 auto; }
 
 /* 2026-10-31: mini play/pause wears the episode list's own uniform — a
-   rounded square, light lavender with a purple glyph when paused, deep
-   purple (#6d548b, the list's current-episode chip) with a white glyph
-   when playing. The rewind button leaves the compact bar. The feed tabs
-   also sit closer to the panel so the whole stack rides higher. */
+   rounded square in one light lavender face with a purple glyph. Compact
+   mode has no selected state (user's call), so play and pause share the
+   same pale background; only the glyph changes. The rewind button leaves
+   the compact bar. The feed tabs also sit closer to the panel so the
+   whole stack rides higher. */
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-mini-play {
   width: 32px !important; height: 32px !important;
   border-radius: 9px !important;
@@ -2237,11 +2238,6 @@ html,body{max-width:100%;overflow-x:clip}
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
-.podcast-episode-panel[data-playing="true"]:has(> .podcast-episode-scroll-frame[hidden]) .podcast-mini-play {
-  background: #6d548b !important;
-  color: #ffffff !important;
-  border-color: #6d548b !important;
-}
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
   border-radius: 9px !important;
   background-color: #eee7f5 !important;
@@ -2251,9 +2247,9 @@ html,body{max-width:100%;overflow-x:clip}
   -webkit-backdrop-filter: none !important;
 }
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle[aria-pressed="true"] {
-  background-color: #6d548b !important;
-  border-color: #6d548b !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.5 6h3v12h-3zM13.5 6h3v12h-3z' fill='%23ffffff' fill-opacity='0.18' stroke='%23ffffff' stroke-width='1.7'/%3E%3C/svg%3E") !important;
+  background-color: #eee7f5 !important;
+  border-color: #d9cbe9 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.5 6h3v12h-3zM13.5 6h3v12h-3z' fill='%235f4390' fill-opacity='0.16' stroke='%235f4390' stroke-width='1.7'/%3E%3C/svg%3E") !important;
 }
 @media (max-width: 700px) {
   .secondary-tabs.podcast-source-tabs { margin-bottom: 2px !important; }
