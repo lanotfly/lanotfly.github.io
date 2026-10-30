@@ -1319,3 +1319,20 @@ body > #library-market-panel.library-market-dropdown {
 #library-market-panel #home-news-view .home-news-item {
   padding: 5px 10px !important;
 }
+
+/* 2026-10-31: News rows slimmed down (user: the list buttons are too fat).
+   Shorter title rows, near-zero item padding, tighter list gaps — five
+   headlines now fit the shared window with room to spare. */
+#library-market-panel #home-news-view .home-news-item {
+  padding: 2px 10px !important;
+}
+#library-market-panel #home-news-view .home-news-item__title-row {
+  min-height: 32px !important;
+  padding: 4px 10px !important;
+}
+#library-market-panel #home-news-view .home-news-list {
+  gap: 2px !important;
+  margin: 0 !important;
+}
+#library-market-panel .home-news-source-tabs { margin-bottom: 4px !important; }
+#library-market-panel .home-news-heading { margin-top: 0 !important; }
