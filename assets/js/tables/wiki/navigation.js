@@ -290,8 +290,6 @@
   function openChapterDrawer(){
     var path=currentBookPath(), book=bookForPath(path);
     if(!book||!chapterDrawer)return;
-    var title=chapterDrawer.querySelector('.book-drawer-title');
-    if(title)title.textContent='Reading';
     var selector=chapterDrawer.querySelector('.book-drawer-book-select');
     if(selector){
       selector.replaceChildren();
@@ -347,10 +345,10 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
-    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-3';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-4';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
-    chapterDrawer.innerHTML='<div class="book-drawer-head"><strong class="book-drawer-title">Reading</strong></div><div class="book-drawer-book-label">Book</div><div class="book-drawer-book-row"><select class="book-drawer-book-select" aria-label="Choose a book"></select><button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-toggle-label">Dark mode</span></button></div><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
+    chapterDrawer.innerHTML='<div class="book-drawer-book-label">Book</div><div class="book-drawer-book-row"><select class="book-drawer-book-select" aria-label="Choose a book"></select><button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-toggle-label">Dark mode</span></button></div><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
     chapterHandle=document.createElement('button');chapterHandle.type='button';chapterHandle.id='library-book-chapter-handle';
     chapterHandle.setAttribute('aria-label','Open reading navigation');chapterHandle.setAttribute('aria-expanded','false');
     chapterHandle.innerHTML='<span class="book-handle-grip" aria-hidden="true">⠿</span><span class="book-handle-label">Reading</span><span class="book-handle-chevron" aria-hidden="true">‹</span>';

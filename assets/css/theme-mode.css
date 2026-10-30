@@ -550,8 +550,6 @@ body[data-theme="dark"] .content-wrapper__inner [class*="video"] iframe {
 .site-nav-shell .site-tab-links { flex: 1 1 auto; flex-wrap: wrap; min-width: 0; }
 .site-nav-shell .site-theme-control { position: static !important; flex: 0 0 auto; margin-left: auto; padding: 0; width: auto; }
 .site-nav-shell .site-theme-toggle { width: 30px; height: 30px; min-height: 30px; min-width: 30px; padding: 0; gap: 0; border-radius: 8px; box-shadow: none; }
-.site-nav-shell .theme-yinyang { display: inline-block; font-size: 19px; line-height: 1; transform: rotate(0deg); transition: transform .24s ease; }
-.site-nav-shell .site-theme-toggle:active .theme-yinyang { transform: rotate(180deg); }
 body[data-theme="dark"] .site-nav-shell .site-theme-toggle { background: #232936 !important; color: #edf0f7 !important; border-color: #465168 !important; }
 @media (max-width: 600px) {
   .site-nav-shell .site-tabs { flex-wrap: nowrap !important; gap: 5px !important; }
@@ -617,9 +615,6 @@ body[data-theme="dark"] .wiki-wrap svg text[fill="#000" i],
 body[data-theme="dark"] .wiki-wrap svg text[fill="black" i] { fill: #edf0f7 !important; }
 body[data-theme="dark"] .wiki-wrap svg text[fill="#5a6b8a" i],
 body[data-theme="dark"] .wiki-wrap svg text[fill="#62708a" i] { fill: #b0b9ca !important; }
-.site-nav-shell .theme-yinyang.is-spinning { animation: theme-yinyang-spin .26s ease-in-out; }
-@keyframes theme-yinyang-spin { from { transform: rotate(0deg); } to { transform: rotate(180deg); } }
-@media (prefers-reduced-motion: reduce) { .site-nav-shell .theme-yinyang.is-spinning { animation: none; } }
 
 
 /* Mobile: keep all five navigation labels plus the theme switch on one row. */
@@ -685,7 +680,6 @@ body[data-theme="dark"] .wiki-wrap svg text[fill="#62708a" i] { fill: #b0b9ca !i
     padding: 0 !important;
     border-radius: 8px !important;
   }
-  .site-nav-shell .theme-yinyang { font-size: 18px !important; }
 }
 @media (max-width: 360px) {
   .site-nav-shell .site-tabs { gap: 3px !important; }

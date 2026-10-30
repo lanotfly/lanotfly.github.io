@@ -26,20 +26,7 @@
     toggle.setAttribute('aria-pressed',String(playing));
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio':'Play BBC Radio');
     toggle.classList.toggle('is-playing',playing);
-    /* Force the playing BBC button to remain outline-only, matching NHK. */
-    if (playing) {
-      toggle.style.setProperty('background-color','#f1ebf8','important');
-      toggle.style.setProperty('color','#62458a','important');
-      toggle.style.setProperty('border-color','#8e76ad','important');
-      toggle.style.setProperty('border-style','solid','important');
-      toggle.style.setProperty('box-shadow','0 0 0 2px rgba(112,84,147,.08)','important');
-    } else {
-      toggle.style.removeProperty('background-color');
-      toggle.style.removeProperty('color');
-      toggle.style.removeProperty('border-color');
-      toggle.style.removeProperty('border-style');
-      toggle.style.removeProperty('box-shadow');
-    }
+    /* Button colors are painted centrally by nav-tab-state.js from aria-pressed. */
     label.textContent='BBC Radio';
     if ('mediaSession' in navigator) {
       /* A pause event from BBC must not mark NHK as paused if NHK is now playing. */

@@ -4,7 +4,6 @@
   function init() {
     var panel = document.getElementById("library-market-panel");
     var nav = document.querySelector(".site-nav-shell .site-tabs");
-    var refresh = document.getElementById("library-market-refresh");
     if (!panel || !nav || panel.dataset.marketGestureReady === "true") return;
     // Fallback tab switching: keep News usable even if the RSS initializer fails.
     panel.addEventListener("click", function (event) {
@@ -121,7 +120,6 @@
         setOpen(panel.hidden);
       }
     });
-    if (refresh) refresh.addEventListener("click", function () { window.location.reload(); });
     setOpen(false);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

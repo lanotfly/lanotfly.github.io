@@ -92,12 +92,6 @@
 .library-market-dropdown .home-dashboard-tabs .home-market-action:active {
   transform: translateY(1px);
 }
-.library-market-dropdown .home-dashboard-tabs .site-theme-toggle { font: inherit; }
-.library-market-dropdown .home-dashboard-tabs .theme-yinyang {
-  display: inline-block;
-  font-size: 17px;
-  line-height: 1;
-}
 .library-market-dropdown .home-dashboard-tabs .home-theme-label { display: inline; }
 .library-market-dropdown #home-market-view,
 .library-market-dropdown #home-news-view {
@@ -160,8 +154,6 @@
     padding: 6px 3px;
     font-size: 11px;
   }
-  .library-market-dropdown .home-dashboard-tabs .theme-yinyang { font-size: 15px; }
-  .library-market-dropdown .home-dashboard-tabs .home-theme-label { display: none; }
 }
 @media (max-width: 700px) {
   .site-nav-shell .site-tab-links { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
@@ -1232,4 +1224,43 @@ body > #library-market-panel.library-market-dropdown {
 }
 #library-market-panel .home-market-group .fx-bar__rate {
   line-height: 1.25 !important;
+}
+
+/* 2026-10-30: ONE backing panel for Market and News. Both views now share
+   the exact same window height (content scrolls inside its own view), so
+   switching tabs can never resize the panel again. Market rows squeeze a
+   little tighter, and the news heading keeps its title and its two buttons
+   on a single row. */
+#library-market-panel #home-market-view,
+#library-market-panel #home-news-view {
+  height: clamp(300px, 52dvh, 430px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+#library-market-panel #home-market-view .home-market-panel {
+  min-height: 100% !important;
+  box-sizing: border-box !important;
+}
+#library-market-panel .home-market-groups { gap: 4px !important; }
+#library-market-panel .home-market-group { gap: 3px !important; }
+#library-market-panel .home-market-group .fx-bar__rate { padding: 3px 5px !important; }
+#library-market-panel .home-market-group > .home-market-section-label { padding: 1px 2px 2px !important; }
+#library-market-panel #home-news-view .home-news-list { gap: 5px !important; }
+#library-market-panel .home-news-heading {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+#library-market-panel .home-news-heading h2 {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+#library-market-panel .home-news-heading__actions {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
 }
