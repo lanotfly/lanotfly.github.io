@@ -112,11 +112,11 @@
    panel is capped at half the screen — book row, toggle and about five
    chapters visible, the rest scrolls inside the chapter list. */
 #library-book-chapter-drawer {
-  max-height: min(50vh, 480px) !important;
+  max-height: min(50vh, 480px);
   background: linear-gradient(150deg, rgba(246, 252, 247, .9), rgba(228, 245, 233, .85)) !important;
 }
 #library-book-chapter-drawer .book-drawer-list {
-  max-height: 200px !important;
+  max-height: 200px;
 }
 #library-book-chapter-drawer .book-drawer-book-row {
   display: flex !important;

@@ -456,6 +456,7 @@
   mainToggle.addEventListener('click', function () {
     var wasOpen = !root.hidden;
     setPodcastOpen(true);
+    consumeFoldFlag();
     /* Selecting Podcast is an audio-source switch, exactly like Radio and
        KJV: pause the outgoing source, close its panel, then play. Only
        opening the panel left Radio/KJV audio running underneath and never
@@ -480,6 +481,38 @@
     if (loaded) playDefaultEpisode(activeFeed);
     else pendingAutoplay = true;
   });
+  /* The artwork doubles as the mini-bar play/pause toggle, and each feed
+     panel carries a data-playing flag the folded state badge reads. */
+  function syncPlayingBadge(feed) {
+    var section = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
+    if (section) section.dataset.playing = String(!audioFor(feed.id).paused);
+  }
+  root.querySelectorAll('[data-podcast-artwork]').forEach(function (img) {
+    img.addEventListener('click', function () {
+      var feed = getFeed(img.getAttribute('data-podcast-artwork'));
+      if (!feed) return;
+      var audio = audioFor(feed.id);
+      if (!audio.paused) { audio.pause(); return; }
+      if (current.feed === feed.id && current.index >= 0) {
+        if (window.LibraryAudioCoordinator) window.LibraryAudioCoordinator.switchTo('podcast:' + feed.id);
+        audio.play().catch(function () {});
+      } else {
+        playDefaultEpisode(feed.id);
+      }
+    });
+  });
+  /* Set when the reader taps Home or a book chapter: lists reopen folded. */
+  function consumeFoldFlag() {
+    var fold = false;
+    try {
+      fold = sessionStorage.getItem('library-fold-audio') === '1';
+      if (fold) sessionStorage.removeItem('library-fold-audio');
+    } catch (e) {}
+    if (!fold) return;
+    root.querySelectorAll('[data-podcast-collapse]').forEach(function (b) {
+      if (b.getAttribute('aria-expanded') === 'true') b.click();
+    });
+  }
   /* Every podcast feed uses the same list-collapse control, expanded by default. */
   root.querySelectorAll('[data-podcast-collapse]').forEach(function (button) {
     button.addEventListener('click', function () {
@@ -560,6 +593,7 @@
         });
       }
       renderAll();
+      syncPlayingBadge(feed);
       var heading = root.querySelector('[data-podcast-title="' + feed.id + '"]');
       if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.animate(heading);
     });
@@ -568,6 +602,7 @@
       var heading = root.querySelector('[data-podcast-title="' + feed.id + '"]');
       if (window.LibraryPodcastTitle) window.LibraryPodcastTitle.stop(heading);
       renderAll();
+      syncPlayingBadge(feed);
     });
     audio.addEventListener('timeupdate', function () {
       audio.dataset.podcastLastProgressAt = String(Date.now());

@@ -76,7 +76,19 @@
 
   window.LibraryNavTabState = { refresh: paintAll, apply: paintAll };
 
-  document.addEventListener('click', function () { schedule(); }, true);
+  document.addEventListener('click', function (event) {
+    schedule();
+    /* Going Home or picking a book chapter folds any open audio lists into
+       their mini bars right away, and flags the session so the panels also
+       reopen folded after the navigation lands. */
+    var t = event.target;
+    if (t && t.closest && t.closest('.site-tab--home, .book-drawer-link, .book-chapter-link, .book-secondary-link')) {
+      try { sessionStorage.setItem('library-fold-audio', '1'); } catch (e) {}
+      document.querySelectorAll('[data-podcast-collapse][aria-expanded="true"]').forEach(function (b) { b.click(); });
+      var qt = document.getElementById('niv-bible-queue-toggle');
+      if (qt && qt.getAttribute('aria-expanded') === 'true') qt.click();
+    }
+  }, true);
   window.addEventListener('pageshow', paintAll);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', paintAll);
   if (document.body && window.MutationObserver) {

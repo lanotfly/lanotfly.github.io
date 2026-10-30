@@ -60,6 +60,17 @@
     queueList.setAttribute('role','list');
     queueFrame.appendChild(queueList);
     var heading=panel.querySelector('.niv-bible-panel__heading');
+    var miniToggle=document.getElementById('niv-bible-mini-toggle');
+    if(!miniToggle&&heading){
+      miniToggle=document.createElement('button');
+      miniToggle.id='niv-bible-mini-toggle';
+      miniToggle.className='niv-bible-mini-toggle';
+      miniToggle.type='button';
+      miniToggle.textContent='▶';
+      miniToggle.setAttribute('aria-label','Play or pause KJV audio');
+      heading.insertBefore(miniToggle,heading.firstChild);
+      miniToggle.addEventListener('click',function(){var t=document.getElementById('niv-bible-toggle');if(t)t.click();});
+    }
     var collapseButton=document.getElementById('niv-bible-queue-toggle');
     if(!collapseButton&&heading){
       collapseButton=document.createElement('button');
@@ -159,6 +170,8 @@
     var playing=!audio.paused;
     button.classList.toggle('is-playing',playing);
     button.setAttribute('aria-pressed',String(playing));
+    var miniToggleEl=document.getElementById('niv-bible-mini-toggle');
+    if(miniToggleEl){miniToggleEl.textContent=playing?'❚❚':'▶';miniToggleEl.setAttribute('aria-pressed',String(playing));}
     button.setAttribute('aria-expanded',String(!panel.hidden));
     button.setAttribute('aria-label',(playing?'Pause':'Play')+' KJV Audio Bible'+(current.book?' · '+(getBook(current.book)||books[0])[0]+' '+current.chapter:''));
     button.title=(playing?'Pause':'Play')+' KJV Audio Bible';
@@ -229,6 +242,13 @@
   installQueue();
   function togglePlayback(){
     panel.hidden=false;
+    try{
+      if(sessionStorage.getItem('library-fold-audio')==='1'){
+        sessionStorage.removeItem('library-fold-audio');
+        var qt=document.getElementById('niv-bible-queue-toggle');
+        if(qt&&qt.getAttribute('aria-expanded')==='true')qt.click();
+      }
+    }catch(_){}
     button.setAttribute('aria-expanded','true');
     var selectedBook=current.book||'GEN';
     var selectedChapter=current.chapter||1;

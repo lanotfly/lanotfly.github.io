@@ -1233,7 +1233,7 @@ body > #library-market-panel.library-market-dropdown {
    on a single row. */
 #library-market-panel #home-market-view,
 #library-market-panel #home-news-view {
-  height: clamp(300px, 52dvh, 430px) !important;
+  height: clamp(288px, 46dvh, 398px) !important;
   overflow-y: auto !important;
   overscroll-behavior: contain;
 }
@@ -1241,7 +1241,7 @@ body > #library-market-panel.library-market-dropdown {
   min-height: 100% !important;
   box-sizing: border-box !important;
 }
-#library-market-panel .home-market-groups { gap: 4px !important; }
+#library-market-panel .home-market-groups { gap: 3px !important; }
 #library-market-panel .home-market-group { gap: 3px !important; }
 #library-market-panel .home-market-group .fx-bar__rate { padding: 3px 5px !important; }
 #library-market-panel .home-market-group > .home-market-section-label { padding: 1px 2px 2px !important; }

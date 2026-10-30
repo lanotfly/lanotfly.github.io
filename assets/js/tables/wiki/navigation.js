@@ -324,13 +324,26 @@
     var gap=0;
     chapterDrawer.style.bottom='auto';
     /* Align the drawer's top edge with the floating Reading handle's top edge. */
-    chapterDrawer.style.top=Math.max(8,Math.min(window.innerHeight-120,r.top))+'px';
-    chapterDrawer.style.maxHeight=Math.max(180,window.innerHeight-Math.max(8,r.top)-12)+'px';
+    var top=Math.max(8,Math.min(window.innerHeight-264,r.top));
+    chapterDrawer.style.top=top+'px';
+    chapterDrawer.style.maxHeight=Math.max(200,window.innerHeight-top-12)+'px';
+    /* The chapter list flexes with the room below the handle: up to five
+       chapters near the top of the screen, shrinking to a three-chapter
+       minimum as the handle is dragged down. */
+    var list=chapterDrawer.querySelector('.book-drawer-list');
+    if(list){
+      var fixed=28;
+      Array.prototype.forEach.call(chapterDrawer.children,function(child){if(child!==list)fixed+=child.offsetHeight+10;});
+      var avail=window.innerHeight-top-12-fixed;
+      list.style.maxHeight=Math.max(124,Math.min(200,avail))+'px';
+    }
   }
   function moveHandleTo(top){
     if(!chapterHandle)return;
-    var minTop=Math.max(12,Math.round(window.innerHeight*0.12));
-    var maxTop=Math.max(minTop,Math.min(Math.round(window.innerHeight*0.62),window.innerHeight-chapterHandle.offsetHeight-12));
+    /* Dragging up is unlimited; dragging down stops where the drawer still
+       fits with its chapter list shrunk to the 3-chapter minimum (~264px). */
+    var minTop=8;
+    var maxTop=Math.max(minTop,window.innerHeight-264);
     var next=Math.max(minTop,Math.min(maxTop,top));
     chapterHandle.style.top=next+'px';chapterHandle.style.transform='none';
     if(chapterDrawerOpen)positionChapterDrawer();
@@ -345,7 +358,7 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
-    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-4';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261030-5';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
     chapterDrawer.innerHTML='<div class="book-drawer-book-label">Book</div><div class="book-drawer-book-row"><select class="book-drawer-book-select" aria-label="Choose a book"></select><button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-toggle-label">Dark mode</span></button></div><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';

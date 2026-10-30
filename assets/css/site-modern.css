@@ -2163,3 +2163,37 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] .storage-check__details strong { color: #d3dce9 !important; }
 :root[data-theme="dark"] .storage-check__note { color: #8b98ab !important; }
 :root[data-theme="dark"] .storage-check__error { color: #ff9d9d !important; }
+
+/* 2026-10-30: slimmer mini bars. In the folded state the podcast tools row
+   (episode count + filter), the playback progress and the status line all
+   hide — only artwork, title and the expand control remain. The artwork
+   doubles as the play/pause toggle and carries a ▶ / ❚❚ state badge.
+   KJV folds the same way: progress and book select hide, and a small
+   round play/pause button appears in the heading. */
+.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__tools,
+.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-playback-progress,
+.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__status { display: none !important; }
+.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) { padding-top: 6px !important; padding-bottom: 6px !important; }
+.podcast-episode-panel .podcast-episode-panel__identity { position: relative; }
+.podcast-episode-panel__artwork { cursor: pointer; }
+.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity::after {
+  content: '▶';
+  position: absolute; left: 20px; bottom: -3px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #50386a; color: #fff;
+  font-size: 8px; line-height: 16px; text-align: center;
+  box-shadow: 0 1px 4px rgba(30, 16, 48, .35);
+  pointer-events: none;
+}
+.podcast-episode-panel[data-playing="true"]:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity::after { content: '❚❚'; font-size: 6px; }
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress-wrap,
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) #niv-bible-book-select { display: none !important; }
+.niv-bible-mini-toggle { display: none; }
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
+  display: inline-flex !important;
+  align-items: center; justify-content: center;
+  width: 30px; height: 30px; flex: 0 0 auto; margin-right: 8px;
+  border: 1px solid rgba(255, 255, 255, .55); border-radius: 50%;
+  background: rgba(255, 255, 255, .5); color: #356245;
+  font-size: 10px; line-height: 1; cursor: pointer;
+}
