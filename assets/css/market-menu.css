@@ -899,3 +899,140 @@ body[data-theme="dark"] .site-nav-shell .site-tab-links {
     margin-bottom: 3px !important;
   }
 }
+
+
+/* 2026-10-30: Apple "Liquid Glass" restyle for the Market/News pull-down panel.
+   Green frosted glass: translucent green gradient + backdrop blur/saturate,
+   bright glass edge highlight, deep soft shadow. Panel-scoped overrides only;
+   the primary navigation row keeps its existing opaque look. */
+body > #library-market-panel.library-market-dropdown {
+  background:
+    radial-gradient(120% 90% at 12% 0%, rgba(255, 255, 255, .38) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(165deg, rgba(203, 244, 218, .58) 0%, rgba(148, 219, 175, .50) 52%, rgba(88, 178, 122, .55) 100%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.04) !important;
+  backdrop-filter: blur(20px) saturate(180%) brightness(1.04) !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  border-top: 0 !important;
+  border-radius: 0 0 24px 24px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .65),
+    inset 0 -1px 0 rgba(255, 255, 255, .18),
+    0 24px 48px rgba(9, 50, 28, .35) !important;
+  color: #14301f !important;
+}
+/* Sticky tab header inside the panel becomes glass too, so it stays
+   readable while content scrolls underneath it. */
+#library-market-panel > .home-dashboard-tabs {
+  background: linear-gradient(180deg, rgba(226, 248, 233, .42), rgba(190, 236, 205, .30)) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(170%) !important;
+  backdrop-filter: blur(14px) saturate(170%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .45) !important;
+  border-radius: 0 0 14px 14px !important;
+}
+/* Tab pills: translucent glass; the active one is a stronger green glass. */
+#library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab {
+  background: rgba(255, 255, 255, .34) !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  color: #14532d !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 2px 8px rgba(9, 50, 28, .10) !important;
+}
+#library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab.is-active,
+#library-market-panel.library-market-dropdown .home-dashboard-tabs > #home-market-tab.is-active,
+#library-market-panel.library-market-dropdown .home-dashboard-tabs > #home-news-tab.is-active {
+  background: rgba(34, 139, 74, .55) !important;
+  border-color: rgba(255, 255, 255, .65) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), 0 3px 10px rgba(9, 50, 28, .22) !important;
+}
+#library-market-panel.library-market-dropdown .home-dashboard-tabs .home-market-action {
+  background: rgba(255, 255, 255, .34) !important;
+  border-color: rgba(255, 255, 255, .55) !important;
+  color: #14532d !important;
+}
+/* Market groups sit directly on the glass; deepen the ink for readability. */
+#library-market-panel .home-market-group .home-market-section-label {
+  color: #14532d !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .45) !important;
+}
+#library-market-panel .fx-bar__pair { color: #33523e !important; }
+#library-market-panel .fx-bar__value { color: #1d4fa1 !important; }
+#library-market-panel .fx-bar__change.is-up { color: #066e39 !important; }
+#library-market-panel .fx-bar__change.is-down { color: #b4232f !important; }
+/* News cards become frosted white-glass tiles floating on the green glass. */
+#library-market-panel #home-news-view .home-news-item {
+  background: rgba(255, 255, 255, .48) !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 4px 14px rgba(9, 50, 28, .10) !important;
+}
+#library-market-panel #home-news-view .home-news-item[open] > .home-news-item__title-row {
+  background: rgba(255, 255, 255, .38) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .45) !important;
+}
+#library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {
+  background: rgba(255, 255, 255, .30) !important;
+  border-color: rgba(255, 255, 255, .5) !important;
+  color: #14532d !important;
+}
+#library-market-panel #home-news-view .home-news-source-tabs .secondary-tab.is-active {
+  background: rgba(34, 139, 74, .5) !important;
+  border-color: rgba(255, 255, 255, .6) !important;
+  color: #ffffff !important;
+}
+#library-market-panel #home-news-view .home-news-refresh,
+#library-market-panel #home-news-view .home-news-bulk,
+#library-market-panel #home-news-view .home-news-bulk-toggle {
+  background: rgba(255, 255, 255, .42) !important;
+  border-color: rgba(255, 255, 255, .55) !important;
+  color: #14532d !important;
+}
+/* Dark theme: deeper green glass, light ink. */
+:root[data-theme="dark"] body > #library-market-panel.library-market-dropdown {
+  background:
+    radial-gradient(120% 90% at 12% 0%, rgba(255, 255, 255, .14) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(165deg, rgba(24, 92, 52, .62) 0%, rgba(15, 70, 40, .58) 55%, rgba(9, 52, 29, .66) 100%) !important;
+  border-color: rgba(255, 255, 255, .28) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .28),
+    inset 0 -1px 0 rgba(255, 255, 255, .08),
+    0 24px 48px rgba(0, 0, 0, .5) !important;
+  color: #e8f6ec !important;
+}
+:root[data-theme="dark"] #library-market-panel > .home-dashboard-tabs {
+  background: linear-gradient(180deg, rgba(30, 100, 58, .45), rgba(18, 76, 44, .35)) !important;
+  border-bottom-color: rgba(255, 255, 255, .22) !important;
+}
+:root[data-theme="dark"] #library-market-panel .fx-bar__pair { color: #b9d9c2 !important; }
+:root[data-theme="dark"] #library-market-panel .fx-bar__value { color: #a9c8ff !important; }
+:root[data-theme="dark"] #library-market-panel .fx-bar__change.is-up { color: #5eeaa0 !important; }
+:root[data-theme="dark"] #library-market-panel .fx-bar__change.is-down { color: #ff9a94 !important; }
+:root[data-theme="dark"] #library-market-panel .home-market-group .home-market-section-label {
+  color: #cdeed6 !important;
+  border-bottom-color: rgba(255, 255, 255, .22) !important;
+}
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item {
+  background: rgba(16, 42, 26, .5) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 4px 14px rgba(0, 0, 0, .3) !important;
+}
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item__title,
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item h3 a,
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item__full-title { color: #eaf7ee !important; }
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item__summary { color: #cfe4d4 !important; }
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item__meta,
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-status { color: #a9c6b1 !important; }
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-heading p:not(.eyebrow) { color: #cfe4d4 !important; }
+/* Fallback: no backdrop-filter support (or reduced transparency requested)
+   -> nearly opaque green gradient so the panel still reads as green glass. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  body > #library-market-panel.library-market-dropdown {
+    background: linear-gradient(165deg, #d9f5e1 0%, #b5e4c4 55%, #93d3a8 100%) !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  body > #library-market-panel.library-market-dropdown {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: linear-gradient(165deg, #d9f5e1 0%, #b5e4c4 55%, #93d3a8 100%) !important;
+  }
+}
