@@ -2412,12 +2412,18 @@ html,body{max-width:100%;overflow-x:clip}
 #library-podcast-panel .podcast-episode-panel { margin: 0 !important; }
 #niv-bible-panel { padding: 10px !important; }
 
-/* 2026-10-31: the compact bar wears pale purple (not white). All four
-   feeds share the folded face; dark mode gets the deep variant.
-   (Artwork stays full-size when folded — see the fold freeze above.) */
-:root:not([data-theme="dark"]) #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+/* 2026-10-31: the podcast card is pale purple in BOTH states — expanded
+   and folded read as one panel (was near-white #fdfbff). */
+:root:not([data-theme="dark"]) #library-podcast-panel .podcast-episode-panel {
   background: #f2ebfa !important;
 }
-:root[data-theme="dark"] #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+:root[data-theme="dark"] #library-podcast-panel .podcast-episode-panel {
   background: #31254a !important;
+}
+/* A dashed frame marks the extent of the Podcast panel, in both states. */
+#library-podcast-panel {
+  border: 1.5px dashed #b9a3dd !important;
+}
+:root[data-theme="dark"] #library-podcast-panel {
+  border-color: #6b548f !important;
 }
