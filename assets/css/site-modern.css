@@ -2614,3 +2614,11 @@ html,body{max-width:100%;overflow-x:clip}
   min-width: 32px !important; min-height: 32px !important;
 }
 #niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-title-book { display: inline; }
+
+/* 2026-10-31: per-episode progress bar (Apple Podcasts style) — a small
+   solid track left of the duration; the fill is the played fraction. */
+.podcast-episode-submeta { display: inline-flex; align-items: center; gap: 6px; }
+.podcast-episode-progress { display: inline-block; width: 36px; height: 5px; border-radius: 999px; background: #ded3ee; overflow: hidden; flex: none; }
+.podcast-episode-progress-fill { display: block; height: 100%; border-radius: 999px; background: #7b4bc4; }
+:root[data-theme="dark"] .podcast-episode-progress { background: #46355e; }
+:root[data-theme="dark"] .podcast-episode-progress-fill { background: #b79ae8; }

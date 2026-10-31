@@ -378,6 +378,9 @@
         getPanelMode: function () { return 'full'; },
         getActiveId: function () { return feed.id; },
         isPlayed: function (episode) { return isPlayed(feed, episode); },
+        getProgressSeconds: function (episode) {
+          try { return Number(localStorage.getItem(positionKey(feed, episode)) || 0); } catch (_) { return 0; }
+        },
         setPlayed: function (episode, played) { setPlayed(feed, episode, played); },
         onChange: function () { syncFilterOptions(feed); },
         isPlaying: function () {

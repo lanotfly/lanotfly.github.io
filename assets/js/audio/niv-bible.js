@@ -117,6 +117,8 @@
       setListMode:function(mode){filter.value=mode;},
       getPanelMode:function(){return 'full';},
       getActiveId:function(){return 'kjv-'+current.book;},
+      getProgressSeconds:function(item){var r=readChapterProgress(item.book,item.chapter);return r?Number(r.t)||0:0;},
+      getProgressDuration:function(item){var r=readChapterProgress(item.book,item.chapter);return r?Number(r.d)||0:0;},
       isPlayed:function(item){try{return localStorage.getItem('library_kjv_played:'+item.book+':'+item.chapter)==='1';}catch(_){return false;}},
       setPlayed:function(item,played){try{var key='library_kjv_played:'+item.book+':'+item.chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);}catch(_){}},
       isPlaying:function(){return !audio.paused&&!audio.ended;},
@@ -131,6 +133,19 @@
   function getBook(code){return books.find(function(book){return book[1]===code;});}
   function setStatus(message){if(status)status.textContent=message;}
   function updateProgress(){if(!progress)return;var duration=audio.duration;if(isFinite(duration)&&duration>0){progress.value=String(Math.round((audio.currentTime/duration)*1000));progress.disabled=false;}else{progress.value='0';progress.disabled=true;}}
+  function chapterProgressKey(book,chapter){return 'library_kjv_progress:'+book+':'+chapter;}
+  function readChapterProgress(book,chapter){try{var r=JSON.parse(localStorage.getItem(chapterProgressKey(book,chapter))||'null');return r&&Number(r.t)>0?r:null;}catch(_){return null;}}
+  var lastProgressSave=0;
+  function saveChapterProgress(force){
+    if(!isFinite(audio.duration)||audio.duration<=0)return;
+    var t=audio.currentTime||0;
+    if(!force&&Math.abs(t-lastProgressSave)<10)return;
+    lastProgressSave=t;
+    try{
+      if(t>2&&t<audio.duration-2)localStorage.setItem(chapterProgressKey(current.book,current.chapter),JSON.stringify({t:Math.floor(t),d:Math.floor(audio.duration)}));
+      else if(t>=audio.duration-2)localStorage.removeItem(chapterProgressKey(current.book,current.chapter));
+    }catch(_){}
+  }
   function chapterUrl(book,chapter){return 'https://biblestudytogether.com/audio-bible/mp3/chapter/kjv/'+book+'+'+chapter+'.mp3';}
   function setMetadata(book,chapter){
     var chapterTitle=book+' '+chapter;
@@ -188,6 +203,7 @@
     chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
     var previousSaved=savedChapter();
     var resumeTime=previousSaved&&previousSaved.book===bookCode&&Number(previousSaved.chapter)===chapter?Number(previousSaved.time)||0:0;
+    if(!(resumeTime>0)){var chapterRec=readChapterProgress(bookCode,chapter);if(chapterRec)resumeTime=Number(chapterRec.t)||0;}
     if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
     current={book:bookCode,chapter:chapter,index:books.findIndex(function(item){return item[1]===bookCode;})};
     remember(bookCode,chapter,0);
@@ -269,15 +285,16 @@
   button.addEventListener('click',togglePlayback);
   bookSelect.addEventListener('change',function(){playChapter(bookSelect.value,1,false);});
   audio.addEventListener('play',function(){setStatus('Playing KJV · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);setMetadata((getBook(current.book)||books[0])[0],current.chapter);paint();});
-  audio.addEventListener('pause',function(){if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
+  audio.addEventListener('pause',function(){saveChapterProgress(true);if(queueModule)queueModule.render();if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
   audio.addEventListener('timeupdate',function(){
     if(audio.currentTime>0&&isFinite(audio.currentTime))remember(current.book,current.chapter,audio.currentTime);
+    saveChapterProgress(false);
     updateProgress();
   });
   audio.addEventListener('loadedmetadata',updateProgress);
   audio.addEventListener('durationchange',updateProgress);
   if(progress){progress.addEventListener('input',function(){if(isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progress.value)/1000)*audio.duration;});}
-  audio.addEventListener('ended',function(){try{localStorage.setItem('library_kjv_played:'+current.book+':'+current.chapter,'1');}catch(_){}if(queueModule)queueModule.render();nextChapter();});
+  audio.addEventListener('ended',function(){try{localStorage.setItem('library_kjv_played:'+current.book+':'+current.chapter,'1');localStorage.removeItem(chapterProgressKey(current.book,current.chapter));}catch(_){}if(queueModule)queueModule.render();nextChapter();});
   audio.addEventListener('error',function(){setStatus('');paint();});
   /* Cross-tab progress: the last chapter/position lives in localStorage,
      which Safari shares across tabs of this site. Save when the tab is

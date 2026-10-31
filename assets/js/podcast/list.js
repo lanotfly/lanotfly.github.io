@@ -33,6 +33,39 @@
       var minutes=Math.max(1,Math.round(seconds/60)),hours=Math.floor(minutes/60),remainder=minutes%60;
       return hours?hours+'h '+remainder+'m':minutes+'m';
     }
+    /* Apple-Podcasts-style per-episode progress: the played fraction of
+       THIS episode, drawn as a small solid bar left of the duration.
+       Seconds come from the host (config.getProgressSeconds); the total
+       comes from the episode, the duration cache, a probe, or the host. */
+    function progressFraction(episode,played){
+      if(played)return 1;
+      if(typeof config.getProgressSeconds!=='function')return 0;
+      var seconds=Number(config.getProgressSeconds(episode)||0);
+      if(!Number.isFinite(seconds)||seconds<=0)return 0;
+      var total=parseDuration(episode.duration)||durationCache[durationIdentity(episode)]||0;
+      if(!total&&typeof config.getProgressDuration==='function')total=Number(config.getProgressDuration(episode)||0);
+      if(!total||!Number.isFinite(total))return 0;
+      return Math.min(1,seconds/total);
+    }
+    function buildProgressBar(fraction){
+      var bar=document.createElement('span');bar.className='podcast-episode-progress';
+      bar.setAttribute('role','img');
+      bar.setAttribute('aria-label',Math.round(fraction*100)+'% played');
+      var fill=document.createElement('span');fill.className='podcast-episode-progress-fill';
+      fill.style.width=(Math.round(fraction*1000)/10)+'%';
+      bar.appendChild(fill);return bar;
+    }
+    function paintProgressBar(durationEl,episode){
+      var row=durationEl&&durationEl.closest?durationEl.closest('.podcast-episode-row'):null;
+      if(!row||row.querySelector('.podcast-episode-progress'))return;
+      var fraction=progressFraction(episode,config.isPlayed(episode));
+      if(fraction<=0)return;
+      var parent=durationEl.parentNode;if(!parent)return;
+      var submeta=document.createElement('span');submeta.className='podcast-episode-submeta';
+      parent.insertBefore(submeta,durationEl);
+      submeta.appendChild(buildProgressBar(fraction));
+      submeta.appendChild(durationEl);
+    }
     function pumpDurationQueue(){
       while(durationProbeActive<2&&durationProbeQueue.length){
         var job=durationProbeQueue.shift();
@@ -48,7 +81,7 @@
             if(seconds>0){
               durationCache[task.key]=Math.floor(seconds);
               try{localStorage.setItem(durationCacheKey,JSON.stringify(durationCache));}catch(_){}
-              if(task.element.isConnected)task.element.textContent=formatDuration(seconds);
+              if(task.element.isConnected){task.element.textContent=formatDuration(seconds);paintProgressBar(task.element,task.episode);}
             }
             pumpDurationQueue();
           }
@@ -131,7 +164,14 @@
           var cachedDuration=durationCache[durationIdentity(episode)];
           if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
         }
-        if(duration.textContent)meta.appendChild(duration);
+        var fraction=progressFraction(episode,played);
+        if(fraction>0){
+          var submeta=document.createElement('span');submeta.className='podcast-episode-submeta';
+          submeta.appendChild(buildProgressBar(fraction));
+          submeta.appendChild(duration);
+          meta.appendChild(submeta);
+        }
+        else if(duration.textContent)meta.appendChild(duration);
         textWrap.appendChild(title);
         if(meta.childNodes.length)textWrap.appendChild(meta);
         choose.appendChild(number);choose.appendChild(textWrap);
