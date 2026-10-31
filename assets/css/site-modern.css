@@ -2305,3 +2305,28 @@ html,body{max-width:100%;overflow-x:clip}
 @media (max-width: 700px) {
   .podcast-feed-panel .podcast-playback-progress { margin: 3px 0 5px !important; }
 }
+
+/* 2026-10-31: top-area unification. Every panel-heading icon button is
+   now one size — 34px — folded or expanded (the collapse toggle was
+   38px open / 30px folded, the bulk toggle 35px, the mini play 32px,
+   the KJV mini toggle 30px). Row 1 also spans the same width as the
+   panels below it, and the vertical rhythm between the three blocks
+   (tabs / source row / panel) tightens to match across Podcast, Radio
+   and KJV. */
+.podcast-list-toggle { flex-basis: 34px !important; width: 34px !important; height: 34px !important; }
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-list-toggle {
+  flex-basis: 34px !important; width: 34px !important; height: 34px !important; min-height: 34px !important;
+}
+.podcast-bulk-menu__toggle {
+  flex-basis: 34px !important; width: 34px !important; min-width: 34px !important;
+  height: 34px !important; min-height: 34px !important;
+}
+.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-mini-play { width: 34px !important; height: 34px !important; }
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle { width: 34px !important; height: 34px !important; }
+.site-nav-shell .site-tabs { padding-top: 2px !important; padding-bottom: 2px !important; }
+.niv-bible-panel, .radio-source-panel { margin-top: 6px !important; }
+.content-wrapper__inner:has(> #library-podcast-panel:not([hidden])) > .site-nav-shell { margin-bottom: 2px !important; }
+@media (max-width: 700px) {
+  .site-nav-shell { padding-left: 0 !important; padding-right: 0 !important; }
+  .radio-source-tabs .radio-secondary-tab { min-height: 32px; }
+}
