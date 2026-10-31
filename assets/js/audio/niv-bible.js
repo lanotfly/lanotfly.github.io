@@ -33,7 +33,7 @@
   var queueModule=null;
   var current={book:'GEN',chapter:1,index:0};
   if(!button||!panel||!bookSelect||!audio)return;
-  function renderQueue(){if(queueModule)queueModule.render();}
+  function renderQueue(){if(queueModule)queueModule.render();if(window.LibrarySyncCustomSelects)window.LibrarySyncCustomSelects();}
   function installQueue(){
     var anchor=document.querySelector('.niv-bible-progress-wrap');
     if(!anchor||queueList)return;
@@ -283,6 +283,7 @@
   current={book:initialBook,chapter:initialChapter,index:books.findIndex(function(book){return book[1]===initialBook;})};
   if(title)title.innerHTML='<span class="niv-bible-title-book">'+(getBook(initialBook)||books[0])[0]+' · </span>Chapter '+initialChapter;
   installQueue();
+  if(window.LibraryEnhanceSelect){window.LibraryEnhanceSelect(bookSelect,{variant:'book',buttonClass:'niv-bible-book-select'});window.LibraryEnhanceSelect(document.getElementById('niv-bible-list-mode'),{variant:'filter',buttonClass:'podcast-panel-filter'});}
   function togglePlayback(){
     try{
       if(sessionStorage.getItem('library-fold-audio')==='1'){

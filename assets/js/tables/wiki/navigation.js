@@ -298,6 +298,7 @@
         selector.appendChild(option);
       });
       selector.value=book.key;
+      if(window.LibrarySyncCustomSelects)window.LibrarySyncCustomSelects();
     }
     var themeToggle=chapterDrawer.querySelector('.book-drawer-theme-toggle');
     if(themeToggle){var isDark=document.documentElement.getAttribute('data-theme')==='dark';themeToggle.setAttribute('aria-pressed',isDark?'true':'false');themeToggle.setAttribute('aria-label','Switch to '+(isDark?'light':'dark')+' mode');var themeLabel=themeToggle.querySelector('.theme-toggle-label');if(themeLabel)themeLabel.textContent=isDark?'Light mode':'Dark mode';}
@@ -370,6 +371,7 @@
     placeChapterHandle(side);
     try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop){moveHandleTo(parseFloat(savedTop));}}catch(_){}
     chapterHandle.addEventListener('click',function(){if(chapterHandle.dataset.dragged==='1'){chapterHandle.dataset.dragged='0';return;}if(chapterDrawerOpen)closeChapterDrawer();else openChapterDrawer();});
+    if(window.LibraryEnhanceSelect)window.LibraryEnhanceSelect(chapterDrawer.querySelector('.book-drawer-book-select'),{variant:'book',buttonClass:'book-drawer-book-select'});
     chapterDrawer.querySelector('.book-drawer-book-select').addEventListener('change',function(){
       var selected=bookSections.find(function(item){return item.key===this.value;},this);
       if(!selected)return;

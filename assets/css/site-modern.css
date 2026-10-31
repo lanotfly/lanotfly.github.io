@@ -2589,3 +2589,31 @@ html,body{max-width:100%;overflow-x:clip}
 @media (max-width: 700px) {
   #library-podcast-panel .niv-bible-book-select { font-size: 11px !important; padding: 5px 6px !important; }
 }
+
+/* Custom dropdowns (shared/custom-select.js): the native select stays as
+   the data source, visually hidden; a button + narrow menu replace the
+   huge iOS system popover. */
+.lx-select { position: relative; display: inline-block; max-width: 100%; }
+.lx-select__native { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; opacity: 0 !important; pointer-events: none !important; margin: 0 !important; }
+.lx-select__button { display: inline-flex !important; align-items: center; gap: 6px; text-align: left; cursor: pointer; box-sizing: border-box; }
+.lx-select__label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lx-select__chevron { flex: 0 0 auto; display: inline-flex; opacity: .75; }
+.lx-select__menu { position: absolute; top: calc(100% + 4px); z-index: 80; min-width: 100%; width: max-content; max-width: 176px; max-height: 248px; overflow-y: auto; padding: 4px; border-radius: 12px; background: #faf7ff; border: 1px solid #ddd0ee; box-shadow: 0 14px 30px rgba(74, 47, 102, .18); box-sizing: border-box; }
+.lx-select--filter .lx-select__menu { right: 0; left: auto; }
+.lx-select--book .lx-select__menu { left: 0; right: auto; }
+.lx-select__option { display: block; width: 100%; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: #4a2f66; font-size: 12.5px; font-weight: 600; text-align: left; cursor: pointer; box-sizing: border-box; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lx-select__option.is-current { background: #f2ebfa; }
+:root[data-theme="dark"] .lx-select__menu { background: #2b2138; border-color: #46355e; box-shadow: 0 14px 30px rgba(0, 0, 0, .45); }
+:root[data-theme="dark"] .lx-select__option { color: #e6dcf7; }
+:root[data-theme="dark"] .lx-select__option.is-current { background: #3a2a55; }
+@media (max-width: 700px) {
+  #niv-bible-panel .niv-bible-queue-tools .lx-select--book .lx-select__button { max-width: 100px; min-width: 76px; }
+}
+#library-book-chapter-drawer .lx-select { flex: 1 1 auto; min-width: 0; }
+#library-book-chapter-drawer .lx-select__button { width: 100%; }
+#library-book-chapter-drawer .lx-select__menu { background: #fbfefc; border-color: #b7d9c4; }
+#library-book-chapter-drawer .lx-select__option { color: #234331; }
+#library-book-chapter-drawer .lx-select__option.is-current { background: #e6f5eb; }
+:root[data-theme="dark"] #library-book-chapter-drawer .lx-select__menu { background: #243b2e; border-color: #477c59; }
+:root[data-theme="dark"] #library-book-chapter-drawer .lx-select__option { color: #e5f5e9; }
+:root[data-theme="dark"] #library-book-chapter-drawer .lx-select__option.is-current { background: #2f5240; }
