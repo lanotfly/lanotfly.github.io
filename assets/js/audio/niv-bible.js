@@ -117,6 +117,10 @@
       setListMode:function(mode){filter.value=mode;},
       getPanelMode:function(){return 'full';},
       getActiveId:function(){return 'kjv-'+current.book;},
+      getLiveFraction:function(){
+        if(!isFinite(audio.duration)||audio.duration<=0)return null;
+        return (audio.currentTime||0)/audio.duration;
+      },
       getProgressSeconds:function(item){var r=readChapterProgress(item.book,item.chapter);return r?Number(r.t)||0:0;},
       getProgressDuration:function(item){var r=readChapterProgress(item.book,item.chapter);return r?Number(r.d)||0:0;},
       isPlayed:function(item){try{return localStorage.getItem('library_kjv_played:'+item.book+':'+item.chapter)==='1';}catch(_){return false;}},
@@ -290,6 +294,7 @@
     if(audio.currentTime>0&&isFinite(audio.currentTime))remember(current.book,current.chapter,audio.currentTime);
     saveChapterProgress(false);
     updateProgress();
+    if(queueModule&&queueModule.updateLiveProgress)queueModule.updateLiveProgress();
   });
   audio.addEventListener('loadedmetadata',updateProgress);
   audio.addEventListener('durationchange',updateProgress);

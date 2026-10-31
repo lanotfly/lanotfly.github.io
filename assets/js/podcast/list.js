@@ -165,13 +165,24 @@
           if(cachedDuration)duration.textContent=formatDuration(cachedDuration);
         }
         var fraction=progressFraction(episode,played);
-        if(fraction>0){
+        var showBar=fraction>0;
+        if(isCurrent&&typeof config.getLiveFraction==='function'){
+          var liveFraction=config.getLiveFraction();
+          if(liveFraction!==null&&liveFraction!==undefined&&Number.isFinite(Number(liveFraction))){
+            fraction=Math.max(fraction,Math.min(1,Number(liveFraction)));
+            if(config.isPlaying()||fraction>0)showBar=true;
+          }
+        }
+        if(showBar){
           var submeta=document.createElement('span');submeta.className='podcast-episode-submeta';
           submeta.appendChild(buildProgressBar(fraction));
           submeta.appendChild(duration);
           meta.appendChild(submeta);
         }
-        else if(duration.textContent)meta.appendChild(duration);
+        else meta.appendChild(duration);
+        /* The duration span stays in the DOM even while empty: the
+           duration probe and the live progress bar both anchor to it.
+           (Appending only when non-empty starved both.) */
         textWrap.appendChild(title);
         if(meta.childNodes.length)textWrap.appendChild(meta);
         choose.appendChild(number);choose.appendChild(textWrap);
@@ -266,7 +277,40 @@
         if(number)number.textContent=current?(isPlaying?'Ⅱ':'▶'):String(Number(row.dataset.episodeIndex)+1);
       });
     }
-    return {render:render,setCurrent:setCurrent};
+    /* Live edge of the bar: while an episode plays, its row's bar grows
+       with the audio clock — including a first-ever play, where no saved
+       position exists yet and the bar must appear the moment it starts. */
+    function updateLiveProgress(){
+      if(!episodeList||typeof config.getLiveFraction!=='function')return;
+      var idx=config.getIndex();
+      if(idx===null||idx===undefined||idx<0)return;
+      var live=config.getLiveFraction();
+      if(live===null||live===undefined)return;
+      var fraction=Math.max(0,Math.min(1,Number(live)||0));
+      var row=episodeList.querySelector('.podcast-episode-row[data-episode-index="'+idx+'"]');
+      if(!row)return;
+      var bar=row.querySelector('.podcast-episode-progress');
+      if(!bar){
+        var durationEl=row.querySelector('.podcast-episode-duration');
+        if(!durationEl)return;
+        paintProgressBar(durationEl,config.getQueue()[idx]);
+        bar=row.querySelector('.podcast-episode-progress');
+        if(!bar){
+          var meta=durationEl.closest?durationEl.closest('.podcast-episode-meta'):null;
+          if(!meta||durationEl.parentNode!==meta)return;
+          var submeta=document.createElement('span');submeta.className='podcast-episode-submeta';
+          meta.insertBefore(submeta,durationEl);
+          submeta.appendChild(buildProgressBar(0));
+          submeta.appendChild(durationEl);
+          bar=submeta.querySelector('.podcast-episode-progress');
+        }
+      }
+      if(!bar)return;
+      var fill=bar.querySelector('.podcast-episode-progress-fill');
+      if(fill)fill.style.width=(Math.round(fraction*1000)/10)+'%';
+      bar.setAttribute('aria-label',Math.round(fraction*100)+'% played');
+    }
+    return {render:render,setCurrent:setCurrent,updateLiveProgress:updateLiveProgress};
   }
   /* Shared one-time marquee for the title beside podcast artwork. */
   window.LibraryPodcastTitle=window.LibraryPodcastTitle|| (function(){

@@ -381,6 +381,12 @@
         getProgressSeconds: function (episode) {
           try { return Number(localStorage.getItem(positionKey(feed, episode)) || 0); } catch (_) { return 0; }
         },
+        getLiveFraction: function () {
+          if (current.feed !== feed.id || current.index < 0) return null;
+          var audio = audioFor(feed.id);
+          if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return null;
+          return (audio.currentTime || 0) / audio.duration;
+        },
         setPlayed: function (episode, played) { setPlayed(feed, episode, played); },
         onChange: function () { syncFilterOptions(feed); },
         isPlaying: function () {
@@ -639,6 +645,8 @@
       audio.dataset.podcastLastProgressAt = String(Date.now());
       savePosition(feed, false);
       updateProgress(feed);
+      var lm = listModules[feed.id];
+      if (lm && lm.updateLiveProgress) lm.updateLiveProgress();
     });
     audio.addEventListener('seeking', function () { updateProgress(feed); });
     audio.addEventListener('ended', function () {
