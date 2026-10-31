@@ -143,7 +143,6 @@
   if(kjvMenu)kjvMenu.addEventListener('click',function(){setMode(mode==='kjv'?'podcast':'kjv');});
   /* Podcast */
   var podPlay=document.getElementById('audio-podcast-play');
-  var podMenuBtn=document.getElementById('audio-podcast-menu');
   var feedMenu=document.getElementById('audio-podcast-menu-list');
   function currentFeed(){
     var tab=document.querySelector('[data-podcast-tab][aria-selected="true"]');
@@ -159,14 +158,24 @@
     var mini=section?section.querySelector('.podcast-mini-play'):null;
     if(mini)mini.click();
   }
-  if(podPlay)podPlay.addEventListener('click',function(){setMode('podcast');toggleFeed(currentFeed());});
+  var podLongPressed=false;
+  if(podPlay)podPlay.addEventListener('click',function(){
+    if(podLongPressed){podLongPressed=false;return;}
+    setMode('podcast');toggleFeed(currentFeed());
+  });
   ['bbc','chronicle','english','japanese'].forEach(function(f){
     var a=feedAudio(f);
     if(a){a.addEventListener('play',paintPodcast);a.addEventListener('pause',paintPodcast);a.addEventListener('ended',paintPodcast);}
   });
   function closeFeedMenu(){
     if(feedMenu)feedMenu.hidden=true;
-    if(podMenuBtn)podMenuBtn.setAttribute('aria-expanded','false');
+    if(podPlay)podPlay.setAttribute('aria-expanded','false');
+  }
+  function openFeedMenu(){
+    if(!feedMenu)return;
+    paintFeedMenu();
+    feedMenu.hidden=false;
+    if(podPlay)podPlay.setAttribute('aria-expanded','true');
   }
   function paintFeedMenu(){
     if(!feedMenu)return;
@@ -175,11 +184,29 @@
       item.classList.toggle('is-current',item.getAttribute('data-feed-choice')===cur);
     });
   }
-  if(podMenuBtn&&feedMenu)podMenuBtn.addEventListener('click',function(){
-    var open=feedMenu.hidden;
-    if(open){paintFeedMenu();feedMenu.hidden=false;podMenuBtn.setAttribute('aria-expanded','true');}
-    else closeFeedMenu();
-  });
+  /* Long-press the Podcast button to choose a feed; a short press is
+     play/pause. 450ms threshold; the release click after a long press is
+     swallowed so it cannot also toggle playback. */
+  if(podPlay){
+    var podPressTimer=null;
+    var clearPodPress=function(){if(podPressTimer){clearTimeout(podPressTimer);podPressTimer=null;}};
+    podPlay.addEventListener('pointerdown',function(){
+      clearPodPress();
+      podPressTimer=setTimeout(function(){
+        podPressTimer=null;
+        podLongPressed=true;
+        /* The flag only exists to swallow the release click that follows;
+           expire it so a cancelled press can never eat a later tap. */
+        setTimeout(function(){podLongPressed=false;},1000);
+        setMode('podcast');
+        openFeedMenu();
+      },450);
+    });
+    ['pointerup','pointerleave','pointercancel'].forEach(function(type){
+      podPlay.addEventListener(type,clearPodPress);
+    });
+    podPlay.addEventListener('contextmenu',function(event){event.preventDefault();});
+  }
   if(feedMenu)feedMenu.addEventListener('click',function(event){
     var item=event.target&&event.target.closest?event.target.closest('[data-feed-choice]'):null;
     if(!item)return;

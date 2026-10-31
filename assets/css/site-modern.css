@@ -2553,3 +2553,11 @@ html,body{max-width:100%;overflow-x:clip}
 @media (max-width: 700px) {
   .audio-quick-group--podcast .audio-quick-side { flex-basis: 42px; width: 42px; }
 }
+
+/* 2026-10-31: Podcast gets the widest share (its label was truncating);
+   Radio and KJV slim down a notch. Long-press on Podcast replaces its
+   dropdown button, so the button must not select text or show the iOS
+   callout while held. */
+.audio-quick-group--radio, .audio-quick-group--kjv { flex-grow: .92; }
+.audio-quick-group--podcast { flex-grow: 1.35; }
+.audio-quick-main { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
