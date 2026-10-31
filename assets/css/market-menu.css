@@ -1411,7 +1411,7 @@ body > #library-market-panel.library-market-dropdown {
   background: #e9f5ed !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
-  border: 1px solid #cfe7d8 !important;
+  border: 0 !important;
   border-radius: 14px !important;
   /* Inset to match the view cards' padding, so the Market/News buttons
      line up with the tiles and headlines below instead of jutting out. */
@@ -1535,3 +1535,9 @@ body > #library-market-panel.library-market-dropdown {
   overscroll-behavior: contain !important;
 }
 #library-market-panel .home-news-heading h2 { cursor: pointer; }
+
+/* The market tiles sat 10px deeper than everything else (group padding),
+   so the tab buttons above them jutted out on both sides. Groups lose
+   their horizontal padding inside the panel: tiles, news items and the
+   tab strip now share one pair of edges. */
+#library-market-panel .home-market-group { padding-left: 0 !important; padding-right: 0 !important; }
