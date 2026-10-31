@@ -191,7 +191,7 @@
   document.addEventListener("click", event => {
     if (!marketPanel) return;
     const target = event.target && event.target.closest && event.target.closest(
-      ".site-tab--home, #library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle, #library-book-toggle, .book-secondary-link"
+      ".site-tab--home, #library-audio-toggle, #library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle, #library-book-toggle, .book-secondary-link"
     );
     if (!target) return;
     const isHome = target.matches(".site-tab--home");

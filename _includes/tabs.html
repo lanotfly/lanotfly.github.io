@@ -2,10 +2,11 @@
   <nav class="site-tabs" aria-label="Main navigation">
     <div class="site-tab-links">
       <a class="site-tab site-tab--home" href="/home/">Home</a>
+      <button class="site-tab site-tab--audio" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-audio-toggle" type="button" aria-expanded="false" aria-controls="library-audio-panel" title="Radio, KJV Bible and podcasts">Audio</button>
       
-      <button class="site-tab site-tab--radio-group" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
-      <button class="site-tab site-tab--niv" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span class="niv-button-label">KJV</span></button>
-      <button class="site-tab site-tab--podcast" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-podcast-toggle" type="button" aria-expanded="false" aria-controls="library-podcast-panel" title="Choose from four podcasts"><span class="library-podcast-button-label">Podcast</span></button>
+      
+      
+      
     </div>
   </nav>
   <section id="library-market-panel" class="library-market-dropdown" aria-label="Market information and news" hidden>
@@ -71,6 +72,15 @@
     </section>
   </section>
   </section>
+
+</div>
+
+  <section id="library-audio-panel" class="library-audio-panel" aria-label="Audio player" hidden>
+    <div class="audio-master-tabs" role="tablist" aria-label="Audio sources">
+      <button class="site-tab site-tab--radio-group" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
+      <button class="site-tab site-tab--niv" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span class="niv-button-label">KJV</span></button>
+      <button class="site-tab site-tab--podcast" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-podcast-toggle" type="button" aria-expanded="false" aria-controls="library-podcast-panel" title="Choose from four podcasts"><span class="library-podcast-button-label">Podcast</span></button>
+    </div>
   <section id="library-radio-panel" class="radio-source-panel" aria-label="Radio stations" hidden>
     <div class="secondary-tabs radio-source-tabs" role="tablist" aria-label="Radio stations" data-current="bbc" data-playing="false">
       <button class="secondary-tab radio-secondary-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio" title="BBC Radio"><span class="radio-tab-glyph" aria-hidden="true"><svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.8 6.2v11.6c0 .8.9 1.3 1.6.9l9-5.8c.6-.4.6-1.4 0-1.8l-9-5.8c-.7-.4-1.6.1-1.6.9z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="radio4-label" id="radio4-label">BBC</span></button>
@@ -83,8 +93,6 @@
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
-
-</div>
   <section id="niv-bible-panel" class="niv-bible-panel" aria-label="KJV Audio Bible player" hidden>
     <div class="niv-bible-panel__heading">
       <h2 id="niv-bible-now-playing" class="niv-bible-panel__title">Genesis · Chapter 1</h2>
@@ -95,4 +103,69 @@
     </div>
     <audio id="niv-bible-audio" preload="none" playsinline hidden></audio>
     <p id="niv-bible-status" class="niv-bible-status" aria-live="polite" hidden></p>
+  </section>
+            <section id="library-podcast-panel" class="library-podcast-panel" aria-label="Podcasts" hidden>
+  <div class="secondary-tabs podcast-source-tabs" role="tablist" aria-label="Podcast sources">
+    <button type="button" class="secondary-tab is-active" id="podcast-tab-bbc" role="tab" aria-selected="true" aria-controls="podcast-feed-panel-bbc" data-podcast-tab="bbc" aria-label="BBC Global News Podcast">BBC GP</button>
+    <button type="button" class="secondary-tab" id="podcast-tab-chronicle" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-chronicle" data-podcast-tab="chronicle" aria-label="News Connect">News Connect</button>
+    <button type="button" class="secondary-tab" id="podcast-tab-english" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-english" data-podcast-tab="english" aria-label="Easy Natural English">Natural EN</button>
+    <button type="button" class="secondary-tab" id="podcast-tab-japanese" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-japanese" data-podcast-tab="japanese" aria-label="Bite Size Japanese">Bite Size JP</button>
+  </div>
+  <section id="podcast-feed-panel-bbc" class="podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="bbc" role="tabpanel" aria-label="BBC Global News Podcast">
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img data-podcast-artwork="bbc" class="podcast-episode-panel__artwork" src="" alt="BBC Global News Podcast artwork" loading="lazy">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">BBC · GLOBAL NEWS</span><h2 class="podcast-episode-panel__title" data-podcast-title="bbc" data-podcast-show-title="BBC Global News Podcast">BBC Global News Podcast</h2></div>
+      </div>
+      <div class="podcast-panel-actions"><div class="podcast-bulk-menu"><button class="podcast-bulk-menu__toggle" type="button" data-podcast-bulk-toggle="bbc" aria-expanded="false" aria-haspopup="true" aria-label="BBC Global News Podcast episode status actions" title="Episode status actions"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="podcast-bulk-menu__options" data-podcast-bulk-options="bbc" role="menu" aria-label="BBC Global News Podcast episode status actions" hidden><button type="button" role="menuitem" data-podcast-bulk-played="true" data-podcast-feed="bbc">Mark all to played</button><button type="button" role="menuitem" data-podcast-bulk-played="false" data-podcast-feed="bbc">Mark all to unplayed</button></div></div><button class="podcast-episode-panel__close podcast-list-toggle" type="button" data-podcast-collapse="bbc" aria-expanded="true" aria-controls="podcast-bbc-list-frame" aria-label="Collapse episode list" title="Collapse episode list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
+    </div>
+    <audio id="podcast-bbc-audio" preload="none" playsinline hidden></audio>
+    <div class="podcast-playback-progress" data-podcast-progress="bbc" hidden><input class="podcast-progress-slider" data-podcast-progress-slider="bbc" type="range" min="0" max="1000" value="0" step="1" aria-label="BBC Global News Podcast playback position"><div class="podcast-progress-times"><span data-podcast-current-time="bbc">0:00</span><span data-podcast-total-time="bbc">0:00</span></div></div>
+    <div class="podcast-episode-panel__tools"><div class="podcast-episode-count" data-podcast-count="bbc" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-podcast-filter="bbc" aria-label="BBC Global News Podcast episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
+    <p class="podcast-episode-panel__status" data-podcast-status="bbc" aria-live="polite"></p>
+    <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-bbc-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="bbc" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
+  </section>
+  <section id="podcast-feed-panel-chronicle" class="podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="chronicle" role="tabpanel" aria-label="News Connect" hidden>
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img data-podcast-artwork="chronicle" class="podcast-episode-panel__artwork" src="" alt="News Connect artwork" loading="lazy">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">NEWS CONNECT</span><h2 class="podcast-episode-panel__title" data-podcast-title="chronicle" data-podcast-show-title="News Connect">News Connect</h2></div>
+      </div>
+      <div class="podcast-panel-actions"><div class="podcast-bulk-menu"><button class="podcast-bulk-menu__toggle" type="button" data-podcast-bulk-toggle="chronicle" aria-expanded="false" aria-haspopup="true" aria-label="News Connect episode status actions" title="Episode status actions"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="podcast-bulk-menu__options" data-podcast-bulk-options="chronicle" role="menu" aria-label="News Connect episode status actions" hidden><button type="button" role="menuitem" data-podcast-bulk-played="true" data-podcast-feed="chronicle">Mark all to played</button><button type="button" role="menuitem" data-podcast-bulk-played="false" data-podcast-feed="chronicle">Mark all to unplayed</button></div></div><button class="podcast-episode-panel__close podcast-list-toggle" type="button" data-podcast-collapse="chronicle" aria-expanded="true" aria-controls="podcast-chronicle-list-frame" aria-label="Collapse episode list" title="Collapse episode list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
+    </div>
+    <audio id="podcast-chronicle-audio" preload="none" playsinline hidden></audio>
+    <div class="podcast-playback-progress" data-podcast-progress="chronicle" hidden><input class="podcast-progress-slider" data-podcast-progress-slider="chronicle" type="range" min="0" max="1000" value="0" step="1" aria-label="News Connect playback position"><div class="podcast-progress-times"><span data-podcast-current-time="chronicle">0:00</span><span data-podcast-total-time="chronicle">0:00</span></div></div>
+    <div class="podcast-episode-panel__tools"><div class="podcast-episode-count" data-podcast-count="chronicle" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-podcast-filter="chronicle" aria-label="News Connect episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
+    <p class="podcast-episode-panel__status" data-podcast-status="chronicle" aria-live="polite"></p>
+    <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-chronicle-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="chronicle" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
+  </section>
+  <section id="podcast-feed-panel-english" class="podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="english" role="tabpanel" aria-label="Easy Natural English" hidden>
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img data-podcast-artwork="english" class="podcast-episode-panel__artwork" src="" alt="Easy Natural English artwork" loading="lazy">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">EASY NATURAL ENGLISH</span><h2 class="podcast-episode-panel__title" data-podcast-title="english" data-podcast-show-title="Easy Natural English">Easy Natural English</h2></div>
+      </div>
+      <div class="podcast-panel-actions"><div class="podcast-bulk-menu"><button class="podcast-bulk-menu__toggle" type="button" data-podcast-bulk-toggle="english" aria-expanded="false" aria-haspopup="true" aria-label="Easy Natural English episode status actions" title="Episode status actions"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="podcast-bulk-menu__options" data-podcast-bulk-options="english" role="menu" aria-label="Easy Natural English episode status actions" hidden><button type="button" role="menuitem" data-podcast-bulk-played="true" data-podcast-feed="english">Mark all to played</button><button type="button" role="menuitem" data-podcast-bulk-played="false" data-podcast-feed="english">Mark all to unplayed</button></div></div><button class="podcast-episode-panel__close podcast-list-toggle" type="button" data-podcast-collapse="english" aria-expanded="true" aria-controls="podcast-english-list-frame" aria-label="Collapse episode list" title="Collapse episode list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
+    </div>
+    <audio id="podcast-english-audio" preload="none" playsinline hidden></audio>
+    <div class="podcast-playback-progress" data-podcast-progress="english" hidden><input class="podcast-progress-slider" data-podcast-progress-slider="english" type="range" min="0" max="1000" value="0" step="1" aria-label="Easy Natural English playback position"><div class="podcast-progress-times"><span data-podcast-current-time="english">0:00</span><span data-podcast-total-time="english">0:00</span></div></div>
+    <div class="podcast-episode-panel__tools"><div class="podcast-episode-count" data-podcast-count="english" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-podcast-filter="english" aria-label="Easy Natural English episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
+    <p class="podcast-episode-panel__status" data-podcast-status="english" aria-live="polite"></p>
+    <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-english-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="english" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
+  </section>
+  <section id="podcast-feed-panel-japanese" class="podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="japanese" role="tabpanel" aria-label="Bite Size Japanese" hidden>
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img data-podcast-artwork="japanese" class="podcast-episode-panel__artwork" src="" alt="Bite Size Japanese artwork" loading="lazy">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">BITE SIZE JAPANESE</span><h2 class="podcast-episode-panel__title" data-podcast-title="japanese" data-podcast-show-title="Bite Size Japanese">Bite Size Japanese</h2></div>
+      </div>
+      <div class="podcast-panel-actions"><div class="podcast-bulk-menu"><button class="podcast-bulk-menu__toggle" type="button" data-podcast-bulk-toggle="japanese" aria-expanded="false" aria-haspopup="true" aria-label="Bite Size Japanese episode status actions" title="Episode status actions"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="podcast-bulk-menu__options" data-podcast-bulk-options="japanese" role="menu" aria-label="Bite Size Japanese episode status actions" hidden><button type="button" role="menuitem" data-podcast-bulk-played="true" data-podcast-feed="japanese">Mark all to played</button><button type="button" role="menuitem" data-podcast-bulk-played="false" data-podcast-feed="japanese">Mark all to unplayed</button></div></div><button class="podcast-episode-panel__close podcast-list-toggle" type="button" data-podcast-collapse="japanese" aria-expanded="true" aria-controls="podcast-japanese-list-frame" aria-label="Collapse episode list" title="Collapse episode list"><svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg></button></div>
+    </div>
+    <audio id="podcast-japanese-audio" preload="none" playsinline hidden></audio>
+    <div class="podcast-playback-progress" data-podcast-progress="japanese" hidden><input class="podcast-progress-slider" data-podcast-progress-slider="japanese" type="range" min="0" max="1000" value="0" step="1" aria-label="Bite Size Japanese playback position"><div class="podcast-progress-times"><span data-podcast-current-time="japanese">0:00</span><span data-podcast-total-time="japanese">0:00</span></div></div>
+    <div class="podcast-episode-panel__tools"><div class="podcast-episode-count" data-podcast-count="japanese" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-podcast-filter="japanese" aria-label="Bite Size Japanese episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
+    <p class="podcast-episode-panel__status" data-podcast-status="japanese" aria-live="polite"></p>
+    <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-japanese-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="japanese" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
+  </section>
+</section>
   </section>

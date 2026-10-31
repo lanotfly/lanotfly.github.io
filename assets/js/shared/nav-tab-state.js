@@ -22,7 +22,7 @@
     reading: { normal: ['#edf6ed', '#477653', '#c5dfc7'], active: ['#cdeccf', '#22522e', '#74a97c'] }
   };
   var TARGETS = [
-    { selector: '#library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle', family: 'audio' },
+    { selector: '#library-audio-toggle, #library-radio-toggle, #radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #library-podcast-toggle', family: 'audio' },
     { selector: '[data-podcast-tab]', family: 'audio' },
     { selector: '.site-tab--home, #library-book-toggle, .book-secondary-link, .book-chapter-link', family: 'reading' }
   ];

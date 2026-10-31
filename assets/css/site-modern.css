@@ -2428,3 +2428,37 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] #library-podcast-panel {
   border-color: #6b548f !important;
 }
+
+/* ===== 2026-10-31 Plan B: ONE Audio panel =====
+   The shell owns the chrome (pale purple, solid frame); the three views
+   inside shed theirs. Master tabs keep the nav painter's colors. */
+#library-audio-panel {
+  margin-top: 6px; padding: 8px; border-radius: 14px; box-sizing: border-box;
+  border: 1.5px solid #b9a3dd !important;
+  background: linear-gradient(165deg, #f7f2fc, #f2eaf9) !important;
+}
+:root[data-theme="dark"] #library-audio-panel {
+  border-color: #6b548f !important;
+  background: linear-gradient(165deg, #2b2138, #251b31) !important;
+}
+#library-audio-panel #library-radio-panel,
+#library-audio-panel #niv-bible-panel,
+#library-audio-panel #library-podcast-panel {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  border-radius: 0 !important; padding: 0 !important; margin: 0 !important;
+}
+.audio-master-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+.audio-master-tabs .site-tab {
+  flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center;
+  min-height: 40px; padding: 7px 6px; border-radius: 11px;
+  font-size: 13.5px; font-weight: 700; cursor: pointer; box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  .audio-master-tabs .site-tab { min-height: 38px; font-size: 13px; }
+}
+/* Row 1 is two buttons now — they share the width evenly. */
+.site-tab-links > .site-tab { flex: 1 1 0; justify-content: center; }
+/* The feed card keeps a defined edge on the shell's purple. */
+#library-audio-panel .podcast-episode-panel { border-color: #ddd0ee !important; }
+/* Shell open: same tight rhythm the podcast panel used to set. */
+.content-wrapper__inner:has(> #library-audio-panel:not([hidden])) > .site-nav-shell { margin-bottom: 2px !important; }
