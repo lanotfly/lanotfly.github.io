@@ -183,10 +183,13 @@
     <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-japanese-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="japanese" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
   </section>
   <section id="niv-bible-panel" class="niv-bible-panel podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="kjv" role="tabpanel" aria-label="KJV Audio Bible player" hidden>
-    <div class="niv-bible-panel__heading">
-      <img class="niv-bible-panel__artwork" src="/assets/images/kjv-audio-lockscreen.svg?v=20261025-1" alt="" width="44" height="44">
-      <h2 id="niv-bible-now-playing" class="niv-bible-panel__title">Genesis · Chapter 1</h2>
+    <div class="niv-bible-panel__heading podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <img class="niv-bible-panel__artwork podcast-episode-panel__artwork" src="/assets/images/kjv-audio-lockscreen.svg?v=20261025-1" alt="" width="54" height="54">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">KJV · AUDIO BIBLE</span><h2 id="niv-bible-now-playing" class="niv-bible-panel__title podcast-episode-panel__title">Genesis · Chapter 1</h2></div>
+      </div>
       <select id="niv-book-select" class="niv-bible-book-select" aria-label="Select book"></select>
+      <div class="podcast-panel-actions"></div>
     </div>
     <div class="niv-bible-progress-wrap">
       <input id="niv-bible-progress" class="niv-bible-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Audio playback position">

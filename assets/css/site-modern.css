@@ -2586,7 +2586,6 @@ html,body{max-width:100%;overflow-x:clip}
 /* 2026-10-31: KJV is a podcast source now — its card sits inside the
    podcast panel with the lock-screen artwork in its heading. */
 #library-podcast-panel #niv-bible-panel { margin: 0; }
-.niv-bible-panel__artwork { width: 44px; height: 44px; border-radius: 10px; flex: none; display: block; }
 
 /* 2026-10-31: KJV compact parity — when its list is folded, the book
    picker and progress bar hide like the other feeds' tools, leaving

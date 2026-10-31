@@ -70,7 +70,7 @@
       miniToggle.type='button';
       miniToggle.innerHTML=MINI_PLAY_SVG;
       miniToggle.setAttribute('aria-label','Play or pause KJV audio');
-      heading.appendChild(miniToggle);
+      (panel.querySelector('.podcast-panel-actions')||heading).appendChild(miniToggle);
       miniToggle.addEventListener('click',function(){var t=document.getElementById('niv-bible-toggle');if(t)t.click();});
     }
     var collapseButton=document.getElementById('niv-bible-queue-toggle');
@@ -84,10 +84,11 @@
       collapseButton.setAttribute('aria-label','Collapse chapter list');
       collapseButton.title='Collapse chapter list';
       collapseButton.innerHTML='<svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg>';
-      bookSelect.insertAdjacentElement('afterend',collapseButton);
-      /* Folded or not, play/pause sits immediately LEFT of the fold
-         button — the same order as every podcast feed's heading. */
-      if(miniToggle)heading.insertBefore(miniToggle,collapseButton);
+      /* Both transport buttons live in the shared actions host, play
+         first and fold second — the podcast feeds' exact arrangement. */
+      var actionsHost=panel.querySelector('.podcast-panel-actions');
+      if(actionsHost)actionsHost.appendChild(collapseButton);
+      else bookSelect.insertAdjacentElement('afterend',collapseButton);
       collapseButton.addEventListener('click',function(){
         var collapsed=collapseButton.getAttribute('aria-expanded')==='true';
         collapseButton.setAttribute('aria-expanded',String(!collapsed));

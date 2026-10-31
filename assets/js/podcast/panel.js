@@ -503,7 +503,10 @@
     }
   }
   root.querySelectorAll('[data-podcast-feed-panel]').forEach(function (section) {
-    var feed = getFeed(section.getAttribute('data-podcast-feed-panel'));
+    /* Strict lookup: getFeed() falls back to the first feed for unknown
+       ids, which would wire a BBC play button into the KJV card. */
+    var feedId = section.getAttribute('data-podcast-feed-panel');
+    var feed = feeds.find(function (f) { return f.id === feedId; });
     var actions = section.querySelector('.podcast-panel-actions');
     if (!feed || !actions) return;
     var playBtn = document.createElement('button');
