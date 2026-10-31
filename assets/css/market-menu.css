@@ -1503,3 +1503,30 @@ body > #library-market-panel.library-market-dropdown {
   background: #2b4634 !important;
   border-bottom-color: #33523d !important;
 }
+
+/* 2026-10-31: the News view is a fixed-height box tuned for exactly five
+   headlines; when the status line wrapped to two lines (wider sans face),
+   the fifth headline was pushed across the view's bottom border. The view
+   is now a flex column and the LIST is the flexible, internally scrolling
+   part, so headlines can never cross the boundary — worst case the list
+   scrolls a few pixels inside its own card. */
+#library-market-panel #home-news-view {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+#library-market-panel #home-news-view > .home-news-source-tabs { flex: 0 0 auto !important; }
+#library-market-panel #home-news-view > .home-news-source {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+#library-market-panel #home-news-view .home-news-heading,
+#library-market-panel #home-news-view .home-news-status { flex: 0 0 auto !important; }
+#library-market-panel #home-news-view .home-news-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}

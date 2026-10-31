@@ -86,7 +86,7 @@
       var cards=parseFeed(xml,lang);
       if(!cards.length)throw new Error('No articles were returned by this feed.');
       list.replaceChildren();cards.forEach(function(card){list.appendChild(card);});
-      status.textContent='Latest '+cards.length+' articles · Tap a headline to expand its available details.'
+      status.textContent='Latest '+cards.length+' articles · Tap a headline to expand.'
       loaded[lang]=true;
     }).catch(function(error){
       status.textContent='Could not load this feed right now. Open the source website instead.';
