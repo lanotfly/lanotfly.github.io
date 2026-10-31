@@ -89,10 +89,8 @@
           <button type="button" role="menuitem" data-feed-choice="chronicle">News Connect</button>
           <button type="button" role="menuitem" data-feed-choice="english">Easy Natural English</button>
           <button type="button" role="menuitem" data-feed-choice="japanese">Bite Size Japanese</button>
+          <button type="button" role="menuitem" data-feed-choice="kjv">KJV</button>
         </div>
-      </div>
-      <div class="audio-quick-group audio-quick-group--kjv" role="group" aria-label="KJV Bible">
-        <button id="audio-kjv-play" class="audio-quick-main" type="button" aria-label="Play or pause KJV Bible"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>KJV</span></button>
       </div>
       <div class="audio-quick-group audio-quick-group--radio" role="group" aria-label="Radio">
         <button id="audio-radio-play" class="audio-quick-main" type="button" aria-label="Play or pause radio"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>Radio</span></button>
@@ -100,6 +98,7 @@
         <div id="audio-radio-menu-list" class="audio-feed-menu" role="menu" aria-label="Radio stations" hidden>
           <button type="button" role="menuitem" data-station-choice="radio4">BBC Radio</button>
           <button type="button" role="menuitem" data-station-choice="nhk">NHK Radio</button>
+          <button type="button" role="menuitem" data-station-choice="npr">NPR News</button>
         </div>
       </div>
     </div>
@@ -107,6 +106,7 @@
     <div class="secondary-tabs radio-source-tabs" role="tablist" aria-label="Radio stations" data-current="bbc" data-playing="false">
       <button class="secondary-tab radio-secondary-tab site-tab--radio" id="radio4-toggle" type="button" aria-pressed="false" aria-label="Play BBC Radio" title="BBC Radio"><span class="radio-tab-glyph" aria-hidden="true"><svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.8 6.2v11.6c0 .8.9 1.3 1.6.9l9-5.8c.6-.4.6-1.4 0-1.8l-9-5.8c-.7-.4-1.6.1-1.6.9z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="radio4-label" id="radio4-label">BBC</span></button>
       <button class="secondary-tab radio-secondary-tab site-tab--nhk-radio" id="nhk-radio-toggle" type="button" aria-pressed="false" aria-label="Play NHK Radio 1" title="Play NHK Radio 1"><span class="radio-tab-glyph" aria-hidden="true"><svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.8 6.2v11.6c0 .8.9 1.3 1.6.9l9-5.8c.6-.4.6-1.4 0-1.8l-9-5.8c-.7-.4-1.6.1-1.6.9z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="nhk-radio-label">NHK</span></button>
+      <button class="secondary-tab radio-secondary-tab site-tab--npr-radio" id="npr-radio-toggle" type="button" aria-pressed="false" aria-label="Play NPR News" title="NPR News"><span class="radio-tab-glyph" aria-hidden="true"><svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.8 6.2v11.6c0 .8.9 1.3 1.6.9l9-5.8c.6-.4.6-1.4 0-1.8l-9-5.8c-.7-.4-1.6.1-1.6.9z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="npr-radio-label">NPR</span></button>
     </div>
   </section>
   <audio id="nhk-radio-audio" preload="none" playsinline hidden>
@@ -115,23 +115,16 @@
   <audio id="radio4-audio" preload="none" playsinline hidden>
     <source src="https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8" type="application/vnd.apple.mpegurl">
   </audio>
-  <section id="niv-bible-panel" class="niv-bible-panel" aria-label="KJV Audio Bible player" hidden>
-    <div class="niv-bible-panel__heading">
-      <h2 id="niv-bible-now-playing" class="niv-bible-panel__title">Genesis · Chapter 1</h2>
-      <select id="niv-book-select" class="niv-bible-book-select" aria-label="Select book"></select>
-    </div>
-    <div class="niv-bible-progress-wrap">
-      <input id="niv-bible-progress" class="niv-bible-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Audio playback position">
-    </div>
-    <audio id="niv-bible-audio" preload="none" playsinline hidden></audio>
-    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite" hidden></p>
-  </section>
+  <audio id="npr-radio-audio" preload="none" playsinline hidden>
+    <source src="https://npr-ice.streamguys1.com/live.mp3" type="audio/mpeg">
+  </audio>
             <section id="library-podcast-panel" class="library-podcast-panel" aria-label="Podcasts" hidden>
   <div class="secondary-tabs podcast-source-tabs" role="tablist" aria-label="Podcast sources">
     <button type="button" class="secondary-tab is-active" id="podcast-tab-bbc" role="tab" aria-selected="true" aria-controls="podcast-feed-panel-bbc" data-podcast-tab="bbc" aria-label="BBC Global News Podcast">BBC GP</button>
     <button type="button" class="secondary-tab" id="podcast-tab-chronicle" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-chronicle" data-podcast-tab="chronicle" aria-label="News Connect">News Connect</button>
     <button type="button" class="secondary-tab" id="podcast-tab-english" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-english" data-podcast-tab="english" aria-label="Easy Natural English">Natural EN</button>
     <button type="button" class="secondary-tab" id="podcast-tab-japanese" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-japanese" data-podcast-tab="japanese" aria-label="Bite Size Japanese">Bite Size JP</button>
+    <button type="button" class="secondary-tab" id="podcast-tab-kjv" role="tab" aria-selected="false" aria-controls="niv-bible-panel" data-podcast-tab="kjv" aria-label="KJV Audio Bible">KJV</button>
   </div>
   <section id="podcast-feed-panel-bbc" class="podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="bbc" role="tabpanel" aria-label="BBC Global News Podcast">
     <div class="podcast-episode-panel__heading">
@@ -188,6 +181,18 @@
     <div class="podcast-episode-panel__tools"><div class="podcast-episode-count" data-podcast-count="japanese" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-podcast-filter="japanese" aria-label="Bite Size Japanese episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
     <p class="podcast-episode-panel__status" data-podcast-status="japanese" aria-live="polite"></p>
     <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-japanese-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="japanese" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
+  </section>
+  <section id="niv-bible-panel" class="niv-bible-panel podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="kjv" role="tabpanel" aria-label="KJV Audio Bible player" hidden>
+    <div class="niv-bible-panel__heading">
+      <img class="niv-bible-panel__artwork" src="/assets/images/kjv-audio-lockscreen.svg?v=20261025-1" alt="" width="44" height="44">
+      <h2 id="niv-bible-now-playing" class="niv-bible-panel__title">Genesis · Chapter 1</h2>
+      <select id="niv-book-select" class="niv-bible-book-select" aria-label="Select book"></select>
+    </div>
+    <div class="niv-bible-progress-wrap">
+      <input id="niv-bible-progress" class="niv-bible-progress" type="range" min="0" max="1000" value="0" step="1" aria-label="Audio playback position">
+    </div>
+    <audio id="niv-bible-audio" preload="none" playsinline hidden></audio>
+    <p id="niv-bible-status" class="niv-bible-status" aria-live="polite" hidden></p>
   </section>
 </section>
   </section>

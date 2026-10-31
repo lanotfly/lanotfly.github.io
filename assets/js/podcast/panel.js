@@ -142,7 +142,7 @@
       coordinator.switchTo('podcast');
       return;
     }
-    ['radio4-audio', 'nhk-radio-audio', 'niv-bible-audio'].forEach(function (id) {
+    ['radio4-audio', 'nhk-radio-audio', 'npr-radio-audio', 'niv-bible-audio'].forEach(function (id) {
       var audio = document.getElementById(id);
       if (audio && !audio.paused) audio.pause();
     });
@@ -545,6 +545,14 @@
   root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
     button.addEventListener('click', function () {
       var nextFeed = button.getAttribute('data-podcast-tab');
+      if (nextFeed === 'kjv') {
+        /* KJV lives in this panel as a fifth source now: show its card and
+           stop the podcast feeds; its own module owns playback. */
+        setActiveTab('kjv');
+        try { localStorage.setItem('personal-library-podcast-active-feed', 'kjv'); } catch (_) {}
+        stopAllPodcasts(true);
+        return;
+      }
       if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(nextFeed) < 0) return;
       /* Compare BEFORE setActiveFeed: it rewrites activeTab and activeFeed,
          so checking afterwards always reported "already selected" and the

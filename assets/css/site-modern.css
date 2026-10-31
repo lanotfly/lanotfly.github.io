@@ -2582,3 +2582,8 @@ html,body{max-width:100%;overflow-x:clip}
 .audio-feed-menu { width: max-content; min-width: 0; max-width: 80vw; }
 .audio-feed-menu [data-feed-choice], .audio-feed-menu [data-station-choice] { white-space: nowrap; }
 .audio-quick-group--podcast .audio-feed-menu { left: 0; right: auto; }
+
+/* 2026-10-31: KJV is a podcast source now — its card sits inside the
+   podcast panel with the lock-screen artwork in its heading. */
+#library-podcast-panel #niv-bible-panel { margin: 0; }
+.niv-bible-panel__artwork { width: 44px; height: 44px; border-radius: 10px; flex: none; display: block; }

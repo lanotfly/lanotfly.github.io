@@ -1,14 +1,14 @@
 (function(window,document){
   'use strict';
   if(window.LibraryAudioCoordinator)return;
-  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',bible:'niv-bible-audio',podcastBbc:'podcast-bbc-audio',podcastChronicle:'podcast-chronicle-audio',podcastEnglish:'podcast-english-audio',podcastJapanese:'podcast-japanese-audio'};
+  var audioIds={radio4:'radio4-audio',nhk:'nhk-radio-audio',npr:'npr-radio-audio',bible:'niv-bible-audio',podcastBbc:'podcast-bbc-audio',podcastChronicle:'podcast-chronicle-audio',podcastEnglish:'podcast-english-audio',podcastJapanese:'podcast-japanese-audio'};
   function getAudio(name){return document.getElementById(audioIds[name]);}
-  var buttonsBySource={radio4:['radio4-toggle'],nhk:['nhk-radio-toggle'],bible:['niv-bible-toggle']};
+  var buttonsBySource={radio4:['radio4-toggle'],nhk:['nhk-radio-toggle'],npr:['npr-radio-toggle'],bible:['niv-bible-toggle']};
   var activeTarget=null;
   var radioToggle=document.getElementById('library-radio-toggle');
   var radioPanel=document.getElementById('library-radio-panel');
   var lastRadio='radio4';
-  try{lastRadio=localStorage.getItem('library_last_radio_station')==='nhk'?'nhk':'radio4';}catch(_){}
+  try{var savedRadio=localStorage.getItem('library_last_radio_station');lastRadio=(savedRadio==='nhk'||savedRadio==='npr')?savedRadio:'radio4';}catch(_){}
   function clearButtonState(button){
     if(!button)return;
     button.setAttribute('aria-pressed','false');
@@ -16,7 +16,7 @@
     if(button.id==='radio4-toggle') ['background-color','color','border-color','border-style','box-shadow'].forEach(function(p){button.style.removeProperty(p);});
   }
   function rememberRadio(target){
-    if(target!=='radio4'&&target!=='nhk')return;
+    if(target!=='radio4'&&target!=='nhk'&&target!=='npr')return;
     lastRadio=target;
     try{localStorage.setItem('library_last_radio_station',target);}catch(_){}
   }
@@ -26,7 +26,7 @@
   }
   function switchTo(target){
     activeTarget=target;
-    if(target==='radio4'||target==='nhk')rememberRadio(target);
+    if(target==='radio4'||target==='nhk'||target==='npr')rememberRadio(target);
     Object.keys(buttonsBySource).forEach(function(source){if(source!==target)buttonsBySource[source].forEach(function(id){clearButtonState(document.getElementById(id));});});
     Object.keys(audioIds).forEach(function(name){
       if(name===target)return;
@@ -84,16 +84,21 @@
   var PLAY='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.8 6.2v11.6c0 .8.9 1.3 1.6.9l9-5.8c.6-.4.6-1.4 0-1.8l-9-5.8c-.7-.4-1.6.1-1.6.9z" fill="currentColor"/></svg>';
   var PAUSE='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3.2v12H7.5zM13.3 6h3.2v12h-3.2z" fill="currentColor"/></svg>';
   var radioPanel=document.getElementById('library-radio-panel');
-  var kjvPanel=document.getElementById('niv-bible-panel');
   var podRoot=document.getElementById('library-podcast-panel');
   var mode='podcast';
   function applyMode(){
-    if(kjvPanel)kjvPanel.hidden=mode!=='kjv';
     if(podRoot){
       if(mode==='podcast'&&podRoot.hidden&&typeof window.LibraryOpenPodcastPanel==='function')window.LibraryOpenPodcastPanel();
       if(mode!=='podcast'&&!podRoot.hidden&&typeof window.LibraryClosePodcastPanel==='function')window.LibraryClosePodcastPanel();
     }
-    var km=document.getElementById('audio-kjv-menu');if(km)km.setAttribute('aria-expanded',String(mode==='kjv'));
+  }
+  function applyStoredFeed(){
+    try{
+      if(localStorage.getItem('personal-library-podcast-active-feed')!=='kjv')return;
+      var tab=document.querySelector('[data-podcast-tab="kjv"]');
+      var sel=document.querySelector('[data-podcast-tab][aria-selected="true"]');
+      if(tab&&(!sel||sel.getAttribute('data-podcast-tab')!=='kjv'))tab.click();
+    }catch(_){}
   }
   function setMode(next){mode=next;applyMode();}
   function setShell(open){
@@ -101,7 +106,7 @@
     shellToggle.setAttribute('aria-expanded',String(open));
     shellToggle.classList.toggle('is-open',open);
     shellToggle.classList.toggle('is-active',open);
-    if(open)applyMode();else{closeFeedMenu();closeStationMenu();}
+    if(open){applyMode();applyStoredFeed();}else{closeFeedMenu();closeStationMenu();}
   }
   shellToggle.addEventListener('click',function(){setShell(shell.hidden);});
   function paintGlyph(btn,playing){
@@ -125,7 +130,7 @@
     C.switchTo(target);
     var r=a.play();if(r&&r.catch)r.catch(function(){});
   });
-  ['radio4-audio','nhk-radio-audio'].forEach(function(id){
+  ['radio4-audio','nhk-radio-audio','npr-radio-audio'].forEach(function(id){
     var a=document.getElementById(id);
     if(a){a.addEventListener('play',paintRadio);a.addEventListener('pause',paintRadio);a.addEventListener('ended',paintRadio);}
   });
@@ -173,15 +178,6 @@
     });
     radioPlay.addEventListener('contextmenu',function(event){event.preventDefault();});
   }
-  /* KJV */
-  var kjvPlay=document.getElementById('audio-kjv-play');
-  var kjvToggle=document.getElementById('niv-bible-toggle');
-  var kjvAudio=document.getElementById('niv-bible-audio');
-  function paintKjv(){paintGlyph(kjvPlay,!!(kjvAudio&&!kjvAudio.paused));}
-  if(kjvPlay&&kjvToggle)kjvPlay.addEventListener('click',function(){setMode('kjv');kjvToggle.click();});
-  if(kjvAudio){kjvAudio.addEventListener('play',paintKjv);kjvAudio.addEventListener('pause',paintKjv);kjvAudio.addEventListener('ended',paintKjv);}
-  var kjvMenu=document.getElementById('audio-kjv-menu');
-  if(kjvMenu)kjvMenu.addEventListener('click',function(){setMode(mode==='kjv'?'podcast':'kjv');});
   /* Podcast */
   var podPlay=document.getElementById('audio-podcast-play');
   var feedMenu=document.getElementById('audio-podcast-menu-list');
@@ -191,6 +187,11 @@
   }
   function feedAudio(feed){return document.getElementById('podcast-'+feed+'-audio');}
   function paintPodcast(){
+    if(currentFeed()==='kjv'){
+      var b=document.getElementById('niv-bible-audio');
+      paintGlyph(podPlay,!!(b&&!b.paused));
+      return;
+    }
     var a=feedAudio(currentFeed());
     paintGlyph(podPlay,!!(a&&!a.paused));
   }
@@ -202,12 +203,20 @@
   var podLongPressed=false;
   if(podPlay)podPlay.addEventListener('click',function(){
     if(podLongPressed){podLongPressed=false;return;}
-    setMode('podcast');toggleFeed(currentFeed());
+    setMode('podcast');
+    if(currentFeed()==='kjv'){
+      var bt=document.getElementById('niv-bible-toggle');if(bt)bt.click();
+      paintPodcast();
+      return;
+    }
+    toggleFeed(currentFeed());
   });
   ['bbc','chronicle','english','japanese'].forEach(function(f){
     var a=feedAudio(f);
     if(a){a.addEventListener('play',paintPodcast);a.addEventListener('pause',paintPodcast);a.addEventListener('ended',paintPodcast);}
   });
+  var bibleAudioEl=document.getElementById('niv-bible-audio');
+  if(bibleAudioEl){bibleAudioEl.addEventListener('play',paintPodcast);bibleAudioEl.addEventListener('pause',paintPodcast);bibleAudioEl.addEventListener('ended',paintPodcast);}
   function closeFeedMenu(){
     if(feedMenu)feedMenu.hidden=true;
     if(podPlay)podPlay.setAttribute('aria-expanded','false');
@@ -256,6 +265,12 @@
     if(tab&&currentFeed()!==feed)tab.click();
     setMode('podcast');
     closeFeedMenu();
+    if(feed==='kjv'){
+      var ba=document.getElementById('niv-bible-audio');
+      if(ba&&ba.paused){var bt2=document.getElementById('niv-bible-toggle');if(bt2)bt2.click();}
+      paintPodcast();
+      return;
+    }
     var a=feedAudio(feed);
     if(a&&a.paused)toggleFeed(feed);
     paintPodcast();
@@ -266,6 +281,6 @@
     if(feedMenu&&!feedMenu.hidden&&!t.closest('.audio-quick-group--podcast'))closeFeedMenu();
     if(stationMenu&&!stationMenu.hidden&&!t.closest('.audio-quick-group--radio'))closeStationMenu();
   },true);
-  paintRadio();paintKjv();paintPodcast();
+  paintRadio();paintPodcast();
   window.LibraryAudioShell={setOpen:setShell,isOpen:function(){return !shell.hidden;},setMode:setMode,getMode:function(){return mode;}};
 })(window,document);
