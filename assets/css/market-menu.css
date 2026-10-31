@@ -1408,11 +1408,11 @@ body > #library-market-panel.library-market-dropdown {
   color: #14301f !important;
 }
 #library-market-panel > .home-dashboard-tabs {
-  background: #e9f5ed !important;
+  background: #f4faf5 !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   border: 0 !important;
-  border-radius: 14px !important;
+  border-radius: 0 !important;
   /* Inset to match the view cards' padding, so the Market/News buttons
      line up with the tiles and headlines below instead of jutting out. */
   margin: 0 10px 12px !important;
@@ -1452,8 +1452,8 @@ body > #library-market-panel.library-market-dropdown {
   box-shadow: none !important;
 }
 #library-market-panel .home-market-group .fx-bar__rate {
-  background: #eef7f1 !important;
-  border: 1px solid #cfe7d8 !important;
+  background: #e7f4ec !important;
+  border: 0 !important;
   border-radius: 10px !important;
   box-shadow: none !important;
 }
@@ -1462,8 +1462,8 @@ body > #library-market-panel.library-market-dropdown {
   border-bottom: 1px solid #d8edde !important;
 }
 #library-market-panel #home-news-view .home-news-item {
-  background: #eef7f1 !important;
-  border: 1px solid #cfe7d8 !important;
+  background: #e7f4ec !important;
+  border: 0 !important;
   border-radius: 12px !important;
   box-shadow: none !important;
 }
@@ -1478,8 +1478,7 @@ body > #library-market-panel.library-market-dropdown {
   color: #e8f6ec !important;
 }
 :root[data-theme="dark"] #library-market-panel > .home-dashboard-tabs {
-  background: #223528 !important;
-  border-bottom-color: #33523d !important;
+  background: #223529 !important;
 }
 :root[data-theme="dark"] #library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab,
 :root[data-theme="dark"] #library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {
@@ -1500,8 +1499,7 @@ body > #library-market-panel.library-market-dropdown {
 }
 :root[data-theme="dark"] #library-market-panel .home-market-group .fx-bar__rate,
 :root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item {
-  background: #243829 !important;
-  border-color: #33523d !important;
+  background: #2a4634 !important;
 }
 :root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item[open] > .home-news-item__title-row {
   background: #2b4634 !important;
