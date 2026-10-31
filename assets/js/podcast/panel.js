@@ -556,6 +556,17 @@
     applyFeedFold(expanded);
     if (window.LibraryKjvApplyFold) window.LibraryKjvApplyFold(expanded);
   };
+  /* Reading tap: with the lists expanded, a tap anywhere outside the
+     purple audio frame (and outside the nav / market / book chrome)
+     folds the lists away so the page can be read. Taps inside the
+     panel never fold; the heading strips keep their own toggle. */
+  document.addEventListener('click', function (event) {
+    if (!foldExpanded) return;
+    var t = event.target;
+    if (!t || !t.closest) return;
+    if (t.closest('#library-audio-panel, .site-nav-shell, #library-market-panel, #library-book-chapter-handle, #library-book-chapter-drawer, .lx-select')) return;
+    window.LibraryAudioSetFold(false);
+  });
   feeds.forEach(function (feed) {
     var panelEl = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
     var heading = panelEl && panelEl.querySelector('.podcast-episode-panel__heading');

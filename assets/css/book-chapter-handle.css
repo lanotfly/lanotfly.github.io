@@ -144,3 +144,51 @@
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link { background: rgba(255, 255, 255, .12) !important; }
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-select { background: rgba(255, 255, 255, .14) !important; }
 :root[data-theme="dark"] #library-book-chapter-handle { background: rgba(18, 48, 30, .85) !important; }
+
+/* 2026-10-31: deep-green glass for the Reading drawer and its handle —
+   translucent but not washed out, same recipe in light and dark mode,
+   with light text. The chapter list fits five rows; tapping the
+   drawer's upper area stretches it to the bottom of the screen
+   (.is-tall, wired in navigation.js), tapping again returns. */
+#library-book-chapter-drawer {
+  background: linear-gradient(150deg, rgba(23, 60, 36, .92), rgba(13, 40, 22, .89)) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  border-color: rgba(255, 255, 255, .26) !important;
+  color: #e7f5ea !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 12px 30px rgba(6, 26, 13, .35) !important;
+}
+#library-book-chapter-drawer .book-drawer-book-label,
+#library-book-chapter-drawer .book-drawer-section-label { color: #a5cdb0 !important; cursor: pointer; }
+#library-book-chapter-drawer .book-drawer-link {
+  background: rgba(255, 255, 255, .10) !important;
+  border-color: rgba(255, 255, 255, .16) !important;
+  color: #e7f5ea !important;
+}
+#library-book-chapter-drawer .book-drawer-link.is-current {
+  background: rgba(114, 200, 138, .24) !important;
+  border-color: #72c89a !important;
+  color: #effff3 !important;
+}
+#library-book-chapter-drawer .book-drawer-book-select,
+#library-book-chapter-drawer .book-drawer-theme-toggle {
+  background: rgba(255, 255, 255, .12) !important;
+  border-color: rgba(255, 255, 255, .2) !important;
+  color: #e7f5ea !important;
+}
+#library-book-chapter-handle {
+  background: rgba(23, 60, 36, .88) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  border-color: rgba(255, 255, 255, .26) !important;
+  color: #d8f3df !important;
+}
+#library-book-chapter-drawer .book-drawer-list { max-height: 218px; }
+#library-book-chapter-drawer.is-tall {
+  bottom: 8px !important;
+  max-height: none !important;
+}
+#library-book-chapter-drawer.is-tall .book-drawer-list {
+  max-height: none !important;
+  flex: 1 1 auto;
+}

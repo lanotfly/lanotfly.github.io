@@ -1399,6 +1399,7 @@ body > #library-market-panel.library-market-dropdown {
    sizing and behavior are untouched; only the surface changes. */
 body > #library-market-panel.library-market-dropdown {
   background: linear-gradient(165deg, #f4faf5, #eaf6ee) !important;
+  padding-top: 5px !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   border: 1.5px solid #8fc7a5 !important;
@@ -1415,9 +1416,10 @@ body > #library-market-panel.library-market-dropdown {
   border-radius: 0 !important;
   /* Inset to match the view cards' padding, so the Market/News buttons
      line up with the tiles and headlines below instead of jutting out. */
-  margin: 0 10px 5px !important;
+  margin: 0 10px 3px !important;
   width: auto !important;
-  padding-bottom: 5px !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
 }
 #library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab,
 #library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {

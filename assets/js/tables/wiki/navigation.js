@@ -283,6 +283,7 @@
     if(!chapterDrawer)return;
     chapterDrawerOpen=false;
     chapterDrawer.classList.remove('is-open');
+    chapterDrawer.classList.remove('is-tall');
     chapterDrawer.setAttribute('aria-hidden','true');
     if(chapterHandle){chapterHandle.classList.remove('is-expanded');chapterHandle.setAttribute('aria-expanded','false');}
     document.documentElement.classList.remove('book-chapter-drawer-open');
@@ -336,7 +337,7 @@
       var fixed=28;
       Array.prototype.forEach.call(chapterDrawer.children,function(child){if(child!==list)fixed+=child.offsetHeight+10;});
       var avail=window.innerHeight-top-12-fixed;
-      list.style.maxHeight=Math.max(124,Math.min(200,avail))+'px';
+      list.style.maxHeight=Math.max(124,Math.min(218,avail))+'px';
     }
   }
   function moveHandleTo(top){
@@ -359,9 +360,16 @@
   }
   function initChapterDrawer(){
     if(chapterDrawer)return;
-    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261031-2';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
+    if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261031-3';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
     chapterDrawer=document.createElement('aside');
     chapterDrawer.id='library-book-chapter-drawer';chapterDrawer.setAttribute('aria-hidden','true');
+    chapterDrawer.addEventListener('click',function(event){
+      /* Tapping the drawer's upper area (not the list, not a control)
+         stretches the chapter list to the bottom of the screen;
+         tapping again returns to the five-chapter size. */
+      if(event.target.closest('.book-drawer-list, button, select, a, .lx-select'))return;
+      chapterDrawer.classList.toggle('is-tall');
+    });
     chapterDrawer.innerHTML='<div class="book-drawer-book-label">Book</div><div class="book-drawer-book-row"><select class="book-drawer-book-select" aria-label="Choose a book"></select><button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-toggle-label">Dark mode</span></button></div><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
     chapterHandle=document.createElement('button');chapterHandle.type='button';chapterHandle.id='library-book-chapter-handle';
     chapterHandle.setAttribute('aria-label','Open reading navigation');chapterHandle.setAttribute('aria-expanded','false');
