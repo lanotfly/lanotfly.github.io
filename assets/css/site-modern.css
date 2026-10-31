@@ -2561,3 +2561,16 @@ html,body{max-width:100%;overflow-x:clip}
 .audio-quick-group--radio, .audio-quick-group--kjv { flex-grow: .92; }
 .audio-quick-group--podcast { flex-grow: 1.35; }
 .audio-quick-main { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+
+/* 2026-10-31: the radio strip is retired — stations live in the Radio
+   button's long-press menu, styled like the podcast feed menu. */
+#library-audio-panel #library-radio-panel { display: none !important; }
+.audio-quick-group--radio { position: relative; }
+.audio-feed-menu [data-station-choice] {
+  display: block; width: 100%; padding: 9px 10px; border: 0; border-radius: 8px;
+  background: transparent; color: #4a2f66; font-size: 13.5px; font-weight: 600;
+  text-align: left; cursor: pointer; box-sizing: border-box;
+}
+.audio-feed-menu [data-station-choice].is-current { background: #f2ebfa; }
+:root[data-theme="dark"] .audio-feed-menu [data-station-choice] { color: #e6dcf7; }
+:root[data-theme="dark"] .audio-feed-menu [data-station-choice].is-current { background: #3a2a55; }

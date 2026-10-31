@@ -88,13 +88,11 @@
   var podRoot=document.getElementById('library-podcast-panel');
   var mode='podcast';
   function applyMode(){
-    if(radioPanel)radioPanel.hidden=mode!=='radio';
     if(kjvPanel)kjvPanel.hidden=mode!=='kjv';
     if(podRoot){
       if(mode==='podcast'&&podRoot.hidden&&typeof window.LibraryOpenPodcastPanel==='function')window.LibraryOpenPodcastPanel();
       if(mode!=='podcast'&&!podRoot.hidden&&typeof window.LibraryClosePodcastPanel==='function')window.LibraryClosePodcastPanel();
     }
-    var rm=document.getElementById('audio-radio-menu');if(rm)rm.setAttribute('aria-expanded',String(mode==='radio'));
     var km=document.getElementById('audio-kjv-menu');if(km)km.setAttribute('aria-expanded',String(mode==='kjv'));
   }
   function setMode(next){mode=next;applyMode();}
@@ -103,7 +101,7 @@
     shellToggle.setAttribute('aria-expanded',String(open));
     shellToggle.classList.toggle('is-open',open);
     shellToggle.classList.toggle('is-active',open);
-    if(open)applyMode();else closeFeedMenu();
+    if(open)applyMode();else{closeFeedMenu();closeStationMenu();}
   }
   shellToggle.addEventListener('click',function(){setShell(shell.hidden);});
   function paintGlyph(btn,playing){
@@ -118,8 +116,9 @@
     if(C){var a=C.getAudio(C.getLastRadio());playing=!!(a&&!a.paused);}
     paintGlyph(radioPlay,playing);
   }
+  var radioLongPressed=false;
   if(radioPlay)radioPlay.addEventListener('click',function(){
-    setMode('radio');
+    if(radioLongPressed){radioLongPressed=false;return;}
     var C=window.LibraryAudioCoordinator;if(!C)return;
     var target=C.getLastRadio();var a=C.getAudio(target);if(!a)return;
     if(!a.paused){a.pause();return;}
@@ -130,8 +129,50 @@
     var a=document.getElementById(id);
     if(a){a.addEventListener('play',paintRadio);a.addEventListener('pause',paintRadio);a.addEventListener('ended',paintRadio);}
   });
-  var radioMenu=document.getElementById('audio-radio-menu');
-  if(radioMenu)radioMenu.addEventListener('click',function(){setMode(mode==='radio'?'podcast':'radio');});
+  /* Radio is a background source now: no panel, just the button state.
+     Long-press opens the station menu (BBC / NHK); the release click
+     after a long press is swallowed, exactly like the Podcast button. */
+  var stationMenu=document.getElementById('audio-radio-menu-list');
+  function closeStationMenu(){
+    if(stationMenu)stationMenu.hidden=true;
+    if(radioPlay)radioPlay.setAttribute('aria-expanded','false');
+  }
+  function openStationMenu(){
+    if(!stationMenu)return;
+    var C=window.LibraryAudioCoordinator;var cur=C?C.getLastRadio():'radio4';
+    stationMenu.querySelectorAll('[data-station-choice]').forEach(function(item){
+      item.classList.toggle('is-current',item.getAttribute('data-station-choice')===cur);
+    });
+    stationMenu.hidden=false;
+    if(radioPlay)radioPlay.setAttribute('aria-expanded','true');
+  }
+  if(stationMenu)stationMenu.addEventListener('click',function(event){
+    var item=event.target&&event.target.closest?event.target.closest('[data-station-choice]'):null;
+    if(!item)return;
+    var target=item.getAttribute('data-station-choice');
+    var C=window.LibraryAudioCoordinator;
+    closeStationMenu();
+    if(!C)return;
+    var a=C.getAudio(target);if(!a)return;
+    if(a.paused){C.switchTo(target);var r=a.play();if(r&&r.catch)r.catch(function(){});}
+  });
+  if(radioPlay){
+    var radioPressTimer=null;
+    var clearRadioPress=function(){if(radioPressTimer){clearTimeout(radioPressTimer);radioPressTimer=null;}};
+    radioPlay.addEventListener('pointerdown',function(){
+      clearRadioPress();
+      radioPressTimer=setTimeout(function(){
+        radioPressTimer=null;
+        radioLongPressed=true;
+        setTimeout(function(){radioLongPressed=false;},1000);
+        openStationMenu();
+      },450);
+    });
+    ['pointerup','pointerleave','pointercancel'].forEach(function(type){
+      radioPlay.addEventListener(type,clearRadioPress);
+    });
+    radioPlay.addEventListener('contextmenu',function(event){event.preventDefault();});
+  }
   /* KJV */
   var kjvPlay=document.getElementById('audio-kjv-play');
   var kjvToggle=document.getElementById('niv-bible-toggle');
@@ -220,9 +261,10 @@
     paintPodcast();
   });
   document.addEventListener('click',function(event){
-    if(!feedMenu||feedMenu.hidden)return;
     var t=event.target;
-    if(t&&t.closest&&!t.closest('.audio-quick-group--podcast'))closeFeedMenu();
+    if(!t||!t.closest)return;
+    if(feedMenu&&!feedMenu.hidden&&!t.closest('.audio-quick-group--podcast'))closeFeedMenu();
+    if(stationMenu&&!stationMenu.hidden&&!t.closest('.audio-quick-group--radio'))closeStationMenu();
   },true);
   paintRadio();paintKjv();paintPodcast();
   window.LibraryAudioShell={setOpen:setShell,isOpen:function(){return !shell.hidden;},setMode:setMode,getMode:function(){return mode;}};
