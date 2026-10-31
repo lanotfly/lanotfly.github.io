@@ -783,7 +783,7 @@
 .niv-bible-panel{padding:10px 0 0}
 .niv-bible-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px}
 .niv-bible-panel__title{margin:0;min-width:0;font-size:16px;line-height:1.35;font-weight:650;color:#222}
-.niv-bible-book-select{flex:0 0 auto;width:auto;max-width:45%;min-width:110px;margin:0;padding:6px 24px 6px 8px;border:1px solid #cfd6d0;border-radius:8px;background:#fff;color:#222;font:inherit;font-size:14px}
+.niv-bible-book-select{flex:0 0 auto;width:auto;max-width:45%;min-width:110px;margin:0;padding:6px 24px 6px 8px;border:1px solid #cfd6d0;border-radius:8px;background:#fff;color:#62458a;font:inherit;font-size:14px}
 .niv-bible-progress-wrap{width:100%;margin:0;padding:0;line-height:1}
 .niv-bible-progress{display:block;width:100%;height:22px;margin:0;accent-color:#326b4b;cursor:pointer}
 .niv-bible-progress:disabled{opacity:.45;cursor:default}
@@ -1088,7 +1088,6 @@ html,body{max-width:100%;overflow-x:clip}
 .site-nav-shell .site-tab-links .site-tab--niv[aria-expanded="true"]{border:2px solid #9581b3!important;background:#f2ecf8!important;color:#50386a!important}
 .niv-bible-panel{background:#fcfaff!important;border-color:#d8cde6!important;color:#30263b!important}
 .niv-bible-panel__title{color:#3f2e54!important}
-.niv-bible-book-select{border-color:#cbbbdc!important;color:#62458a!important;background:#fff!important}
 .niv-bible-progress{accent-color:#6d548b!important}
 .niv-bible-queue-tools{display:flex!important}
 .niv-bible-queue-frame{position:relative;width:100%;height:min(250px,38vh);min-height:190px;margin:0;overflow:visible}
@@ -2578,4 +2577,15 @@ html,body{max-width:100%;overflow-x:clip}
   #library-podcast-panel .podcast-episode-count { white-space: nowrap; }
   #library-podcast-panel .podcast-panel-filter { max-width: 104px; }
   #niv-bible-panel .niv-bible-queue-tools #niv-book-select { max-width: 118px; min-width: 84px; }
+}
+
+/* The KJV book select wears the filter select's exact metrics (font,
+   padding, min-height, radius) so the tools row is one height everywhere. */
+#library-podcast-panel .niv-bible-book-select {
+  font-size: 12px !important; font-weight: 600;
+  padding: 6px 10px !important; min-height: 32px;
+  border-radius: 7px !important;
+}
+@media (max-width: 700px) {
+  #library-podcast-panel .niv-bible-book-select { font-size: 11px !important; padding: 5px 6px !important; }
 }
