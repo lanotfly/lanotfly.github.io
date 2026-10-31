@@ -2420,9 +2420,10 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] #library-podcast-panel .podcast-episode-panel {
   background: #31254a !important;
 }
-/* A dashed frame marks the extent of the Podcast panel, in both states. */
+/* A solid frame marks the extent of the Podcast panel, in both states
+   (user tried dashed, preferred solid). */
 #library-podcast-panel {
-  border: 1.5px dashed #b9a3dd !important;
+  border: 1.5px solid #b9a3dd !important;
 }
 :root[data-theme="dark"] #library-podcast-panel {
   border-color: #6b548f !important;
