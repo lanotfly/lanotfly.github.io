@@ -52,7 +52,7 @@
     [['unplayed','Unplayed'],['played','Played'],['all','All chapters']].forEach(function(data){
       var option=document.createElement('option');option.value=data[0];option.textContent=data[1];if(data[0]==='unplayed')option.selected=true;filter.appendChild(option);
     });
-    filterLabel.appendChild(filter);tools.appendChild(count);tools.appendChild(filterLabel);
+    filterLabel.appendChild(filter);tools.appendChild(count);tools.appendChild(filterLabel);tools.insertBefore(bookSelect,filterLabel);
     queueFrame=document.createElement('div');
     queueFrame.className='podcast-episode-scroll-frame niv-bible-queue-frame';
     queueFrame.setAttribute('aria-label','KJV chapter playlist');

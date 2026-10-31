@@ -2098,17 +2098,7 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__tools,
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-playback-progress,
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__status { display: none !important; }
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress-wrap,
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) #niv-bible-book-select { display: none !important; }
-.niv-bible-mini-toggle { display: none; }
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
-  display: inline-flex !important;
-  align-items: center; justify-content: center;
-  width: 30px; height: 30px; flex: 0 0 auto; margin-right: 8px;
-  border: 1px solid rgba(255, 255, 255, .55); border-radius: 50%;
-  background: rgba(255, 255, 255, .5); color: #356245;
-  font-size: 10px; line-height: 1; cursor: pointer;
-}
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress-wrap { display: none !important; }
 
 /* 2026-10-30: mini-player transport, modelled on Apple Podcasts. Folded
    bars put glass play/pause and skip-forward-30 buttons on the RIGHT of
@@ -2144,15 +2134,6 @@ html,body{max-width:100%;overflow-x:clip}
   border-radius: 9px !important;
   background: #eee7f5 !important;
   color: #62458a !important;
-  border: 1px solid #d9cbe9 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
-  border-radius: 9px !important;
-  color: #62458a !important;
-  background-color: #eee7f5 !important;
   border: 1px solid #d9cbe9 !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
@@ -2243,14 +2224,6 @@ html,body{max-width:100%;overflow-x:clip}
   height: 34px !important; min-height: 34px !important;
 }
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-mini-play { width: 34px !important; height: 34px !important; }
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle { width: 34px !important; height: 34px !important; }
-.site-nav-shell .site-tabs { padding-top: 2px !important; padding-bottom: 2px !important; }
-.niv-bible-panel, .radio-source-panel { margin-top: 6px !important; }
-.content-wrapper__inner:has(> #library-podcast-panel:not([hidden])) > .site-nav-shell { margin-bottom: 2px !important; }
-@media (max-width: 700px) {
-  .site-nav-shell { padding-left: 0 !important; padding-right: 0 !important; }
-  .radio-source-tabs .radio-secondary-tab { min-height: 32px; }
-}
 
 /* 2026-10-31: KJV compact title drops the book name (the select beside
    it already shows the book) and keeps just the chapter. */
@@ -2522,10 +2495,6 @@ html,body{max-width:100%;overflow-x:clip}
   flex: 0 0 34px !important; width: 34px !important; height: 34px !important;
   min-width: 34px !important; min-height: 34px !important;
 }
-#niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
-  flex: 0 0 32px !important; width: 32px !important; height: 32px !important;
-  min-width: 32px !important; min-height: 32px !important;
-}
 #niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-title-book { display: inline; }
 
 /* 2026-10-31: per-episode progress bar (Apple Podcasts style) — a small
@@ -2574,3 +2543,19 @@ html,body{max-width:100%;overflow-x:clip}
   border-color: #57467c;
   background: #33264d;
 }
+
+/* 2026-10-31: KJV runs the feeds' exact architecture. Its play button
+   is ONE state-independent button (it used to be display:none when
+   expanded and 32px when folded, so the whole heading jumped on every
+   fold), and the book picker lives in the tools row like the feeds'
+   filter — the boxed heading now never changes when folding. */
+#library-podcast-panel #niv-bible-panel .niv-bible-mini-toggle {
+  display: inline-flex !important;
+  align-items: center; justify-content: center;
+  background: #eee7f5 !important; border: 1px solid #d9cbe9 !important;
+  color: #62458a; border-radius: 9px; margin: 0 !important; cursor: pointer;
+}
+:root[data-theme="dark"] #library-podcast-panel #niv-bible-panel .niv-bible-mini-toggle {
+  background: #352a4d !important; border-color: #57467c !important; color: #d9cbf2;
+}
+#niv-bible-panel .niv-bible-queue-tools #niv-book-select { flex: 0 1 auto; min-width: 0; max-width: 52%; min-height: 32px; }
