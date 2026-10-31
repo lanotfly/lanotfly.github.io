@@ -582,7 +582,7 @@
 .podcast-episode-row.is-swiping-right .podcast-episode-choice{border-color:#86c99d}
 .podcast-episode-row.is-swiping .podcast-episode-choice{opacity:.08}
 @media(prefers-reduced-motion:reduce){.podcast-episode-row{transition:none}}
-.podcast-episode-choice{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;padding:8px 10px;border:1px solid #e5ddec;border-radius:8px;background:#fff;color:#3f3549;text-align:left;font:500 13px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;transform:translateX(0);transition:transform .18s cubic-bezier(.2,.7,.2,1),opacity .16s ease-out;will-change:transform,opacity}
+.podcast-episode-choice{display:flex;align-items:center;gap:10px;width:100%;min-height:49px;padding:8px 10px;border:1px solid #e5ddec;border-radius:8px;background:#fff;color:#3f3549;text-align:left;font:500 13px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;transform:translateX(0);transition:transform .18s cubic-bezier(.2,.7,.2,1),opacity .16s ease-out;will-change:transform,opacity}
 .podcast-episode-choice:hover{border-color:#b9a4d0;background:#f8f4fc}
 .podcast-episode-choice.is-current{border-color:#9581b3;background:#f2ecf8;color:#50386a;font-weight:700}
 .podcast-episode-row.is-current .podcast-episode-choice{border-color:#9581b3;background:#f2ecf8;color:#50386a;font-weight:700}
@@ -781,7 +781,7 @@
 
 /* Compact KJV player: title left, book selector right, progress below, chapter list last. */
 .niv-bible-panel{padding:10px 0 0}
-.niv-bible-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 7px}
+.niv-bible-panel__heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px}
 .niv-bible-panel__title{margin:0;min-width:0;font-size:16px;line-height:1.35;font-weight:650;color:#222}
 .niv-bible-book-select{flex:0 0 auto;width:auto;max-width:45%;min-width:110px;margin:0;padding:6px 24px 6px 8px;border:1px solid #cfd6d0;border-radius:8px;background:#fff;color:#222;font:inherit;font-size:14px}
 .niv-bible-progress-wrap{width:100%;margin:0;padding:0;line-height:1}
@@ -1092,14 +1092,14 @@ html,body{max-width:100%;overflow-x:clip}
 .niv-bible-progress{accent-color:#6d548b!important}
 .niv-bible-queue-tools{display:flex!important}
 .niv-bible-queue-frame{position:relative;width:100%;height:min(250px,38vh);min-height:190px;margin:0;overflow:visible}
-.niv-bible-queue{display:flex!important;flex-direction:column!important;gap:5px!important;height:100%!important;max-height:100%!important;margin:0!important;padding:1px 0!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;scrollbar-width:thin;list-style:none}
+.niv-bible-queue{display:flex!important;flex-direction:column!important;gap:5px!important;height:100%!important;max-height:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;scrollbar-width:thin;list-style:none}
 .niv-bible-queue .podcast-episode-row{flex:0 0 auto!important}
-.niv-bible-queue .podcast-episode-choice{display:flex!important;min-height:42px!important}
+.niv-bible-queue .podcast-episode-choice{display:flex!important}
 .niv-bible-queue .podcast-episode-meta{display:flex;gap:8px;align-items:center;color:#6c6077;font-size:10px}
 .niv-bible-queue .podcast-episode-date:empty{display:none}
 .niv-bible-queue .podcast-episode-duration{margin-left:auto;white-space:nowrap;font-size:10px;color:#6c6077}
 .site-nav-shell .site-tab-links .site-nav-row-divider--wiki-bottom{flex:0 0 100%;grid-column:1/-1;width:100%;height:0;min-height:0;margin:2px 0 0;border:0;border-top:1px solid #d8cde6;background:none;display:block}
-@media(max-width:700px){.niv-bible-queue-frame{height:min(250px,38vh);min-height:190px}.niv-bible-queue .podcast-episode-choice{min-height:44px!important}}
+@media(max-width:700px){.niv-bible-queue-frame{height:min(250px,38vh);min-height:190px}}
 
 
 /* KJV chapter-list collapse control mirrors the podcast list toggle. */
@@ -2200,7 +2200,7 @@ html,body{max-width:100%;overflow-x:clip}
    and smaller gaps through the heading / progress / tools / status
    stack, so more of the list fits on a phone screen. */
 @media (max-width: 700px) {
-  .podcast-episode-choice { min-height: 38px !important; padding: 6px 8px !important; }
+  .podcast-episode-choice { min-height: 44px !important; padding: 6px 8px !important; }
   .podcast-episode-panel__heading { margin-bottom: 5px !important; }
   .podcast-episode-panel__tools { margin: 6px 0 8px !important; padding-bottom: 2px !important; }
   .podcast-episode-panel__status { margin: 5px 0 6px !important; }
@@ -2298,7 +2298,7 @@ html,body{max-width:100%;overflow-x:clip}
    own outer margins inside the tinted panels. */
 #library-radio-panel .radio-source-tabs { margin: 0 !important; }
 #library-podcast-panel .podcast-episode-panel { margin: 0 !important; }
-#niv-bible-panel { padding: 10px !important; }
+#niv-bible-panel { padding: 14px !important; }
 
 /* 2026-10-31: the podcast card is pale purple in BOTH states — expanded
    and folded read as one panel (was near-white #fdfbff). */
