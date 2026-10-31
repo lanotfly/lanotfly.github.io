@@ -162,7 +162,6 @@
     var selectedTitle=book[0]+' '+chapter;
     var sameSelection=current.book===bookCode&&Number(current.chapter)===chapter&&audio.dataset.chapterTitle===selectedTitle&&!!audio.src;
     if(!sameSelection){playChapter(bookCode,chapter,true);return;}
-    panel.hidden=false;
     button.setAttribute('aria-expanded','true');
     if(!audio.paused){audio.pause();setStatus('');paint();return;}
     if(window.LibraryAudioCoordinator)window.LibraryAudioCoordinator.switchTo('bible');
@@ -192,7 +191,6 @@
     if(title)title.innerHTML='<span class="niv-bible-title-book">'+book[0]+' · </span>Chapter '+chapter;
     renderQueue();
     audio.dataset.chapterTitle=book[0]+' '+chapter;
-    panel.hidden=false;
     button.setAttribute('aria-expanded','true');
     if(audio.src!==chapterUrl(bookCode,chapter)){
       audio.src=chapterUrl(bookCode,chapter);
@@ -244,7 +242,6 @@
   if(title)title.innerHTML='<span class="niv-bible-title-book">'+(getBook(initialBook)||books[0])[0]+' · </span>Chapter '+initialChapter;
   installQueue();
   function togglePlayback(){
-    panel.hidden=false;
     try{
       if(sessionStorage.getItem('library-fold-audio')==='1'){
         sessionStorage.removeItem('library-fold-audio');

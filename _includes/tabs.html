@@ -76,10 +76,20 @@
 </div>
 
   <section id="library-audio-panel" class="library-audio-panel" aria-label="Audio player" hidden>
-    <div class="audio-master-tabs" role="tablist" aria-label="Audio sources">
+    <div class="audio-legacy-toggles" hidden>
       <button class="site-tab site-tab--radio-group" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-radio-toggle" type="button" aria-expanded="false" aria-controls="library-radio-panel" title="Choose a radio station">Radio</button>
       <button class="site-tab site-tab--niv" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="niv-bible-toggle" type="button" aria-pressed="false" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Play KJV Audio Bible" title="Play / pause KJV Audio Bible"><span class="niv-button-label">KJV</span></button>
       <button class="site-tab site-tab--podcast" style="background-color:#f3eef9;color:#705493;border:1px solid #cbb9df;box-shadow:none" id="library-podcast-toggle" type="button" aria-expanded="false" aria-controls="library-podcast-panel" title="Choose from four podcasts"><span class="library-podcast-button-label">Podcast</span></button>
+    </div>
+    <div class="audio-quick-row">
+      <div class="audio-quick-group" role="group" aria-label="Radio">
+        <button id="audio-radio-play" class="audio-quick-main" type="button" aria-label="Play or pause radio"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>Radio</span></button>
+        <button id="audio-radio-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-controls="library-radio-panel" aria-label="Choose a radio station" title="Choose a radio station"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="audio-quick-group" role="group" aria-label="KJV Bible">
+        <button id="audio-kjv-play" class="audio-quick-main" type="button" aria-label="Play or pause KJV Bible"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>KJV</span></button>
+        <button id="audio-kjv-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Choose a book and chapter" title="Choose book and chapter"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 20.5V5.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+      </div>
     </div>
   <section id="library-radio-panel" class="radio-source-panel" aria-label="Radio stations" hidden>
     <div class="secondary-tabs radio-source-tabs" role="tablist" aria-label="Radio stations" data-current="bbc" data-playing="false">

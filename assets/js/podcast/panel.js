@@ -573,11 +573,12 @@
     stopAllPodcasts(true);
   }, true);
 
-  /* Audio controls are listening-first: selecting another audio source closes Podcast.
-     Wiki chapter links are deliberately excluded so Podcast can continue while reading. */
+  /* The Podcast panel is the Audio panel's home view now: Radio and KJV
+     are quick buttons inside it, so their controls must NOT close it.
+     (Mutual pausing is the coordinator's job, not the panel's.) */
   document.addEventListener('click', function (event) {
     var target = event.target && event.target.closest && event.target.closest(
-      '#radio4-toggle, #nhk-radio-toggle, #niv-bible-toggle, #podcast-episode-list .podcast-episode-choice'
+      '#podcast-episode-list .podcast-episode-choice'
     );
     if (target && !root.hidden) setPodcastOpen(false);
   }, true);
