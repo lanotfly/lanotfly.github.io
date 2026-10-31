@@ -1,4 +1,7 @@
 (() => {
+  /* The passcode is checked by a small Cloudflare Worker; the hash no
+     longer lives in this repo. The Worker only answers ok / not ok. */
+  const CHECK_URL = "https://library-gate.lanotfly.workers.dev/check";
   const form = document.getElementById("library-gate-form");
   const input = document.getElementById("passcode");
   const message = document.getElementById("gate-message");
@@ -13,19 +16,16 @@
     button.textContent = "Checking…";
 
     try {
-      const response = await fetch("/assets/data/library-passcode.sha256.txt", {
-        cache: "no-store"
+      const response = await fetch(CHECK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ passcode: input.value })
       });
-      if (!response.ok) throw new Error("Could not load passcode data.");
+      if (!response.ok) throw new Error("The check could not be completed.");
+      const result = await response.json();
 
-      const expectedHash = (await response.text()).trim().toLowerCase();
-      const bytes = new TextEncoder().encode(input.value);
-      const digest = await crypto.subtle.digest("SHA-256", bytes);
-      const actualHash = Array.from(new Uint8Array(digest))
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join("");
-
-      if (actualHash === expectedHash) {
+      if (result && result.ok) {
         let destination = "/home/";
         try {
           sessionStorage.setItem("library_access_granted", "1");

@@ -1,1 +1,1 @@
-d7c936ff17d39579db08d99de2e72de1636c4314e3bbc29640a33b436387607f
+The passcode check moved to a Cloudflare Worker. No passcode hash is stored in this repository any more.
