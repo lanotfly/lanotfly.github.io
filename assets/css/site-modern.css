@@ -2349,3 +2349,28 @@ html,body{max-width:100%;overflow-x:clip}
   .secondary-tabs.podcast-source-tabs { margin-bottom: 1px !important; }
   .podcast-episode-panel { margin-top: 1px !important; }
 }
+
+/* 2026-10-31: one face for every audio panel — a pale purple wash that
+   sets the audio area apart from the article — and the KJV collapse
+   toggle joins the 34px button family (it had no size rule of its own
+   and rendered at whatever size the browser default gave it). */
+.niv-bible-queue-toggle {
+  flex: 0 0 34px !important; width: 34px !important; height: 34px !important;
+  display: inline-flex !important; align-items: center; justify-content: center;
+  padding: 0 !important; border: 1px solid #e5ddec !important; border-radius: 9px !important;
+  background: #ffffff !important; color: #75618c !important; cursor: pointer;
+}
+#library-radio-panel, #niv-bible-panel, #library-podcast-panel {
+  background: linear-gradient(165deg, #f7f2fc 0%, #f2eaf9 100%) !important;
+  border: 1px solid #ddd0ee !important;
+  border-radius: 14px !important;
+}
+#library-radio-panel { padding: 8px !important; }
+#library-podcast-panel { padding: 8px !important; }
+:root:not([data-theme="dark"]) #library-podcast-panel .podcast-episode-panel { background: #fdfbff !important; }
+:root[data-theme="dark"] #library-radio-panel,
+:root[data-theme="dark"] #niv-bible-panel,
+:root[data-theme="dark"] #library-podcast-panel {
+  background: linear-gradient(165deg, #2b2138 0%, #251b31 100%) !important;
+  border-color: #46355e !important;
+}
