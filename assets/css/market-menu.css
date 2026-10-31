@@ -1390,3 +1390,116 @@ body > #library-market-panel.library-market-dropdown {
     radial-gradient(120% 90% at 12% 0%, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, 0) 55%),
     linear-gradient(165deg, rgba(23, 76, 47, .55) 0%, rgba(15, 59, 35, .52) 55%, rgba(10, 45, 26, .58) 100%) !important;
 }
+
+/* 2026-10-31: Podcast-style skin for the Market/News sheet. The frosted
+   glass gives way to the Podcast panel's flat design language — a soft
+   tinted gradient, a delicate 1.5px solid border, flat inner cards and
+   row tiles with 1px lines, dashed/solid tab states — recolored in the
+   panel's own pastel mint green (dark: deep green tints). Geometry,
+   sizing and behavior are untouched; only the surface changes. */
+body > #library-market-panel.library-market-dropdown {
+  background: linear-gradient(165deg, #f4faf5, #eaf6ee) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border: 1.5px solid #8fc7a5 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 18px 40px rgba(20, 60, 35, .20), 0 4px 12px rgba(20, 60, 35, .10) !important;
+  font-family: system-ui, sans-serif !important;
+  color: #14301f !important;
+}
+#library-market-panel > .home-dashboard-tabs {
+  background: #e9f5ed !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border-bottom: 1px solid #cfe7d8 !important;
+  border-radius: 14px 14px 0 0 !important;
+}
+#library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab,
+#library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {
+  background: #f7fcf8 !important;
+  border: 1px dashed #a9d4ba !important;
+  color: #14532d !important;
+  box-shadow: none !important;
+}
+#library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab.is-active,
+#library-market-panel.library-market-dropdown .home-dashboard-tabs > #home-market-tab.is-active,
+#library-market-panel.library-market-dropdown .home-dashboard-tabs > #home-news-tab.is-active,
+#library-market-panel #home-news-view .home-news-source-tabs .secondary-tab.is-active {
+  background: #d9efe0 !important;
+  border: 1px solid #7fb995 !important;
+  color: #14532d !important;
+  box-shadow: none !important;
+}
+#library-market-panel.library-market-dropdown .home-dashboard-tabs .home-market-action,
+#library-market-panel #home-news-view .home-news-refresh,
+#library-market-panel #home-news-view .home-news-bulk,
+#library-market-panel #home-news-view .home-news-bulk-toggle,
+#library-market-panel .home-market-panel .fx-bar__refresh {
+  background: #e7f4ec !important;
+  border: 1px solid #bfe0cc !important;
+  color: #14532d !important;
+  box-shadow: none !important;
+}
+#library-market-panel .home-market-panel,
+#library-market-panel #home-news-view.home-news-panel {
+  background: #f8fcf9 !important;
+  border: 1px solid #c4e2cf !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+#library-market-panel .home-market-group .fx-bar__rate {
+  background: #eef7f1 !important;
+  border: 1px solid #cfe7d8 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+#library-market-panel .home-market-group .home-market-section-label {
+  color: #14532d !important;
+  border-bottom: 1px solid #d8edde !important;
+}
+#library-market-panel #home-news-view .home-news-item {
+  background: #eef7f1 !important;
+  border: 1px solid #cfe7d8 !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+#library-market-panel #home-news-view .home-news-item[open] > .home-news-item__title-row {
+  background: #e6f3ea !important;
+  border-bottom: 1px solid #d8edde !important;
+}
+:root[data-theme="dark"] body > #library-market-panel.library-market-dropdown {
+  background: linear-gradient(165deg, #1e2b22, #18251c) !important;
+  border-color: #4a7a5a !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .5), 0 4px 12px rgba(0, 0, 0, .35) !important;
+  color: #e8f6ec !important;
+}
+:root[data-theme="dark"] #library-market-panel > .home-dashboard-tabs {
+  background: #223528 !important;
+  border-bottom-color: #33523d !important;
+}
+:root[data-theme="dark"] #library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab,
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {
+  background: #223528 !important;
+  border-color: #4a7a5a !important;
+  color: #cfe4d4 !important;
+}
+:root[data-theme="dark"] #library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab.is-active,
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-source-tabs .secondary-tab.is-active {
+  background: #2f5240 !important;
+  border-color: #6aa87f !important;
+  color: #eaf7ee !important;
+}
+:root[data-theme="dark"] #library-market-panel .home-market-panel,
+:root[data-theme="dark"] #library-market-panel #home-news-view.home-news-panel {
+  background: #223528 !important;
+  border-color: #33523d !important;
+}
+:root[data-theme="dark"] #library-market-panel .home-market-group .fx-bar__rate,
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item {
+  background: #243829 !important;
+  border-color: #33523d !important;
+}
+:root[data-theme="dark"] #library-market-panel #home-news-view .home-news-item[open] > .home-news-item__title-row {
+  background: #2b4634 !important;
+  border-bottom-color: #33523d !important;
+}
