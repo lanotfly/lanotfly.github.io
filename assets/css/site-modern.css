@@ -2302,3 +2302,6 @@ html,body{max-width:100%;overflow-x:clip}
   .podcast-episode-panel { padding-bottom: 8px !important; }
   .podcast-episode-list { gap: 4px !important; }
 }
+@media (max-width: 700px) {
+  .podcast-feed-panel .podcast-playback-progress { margin: 3px 0 5px !important; }
+}
