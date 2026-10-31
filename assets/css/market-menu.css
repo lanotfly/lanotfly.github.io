@@ -1415,8 +1415,9 @@ body > #library-market-panel.library-market-dropdown {
   border-radius: 0 !important;
   /* Inset to match the view cards' padding, so the Market/News buttons
      line up with the tiles and headlines below instead of jutting out. */
-  margin: 0 10px 12px !important;
+  margin: 0 10px 5px !important;
   width: auto !important;
+  padding-bottom: 5px !important;
 }
 #library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab,
 #library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {

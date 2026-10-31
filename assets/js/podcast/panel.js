@@ -523,7 +523,7 @@
     playBtn.type = 'button';
     playBtn.className = 'podcast-mini-btn podcast-mini-play';
     playBtn.setAttribute('aria-label', 'Play or pause ' + feed.title);
-    playBtn.innerHTML = '<svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6.5v11l9-5.5z" fill="rgba(60,36,86,.12)" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="rgba(60,36,86,.12)" stroke="currentColor" stroke-width="1.7"/></svg>';
+    playBtn.innerHTML = '<svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6.5v11l9-5.5z" fill="currentColor"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="currentColor"/></svg>';
     playBtn.addEventListener('click', function () { toggleFeedPlayback(feed); });
     actions.insertBefore(playBtn, actions.firstChild);
   });
