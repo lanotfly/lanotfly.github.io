@@ -1411,8 +1411,12 @@ body > #library-market-panel.library-market-dropdown {
   background: #e9f5ed !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
-  border-bottom: 1px solid #cfe7d8 !important;
-  border-radius: 14px 14px 0 0 !important;
+  border: 1px solid #cfe7d8 !important;
+  border-radius: 14px !important;
+  /* Inset to match the view cards' padding, so the Market/News buttons
+     line up with the tiles and headlines below instead of jutting out. */
+  margin: 0 10px 12px !important;
+  width: auto !important;
 }
 #library-market-panel.library-market-dropdown .home-dashboard-tabs .secondary-tab,
 #library-market-panel #home-news-view .home-news-source-tabs .secondary-tab {
@@ -1530,3 +1534,4 @@ body > #library-market-panel.library-market-dropdown {
   overflow-y: auto !important;
   overscroll-behavior: contain !important;
 }
+#library-market-panel .home-news-heading h2 { cursor: pointer; }

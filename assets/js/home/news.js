@@ -97,6 +97,19 @@
   sourceTabs.forEach(function(tab){tab.addEventListener('click',function(){activateSource(tab.getAttribute('data-news-source-tab'));});});
   panelRoot.querySelectorAll('[data-news-refresh]').forEach(function(button){button.addEventListener('click',function(){var id=button.getAttribute('data-news-refresh');loaded[id]=false;var list=panelRoot.querySelector('[data-news-list="'+id+'"]');if(list)list.replaceChildren();loadFeed(id,true);});});
   function syncBulkToggle(button,expand){button.setAttribute('aria-label',expand?'Expand all articles':'Collapse all articles');button.setAttribute('title',expand?'Expand all articles':'Collapse all articles');button.setAttribute('data-expand-next',String(expand));button.setAttribute('data-mode',expand?'collapsed':'expanded');button.innerHTML=expand?'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/><path d="M8 8l3-3M16 8l-3-3M8 16l3 3M16 16l-3 3"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 12h8M8 15h5"/></svg>';}
+    /* Tapping the big source title does what the small bulk button does:
+     expand or collapse every article under it. Clicks on the heading's
+     own action buttons (bulk, refresh) keep their own behavior. */
+  panelRoot.querySelectorAll('.home-news-source').forEach(function(section){
+    var id=section.getAttribute('data-news-source-panel');
+    var heading=section.querySelector('.home-news-heading');
+    var bulk=panelRoot.querySelector('[data-news-bulk-toggle="'+id+'"]');
+    if(!heading||!bulk)return;
+    heading.addEventListener('click',function(event){
+      if(event.target&&event.target.closest&&event.target.closest('button'))return;
+      bulk.click();
+    });
+  });
   panelRoot.querySelectorAll('[data-news-bulk-toggle]').forEach(function(button){syncBulkToggle(button,true);button.addEventListener('click',function(){var id=button.getAttribute('data-news-bulk-toggle');var list=panelRoot.querySelector('[data-news-list="'+id+'"]');if(!list)return;var cards=Array.prototype.slice.call(list.querySelectorAll('details.home-news-item'));var expand=cards.some(function(card){return !card.open;});cards.forEach(function(card){card.open=expand;});syncBulkToggle(button,!expand);});});
   activateTop('market');
   activateSource('japanese');
