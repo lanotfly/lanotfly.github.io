@@ -1510,13 +1510,13 @@ body > #library-market-panel.library-market-dropdown {
    is now a flex column and the LIST is the flexible, internally scrolling
    part, so headlines can never cross the boundary — worst case the list
    scrolls a few pixels inside its own card. */
-#library-market-panel #home-news-view {
+#library-market-panel #home-news-view:not([hidden]) {
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
 }
 #library-market-panel #home-news-view > .home-news-source-tabs { flex: 0 0 auto !important; }
-#library-market-panel #home-news-view > .home-news-source {
+#library-market-panel #home-news-view > .home-news-source:not([hidden]) {
   flex: 1 1 auto !important;
   min-height: 0 !important;
   display: flex !important;
