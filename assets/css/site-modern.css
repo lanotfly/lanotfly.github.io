@@ -2595,3 +2595,22 @@ html,body{max-width:100%;overflow-x:clip}
 #niv-bible-panel:has(.niv-bible-queue-toggle.is-collapsed) .niv-bible-progress-wrap { display: none; }
 .niv-bible-panel__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .audio-quick-group--podcast, .audio-quick-group--radio { flex-grow: 1; }
+
+/* 2026-10-31: KJV heading transport normalized to the feeds' exact
+   geometry in BOTH states. The compact-bar era left three drifts:
+   the fold button shrank to 30px when folded, the play button carried
+   an 8px margin that stretched the pair apart, and the book name was
+   hidden when folded. Now the fold button is 34px folded and expanded
+   alike, the play button takes the feeds' 32px folded size, the pair
+   sits on the shared 6px actions gap with no stray margins, and the
+   title keeps "Book · Chapter N" whole. */
+#niv-bible-panel .niv-bible-mini-toggle, #niv-bible-panel .niv-bible-queue-toggle { margin: 0 !important; }
+#niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-queue-toggle {
+  flex: 0 0 34px !important; width: 34px !important; height: 34px !important;
+  min-width: 34px !important; min-height: 34px !important;
+}
+#niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
+  flex: 0 0 32px !important; width: 32px !important; height: 32px !important;
+  min-width: 32px !important; min-height: 32px !important;
+}
+#niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-title-book { display: inline; }
