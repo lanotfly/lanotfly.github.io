@@ -119,6 +119,7 @@
     paintGlyph(radioPlay,playing);
   }
   if(radioPlay)radioPlay.addEventListener('click',function(){
+    setMode('radio');
     var C=window.LibraryAudioCoordinator;if(!C)return;
     var target=C.getLastRadio();var a=C.getAudio(target);if(!a)return;
     if(!a.paused){a.pause();return;}
@@ -136,7 +137,7 @@
   var kjvToggle=document.getElementById('niv-bible-toggle');
   var kjvAudio=document.getElementById('niv-bible-audio');
   function paintKjv(){paintGlyph(kjvPlay,!!(kjvAudio&&!kjvAudio.paused));}
-  if(kjvPlay&&kjvToggle)kjvPlay.addEventListener('click',function(){kjvToggle.click();});
+  if(kjvPlay&&kjvToggle)kjvPlay.addEventListener('click',function(){setMode('kjv');kjvToggle.click();});
   if(kjvAudio){kjvAudio.addEventListener('play',paintKjv);kjvAudio.addEventListener('pause',paintKjv);kjvAudio.addEventListener('ended',paintKjv);}
   var kjvMenu=document.getElementById('audio-kjv-menu');
   if(kjvMenu)kjvMenu.addEventListener('click',function(){setMode(mode==='kjv'?'podcast':'kjv');});
@@ -158,7 +159,7 @@
     var mini=section?section.querySelector('.podcast-mini-play'):null;
     if(mini)mini.click();
   }
-  if(podPlay)podPlay.addEventListener('click',function(){toggleFeed(currentFeed());});
+  if(podPlay)podPlay.addEventListener('click',function(){setMode('podcast');toggleFeed(currentFeed());});
   ['bbc','chronicle','english','japanese'].forEach(function(f){
     var a=feedAudio(f);
     if(a){a.addEventListener('play',paintPodcast);a.addEventListener('pause',paintPodcast);a.addEventListener('ended',paintPodcast);}

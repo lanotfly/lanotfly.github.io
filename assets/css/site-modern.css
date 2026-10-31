@@ -2525,3 +2525,14 @@ html,body{max-width:100%;overflow-x:clip}
   .audio-quick-glyph { width: 16px; height: 16px; flex-basis: 16px; }
   .audio-quick-glyph svg { width: 16px; height: 16px; }
 }
+
+/* 2026-10-31: the three-button row must never outgrow the frame — the
+   mains may shrink below their label size and labels ellipsize. */
+.audio-quick-main { min-width: 0; }
+.audio-quick-main > span:not([data-glyph]) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 700px) {
+  .audio-quick-row { gap: 5px; }
+  .audio-quick-group { gap: 4px; }
+  .audio-quick-side { flex-basis: 32px; width: 32px; min-height: 38px; }
+  .audio-feed-menu { min-width: 200px; }
+}
