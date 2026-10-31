@@ -85,6 +85,9 @@
       collapseButton.title='Collapse chapter list';
       collapseButton.innerHTML='<svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg>';
       bookSelect.insertAdjacentElement('afterend',collapseButton);
+      /* Folded or not, play/pause sits immediately LEFT of the fold
+         button — the same order as every podcast feed's heading. */
+      if(miniToggle)heading.insertBefore(miniToggle,collapseButton);
       collapseButton.addEventListener('click',function(){
         var collapsed=collapseButton.getAttribute('aria-expanded')==='true';
         collapseButton.setAttribute('aria-expanded',String(!collapsed));
