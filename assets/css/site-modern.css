@@ -2574,3 +2574,11 @@ html,body{max-width:100%;overflow-x:clip}
 .audio-feed-menu [data-station-choice].is-current { background: #f2ebfa; }
 :root[data-theme="dark"] .audio-feed-menu [data-station-choice] { color: #e6dcf7; }
 :root[data-theme="dark"] .audio-feed-menu [data-station-choice].is-current { background: #3a2a55; }
+
+/* 2026-10-31: the long-press menus hug their longest label — no fixed
+   wide box, no wrapping. Podcast is the leftmost button now, so its
+   menu anchors left (the right-anchored box slid off the screen's left
+   edge); Radio keeps the right anchor of the rightmost group. */
+.audio-feed-menu { width: max-content; min-width: 0; max-width: 80vw; }
+.audio-feed-menu [data-feed-choice], .audio-feed-menu [data-station-choice] { white-space: nowrap; }
+.audio-quick-group--podcast .audio-feed-menu { left: 0; right: auto; }
