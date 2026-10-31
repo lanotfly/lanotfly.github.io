@@ -67,22 +67,23 @@
   audio.addEventListener('error',function(){paint(false);});
 })();
 
-/* Shared radio play/pause button (right of the station tabs, same build
-   as the podcast mini play): it presses whichever station toggle was
-   used last — BBC by default — and mirrors the live play state. */
+/* The current station's tab carries the play/pause glyph (like the
+   podcast episode list): the shared painter marks the tabs container
+   with the last-used station and the live play state, and CSS shows
+   the glyph only on that station's tab. */
 (function(){
-  if(window.__libraryRadioPlayToggleInstalled)return;
-  window.__libraryRadioPlayToggleInstalled=true;
-  var btn=document.getElementById('radio-play-toggle');
+  if(window.__libraryRadioGlyphInstalled)return;
+  window.__libraryRadioGlyphInstalled=true;
+  var tabs=document.querySelector('.radio-source-tabs');
   var bbcToggle=document.getElementById('radio4-toggle');
   var nhkToggle=document.getElementById('nhk-radio-toggle');
   var bbcAudio=document.getElementById('radio4-audio');
   var nhkAudio=document.getElementById('nhk-radio-audio');
-  if(!btn||!bbcToggle||!nhkToggle||!bbcAudio||!nhkAudio)return;
+  if(!tabs||!bbcToggle||!nhkToggle||!bbcAudio||!nhkAudio)return;
   var lastStation='bbc';
   function paint(){
-    var playing=!bbcAudio.paused||!nhkAudio.paused;
-    btn.setAttribute('aria-pressed',String(playing));
+    tabs.setAttribute('data-current',lastStation);
+    tabs.setAttribute('data-playing',String(!bbcAudio.paused||!nhkAudio.paused));
   }
   [bbcAudio,nhkAudio].forEach(function(a){
     a.addEventListener('play',function(){lastStation=a===nhkAudio?'nhk':'bbc';paint();});
@@ -90,11 +91,7 @@
     a.addEventListener('ended',paint);
     a.addEventListener('error',paint);
   });
-  bbcToggle.addEventListener('click',function(){lastStation='bbc';});
-  nhkToggle.addEventListener('click',function(){lastStation='nhk';});
-  btn.addEventListener('click',function(){
-    (lastStation==='nhk'?nhkToggle:bbcToggle).click();
-    paint();
-  });
+  bbcToggle.addEventListener('click',function(){lastStation='bbc';paint();});
+  nhkToggle.addEventListener('click',function(){lastStation='nhk';paint();});
   paint();
 })();

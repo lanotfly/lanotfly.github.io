@@ -2335,17 +2335,13 @@ html,body{max-width:100%;overflow-x:clip}
    it already shows the book) and keeps just the chapter. */
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-title-book { display: none; }
 /* Radio row: two station tabs plus the shared play/pause button. */
-.radio-source-tabs { grid-template-columns: 1fr 1fr auto !important; align-items: center !important; }
-.radio-play-toggle {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; flex: 0 0 auto; padding: 0;
-  border-radius: 9px; background: #eee7f5; color: #62458a;
-  border: 1px solid #d9cbe9; cursor: pointer;
-}
-.radio-play-toggle svg { width: 15px; height: 15px; display: block; }
-.radio-play-toggle .icon-pause { display: none; }
-.radio-play-toggle[aria-pressed="true"] .icon-pause { display: block; }
-.radio-play-toggle[aria-pressed="true"] .icon-play { display: none; }
+.radio-tab-glyph { display: none; margin-right: 6px; color: #62458a; vertical-align: -2px; }
+.radio-tab-glyph svg { width: 13px; height: 13px; display: block; }
+.radio-source-tabs[data-current="bbc"] #radio4-toggle .radio-tab-glyph,
+.radio-source-tabs[data-current="nhk"] #nhk-radio-toggle .radio-tab-glyph { display: inline-flex; }
+.radio-tab-glyph .icon-pause { display: none; }
+.radio-source-tabs[data-playing="true"] .radio-tab-glyph .icon-pause { display: block; }
+.radio-source-tabs[data-playing="true"] .radio-tab-glyph .icon-play { display: none; }
 /* Podcast stack, one notch tighter still. */
 .site-nav-shell .site-tabs { padding-top: 1px !important; padding-bottom: 1px !important; }
 @media (max-width: 700px) {
