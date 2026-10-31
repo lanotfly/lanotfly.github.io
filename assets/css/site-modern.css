@@ -2536,3 +2536,20 @@ html,body{max-width:100%;overflow-x:clip}
   .audio-quick-side { flex-basis: 32px; width: 32px; min-height: 38px; }
   .audio-feed-menu { min-width: 200px; }
 }
+
+/* 2026-10-31: Radio/KJV need no chooser buttons (their play button
+   switches the panel to them, choices inside). Only Podcast keeps a
+   dropdown — and it gets a wider button now that the row has room.
+   The chooser cards wear the panel purple, never white. */
+.audio-quick-group--podcast .audio-quick-side { flex-basis: 44px; width: 44px; }
+#library-audio-panel #library-radio-panel, #library-audio-panel #niv-bible-panel {
+  background: #f2ebfa !important;
+}
+:root[data-theme="dark"] #library-audio-panel #library-radio-panel,
+:root[data-theme="dark"] #library-audio-panel #niv-bible-panel {
+  background: #31254a !important;
+}
+.audio-feed-menu { background: #faf7ff; }
+@media (max-width: 700px) {
+  .audio-quick-group--podcast .audio-quick-side { flex-basis: 42px; width: 42px; }
+}
