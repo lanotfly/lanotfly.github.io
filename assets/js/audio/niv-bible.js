@@ -89,14 +89,19 @@
       var actionsHost=panel.querySelector('.podcast-panel-actions');
       if(actionsHost)actionsHost.appendChild(collapseButton);
       else bookSelect.insertAdjacentElement('afterend',collapseButton);
+      function applyKjvFold(expanded){
+        collapseButton.setAttribute('aria-expanded',String(expanded));
+        collapseButton.setAttribute('aria-label',expanded?'Collapse chapter list':'Expand chapter list');
+        collapseButton.title=expanded?'Collapse chapter list':'Expand chapter list';
+        collapseButton.classList.toggle('is-collapsed',!expanded);
+        if(queueFrame)queueFrame.hidden=!expanded;
+        if(tools)tools.hidden=!expanded;
+      }
+      window.LibraryKjvApplyFold=applyKjvFold;
       collapseButton.addEventListener('click',function(){
-        var collapsed=collapseButton.getAttribute('aria-expanded')==='true';
-        collapseButton.setAttribute('aria-expanded',String(!collapsed));
-        collapseButton.setAttribute('aria-label',collapsed?'Expand chapter list':'Collapse chapter list');
-        collapseButton.title=collapsed?'Expand chapter list':'Collapse chapter list';
-        collapseButton.classList.toggle('is-collapsed',collapsed);
-        if(queueFrame)queueFrame.hidden=collapsed;
-        if(tools)tools.hidden=collapsed;
+        var expanded=collapseButton.getAttribute('aria-expanded')!=='true';
+        applyKjvFold(expanded);
+        if(window.LibraryPodcastApplyFold)window.LibraryPodcastApplyFold(expanded);
       });
     }
     ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);});

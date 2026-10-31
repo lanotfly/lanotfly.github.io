@@ -2622,3 +2622,26 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-episode-progress-fill { display: block; height: 100%; border-radius: 999px; background: #7b4bc4; }
 :root[data-theme="dark"] .podcast-episode-progress { background: #46355e; }
 :root[data-theme="dark"] .podcast-episode-progress-fill { background: #b79ae8; }
+
+/* 2026-10-31: ONE pale-purple system for the whole audio deck — no
+   white rows or white buttons left in any list (feeds and KJV alike);
+   the current episode sits one step deeper. */
+#library-podcast-panel .podcast-episode-choice { background: #f8f4fd; border-color: #e0d2f0; }
+#library-podcast-panel .podcast-episode-choice:hover { background: #f3ecfb; border-color: #c9b2e6; }
+#library-podcast-panel .podcast-episode-choice.is-current { background: #e9ddf8; border-color: #9678c7; color: #472a6b; }
+#library-podcast-panel .podcast-episode-state { background: #efe8fa; color: #6a5490; }
+#library-podcast-panel .podcast-episode-state[aria-label="Played"] { background: #e2d2f5; color: #5b3d85; }
+#library-podcast-panel .podcast-list-toggle,
+#library-podcast-panel .podcast-bulk-menu__toggle,
+#library-podcast-panel .niv-bible-queue-toggle { background: #eee7f5 !important; border-color: #d9cbe9 !important; color: #62458a; }
+#library-podcast-panel .podcast-panel-filter,
+#library-podcast-panel .niv-bible-book-select { background: #f7f2fd; border-color: #d9cbe9; }
+#library-podcast-panel .podcast-bulk-menu__options { background: #faf7ff; border-color: #ddd0ee; }
+:root[data-theme="dark"] #library-podcast-panel .podcast-episode-choice { background: #2e2140; border-color: #46355e; }
+:root[data-theme="dark"] #library-podcast-panel .podcast-episode-choice:hover { background: #352a4d; border-color: #5d4885; }
+:root[data-theme="dark"] #library-podcast-panel .podcast-episode-choice.is-current { background: #3d2c58; border-color: #7a5fae; color: #e6dcf7; }
+:root[data-theme="dark"] #library-podcast-panel .podcast-list-toggle,
+:root[data-theme="dark"] #library-podcast-panel .podcast-bulk-menu__toggle,
+:root[data-theme="dark"] #library-podcast-panel .niv-bible-queue-toggle { background: #352a4d !important; border-color: #57467c !important; color: #d9cbf2; }
+:root[data-theme="dark"] #library-podcast-panel .podcast-panel-filter,
+:root[data-theme="dark"] #library-podcast-panel .niv-bible-book-select { background: #2e2140; border-color: #57467c; color: #e6dcf7; }

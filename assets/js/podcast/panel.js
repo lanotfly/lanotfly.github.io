@@ -538,20 +538,26 @@
       if (b.getAttribute('aria-expanded') === 'true') b.click();
     });
   }
-  /* Every podcast feed uses the same list-collapse control, expanded by default. */
+  /* Folding is global across the whole audio deck: every feed AND the
+     KJV chapter list share one list state, so folding anywhere folds
+     everywhere. The Apply functions are one-way (no callbacks), and the
+     click handlers fan out to both. */
+  function applyFeedFold(expanded) {
+    root.querySelectorAll('[data-podcast-collapse]').forEach(function (b) {
+      var frame = document.getElementById(b.getAttribute('aria-controls'));
+      b.setAttribute('aria-expanded', String(expanded));
+      b.classList.toggle('is-collapsed', !expanded);
+      b.setAttribute('aria-label', expanded ? 'Collapse episode list' : 'Expand episode list');
+      b.title = expanded ? 'Collapse episode list' : 'Expand episode list';
+      if (frame) frame.hidden = !expanded;
+    });
+  }
+  window.LibraryPodcastApplyFold = applyFeedFold;
   root.querySelectorAll('[data-podcast-collapse]').forEach(function (button) {
     button.addEventListener('click', function () {
       var expanded = button.getAttribute('aria-expanded') !== 'true';
-      /* Folding is global: every feed shares one list state, so switching
-         to another podcast never resurrects an expanded list. */
-      root.querySelectorAll('[data-podcast-collapse]').forEach(function (b) {
-        var frame = document.getElementById(b.getAttribute('aria-controls'));
-        b.setAttribute('aria-expanded', String(expanded));
-        b.classList.toggle('is-collapsed', !expanded);
-        b.setAttribute('aria-label', expanded ? 'Collapse episode list' : 'Expand episode list');
-        b.title = expanded ? 'Collapse episode list' : 'Expand episode list';
-        if (frame) frame.hidden = !expanded;
-      });
+      applyFeedFold(expanded);
+      if (window.LibraryKjvApplyFold) window.LibraryKjvApplyFold(expanded);
     });
   });
   root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
