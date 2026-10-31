@@ -2559,3 +2559,13 @@ html,body{max-width:100%;overflow-x:clip}
   background: #352a4d !important; border-color: #57467c !important; color: #d9cbf2;
 }
 #niv-bible-panel .niv-bible-queue-tools #niv-book-select { flex: 0 1 auto; min-width: 0; max-width: 52%; min-height: 32px; }
+
+/* 2026-10-31: phone compaction for the audio deck — less air above,
+   inside and below the shell, so the whole stack sits higher and
+   tighter on the small screen. Desktop keeps its roomier spacing. */
+@media (max-width: 700px) {
+  #library-audio-panel { margin-top: 2px; padding: 6px; }
+  #library-audio-panel .audio-quick-row { margin-bottom: 6px; }
+  #library-podcast-panel .podcast-episode-panel { padding: 8px !important; margin-bottom: 0 !important; }
+  #library-podcast-panel .podcast-episode-panel__heading { margin-bottom: 0 !important; }
+}
