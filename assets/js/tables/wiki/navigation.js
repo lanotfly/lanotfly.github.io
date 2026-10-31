@@ -288,7 +288,7 @@
     if(chapterHandle){chapterHandle.classList.remove('is-expanded');chapterHandle.setAttribute('aria-expanded','false');}
     document.documentElement.classList.remove('book-chapter-drawer-open');
   }
-  function openChapterDrawer(anchor){
+  function openChapterDrawer(){
     var path=currentBookPath(), book=bookForPath(path);
     if(!book||!chapterDrawer)return;
     var selector=chapterDrawer.querySelector('.book-drawer-book-select');
@@ -303,8 +303,8 @@
     }
     var themeToggle=chapterDrawer.querySelector('.book-drawer-theme-toggle');
     if(themeToggle){var isDark=document.documentElement.getAttribute('data-theme')==='dark';themeToggle.setAttribute('aria-pressed',isDark?'true':'false');themeToggle.setAttribute('aria-label','Switch to '+(isDark?'light':'dark')+' mode');var themeLabel=themeToggle.querySelector('.theme-toggle-label');if(themeLabel)themeLabel.textContent=isDark?'Light mode':'Dark mode';}
-    chapterDrawer.dataset.anchor=anchor==='home'?'home':'handle';
-    chapterDrawer.dataset.side=anchor==='home'?'left':(chapterHandle.dataset.side||'right');
+    chapterDrawer.dataset.anchor='home';
+    chapterDrawer.dataset.side='left';
     positionChapterDrawer();
     var list=chapterDrawer.querySelector('.book-drawer-list');
     list.replaceChildren();
@@ -318,11 +318,10 @@
       list.appendChild(a);
     });
     chapterDrawerOpen=true;chapterDrawer.classList.add('is-open');chapterDrawer.setAttribute('aria-hidden','false');
-    chapterHandle.classList.add('is-expanded');chapterHandle.setAttribute('aria-expanded','true');
     document.documentElement.classList.add('book-chapter-drawer-open');
   }
   function positionChapterDrawer(){
-    if(!chapterHandle||!chapterDrawer)return;
+    if(!chapterDrawer)return;
     var gap=0;
     chapterDrawer.style.bottom='auto';
     var top;
@@ -337,7 +336,7 @@
       chapterDrawer.style.right='auto';
     }else{
       /* Align the drawer's top edge with the floating Reading handle's top edge. */
-      var r=chapterHandle.getBoundingClientRect();
+      var r=chapterHandle?chapterHandle.getBoundingClientRect():{top:8};
       top=Math.max(8,Math.min(window.innerHeight-264,r.top));
       chapterDrawer.style.left='';
       chapterDrawer.style.right='';
@@ -356,24 +355,6 @@
       list.style.maxHeight=Math.max(124,tall?avail:Math.min(218,avail))+'px';
     }
   }
-  function moveHandleTo(top){
-    if(!chapterHandle)return;
-    /* Dragging up is unlimited; dragging down stops where the drawer still
-       fits with its chapter list shrunk to the 3-chapter minimum (~264px). */
-    var minTop=8;
-    var maxTop=Math.max(minTop,window.innerHeight-264);
-    var next=Math.max(minTop,Math.min(maxTop,top));
-    chapterHandle.style.top=next+'px';chapterHandle.style.transform='none';
-    if(chapterDrawerOpen)positionChapterDrawer();
-  }
-  function placeChapterHandle(side){
-    if(!chapterHandle)return;
-    chapterHandle.dataset.side=side;
-    chapterHandle.style.left=side==='left'?'0':'auto';
-    chapterHandle.style.right=side==='right'?'0':'auto';
-    chapterDrawer.dataset.side=side;
-    try{localStorage.setItem('library_book_handle_side',side);}catch(_){}
-  }
   function initChapterDrawer(){
     if(chapterDrawer)return;
     if(!document.querySelector('link[data-book-handle-css]')){var bookCss=document.createElement('link');bookCss.rel='stylesheet';bookCss.href='/assets/css/book-chapter-handle.css?v=20261031-5';bookCss.setAttribute('data-book-handle-css','');document.head.appendChild(bookCss);}
@@ -387,14 +368,7 @@
       chapterDrawer.classList.toggle('is-tall');positionChapterDrawer();
     });
     chapterDrawer.innerHTML='<div class="book-drawer-book-label">Book</div><div class="book-drawer-book-row"><select class="book-drawer-book-select" aria-label="Choose a book"></select><button type="button" class="book-drawer-theme-toggle" id="site-theme-toggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="theme-toggle-label">Dark mode</span></button></div><div class="book-drawer-section-label">Chapters</div><nav class="book-drawer-list" aria-label="Book chapter list"></nav>';
-    chapterHandle=document.createElement('button');chapterHandle.type='button';chapterHandle.id='library-book-chapter-handle';
-    chapterHandle.setAttribute('aria-label','Open reading navigation');chapterHandle.setAttribute('aria-expanded','false');
-    chapterHandle.innerHTML='<span class="book-handle-grip" aria-hidden="true">⠿</span><span class="book-handle-label">Reading</span><span class="book-handle-chevron" aria-hidden="true">‹</span>';
-    document.body.appendChild(chapterDrawer);document.body.appendChild(chapterHandle);
-    var side='right';try{side=localStorage.getItem('library_book_handle_side')||'right';}catch(_){}
-    placeChapterHandle(side);
-    try{var savedTop=localStorage.getItem('library_book_handle_top');if(savedTop){moveHandleTo(parseFloat(savedTop));}}catch(_){}
-    chapterHandle.addEventListener('click',function(){if(chapterHandle.dataset.dragged==='1'){chapterHandle.dataset.dragged='0';return;}if(chapterDrawerOpen)closeChapterDrawer();else openChapterDrawer();});
+    document.body.appendChild(chapterDrawer);
     if(window.LibraryEnhanceSelect)window.LibraryEnhanceSelect(chapterDrawer.querySelector('.book-drawer-book-select'),{variant:'book',buttonClass:'book-drawer-book-select'});
     chapterDrawer.querySelector('.book-drawer-book-select').addEventListener('change',function(){
       var selected=bookSections.find(function(item){return item.key===this.value;},this);
@@ -403,10 +377,10 @@
       var target=new URL(remembered||selected.root,window.location.href);
       navigate(target,true).then(function(){openChapterDrawer();}).catch(function(){window.location.href=target.href;});
     });
-    window.addEventListener('resize',function(){if(chapterHandle){moveHandleTo(chapterHandle.getBoundingClientRect().top);if(chapterDrawerOpen)positionChapterDrawer();}});
+    window.addEventListener('resize',function(){if(chapterDrawerOpen)positionChapterDrawer();});
     document.addEventListener('pointerdown',function(e){
       if(!chapterDrawerOpen)return;
-      if(chapterDrawer.contains(e.target)||chapterHandle.contains(e.target))return;
+      if(chapterDrawer.contains(e.target))return;
       closeChapterDrawer();
     },true);
     /* The Home tab borrows the same panel: a long press (450ms, like the
@@ -422,7 +396,7 @@
       var clearHomePress=function(){if(homePressTimer){clearTimeout(homePressTimer);homePressTimer=null;}};
       var openHomeDrawer=function(){
         if(chapterDrawerOpen&&chapterDrawer.dataset.anchor==='home')closeChapterDrawer();
-        else openChapterDrawer('home');
+        else openChapterDrawer();
       };
       homeLink.addEventListener('pointerdown',function(){
         clearHomePress();
@@ -451,57 +425,14 @@
         homeHoldTimer=setTimeout(function(){
           homeHoldTimer=null;var held=homeHeldLink;homeHeldLink=null;
           if(held){homeReplay=true;held.click();}
-        },260);
+        },300);
       },true);
     }
-    chapterDrawer.addEventListener('pointerdown',function(e){
-      if(e.target.closest('a,select,label'))return;
-      var sy=e.clientY, base=chapterHandle.getBoundingClientRect().top, moved=false;
-      function onMove(ev){var dy=ev.clientY-sy;if(Math.abs(dy)>5)moved=true;if(moved)moveHandleTo(base+dy);}
-      function onUp(){document.removeEventListener('pointermove',onMove);document.removeEventListener('pointerup',onUp);if(moved){try{localStorage.setItem('library_book_handle_top',chapterHandle.style.top);}catch(_){}}}
-      document.addEventListener('pointermove',onMove);document.addEventListener('pointerup',onUp,{once:true});
-    });
     chapterDrawer.addEventListener('click',function(e){
       var link=e.target.closest('a.book-drawer-link');
       if(link){try{localStorage.setItem('library_last_book_menu_path',new URL(link.href,window.location.href).pathname);}catch(_){}closeChapterDrawer();}
     });
-    var sy=0,baseTop=0,dragging=false,moved=false;
-    chapterHandle.addEventListener('pointerdown',function(e){
-      if(e.button!==undefined&&e.button!==0)return;
-      dragging=true;moved=false;sy=e.clientY;
-      var rect=chapterHandle.getBoundingClientRect();baseTop=rect.top;
-      chapterHandle.setPointerCapture&&chapterHandle.setPointerCapture(e.pointerId);
-    });
-    chapterHandle.addEventListener('pointermove',function(e){
-      if(!dragging)return;
-      var dy=e.clientY-sy;
-      if(Math.abs(dy)>7)moved=true;
-      if(!moved)return;
-      chapterHandle.style.transition='none';
-      var nextTop=Math.max(12,Math.min(window.innerHeight-chapterHandle.offsetHeight-12,baseTop+dy));
-      moveHandleTo(nextTop);
-    });
-    function finishDrag(){
-      if(!dragging)return;dragging=false;
-      if(moved){
-        var rect=chapterHandle.getBoundingClientRect();
-        moveHandleTo(rect.top);
-        try{localStorage.setItem('library_book_handle_top',chapterHandle.style.top);}catch(_){}
-        chapterHandle.style.transition='';
-        chapterHandle.dataset.dragged='1';
-        window.setTimeout(function(){chapterHandle.dataset.dragged='0';},250);
-      }
-    }
-    chapterHandle.addEventListener('pointerup',finishDrag);
-    chapterHandle.addEventListener('pointercancel',finishDrag);
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeChapterDrawer();});
-    function updateHandleVisibility(){
-      /* The floating Reading entry replaces the removed top-level Book tab,
-         so it must remain reachable from Home and audio pages as well. */
-      chapterHandle.hidden=false;
-    }
-    updateHandleVisibility();
-    window.addEventListener('popstate',updateHandleVisibility);
   }
   initChapterDrawer();
 

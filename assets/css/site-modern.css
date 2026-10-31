@@ -2622,3 +2622,12 @@ html,body{max-width:100%;overflow-x:clip}
    pulls the page serif in, which reads smaller than the filter beside it. */
 #library-podcast-panel .niv-bible-book-select { font-family: system-ui, sans-serif; }
 #library-podcast-panel .lx-select__option { font-family: system-ui, sans-serif; }
+
+/* The Home tab carries custom long-press / double-tap gestures (it
+   opens the book panel): keep iOS from answering a long press on the
+   link with its own link-preview / callout sheet. */
+.site-nav-shell .site-tab {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
