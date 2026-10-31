@@ -2174,19 +2174,6 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-playback-progress,
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__status { display: none !important; }
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) { padding-top: 6px !important; padding-bottom: 6px !important; }
-/* The KJV mini button wears the same frosted-glass face. */
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
-  background-color: rgba(255, 255, 255, .30) !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6.5v11l9-5.5z' fill='%233c2456' fill-opacity='0.12' stroke='%233c2456' stroke-width='1.9' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-size: 15px 15px; background-position: center; background-repeat: no-repeat;
-  border: 1px solid rgba(255, 255, 255, .70) !important;
-  backdrop-filter: blur(3px) saturate(1.5);
-  -webkit-backdrop-filter: blur(3px) saturate(1.5);
-  font-size: 0 !important; color: transparent !important;
-}
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle[aria-pressed="true"] {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.5 6h3v12h-3zM13.5 6h3v12h-3z' fill='%233c2456' fill-opacity='0.12' stroke='%233c2456' stroke-width='1.7'/%3E%3C/svg%3E");
-}
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress-wrap,
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) #niv-bible-book-select { display: none !important; }
 .niv-bible-mini-toggle { display: none; }
@@ -2240,19 +2227,35 @@ html,body{max-width:100%;overflow-x:clip}
 }
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle {
   border-radius: 9px !important;
+  color: #62458a !important;
   background-color: #eee7f5 !important;
   border: 1px solid #d9cbe9 !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-mini-toggle[aria-pressed="true"] {
-  background-color: #eee7f5 !important;
-  border-color: #d9cbe9 !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.5 6h3v12h-3zM13.5 6h3v12h-3z' fill='%235f4390' fill-opacity='0.16' stroke='%235f4390' stroke-width='1.7'/%3E%3C/svg%3E") !important;
-}
 @media (max-width: 700px) {
   .secondary-tabs.podcast-source-tabs { margin-bottom: 2px !important; }
   .podcast-episode-panel { margin-top: 2px !important; padding-top: 8px !important; }
   .library-podcast-panel { margin-top: 4px !important; }
+}
+
+/* 2026-10-31: the KJV mini toggle's glyph is an inline SVG now (same
+   construction as the podcast mini play), sized here. */
+.niv-bible-mini-toggle svg { width: 15px; height: 15px; display: block; }
+/* Article lists: the browser-default 40px indent wastes a phone's width;
+   a moderate indent keeps the markers clear and the text wide. */
+.wiki-wrap ol, .wiki-wrap ul { padding-left: 1.3em !important; }
+.wiki-wrap ol ol, .wiki-wrap ol ul, .wiki-wrap ul ol, .wiki-wrap ul ul { padding-left: 1.05em !important; }
+/* With the podcast panel open, the nav shell's bottom margin stacked with
+   the panel's top margin into a dead band between the level-1 tabs and
+   the feed rows. Collapse it while the panel is open. */
+.content-wrapper__inner:has(> #library-podcast-panel:not([hidden])) > .site-nav-shell { margin-bottom: 4px !important; }
+/* Light mode: images and diagrams opened in the lightbox sit on a white
+   card, so transparent line art stays readable on the dark overlay
+   (dark mode already reads fine and is left as it was). */
+:root:not([data-theme="dark"]) .diagram-lightbox__stage > img,
+:root:not([data-theme="dark"]) .diagram-lightbox__stage > svg {
+  background: #ffffff;
+  border-radius: 10px;
 }
