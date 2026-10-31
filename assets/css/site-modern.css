@@ -2290,3 +2290,15 @@ html,body{max-width:100%;overflow-x:clip}
   text-align: left;
 }
 :root:not([data-theme="dark"]) .diagram-lightbox__stage > table th { background: #eef4ff; }
+
+/* 2026-10-31: expanded podcast panel, tightened — shorter episode rows
+   and smaller gaps through the heading / progress / tools / status
+   stack, so more of the list fits on a phone screen. */
+@media (max-width: 700px) {
+  .podcast-episode-choice { min-height: 38px !important; padding: 6px 8px !important; }
+  .podcast-episode-panel__heading { margin-bottom: 5px !important; }
+  .podcast-episode-panel__tools { margin: 6px 0 8px !important; padding-bottom: 2px !important; }
+  .podcast-episode-panel__status { margin: 5px 0 6px !important; }
+  .podcast-episode-panel { padding-bottom: 8px !important; }
+  .podcast-episode-list { gap: 4px !important; }
+}
