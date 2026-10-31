@@ -117,9 +117,16 @@
   /* Radio */
   var radioPlay=document.getElementById('audio-radio-play');
   function paintRadio(){
-    var C=window.LibraryAudioCoordinator;var playing=false;
-    if(C){var a=C.getAudio(C.getLastRadio());playing=!!(a&&!a.paused);}
+    var C=window.LibraryAudioCoordinator;var playing=false;var station='radio4';
+    if(C){station=C.getLastRadio();var a=C.getAudio(station);playing=!!(a&&!a.paused);}
     paintGlyph(radioPlay,playing);
+    /* The button names the selected station: Radio BBC / NHK / NPR. */
+    if(radioPlay){
+      var suffix=station==='nhk'?'NHK':station==='npr'?'NPR':'BBC';
+      var label=radioPlay.querySelector('[data-label]');
+      if(label)label.textContent='Radio '+suffix;
+      radioPlay.setAttribute('aria-label','Play or pause Radio '+suffix);
+    }
   }
   var radioLongPressed=false;
   if(radioPlay)radioPlay.addEventListener('click',function(){
