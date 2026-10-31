@@ -2617,3 +2617,8 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] #library-book-chapter-drawer .lx-select__menu { background: #243b2e; border-color: #477c59; }
 :root[data-theme="dark"] #library-book-chapter-drawer .lx-select__option { color: #e5f5e9; }
 :root[data-theme="dark"] #library-book-chapter-drawer .lx-select__option.is-current { background: #2f5240; }
+
+/* KJV book chooser wears the filter's sans face: its font:inherit otherwise
+   pulls the page serif in, which reads smaller than the filter beside it. */
+#library-podcast-panel .niv-bible-book-select { font-family: system-ui, sans-serif; }
+#library-podcast-panel .lx-select__option { font-family: system-ui, sans-serif; }

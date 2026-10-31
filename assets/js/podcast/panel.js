@@ -595,7 +595,8 @@
   });
   /* All four podcasts use the same PodcastList renderer, including swipe-to-mark-played. */
   createListModules();
-  /* If any non-Podcast player starts, stop Podcast and remove its selected row. */
+  /* If any non-Podcast player starts, pause Podcast but keep its place:
+     the selected row and progress bar stay where the listener left them. */
   document.addEventListener('play', function (event) {
     var media = event.target;
     if (!media || (media.tagName !== 'AUDIO' && media.tagName !== 'VIDEO')) return;
@@ -604,7 +605,7 @@
       return;
     }
     if (!media.id || media.id.indexOf('podcast-') === 0) return;
-    stopAllPodcasts(true);
+    stopAllPodcasts(false);
   }, true);
 
   /* The Podcast panel is the Audio panel's home view now: Radio and KJV
