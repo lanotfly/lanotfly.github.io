@@ -3,6 +3,8 @@
   if(window.LibraryPodcastList)return;
   function create(config){
     var episodeList=config.listElement||document.getElementById('podcast-episode-list');
+    var savedScrollTop=0;
+    if(episodeList)episodeList.addEventListener('scroll',function(){savedScrollTop=episodeList.scrollTop;},{passive:true});
     if(episodeList&&episodeList.parentNode&&(!config.listElement||config.wrapInScrollFrame===true)&&!episodeList.parentNode.classList.contains('podcast-episode-scroll-frame')){
       var scrollFrame=document.createElement('div');scrollFrame.className='podcast-episode-scroll-frame';
       episodeList.parentNode.insertBefore(scrollFrame,episodeList);scrollFrame.appendChild(episodeList);
@@ -115,6 +117,7 @@
     }
     function render(){
       if(!episodeList)return;
+      var keepScrollTop=episodeList.clientHeight?episodeList.scrollTop:savedScrollTop;
       episodeList.textContent='';
       var queue=config.getQueue(),currentIndex=config.getIndex();
       var mode=config.getListMode(),panelMode=config.getPanelMode();
@@ -255,6 +258,7 @@
         else if(!totalMatchingEpisodes)panelStatus.textContent=mode==='played'?'No played episodes yet.':(mode==='unplayed'?'All episodes have been played.':'No episodes available.');
         else panelStatus.textContent='';
       }
+      episodeList.scrollTop=keepScrollTop;savedScrollTop=keepScrollTop;
     }
     if(listModeSelect)listModeSelect.addEventListener('change',function(){
       var mode=listModeSelect.value;
