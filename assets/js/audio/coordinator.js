@@ -204,7 +204,18 @@
     return tab?tab.getAttribute('data-podcast-tab'):'bbc';
   }
   function feedAudio(feed){return document.getElementById('podcast-'+feed+'-audio');}
+  /* The button names the selected feed, like Radio names its station:
+     Podcast NEWS EN / NEWS JP / EASY EN / EASY JP / KJV. */
+  var PODCAST_SUFFIX={bbc:'NEWS EN',chronicle:'NEWS JP',english:'EASY EN',japanese:'EASY JP',kjv:'KJV'};
+  function paintPodcastLabel(){
+    if(!podPlay)return;
+    var suffix=PODCAST_SUFFIX[currentFeed()]||'NEWS EN';
+    var label=podPlay.querySelector('[data-label]');
+    if(label)label.textContent='Podcast '+suffix;
+    podPlay.setAttribute('aria-label','Play or pause Podcast '+suffix);
+  }
   function paintPodcast(){
+    paintPodcastLabel();
     if(currentFeed()==='kjv'){
       var b=document.getElementById('niv-bible-audio');
       paintGlyph(podPlay,!!(b&&!b.paused));
@@ -299,6 +310,10 @@
     if(feedMenu&&!feedMenu.hidden&&!t.closest('.audio-quick-group--podcast'))closeFeedMenu();
     if(stationMenu&&!stationMenu.hidden&&!t.closest('.audio-quick-group--radio'))closeStationMenu();
   },true);
+  document.addEventListener('click',function(event){
+    var t=event.target;
+    if(t&&t.closest&&t.closest('[data-podcast-tab]'))paintPodcast();
+  });
   paintRadio();paintPodcast();
   window.LibraryAudioShell={setOpen:setShell,isOpen:function(){return !shell.hidden;},setMode:setMode,getMode:function(){return mode;}};
 })(window,document);

@@ -483,6 +483,12 @@
     var nextPodcastPanel = nextInner.querySelector('#library-podcast-panel');
     var currentKjvPanel = currentInner.querySelector('#niv-bible-panel');
     var nextKjvPanel = nextInner.querySelector('#niv-bible-panel');
+    /* The audio shell is a DIRECT child of the inner wrapper (the podcast
+       and KJV panels live inside it). It must be preserved like the nav:
+       without it the swap replaces the whole deck with an inert clone and
+       every audio control dies silently after any in-place navigation. */
+    var currentAudioPanel = currentInner.querySelector('#library-audio-panel');
+    var nextAudioPanel = nextInner.querySelector('#library-audio-panel');
     if (!currentNav || !nextNav) {
       /* A page without the shared shell is not safe to swap in place. */
       throw new Error('Shared navigation shell missing');
@@ -492,8 +498,8 @@
        Home and chapter pages do not have a guaranteed number of HR elements.
        Preserve the shared navigation, audio panels and footer so reader-only
        navigation never causes a full document reload that interrupts playback. */
-    var keepCurrent = [currentNav, currentPodcastEpisodePanel, currentPodcastPanel, currentKjvPanel].filter(Boolean);
-    var keepNext = [nextNav, nextPodcastEpisodePanel, nextPodcastPanel, nextKjvPanel].filter(Boolean);
+    var keepCurrent = [currentNav, currentAudioPanel, currentPodcastEpisodePanel, currentPodcastPanel, currentKjvPanel].filter(Boolean);
+    var keepNext = [nextNav, nextAudioPanel, nextPodcastEpisodePanel, nextPodcastPanel, nextKjvPanel].filter(Boolean);
     Array.from(nextInner.childNodes).forEach(function(child){
       if (keepNext.indexOf(child) < 0 && !(child.nodeType === 1 && child.matches('.footer, .footer *'))) {
         newNodes.push(child.cloneNode(true));
