@@ -125,6 +125,18 @@
     btn.classList.toggle('is-playing',playing);
     var g=btn.querySelector('[data-glyph]');if(g)g.innerHTML=playing?PAUSE:PLAY;
   }
+  /* iOS only treats audio as background-worthy when playback traces
+     back to a real finger gesture. The 300ms tap model fires the real
+     play() from a timer, after the gesture has ended — so bless the
+     element inside the genuine pointerdown instead: a play() that is
+     paused again in the very same task makes no sound, but marks the
+     element as gesture-started, and the later play() inherits that
+     standing for background / lock-screen playback. */
+  function primeForBackground(a){
+    if(!a||!a.paused)return;
+    if(!a.currentSrc&&!a.src)return;
+    try{var pr=a.play();if(pr&&pr.catch)pr.catch(function(){});a.pause();}catch(_){}
+  }
   /* Radio */
   var radioPlay=document.getElementById('audio-radio-play');
   function paintRadio(){
@@ -183,6 +195,8 @@
     var radioPressTimer=null;
     var clearRadioPress=function(){if(radioPressTimer){clearTimeout(radioPressTimer);radioPressTimer=null;}};
     radioPlay.addEventListener('pointerdown',function(){
+      var pc=window.LibraryAudioCoordinator;
+      if(pc)primeForBackground(pc.getAudio(pc.getLastRadio()));
       clearRadioPress();
       radioPressTimer=setTimeout(function(){
         radioPressTimer=null;
@@ -270,6 +284,8 @@
     var podPressTimer=null;
     var clearPodPress=function(){if(podPressTimer){clearTimeout(podPressTimer);podPressTimer=null;}};
     podPlay.addEventListener('pointerdown',function(){
+      var pf=currentFeed();
+      primeForBackground(pf==='kjv'?document.getElementById('niv-bible-audio'):feedAudio(pf));
       clearPodPress();
       podPressTimer=setTimeout(function(){
         podPressTimer=null;
