@@ -2398,8 +2398,8 @@ html,body{max-width:100%;overflow-x:clip}
   box-shadow: 0 14px 30px rgba(74, 47, 102, .18);
 }
 .audio-feed-menu [data-feed-choice] {
-  display: block; width: 100%; padding: 9px 10px; border: 0; border-radius: 8px;
-  background: transparent; color: #4a2f66; font-size: 13.5px; font-weight: 600;
+  display: block; width: 100%; padding: 8px 8px; border: 0; border-radius: 8px;
+  background: transparent; color: #4a2f66; font-size: 12.5px; font-weight: 600;
   text-align: left; cursor: pointer; box-sizing: border-box;
 }
 .audio-feed-menu [data-feed-choice].is-current { background: #f2ebfa; }
@@ -2453,8 +2453,8 @@ html,body{max-width:100%;overflow-x:clip}
 #library-audio-panel #library-radio-panel { display: none !important; }
 .audio-quick-group--radio { position: relative; }
 .audio-feed-menu [data-station-choice] {
-  display: block; width: 100%; padding: 9px 10px; border: 0; border-radius: 8px;
-  background: transparent; color: #4a2f66; font-size: 13.5px; font-weight: 600;
+  display: block; width: 100%; padding: 8px 8px; border: 0; border-radius: 8px;
+  background: transparent; color: #4a2f66; font-size: 12.5px; font-weight: 600;
   text-align: left; cursor: pointer; box-sizing: border-box;
 }
 .audio-feed-menu [data-station-choice].is-current { background: #f2ebfa; }
