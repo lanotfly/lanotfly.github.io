@@ -84,11 +84,21 @@
     <div class="audio-quick-row">
       <div class="audio-quick-group" role="group" aria-label="Radio">
         <button id="audio-radio-play" class="audio-quick-main" type="button" aria-label="Play or pause radio"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>Radio</span></button>
-        <button id="audio-radio-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-controls="library-radio-panel" aria-label="Choose a radio station" title="Choose a radio station"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button id="audio-radio-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-controls="library-radio-panel" aria-label="Choose a radio station" title="Choose a radio station"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="audio-quick-group" role="group" aria-label="KJV Bible">
         <button id="audio-kjv-play" class="audio-quick-main" type="button" aria-label="Play or pause KJV Bible"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>KJV</span></button>
-        <button id="audio-kjv-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Choose a book and chapter" title="Choose book and chapter"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 20.5V5.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        <button id="audio-kjv-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-controls="niv-bible-panel" aria-label="Choose a book and chapter" title="Choose book and chapter"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="audio-quick-group audio-quick-group--podcast" role="group" aria-label="Podcast">
+        <button id="audio-podcast-play" class="audio-quick-main" type="button" aria-label="Play or pause podcast"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span>Podcast</span></button>
+        <button id="audio-podcast-menu" class="audio-quick-side" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="audio-podcast-menu-list" aria-label="Choose a podcast" title="Choose a podcast"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div id="audio-podcast-menu-list" class="audio-feed-menu" role="menu" aria-label="Podcasts" hidden>
+          <button type="button" role="menuitem" data-feed-choice="bbc">BBC Global News</button>
+          <button type="button" role="menuitem" data-feed-choice="chronicle">News Connect</button>
+          <button type="button" role="menuitem" data-feed-choice="english">Easy Natural English</button>
+          <button type="button" role="menuitem" data-feed-choice="japanese">Bite Size Japanese</button>
+        </div>
       </div>
     </div>
   <section id="library-radio-panel" class="radio-source-panel" aria-label="Radio stations" hidden>

@@ -193,6 +193,9 @@
     }
   }
   window.LibraryClosePodcastPanel = function () { setPodcastOpen(false); };
+  /* Open without the toggle handler's autoplay: the Audio shell reveals
+     the panel on its own schedule and starts sources via their buttons. */
+  window.LibraryOpenPodcastPanel = function () { setPodcastOpen(true); };
   function playEpisode(feed, index) {
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id);

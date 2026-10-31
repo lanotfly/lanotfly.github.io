@@ -68,14 +68,14 @@
   window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,getLastRadio:function(){return lastRadio;}};
   window.__prepareRadioPlayback=function(target){switchTo(target||lastRadio||'radio4');};
 })(window,document);
-/* Audio shell: opening Audio lands on the Podcast panel. Radio and KJV
-   live in the quick row above it — one play button each (radio defaults
-   to the last station, BBC the first time; KJV resumes its sequential
-   chapter playback) plus a small chooser button: radio's opens the
-   station strip, KJV's opens the book/chapter drawer. The old module
-   toggles stay in the DOM, hidden, because the modules and this
-   coordinator are wired to their IDs; the KJV drawer and the radio
-   strip are owned solely by their chooser buttons. */
+/* Audio shell: one row of three split buttons — Radio | KJV | Podcast.
+   Each main button plays/pauses its source (radio: last station, BBC the
+   first time; KJV: resumes sequential chapter playback; podcast: the
+   selected feed, BBC Global News by default). Each side button opens a
+   chooser in the ONE shared list area below: the station strip, the
+   book/chapter drawer, or — for podcasts — a small feed menu, after
+   which the chosen feed's episodes fill the list area. The podcast
+   source tabs are hidden (CSS) and driven through this menu. */
 (function(window,document){
   'use strict';
   var shellToggle=document.getElementById('library-audio-toggle');
@@ -83,28 +83,40 @@
   if(!shellToggle||!shell)return;
   var PLAY='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.8 6.2v11.6c0 .8.9 1.3 1.6.9l9-5.8c.6-.4.6-1.4 0-1.8l-9-5.8c-.7-.4-1.6.1-1.6.9z" fill="currentColor"/></svg>';
   var PAUSE='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3.2v12H7.5zM13.3 6h3.2v12h-3.2z" fill="currentColor"/></svg>';
+  var radioPanel=document.getElementById('library-radio-panel');
+  var kjvPanel=document.getElementById('niv-bible-panel');
+  var podRoot=document.getElementById('library-podcast-panel');
+  var mode='podcast';
+  function applyMode(){
+    if(radioPanel)radioPanel.hidden=mode!=='radio';
+    if(kjvPanel)kjvPanel.hidden=mode!=='kjv';
+    if(podRoot){
+      if(mode==='podcast'&&podRoot.hidden&&typeof window.LibraryOpenPodcastPanel==='function')window.LibraryOpenPodcastPanel();
+      if(mode!=='podcast'&&!podRoot.hidden&&typeof window.LibraryClosePodcastPanel==='function')window.LibraryClosePodcastPanel();
+    }
+    var rm=document.getElementById('audio-radio-menu');if(rm)rm.setAttribute('aria-expanded',String(mode==='radio'));
+    var km=document.getElementById('audio-kjv-menu');if(km)km.setAttribute('aria-expanded',String(mode==='kjv'));
+  }
+  function setMode(next){mode=next;applyMode();}
   function setShell(open){
     shell.hidden=!open;
     shellToggle.setAttribute('aria-expanded',String(open));
     shellToggle.classList.toggle('is-open',open);
     shellToggle.classList.toggle('is-active',open);
-    if(open){
-      var root=document.getElementById('library-podcast-panel');
-      var pt=document.getElementById('library-podcast-toggle');
-      if(root&&root.hidden&&pt)pt.click();
-    }
+    if(open)applyMode();else closeFeedMenu();
   }
   shellToggle.addEventListener('click',function(){setShell(shell.hidden);});
+  function paintGlyph(btn,playing){
+    if(!btn)return;
+    btn.classList.toggle('is-playing',playing);
+    var g=btn.querySelector('[data-glyph]');if(g)g.innerHTML=playing?PAUSE:PLAY;
+  }
+  /* Radio */
   var radioPlay=document.getElementById('audio-radio-play');
-  var radioMenu=document.getElementById('audio-radio-menu');
-  var radioPanel=document.getElementById('library-radio-panel');
   function paintRadio(){
-    if(!radioPlay)return;
-    var C=window.LibraryAudioCoordinator;
-    var playing=false;
+    var C=window.LibraryAudioCoordinator;var playing=false;
     if(C){var a=C.getAudio(C.getLastRadio());playing=!!(a&&!a.paused);}
-    radioPlay.classList.toggle('is-playing',playing);
-    var g=radioPlay.querySelector('[data-glyph]');if(g)g.innerHTML=playing?PAUSE:PLAY;
+    paintGlyph(radioPlay,playing);
   }
   if(radioPlay)radioPlay.addEventListener('click',function(){
     var C=window.LibraryAudioCoordinator;if(!C)return;
@@ -117,34 +129,73 @@
     var a=document.getElementById(id);
     if(a){a.addEventListener('play',paintRadio);a.addEventListener('pause',paintRadio);a.addEventListener('ended',paintRadio);}
   });
-  if(radioMenu&&radioPanel)radioMenu.addEventListener('click',function(){
-    radioPanel.hidden=!radioPanel.hidden;
-    radioMenu.setAttribute('aria-expanded',String(!radioPanel.hidden));
-  });
+  var radioMenu=document.getElementById('audio-radio-menu');
+  if(radioMenu)radioMenu.addEventListener('click',function(){setMode(mode==='radio'?'podcast':'radio');});
+  /* KJV */
   var kjvPlay=document.getElementById('audio-kjv-play');
-  var kjvMenu=document.getElementById('audio-kjv-menu');
-  var kjvPanel=document.getElementById('niv-bible-panel');
   var kjvToggle=document.getElementById('niv-bible-toggle');
   var kjvAudio=document.getElementById('niv-bible-audio');
-  function paintKjv(){
-    if(!kjvPlay)return;
-    var playing=!!(kjvAudio&&!kjvAudio.paused);
-    kjvPlay.classList.toggle('is-playing',playing);
-    var g=kjvPlay.querySelector('[data-glyph]');if(g)g.innerHTML=playing?PAUSE:PLAY;
-  }
+  function paintKjv(){paintGlyph(kjvPlay,!!(kjvAudio&&!kjvAudio.paused));}
   if(kjvPlay&&kjvToggle)kjvPlay.addEventListener('click',function(){kjvToggle.click();});
   if(kjvAudio){kjvAudio.addEventListener('play',paintKjv);kjvAudio.addEventListener('pause',paintKjv);kjvAudio.addEventListener('ended',paintKjv);}
-  if(kjvMenu&&kjvPanel)kjvMenu.addEventListener('click',function(){
-    kjvPanel.hidden=!kjvPanel.hidden;
-    kjvMenu.setAttribute('aria-expanded',String(!kjvPanel.hidden));
-  });
-  if(window.MutationObserver){
-    var sync=function(){
-      if(radioMenu&&radioPanel)radioMenu.setAttribute('aria-expanded',String(!radioPanel.hidden));
-      if(kjvMenu&&kjvPanel)kjvMenu.setAttribute('aria-expanded',String(!kjvPanel.hidden));
-    };
-    [radioPanel,kjvPanel].forEach(function(pn){if(pn)new MutationObserver(sync).observe(pn,{attributes:true,attributeFilter:['hidden']});});
+  var kjvMenu=document.getElementById('audio-kjv-menu');
+  if(kjvMenu)kjvMenu.addEventListener('click',function(){setMode(mode==='kjv'?'podcast':'kjv');});
+  /* Podcast */
+  var podPlay=document.getElementById('audio-podcast-play');
+  var podMenuBtn=document.getElementById('audio-podcast-menu');
+  var feedMenu=document.getElementById('audio-podcast-menu-list');
+  function currentFeed(){
+    var tab=document.querySelector('[data-podcast-tab][aria-selected="true"]');
+    return tab?tab.getAttribute('data-podcast-tab'):'bbc';
   }
-  paintRadio();paintKjv();
-  window.LibraryAudioShell={setOpen:setShell,isOpen:function(){return !shell.hidden;}};
+  function feedAudio(feed){return document.getElementById('podcast-'+feed+'-audio');}
+  function paintPodcast(){
+    var a=feedAudio(currentFeed());
+    paintGlyph(podPlay,!!(a&&!a.paused));
+  }
+  function toggleFeed(feed){
+    var section=document.querySelector('[data-podcast-feed-panel="'+feed+'"]');
+    var mini=section?section.querySelector('.podcast-mini-play'):null;
+    if(mini)mini.click();
+  }
+  if(podPlay)podPlay.addEventListener('click',function(){toggleFeed(currentFeed());});
+  ['bbc','chronicle','english','japanese'].forEach(function(f){
+    var a=feedAudio(f);
+    if(a){a.addEventListener('play',paintPodcast);a.addEventListener('pause',paintPodcast);a.addEventListener('ended',paintPodcast);}
+  });
+  function closeFeedMenu(){
+    if(feedMenu)feedMenu.hidden=true;
+    if(podMenuBtn)podMenuBtn.setAttribute('aria-expanded','false');
+  }
+  function paintFeedMenu(){
+    if(!feedMenu)return;
+    var cur=currentFeed();
+    feedMenu.querySelectorAll('[data-feed-choice]').forEach(function(item){
+      item.classList.toggle('is-current',item.getAttribute('data-feed-choice')===cur);
+    });
+  }
+  if(podMenuBtn&&feedMenu)podMenuBtn.addEventListener('click',function(){
+    var open=feedMenu.hidden;
+    if(open){paintFeedMenu();feedMenu.hidden=false;podMenuBtn.setAttribute('aria-expanded','true');}
+    else closeFeedMenu();
+  });
+  if(feedMenu)feedMenu.addEventListener('click',function(event){
+    var item=event.target&&event.target.closest?event.target.closest('[data-feed-choice]'):null;
+    if(!item)return;
+    var feed=item.getAttribute('data-feed-choice');
+    var tab=document.querySelector('[data-podcast-tab="'+feed+'"]');
+    if(tab&&currentFeed()!==feed)tab.click();
+    setMode('podcast');
+    closeFeedMenu();
+    var a=feedAudio(feed);
+    if(a&&a.paused)toggleFeed(feed);
+    paintPodcast();
+  });
+  document.addEventListener('click',function(event){
+    if(!feedMenu||feedMenu.hidden)return;
+    var t=event.target;
+    if(t&&t.closest&&!t.closest('.audio-quick-group--podcast'))closeFeedMenu();
+  },true);
+  paintRadio();paintKjv();paintPodcast();
+  window.LibraryAudioShell={setOpen:setShell,isOpen:function(){return !shell.hidden;},setMode:setMode,getMode:function(){return mode;}};
 })(window,document);
