@@ -1090,7 +1090,7 @@ html,body{max-width:100%;overflow-x:clip}
 .niv-bible-panel__title{color:#3f2e54!important}
 .niv-bible-book-select{border-color:#cbbbdc!important;color:#62458a!important;background:#fff!important}
 .niv-bible-progress{accent-color:#6d548b!important}
-.niv-bible-queue-tools{display:flex!important;margin:10px 0 8px!important}
+.niv-bible-queue-tools{display:flex!important}
 .niv-bible-queue-frame{position:relative;width:100%;height:min(250px,38vh);min-height:190px;margin:0;overflow:visible}
 .niv-bible-queue{display:flex!important;flex-direction:column!important;gap:5px!important;height:100%!important;max-height:100%!important;margin:0!important;padding:1px 0!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;scrollbar-width:thin;list-style:none}
 .niv-bible-queue .podcast-episode-row{flex:0 0 auto!important}
@@ -2330,7 +2330,6 @@ html,body{max-width:100%;overflow-x:clip}
   background: linear-gradient(165deg, #2b2138, #251b31) !important;
 }
 #library-audio-panel #library-radio-panel,
-#library-audio-panel #niv-bible-panel,
 #library-audio-panel #library-podcast-panel {
   background: transparent !important; border: 0 !important; box-shadow: none !important;
   border-radius: 0 !important; padding: 0 !important; margin: 0 !important;
@@ -2379,7 +2378,7 @@ html,body{max-width:100%;overflow-x:clip}
   .audio-quick-side { flex-basis: 38px; width: 38px; min-height: 38px; }
 }
 /* The chooser strip and drawer read as white cards on the shell. */
-#library-audio-panel #library-radio-panel, #library-audio-panel #niv-bible-panel {
+#library-audio-panel #library-radio-panel {
   background: #ffffff !important; border: 1px solid #ddd0ee !important; border-radius: 12px !important;
   padding: 8px !important; margin: 0 0 8px !important; box-shadow: none !important;
 }
@@ -2578,6 +2577,5 @@ html,body{max-width:100%;overflow-x:clip}
   #library-podcast-panel .podcast-episode-panel__tools { gap: 6px 8px; }
   #library-podcast-panel .podcast-episode-count { white-space: nowrap; }
   #library-podcast-panel .podcast-panel-filter { max-width: 104px; }
-  #library-podcast-panel .niv-bible-queue-tools { margin: 6px 0 8px !important; }
   #niv-bible-panel .niv-bible-queue-tools #niv-book-select { max-width: 118px; min-width: 84px; }
 }
