@@ -17164,25 +17164,25 @@
     "bbc": {
       "ok": true,
       "count": 290,
-      "checkedAt": "2026-10-31T05:30:30+00:00"
+      "checkedAt": "2026-10-31T05:38:48+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1615,
-      "checkedAt": "2026-10-31T05:30:30+00:00"
+      "checkedAt": "2026-10-31T05:38:49+00:00"
     },
     "english": {
       "ok": true,
       "count": 422,
-      "checkedAt": "2026-10-31T05:30:31+00:00"
+      "checkedAt": "2026-10-31T05:38:50+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 762,
-      "checkedAt": "2026-10-31T05:30:31+00:00"
+      "checkedAt": "2026-10-31T05:38:50+00:00"
     }
   },
-  "updatedAt": "2026-10-31T05:30:31+00:00",
+  "updatedAt": "2026-10-31T05:38:50+00:00",
   "english": [
     {
       "title": "Hello Again!",
