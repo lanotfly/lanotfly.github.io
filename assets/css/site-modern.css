@@ -2031,81 +2031,6 @@ html,body{max-width:100%;overflow-x:clip}
    progress slider and buttons, tighter padding. The expanded state is
    untouched. Folded state is detected from the hidden list frame, the
    same :has() pattern already used elsewhere in this stylesheet. */
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
-  padding: 8px 10px !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__heading {
-  margin-bottom: 3px !important;
-  gap: 6px !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__identity {
-  gap: 8px !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
-  flex-basis: 40px !important;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 8px !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__eyebrow {
-  display: none !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__title {
-  font-size: 13px !important;
-  margin-top: 0 !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__title.is-marquee .podcast-title-marquee__text {
-  animation: none !important;
-  transform: none !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-playback-progress {
-  margin: 2px 0 0 !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-progress-slider {
-  height: 10px !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-list-toggle {
-  flex-basis: 30px !important;
-  width: 30px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-}
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-bulk-menu__toggle {
-  flex-basis: 30px !important;
-  width: 30px !important;
-  min-width: 30px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-}
-@media (max-width: 700px) {
-  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
-    flex-basis: 32px !important;
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 7px !important;
-  }
-  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__title {
-    font-size: 12.5px !important;
-  }
-}
-/* KJV folded bar: same treatment. */
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) {
-  padding: 8px 10px !important;
-}
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-panel__heading {
-  margin-bottom: 3px !important;
-}
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress {
-  height: 14px !important;
-}
-.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-queue-toggle {
-  flex-basis: 30px !important;
-  width: 30px !important;
-  height: 30px !important;
-  min-width: 30px !important;
-  min-height: 30px !important;
-}
-
 /* 2026-10-30: frosted glass for the KJV and Podcast panels (~50% transparent),
    matching the pull-down's Liquid Glass; dark mode gets a deep glass tint
    instead of an opaque surface, so both themes read as the same material. */
@@ -2173,7 +2098,6 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__tools,
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-playback-progress,
 .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__status { display: none !important; }
-.podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) { padding-top: 6px !important; padding-bottom: 6px !important; }
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-progress-wrap,
 .niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) #niv-bible-book-select { display: none !important; }
 .niv-bible-mini-toggle { display: none; }
@@ -2314,9 +2238,6 @@ html,body{max-width:100%;overflow-x:clip}
    (tabs / source row / panel) tightens to match across Podcast, Radio
    and KJV. */
 .podcast-list-toggle { flex-basis: 34px !important; width: 34px !important; height: 34px !important; }
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-list-toggle {
-  flex-basis: 34px !important; width: 34px !important; height: 34px !important; min-height: 34px !important;
-}
 .podcast-bulk-menu__toggle {
   flex-basis: 34px !important; width: 34px !important; min-width: 34px !important;
   height: 34px !important; min-height: 34px !important;
@@ -2393,15 +2314,9 @@ html,body{max-width:100%;overflow-x:clip}
    panel padding, same artwork, and the actions swap (bulk out, mini
    play in) is one-for-one at the same size, so the collapse button
    neither moves nor resizes. */
-#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
-  padding-top: 14px !important; padding-bottom: 14px !important;
-}
 .podcast-panel-actions { display: flex !important; align-items: center; gap: 6px; }
 .podcast-mini-btn { margin: 0 !important; }
 @media (max-width: 700px) {
-  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
-    padding-top: 8px !important; padding-bottom: 8px !important;
-  }
   #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
     flex-basis: 44px !important; width: 44px !important; height: 44px !important;
   }
@@ -2591,8 +2506,6 @@ html,body{max-width:100%;overflow-x:clip}
    picker and progress bar hide like the other feeds' tools, leaving
    artwork + title + queue toggle + play/pause on the right. The two
    quick buttons split the row evenly. */
-#niv-bible-panel:has(.niv-bible-queue-toggle.is-collapsed) #niv-book-select,
-#niv-bible-panel:has(.niv-bible-queue-toggle.is-collapsed) .niv-bible-progress-wrap { display: none; }
 .niv-bible-panel__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .audio-quick-group--podcast, .audio-quick-group--radio { flex-grow: 1; }
 
@@ -2645,3 +2558,19 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] #library-podcast-panel .niv-bible-queue-toggle { background: #352a4d !important; border-color: #57467c !important; color: #d9cbf2; }
 :root[data-theme="dark"] #library-podcast-panel .podcast-panel-filter,
 :root[data-theme="dark"] #library-podcast-panel .niv-bible-book-select { background: #2e2140; border-color: #57467c; color: #e6dcf7; }
+
+/* 2026-10-31: the heading strip IS the fold control — one solid box,
+   pixel-identical folded or expanded, and a nice big tap target. The
+   old fold buttons are gone; tapping the artwork or title folds or
+   unfolds every list in the deck at once. */
+#library-podcast-panel .podcast-episode-panel__heading {
+  border: 1.5px solid #b9a3dd;
+  border-radius: 12px;
+  background: #f1e9fa;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+:root[data-theme="dark"] #library-podcast-panel .podcast-episode-panel__heading {
+  border-color: #57467c;
+  background: #33264d;
+}

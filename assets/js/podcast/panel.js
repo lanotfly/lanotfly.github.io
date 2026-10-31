@@ -27,6 +27,7 @@
   var pendingAutoplay = false;
   var filters = { bbc: 'unplayed', chronicle: 'unplayed', english: 'unplayed', japanese: 'unplayed' };
   var lastSavedAt = { bbc: 0, chronicle: 0, english: 0, japanese: 0 };
+  var foldExpanded = true;
   var listModules = {};
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
@@ -534,30 +535,34 @@
       if (fold) sessionStorage.removeItem('library-fold-audio');
     } catch (e) {}
     if (!fold) return;
-    root.querySelectorAll('[data-podcast-collapse]').forEach(function (b) {
-      if (b.getAttribute('aria-expanded') === 'true') b.click();
-    });
+    applyFeedFold(false);
+    if (window.LibraryKjvApplyFold) window.LibraryKjvApplyFold(false);
   }
   /* Folding is global across the whole audio deck: every feed AND the
-     KJV chapter list share one list state, so folding anywhere folds
-     everywhere. The Apply functions are one-way (no callbacks), and the
-     click handlers fan out to both. */
+     KJV chapter list share one list state. There are no fold buttons
+     any more — each panel's heading strip (artwork + title, in its
+     solid box) is the toggle, identical folded or expanded. Clicks on
+     real controls inside the strip (play, options, selects) never
+     toggle. */
   function applyFeedFold(expanded) {
-    root.querySelectorAll('[data-podcast-collapse]').forEach(function (b) {
-      var frame = document.getElementById(b.getAttribute('aria-controls'));
-      b.setAttribute('aria-expanded', String(expanded));
-      b.classList.toggle('is-collapsed', !expanded);
-      b.setAttribute('aria-label', expanded ? 'Collapse episode list' : 'Expand episode list');
-      b.title = expanded ? 'Collapse episode list' : 'Expand episode list';
+    foldExpanded = expanded;
+    feeds.forEach(function (feed) {
+      var frame = document.getElementById('podcast-' + feed.id + '-list-frame');
       if (frame) frame.hidden = !expanded;
     });
   }
   window.LibraryPodcastApplyFold = applyFeedFold;
-  root.querySelectorAll('[data-podcast-collapse]').forEach(function (button) {
-    button.addEventListener('click', function () {
-      var expanded = button.getAttribute('aria-expanded') !== 'true';
-      applyFeedFold(expanded);
-      if (window.LibraryKjvApplyFold) window.LibraryKjvApplyFold(expanded);
+  window.LibraryAudioSetFold = function (expanded) {
+    applyFeedFold(expanded);
+    if (window.LibraryKjvApplyFold) window.LibraryKjvApplyFold(expanded);
+  };
+  feeds.forEach(function (feed) {
+    var panelEl = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
+    var heading = panelEl && panelEl.querySelector('.podcast-episode-panel__heading');
+    if (!heading) return;
+    heading.addEventListener('click', function (event) {
+      if (event.target.closest('button, select, a, input, textarea, label')) return;
+      window.LibraryAudioSetFold(!foldExpanded);
     });
   });
   root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {

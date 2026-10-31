@@ -197,14 +197,8 @@
     const isHome = target.matches(".site-tab--home");
     marketPanel.classList.toggle("is-collapsed", !isHome);
     if (isHome) {
-      /* Keep both player panels visible; use their existing list-fold controls. */
-      document.querySelectorAll("#library-podcast-panel [data-podcast-collapse]").forEach(function (collapseButton) {
-        if (collapseButton.getAttribute("aria-expanded") === "true") collapseButton.click();
-      });
-      const kjvCollapseButton = document.getElementById("niv-bible-queue-toggle");
-      if (kjvCollapseButton && kjvCollapseButton.getAttribute("aria-expanded") === "true") {
-        kjvCollapseButton.click();
-      }
+      /* Keep both player panels visible; fold every list via the shared fold. */
+      if (window.LibraryAudioSetFold) window.LibraryAudioSetFold(false);
     }
   }, true);
 

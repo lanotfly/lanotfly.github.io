@@ -84,9 +84,7 @@
     var t = event.target;
     if (t && t.closest && t.closest('.site-tab--home, .book-drawer-link, .book-chapter-link, .book-secondary-link')) {
       try { sessionStorage.setItem('library-fold-audio', '1'); } catch (e) {}
-      document.querySelectorAll('[data-podcast-collapse][aria-expanded="true"]').forEach(function (b) { b.click(); });
-      var qt = document.getElementById('niv-bible-queue-toggle');
-      if (qt && qt.getAttribute('aria-expanded') === 'true') qt.click();
+      if (window.LibraryAudioSetFold) window.LibraryAudioSetFold(false);
     }
   }, true);
   window.addEventListener('pageshow', paintAll);

@@ -73,37 +73,21 @@
       (panel.querySelector('.podcast-panel-actions')||heading).appendChild(miniToggle);
       miniToggle.addEventListener('click',function(){var t=document.getElementById('niv-bible-toggle');if(t)t.click();});
     }
-    var collapseButton=document.getElementById('niv-bible-queue-toggle');
-    if(!collapseButton&&heading){
-      collapseButton=document.createElement('button');
-      collapseButton.id='niv-bible-queue-toggle';
-      collapseButton.className='niv-bible-queue-toggle';
-      collapseButton.type='button';
-      collapseButton.setAttribute('aria-controls','niv-bible-queue');
-      collapseButton.setAttribute('aria-expanded','true');
-      collapseButton.setAttribute('aria-label','Collapse chapter list');
-      collapseButton.title='Collapse chapter list';
-      collapseButton.innerHTML='<svg class="podcast-list-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="podcast-list-toggle-line podcast-list-toggle-line--top" d="M4 6H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--middle" d="M4 12H20"/><path class="podcast-list-toggle-line podcast-list-toggle-line--bottom" d="M4 18H20"/></svg>';
-      /* Both transport buttons live in the shared actions host, play
-         first and fold second — the podcast feeds' exact arrangement. */
-      var actionsHost=panel.querySelector('.podcast-panel-actions');
-      if(actionsHost)actionsHost.appendChild(collapseButton);
-      else bookSelect.insertAdjacentElement('afterend',collapseButton);
-      function applyKjvFold(expanded){
-        collapseButton.setAttribute('aria-expanded',String(expanded));
-        collapseButton.setAttribute('aria-label',expanded?'Collapse chapter list':'Expand chapter list');
-        collapseButton.title=expanded?'Collapse chapter list':'Expand chapter list';
-        collapseButton.classList.toggle('is-collapsed',!expanded);
-        if(queueFrame)queueFrame.hidden=!expanded;
-        if(tools)tools.hidden=!expanded;
-      }
-      window.LibraryKjvApplyFold=applyKjvFold;
-      collapseButton.addEventListener('click',function(){
-        var expanded=collapseButton.getAttribute('aria-expanded')!=='true';
-        applyKjvFold(expanded);
-        if(window.LibraryPodcastApplyFold)window.LibraryPodcastApplyFold(expanded);
-      });
+    /* No fold button any more: the heading strip is the toggle, exactly
+       like the podcast feeds, and the fold is global across the deck. */
+    var kjvFoldExpanded=true;
+    function applyKjvFold(expanded){
+      kjvFoldExpanded=expanded;
+      if(queueFrame)queueFrame.hidden=!expanded;
+      if(tools)tools.hidden=!expanded;
     }
+    window.LibraryKjvApplyFold=applyKjvFold;
+    if(heading)heading.addEventListener('click',function(event){
+      if(event.target.closest('button, select, a, input, textarea, label'))return;
+      var next=!kjvFoldExpanded;
+      if(window.LibraryAudioSetFold)window.LibraryAudioSetFold(next);
+      else{applyKjvFold(next);if(window.LibraryPodcastApplyFold)window.LibraryPodcastApplyFold(next);}
+    });
     ['left','right'].forEach(function(side){var edge=document.createElement('div');edge.className='podcast-episode-scroll-edge podcast-episode-scroll-edge--'+side;edge.setAttribute('aria-hidden','true');queueFrame.appendChild(edge);});
     anchor.parentNode.insertBefore(tools,anchor.nextSibling);
     anchor.parentNode.insertBefore(queueFrame,tools.nextSibling);
@@ -274,8 +258,7 @@
     try{
       if(sessionStorage.getItem('library-fold-audio')==='1'){
         sessionStorage.removeItem('library-fold-audio');
-        var qt=document.getElementById('niv-bible-queue-toggle');
-        if(qt&&qt.getAttribute('aria-expanded')==='true')qt.click();
+        if(window.LibraryKjvApplyFold)window.LibraryKjvApplyFold(false);
       }
     }catch(_){}
     button.setAttribute('aria-expanded','true');
