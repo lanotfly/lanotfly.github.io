@@ -188,7 +188,7 @@
         radioPressTimer=null;
         radioLongPressed=true;
         setTimeout(function(){radioLongPressed=false;},1000);
-        openStationMenu();
+        if(stationMenu&&!stationMenu.hidden)closeStationMenu();else openStationMenu();
       },450);
     });
     ['pointerup','pointerleave','pointercancel'].forEach(function(type){
@@ -278,7 +278,7 @@
            expire it so a cancelled press can never eat a later tap. */
         setTimeout(function(){podLongPressed=false;},1000);
         setMode('podcast');
-        openFeedMenu();
+        if(feedMenu&&!feedMenu.hidden)closeFeedMenu();else openFeedMenu();
       },450);
     });
     ['pointerup','pointerleave','pointercancel'].forEach(function(type){
