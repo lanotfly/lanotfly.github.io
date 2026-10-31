@@ -2259,3 +2259,34 @@ html,body{max-width:100%;overflow-x:clip}
   background: #ffffff;
   border-radius: 10px;
 }
+
+/* 2026-10-31: prev/next chapter buttons slimmed down — they were tall
+   cards; now compact pills. */
+.wiki-wrap .prev-next { margin-top: 1.3em !important; padding-top: .7em !important; gap: 8px !important; }
+.wiki-wrap .prev-next > a {
+  min-height: 36px !important;
+  padding: 5px 10px !important;
+  font-size: .84rem !important;
+  line-height: 1.2 !important;
+  border-radius: 10px !important;
+}
+/* Light mode: a table opened in the lightbox gets its own light face
+   (white card, pale-blue header, visible grid) — on the dark overlay the
+   unstyled clone was dark text on near-black. Dark mode already reads
+   clearly and keeps its own face. */
+:root:not([data-theme="dark"]) .diagram-lightbox__stage > table {
+  background: #ffffff;
+  color: #20242c;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, .35);
+}
+:root:not([data-theme="dark"]) .diagram-lightbox__stage > table th,
+:root:not([data-theme="dark"]) .diagram-lightbox__stage > table td {
+  border: 1px solid #d7e3f8;
+  padding: .45em .6em;
+  text-align: left;
+}
+:root:not([data-theme="dark"]) .diagram-lightbox__stage > table th { background: #eef4ff; }
