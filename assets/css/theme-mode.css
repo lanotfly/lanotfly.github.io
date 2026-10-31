@@ -283,6 +283,19 @@ body[data-theme="dark"] .home-page .home-link,
 body[data-theme="dark"] .home-page .home-link a {
   color: #edf0f7 !important;
 }
+/* The home cards carry light tint GRADIENTS (background-image); the
+   generic dark surface above only sets background-color, which a
+   gradient paints over — leaving light cards with light text. Give
+   each tinted card a deep version of its own hue in dark mode, and
+   restore its accent eyebrow colour. */
+body[data-theme="dark"] .home-page .home-card--data { background-image: linear-gradient(180deg, #1e2c49 0%, #1b1f28 58%) !important; }
+body[data-theme="dark"] .home-page .home-card--algorithm { background-image: linear-gradient(180deg, #3a2812 0%, #1b1f28 58%) !important; }
+body[data-theme="dark"] .home-page .home-card--ai { background-image: linear-gradient(180deg, #14402e 0%, #1b1f28 58%) !important; }
+body[data-theme="dark"] .home-page .home-card--cloud { background-image: linear-gradient(180deg, #123a42 0%, #1b1f28 58%) !important; }
+body[data-theme="dark"] .home-page .home-card--data .eyebrow { color: #8fb0ee !important; }
+body[data-theme="dark"] .home-page .home-card--algorithm .eyebrow { color: #f0b269 !important; }
+body[data-theme="dark"] .home-page .home-card--ai .eyebrow { color: #5fd3a7 !important; }
+body[data-theme="dark"] .home-page .home-card--cloud .eyebrow { color: #6fd3da !important; }
 body[data-theme="dark"] .wiki-wrap .card,
 body[data-theme="dark"] .wiki-wrap .home-card,
 body[data-theme="dark"] .wiki-wrap .diagram,

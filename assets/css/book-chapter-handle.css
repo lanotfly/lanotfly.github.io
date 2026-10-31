@@ -145,74 +145,76 @@
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-select { background: rgba(255, 255, 255, .14) !important; }
 :root[data-theme="dark"] #library-book-chapter-handle { background: rgba(18, 48, 30, .85) !important; }
 
-/* 2026-10-31: yellow-green glass for the Reading drawer and its
-   handle — a normal, luminous green (not near-black), translucent but
-   substantial, with rounded corners all round. The chapter list fits
-   five rows; tapping the drawer's upper area (.is-tall, wired in
-   navigation.js) lets the list grow to show every chapter, ending
-   right after the last one — it only reaches the screen's bottom
-   edge when the chapters themselves do, scrolling inside. */
+/* 2026-10-31: the Reading drawer and handle wear the site's own mint
+   greens — the Home button's green (#cdeccf / #74a97c / #22522e) for
+   the handle, and the Market/News dropdown's palette for the drawer —
+   so every green surface on the site agrees. Glass blur stays; the
+   corners are rounded all round. The chapter list fits five rows;
+   tapping the drawer's upper area (.is-tall, wired in navigation.js)
+   lets the list grow to show every chapter, ending right after the
+   last one — it only reaches the screen's bottom edge when the
+   chapters themselves do, scrolling inside. */
 #library-book-chapter-drawer {
-  background: linear-gradient(150deg, rgba(163, 208, 113, .88), rgba(141, 196, 80, .86)) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(155%);
-  backdrop-filter: blur(16px) saturate(155%);
-  border-color: rgba(255, 255, 255, .5) !important;
+  background: linear-gradient(165deg, rgba(244, 250, 245, .93), rgba(234, 246, 238, .91)) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  border-color: rgba(143, 199, 165, .9) !important;
   border-radius: 14px !important;
-  color: #22491f !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), 0 12px 30px rgba(46, 80, 20, .28) !important;
+  color: #234331 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 12px 30px rgba(20, 50, 35, .18) !important;
 }
 #library-book-chapter-drawer .book-drawer-book-label,
-#library-book-chapter-drawer .book-drawer-section-label { color: rgba(30, 66, 26, .72) !important; cursor: pointer; }
+#library-book-chapter-drawer .book-drawer-section-label { color: #598067 !important; cursor: pointer; }
 #library-book-chapter-drawer .book-drawer-link {
-  background: rgba(255, 255, 255, .34) !important;
-  border-color: rgba(255, 255, 255, .45) !important;
-  color: #22491f !important;
+  background: #e7f4ec !important;
+  border-color: #cfe7d8 !important;
+  color: #234331 !important;
 }
 #library-book-chapter-drawer .book-drawer-link.is-current {
-  background: rgba(46, 94, 32, .85) !important;
-  border-color: rgba(255, 255, 255, .5) !important;
-  color: #f2fae8 !important;
+  background: #d9efe0 !important;
+  border-color: #7fb995 !important;
+  color: #14532d !important;
 }
 #library-book-chapter-drawer .book-drawer-book-select,
 #library-book-chapter-drawer .book-drawer-theme-toggle {
-  background: rgba(255, 255, 255, .34) !important;
-  border-color: rgba(255, 255, 255, .45) !important;
-  color: #22491f !important;
+  background: #e7f4ec !important;
+  border-color: #bfe0cc !important;
+  color: #234331 !important;
 }
 #library-book-chapter-handle {
-  background: rgba(150, 200, 95, .88) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(155%);
-  backdrop-filter: blur(12px) saturate(155%);
-  border-color: rgba(255, 255, 255, .5) !important;
-  color: #22491f !important;
+  background: rgba(205, 236, 207, .92) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  border-color: #74a97c !important;
+  color: #22522e !important;
 }
 :root[data-theme="dark"] #library-book-chapter-drawer {
-  background: linear-gradient(150deg, rgba(96, 138, 58, .92), rgba(78, 118, 44, .9)) !important;
-  border-color: rgba(255, 255, 255, .28) !important;
-  color: #eef7e2 !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 12px 30px rgba(0, 0, 0, .4) !important;
+  background: linear-gradient(165deg, rgba(34, 53, 41, .94), rgba(27, 41, 32, .92)) !important;
+  border-color: #4a7a5a !important;
+  color: #e8f6ec !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 12px 30px rgba(0, 0, 0, .4) !important;
 }
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-label,
-:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-section-label { color: #cfe3b8 !important; }
+:root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-section-label { color: #9bc9aa !important; }
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link {
-  background: rgba(255, 255, 255, .14) !important;
-  border-color: rgba(255, 255, 255, .22) !important;
-  color: #eef7e2 !important;
+  background: #2a4634 !important;
+  border-color: #33523d !important;
+  color: #e8f6ec !important;
 }
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-link.is-current {
-  background: rgba(190, 230, 140, .28) !important;
-  border-color: #b7e28a !important;
-  color: #f4ffe8 !important;
+  background: #2f5240 !important;
+  border-color: #6aa87f !important;
+  color: #eaf7ee !important;
 }
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-book-select,
 :root[data-theme="dark"] #library-book-chapter-drawer .book-drawer-theme-toggle {
-  background: rgba(255, 255, 255, .14) !important;
-  border-color: rgba(255, 255, 255, .22) !important;
-  color: #eef7e2 !important;
+  background: #2a4634 !important;
+  border-color: #33523d !important;
+  color: #e8f6ec !important;
 }
 :root[data-theme="dark"] #library-book-chapter-handle {
-  background: rgba(88, 128, 52, .9) !important;
-  border-color: rgba(255, 255, 255, .28) !important;
-  color: #eef7e2 !important;
+  background: rgba(47, 82, 64, .92) !important;
+  border-color: #6aa87f !important;
+  color: #eaf7ee !important;
 }
 #library-book-chapter-drawer .book-drawer-list { max-height: 218px; }
