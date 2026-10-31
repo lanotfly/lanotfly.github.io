@@ -2587,3 +2587,12 @@ html,body{max-width:100%;overflow-x:clip}
    podcast panel with the lock-screen artwork in its heading. */
 #library-podcast-panel #niv-bible-panel { margin: 0; }
 .niv-bible-panel__artwork { width: 44px; height: 44px; border-radius: 10px; flex: none; display: block; }
+
+/* 2026-10-31: KJV compact parity — when its list is folded, the book
+   picker and progress bar hide like the other feeds' tools, leaving
+   artwork + title + queue toggle + play/pause on the right. The two
+   quick buttons split the row evenly. */
+#niv-bible-panel:has(.niv-bible-queue-toggle.is-collapsed) #niv-book-select,
+#niv-bible-panel:has(.niv-bible-queue-toggle.is-collapsed) .niv-bible-progress-wrap { display: none; }
+.niv-bible-panel__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.audio-quick-group--podcast, .audio-quick-group--radio { flex-grow: 1; }

@@ -70,7 +70,7 @@
       miniToggle.type='button';
       miniToggle.innerHTML=MINI_PLAY_SVG;
       miniToggle.setAttribute('aria-label','Play or pause KJV audio');
-      heading.insertBefore(miniToggle,heading.firstChild);
+      heading.appendChild(miniToggle);
       miniToggle.addEventListener('click',function(){var t=document.getElementById('niv-bible-toggle');if(t)t.click();});
     }
     var collapseButton=document.getElementById('niv-bible-queue-toggle');
