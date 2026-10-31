@@ -73,6 +73,35 @@
       (panel.querySelector('.podcast-panel-actions')||heading).appendChild(miniToggle);
       miniToggle.addEventListener('click',function(){var t=document.getElementById('niv-bible-toggle');if(t)t.click();});
     }
+    /* The feeds' bulk menu, same host, same look, same behaviour:
+       Mark all to played / unplayed for the current book. */
+    if(!document.getElementById('niv-bible-bulk-menu')){
+      var bulkMenu=document.createElement('div');
+      bulkMenu.className='podcast-bulk-menu';
+      bulkMenu.id='niv-bible-bulk-menu';
+      bulkMenu.innerHTML='<button class="podcast-bulk-menu__toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-label="KJV Audio Bible chapter status actions" title="Chapter status actions"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="podcast-bulk-menu__options" role="menu" aria-label="KJV Audio Bible chapter status actions" hidden><button type="button" role="menuitem" data-kjv-bulk-played="true">Mark all to played</button><button type="button" role="menuitem" data-kjv-bulk-played="false">Mark all to unplayed</button></div>';
+      var actionsHost3=panel.querySelector('.podcast-panel-actions');
+      if(actionsHost3)actionsHost3.insertBefore(bulkMenu,document.getElementById('niv-bible-mini-toggle'));
+      var bulkToggle=bulkMenu.querySelector('.podcast-bulk-menu__toggle');
+      var bulkOptions=bulkMenu.querySelector('.podcast-bulk-menu__options');
+      function setKjvBulkOpen(open){bulkOptions.hidden=!open;bulkToggle.setAttribute('aria-expanded',String(!!open));}
+      bulkToggle.addEventListener('click',function(event){event.stopPropagation();setKjvBulkOpen(bulkOptions.hidden);});
+      bulkMenu.addEventListener('click',function(event){event.stopPropagation();});
+      bulkOptions.querySelectorAll('[data-kjv-bulk-played]').forEach(function(action){
+        action.addEventListener('click',function(){
+          var played=action.getAttribute('data-kjv-bulk-played')==='true';
+          setKjvBulkOpen(false);
+          var book=getBook(current.book)||books[0];
+          for(var chapter=1;chapter<=book[2];chapter++){
+            try{var key='library_kjv_played:'+book[1]+':'+chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);}catch(_){}
+          }
+          renderQueue();
+          setStatus(played?'Marked all '+book[2]+' chapters as played.':'Marked all '+book[2]+' chapters as unplayed.');
+        });
+      });
+      document.addEventListener('click',function(){setKjvBulkOpen(false);});
+      document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!bulkOptions.hidden){setKjvBulkOpen(false);bulkToggle.focus();}});
+    }
     /* No fold button any more: the heading strip is the toggle, exactly
        like the podcast feeds, and the fold is global across the deck. */
     var kjvFoldExpanded=true;
