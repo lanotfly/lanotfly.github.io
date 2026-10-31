@@ -6,7 +6,7 @@
 
   var feeds = [
     { id: 'bbc', title: 'BBC Global News Podcast', language: 'en' },
-    { id: 'chronicle', title: 'Chronicle News Connect', language: 'ja' },
+    { id: 'chronicle', title: 'News Connect', language: 'ja' },
     { id: 'english', title: 'Easy Natural English', language: 'en' },
     { id: 'japanese', title: 'Bite Size Japanese', language: 'ja' }
   ];

@@ -2411,3 +2411,18 @@ html,body{max-width:100%;overflow-x:clip}
 #library-radio-panel .radio-source-tabs { margin: 0 !important; }
 #library-podcast-panel .podcast-episode-panel { margin: 0 !important; }
 #niv-bible-panel { padding: 10px !important; }
+
+/* 2026-10-31: the compact bar wears pale purple (not white) and its
+   artwork shrinks a notch — 36px on phones. All four feeds share the
+   folded face; dark mode gets the deep variant. */
+:root:not([data-theme="dark"]) #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+  background: #f2ebfa !important;
+}
+:root[data-theme="dark"] #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+  background: #31254a !important;
+}
+@media (max-width: 700px) {
+  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
+    flex-basis: 36px !important; width: 36px !important; height: 36px !important;
+  }
+}
