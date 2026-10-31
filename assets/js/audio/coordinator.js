@@ -332,8 +332,8 @@
       clearTimeout(held.timer);
       quickTapHeld[id]=null;
       event.preventDefault();event.stopPropagation();
-      if(id==='audio-podcast-play'){setMode('podcast');openFeedMenu();}
-      else openStationMenu();
+      if(id==='audio-podcast-play'){setMode('podcast');if(feedMenu&&!feedMenu.hidden)closeFeedMenu();else openFeedMenu();}
+      else if(stationMenu&&!stationMenu.hidden)closeStationMenu();else openStationMenu();
       return;
     }
     event.preventDefault();event.stopPropagation();

@@ -380,7 +380,7 @@
     window.addEventListener('resize',function(){if(chapterDrawerOpen)positionChapterDrawer();});
     document.addEventListener('pointerdown',function(e){
       if(!chapterDrawerOpen)return;
-      if(chapterDrawer.contains(e.target))return;
+      if(chapterDrawer.contains(e.target)||(e.target.closest&&e.target.closest('.site-tab--home')))return;
       closeChapterDrawer();
     },true);
     /* The Home tab borrows the same panel: a long press (450ms, like the
