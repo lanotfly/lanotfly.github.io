@@ -1047,7 +1047,7 @@ html,body{max-width:100%;overflow-x:clip}
 /* Keep Played / Unplayed controls visibly above the episode viewport. */
 .podcast-episode-panel__tools{position:relative!important;z-index:5!important;display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:8px 12px!important;}
 .podcast-episode-panel__tools .podcast-panel-filter-label{position:relative!important;z-index:6!important;display:block!important;flex:0 0 100%!important;width:100%!important;margin:0!important;}
-.podcast-episode-panel__tools .podcast-panel-filter{position:relative!important;z-index:6!important;max-width:100%!important;}
+.podcast-episode-panel__tools .podcast-panel-filter{position:relative!important;z-index:6!important;max-width:120px!important;}
 .podcast-episode-scroll-frame,.podcast-feed-episode-scroll-frame{position:relative;z-index:1!important;}
 .podcast-episode-list .podcast-episode-text{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;min-width:0!important;width:100%!important;}
 .podcast-episode-list .podcast-episode-meta{justify-content:flex-start!important;text-align:left!important;margin-left:0!important;margin-right:auto!important;}
@@ -2575,8 +2575,8 @@ html,body{max-width:100%;overflow-x:clip}
 @media (max-width: 700px) {
   #library-podcast-panel .podcast-episode-panel__tools { gap: 6px 8px; }
   #library-podcast-panel .podcast-episode-count { white-space: nowrap; }
-  #library-podcast-panel .podcast-panel-filter { max-width: 104px; }
-  #niv-bible-panel .niv-bible-queue-tools #niv-book-select { max-width: 118px; min-width: 84px; }
+  #library-podcast-panel .podcast-panel-filter { max-width: 104px !important; }
+  #niv-bible-panel .niv-bible-queue-tools #niv-book-select { max-width: 100px; min-width: 76px; }
 }
 
 /* The KJV book select wears the filter select's exact metrics (font,
@@ -2584,7 +2584,7 @@ html,body{max-width:100%;overflow-x:clip}
 #library-podcast-panel .niv-bible-book-select {
   font-size: 12px !important; font-weight: 600;
   padding: 6px 10px !important; min-height: 32px;
-  border-radius: 7px !important;
+  border-radius: 7px !important; max-width: 150px;
 }
 @media (max-width: 700px) {
   #library-podcast-panel .niv-bible-book-select { font-size: 11px !important; padding: 5px 6px !important; }

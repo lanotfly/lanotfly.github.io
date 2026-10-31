@@ -12,7 +12,7 @@
 #library-book-chapter-drawer[data-side=left]{border-top-left-radius:0;border-bottom-left-radius:0}
 #library-book-chapter-drawer.is-open{transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
 #library-book-chapter-drawer .book-drawer-book-label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:750;color:#598067}
-#library-book-chapter-drawer .book-drawer-book-select{width:100%;min-height:40px;padding:8px 10px;border:1px solid #b9d9c4;border-radius:9px;background:rgba(255,255,255,.86);color:var(--theme-text,#20283a);font:inherit;font-size:14px;outline-offset:2px}
+#library-book-chapter-drawer .book-drawer-book-select{width:100%;max-width:150px;min-height:40px;padding:8px 10px;border:1px solid #b9d9c4;border-radius:9px;background:rgba(255,255,255,.86);color:var(--theme-text,#20283a);font:inherit;font-size:14px;outline-offset:2px}
 #library-book-chapter-drawer .book-drawer-section-label{font-size:12px;font-weight:750;letter-spacing:.04em;color:#598067;padding-top:2px}
 #library-book-chapter-drawer .book-drawer-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;min-height:0;max-height:calc(min(68vh,560px) - 64px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 #library-book-chapter-drawer .book-drawer-link{display:block;padding:9px 10px;border:1px solid #d8e9dd;border-radius:9px;color:#315c42;background:rgba(255,255,255,.76);text-decoration:none;font-size:13px;line-height:1.35;transition:background .16s ease,border-color .16s ease,transform .16s ease}
