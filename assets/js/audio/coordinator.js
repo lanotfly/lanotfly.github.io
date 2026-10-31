@@ -182,7 +182,26 @@
   if(radioPlay){
     var radioPressTimer=null;
     var clearRadioPress=function(){if(radioPressTimer){clearTimeout(radioPressTimer);radioPressTimer=null;}};
+    /* Double tap = long press: open the station menu on the second
+       pointerdown, swallow its click, and undo the first tap's
+       play/pause so the net effect matches a long press exactly. */
+    var radioLastDown=0,radioPrePaused=null;
     radioPlay.addEventListener('pointerdown',function(){
+      var now=Date.now();
+      var C=window.LibraryAudioCoordinator;
+      var ra=C?C.getAudio(C.getLastRadio()):null;
+      if(now-radioLastDown<320&&radioPrePaused!==null){
+        clearRadioPress();
+        radioLongPressed=true;
+        setTimeout(function(){radioLongPressed=false;},1000);
+        openStationMenu();
+        if(ra){if(radioPrePaused&&!ra.paused)ra.pause();else if(!radioPrePaused&&ra.paused){var rr=ra.play();if(rr&&rr.catch)rr.catch(function(){});}}
+        paintRadio();
+        radioLastDown=0;radioPrePaused=null;
+        return;
+      }
+      radioLastDown=now;
+      radioPrePaused=ra?ra.paused:null;
       clearRadioPress();
       radioPressTimer=setTimeout(function(){
         radioPressTimer=null;
@@ -269,7 +288,27 @@
   if(podPlay){
     var podPressTimer=null;
     var clearPodPress=function(){if(podPressTimer){clearTimeout(podPressTimer);podPressTimer=null;}};
+    /* Double tap = long press: open the feed menu on the second
+       pointerdown, swallow its click, and undo the first tap's
+       play/pause so the net effect matches a long press exactly. */
+    var podLastDown=0,podPrePaused=null;
     podPlay.addEventListener('pointerdown',function(){
+      var now=Date.now();
+      var feedNow=currentFeed();
+      var fa=feedNow==='kjv'?document.getElementById('niv-bible-audio'):feedAudio(feedNow);
+      if(now-podLastDown<320&&podPrePaused!==null){
+        clearPodPress();
+        podLongPressed=true;
+        setTimeout(function(){podLongPressed=false;},1000);
+        setMode('podcast');
+        openFeedMenu();
+        if(fa){if(podPrePaused&&!fa.paused)fa.pause();else if(!podPrePaused&&fa.paused){var rp=fa.play();if(rp&&rp.catch)rp.catch(function(){});}}
+        paintPodcast();
+        podLastDown=0;podPrePaused=null;
+        return;
+      }
+      podLastDown=now;
+      podPrePaused=fa?fa.paused:null;
       clearPodPress();
       podPressTimer=setTimeout(function(){
         podPressTimer=null;

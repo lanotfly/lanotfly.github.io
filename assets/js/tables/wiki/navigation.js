@@ -288,7 +288,7 @@
     if(chapterHandle){chapterHandle.classList.remove('is-expanded');chapterHandle.setAttribute('aria-expanded','false');}
     document.documentElement.classList.remove('book-chapter-drawer-open');
   }
-  function openChapterDrawer(){
+  function openChapterDrawer(anchor){
     var path=currentBookPath(), book=bookForPath(path);
     if(!book||!chapterDrawer)return;
     var selector=chapterDrawer.querySelector('.book-drawer-book-select');
@@ -303,7 +303,8 @@
     }
     var themeToggle=chapterDrawer.querySelector('.book-drawer-theme-toggle');
     if(themeToggle){var isDark=document.documentElement.getAttribute('data-theme')==='dark';themeToggle.setAttribute('aria-pressed',isDark?'true':'false');themeToggle.setAttribute('aria-label','Switch to '+(isDark?'light':'dark')+' mode');var themeLabel=themeToggle.querySelector('.theme-toggle-label');if(themeLabel)themeLabel.textContent=isDark?'Light mode':'Dark mode';}
-    chapterDrawer.dataset.side=chapterHandle.dataset.side||'right';
+    chapterDrawer.dataset.anchor=anchor==='home'?'home':'handle';
+    chapterDrawer.dataset.side=anchor==='home'?'left':(chapterHandle.dataset.side||'right');
     positionChapterDrawer();
     var list=chapterDrawer.querySelector('.book-drawer-list');
     list.replaceChildren();
@@ -322,11 +323,25 @@
   }
   function positionChapterDrawer(){
     if(!chapterHandle||!chapterDrawer)return;
-    var r=chapterHandle.getBoundingClientRect();
     var gap=0;
     chapterDrawer.style.bottom='auto';
-    /* Align the drawer's top edge with the floating Reading handle's top edge. */
-    var top=Math.max(8,Math.min(window.innerHeight-264,r.top));
+    var top;
+    if(chapterDrawer.dataset&&chapterDrawer.dataset.anchor==='home'){
+      /* Opened from the Home tab: hang the panel under the sticky nav
+         shell at the left edge, clear of the Home / Audio rows. */
+      var doc=chapterDrawer.ownerDocument||document;
+      var shellEl=doc.querySelector('.site-nav-shell');
+      var shellBottom=shellEl?shellEl.getBoundingClientRect().bottom:0;
+      top=Math.max(8,Math.min(window.innerHeight-264,Math.ceil(shellBottom)+6));
+      chapterDrawer.style.left='8px';
+      chapterDrawer.style.right='auto';
+    }else{
+      /* Align the drawer's top edge with the floating Reading handle's top edge. */
+      var r=chapterHandle.getBoundingClientRect();
+      top=Math.max(8,Math.min(window.innerHeight-264,r.top));
+      chapterDrawer.style.left='';
+      chapterDrawer.style.right='';
+    }
     chapterDrawer.style.top=top+'px';
     chapterDrawer.style.maxHeight=Math.max(200,window.innerHeight-top-12)+'px';
     /* The chapter list flexes with the room below the handle: up to five
@@ -394,6 +409,51 @@
       if(chapterDrawer.contains(e.target)||chapterHandle.contains(e.target))return;
       closeChapterDrawer();
     },true);
+    /* The Home tab borrows the same panel: a long press (450ms, like the
+       Podcast / Radio choosers) or a double tap opens the chapter drawer
+       anchored under the nav at the left, with the same book selector,
+       chapter list and tap-to-stretch behaviour. A double tap is told
+       apart from a plain tap by holding the first click for a beat; if
+       no second click lands, the held click is replayed and Home
+       navigates exactly as before. */
+    var homeLink=document.querySelector('.site-nav-shell .site-tab--home');
+    if(homeLink){
+      var homePressTimer=null,homeSwallow=false,homeHeldLink=null,homeHoldTimer=null,homeReplay=false;
+      var clearHomePress=function(){if(homePressTimer){clearTimeout(homePressTimer);homePressTimer=null;}};
+      var openHomeDrawer=function(){
+        if(chapterDrawerOpen&&chapterDrawer.dataset.anchor==='home')closeChapterDrawer();
+        else openChapterDrawer('home');
+      };
+      homeLink.addEventListener('pointerdown',function(){
+        clearHomePress();
+        homePressTimer=setTimeout(function(){
+          homePressTimer=null;
+          homeSwallow=true;
+          setTimeout(function(){homeSwallow=false;},1000);
+          openHomeDrawer();
+        },450);
+      });
+      ['pointerup','pointerleave','pointercancel'].forEach(function(type){homeLink.addEventListener(type,clearHomePress);});
+      homeLink.addEventListener('contextmenu',function(event){event.preventDefault();});
+      document.addEventListener('click',function(event){
+        if(homeReplay){homeReplay=false;return;}
+        var link=event.target&&event.target.closest?event.target.closest('.site-tab--home'):null;
+        if(!link)return;
+        if(homeSwallow){homeSwallow=false;event.preventDefault();event.stopPropagation();return;}
+        if(homeHeldLink){
+          clearTimeout(homeHoldTimer);homeHoldTimer=null;homeHeldLink=null;
+          event.preventDefault();event.stopPropagation();
+          openHomeDrawer();
+          return;
+        }
+        event.preventDefault();event.stopPropagation();
+        homeHeldLink=link;
+        homeHoldTimer=setTimeout(function(){
+          homeHoldTimer=null;var held=homeHeldLink;homeHeldLink=null;
+          if(held){homeReplay=true;held.click();}
+        },260);
+      },true);
+    }
     chapterDrawer.addEventListener('pointerdown',function(e){
       if(e.target.closest('a,select,label'))return;
       var sy=e.clientY, base=chapterHandle.getBoundingClientRect().top, moved=false;
