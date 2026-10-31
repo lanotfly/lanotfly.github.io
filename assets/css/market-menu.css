@@ -1372,3 +1372,21 @@ body > #library-market-panel.library-market-dropdown {
 #library-market-panel:has(.home-news-item[open]) #home-news-view {
   height: calc(97dvh - 76px) !important;
 }
+
+/* 2026-10-31: the green, softened — pastel mint instead of the saturated
+   tail, and a gentler frost (less saturation push, same blur). */
+body > #library-market-panel.library-market-dropdown {
+  background:
+    radial-gradient(120% 90% at 12% 0%, rgba(255, 255, 255, .42) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(165deg, rgba(236, 250, 240, .68) 0%, rgba(208, 240, 220, .55) 55%, rgba(182, 228, 199, .50) 100%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(165%) brightness(1.03) !important;
+  backdrop-filter: blur(24px) saturate(165%) brightness(1.03) !important;
+}
+#library-market-panel #home-news-view.home-news-panel {
+  background: linear-gradient(150deg, rgba(255, 255, 255, .55), rgba(233, 247, 237, .34) 55%, rgba(208, 240, 219, .30)) !important;
+}
+:root[data-theme="dark"] body > #library-market-panel.library-market-dropdown {
+  background:
+    radial-gradient(120% 90% at 12% 0%, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(165deg, rgba(23, 76, 47, .55) 0%, rgba(15, 59, 35, .52) 55%, rgba(10, 45, 26, .58) 100%) !important;
+}

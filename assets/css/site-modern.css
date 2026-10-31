@@ -2374,3 +2374,40 @@ html,body{max-width:100%;overflow-x:clip}
   background: linear-gradient(165deg, #2b2138 0%, #251b31 100%) !important;
   border-color: #46355e !important;
 }
+
+/* 2026-10-31: THE shared icon-button kit — one rule owns the size of
+   every panel icon button (podcast collapse, podcast bulk, podcast
+   mini play, KJV queue toggle, KJV mini toggle), so the states can
+   never drift apart again. Faces (white utility / pale transport)
+   stay with each button's own rules. */
+.podcast-list-toggle, .podcast-bulk-menu__toggle, .podcast-mini-play,
+.niv-bible-queue-toggle, .niv-bible-mini-toggle {
+  flex: 0 0 34px !important;
+  width: 34px !important; min-width: 34px !important;
+  height: 34px !important; min-height: 34px !important;
+  border-radius: 9px !important;
+  box-sizing: border-box !important;
+}
+/* Fold freeze: folding hides ONLY the list, the progress and the
+   tools/filter row. The header keeps its expanded geometry — same
+   panel padding, same artwork, and the actions swap (bulk out, mini
+   play in) is one-for-one at the same size, so the collapse button
+   neither moves nor resizes. */
+#library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+  padding-top: 14px !important; padding-bottom: 14px !important;
+}
+.podcast-panel-actions { display: flex !important; align-items: center; gap: 6px; }
+.podcast-mini-btn { margin: 0 !important; }
+@media (max-width: 700px) {
+  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) {
+    padding-top: 8px !important; padding-bottom: 8px !important;
+  }
+  #library-podcast-panel .podcast-episode-panel:has(> .podcast-episode-scroll-frame[hidden]) .podcast-episode-panel__artwork {
+    flex-basis: 44px !important; width: 44px !important; height: 44px !important;
+  }
+}
+/* Even pressure on all four sides: inner blocks no longer add their
+   own outer margins inside the tinted panels. */
+#library-radio-panel .radio-source-tabs { margin: 0 !important; }
+#library-podcast-panel .podcast-episode-panel { margin: 0 !important; }
+#niv-bible-panel { padding: 10px !important; }
