@@ -37,9 +37,6 @@
     if(target==='bible'){var bt=document.getElementById('niv-bible-toggle');if(bt)bt.setAttribute('aria-expanded','true');}
     return true;
   }
-  function pauseAll(){
-    Object.keys(audioIds).forEach(function(name){var a=getAudio(name);if(a&&!a.paused){try{a.pause();}catch(_){}}});
-  }
   function setRadioPanelOpen(open){
     if(!radioToggle||!radioPanel)return;
     if(!open){closeRadioPanel();return;}
@@ -68,7 +65,7 @@
   },true);
   /* Navigation colors are owned exclusively by shared/nav-tab-state.js.
      This coordinator owns audio source switching and audio-panel behavior only. */
-  window.LibraryAudioCoordinator={switchTo:switchTo,pauseAll:pauseAll,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,getLastRadio:function(){return lastRadio;}};
+  window.LibraryAudioCoordinator={switchTo:switchTo,getAudio:getAudio,getActiveTarget:function(){return activeTarget;},setRadioPanelOpen:setRadioPanelOpen,getLastRadio:function(){return lastRadio;}};
   window.__prepareRadioPlayback=function(target){switchTo(target||lastRadio||'radio4');};
 })(window,document);
 /* Audio shell: one row of three split buttons — Radio | KJV | Podcast.
@@ -109,9 +106,20 @@
     shellToggle.setAttribute('aria-expanded',String(open));
     shellToggle.classList.toggle('is-open',open);
     shellToggle.classList.toggle('is-active',open);
-    if(open){applyMode();applyStoredFeed();}else{closeFeedMenu();closeStationMenu();if(window.LibraryAudioCoordinator&&window.LibraryAudioCoordinator.pauseAll)window.LibraryAudioCoordinator.pauseAll();}
+    if(open){applyMode();applyStoredFeed();}else{closeFeedMenu();closeStationMenu();}
   }
-  shellToggle.addEventListener('click',function(){setShell(shell.hidden);});
+  function ensurePodcastStarted(){
+    var C=window.LibraryAudioCoordinator;if(!C)return;
+    var names=['podcastBbc','podcastChronicle','podcastEnglish','podcastJapanese','bible','radio4','nhk','npr'];
+    var anyPlaying=names.some(function(name){var a=C.getAudio(name);return a&&!a.paused&&!a.ended;});
+    if(anyPlaying)return;
+    var feed='bbc';
+    try{feed=localStorage.getItem('personal-library-podcast-active-feed')||'bbc';}catch(_){}
+    if(feed==='kjv'){var bb=document.getElementById('niv-bible-toggle');if(bb)bb.click();return;}
+    if(['bbc','chronicle','english','japanese'].indexOf(feed)<0)feed='bbc';
+    var pt=document.getElementById('library-podcast-toggle');if(pt)pt.click();
+  }
+  shellToggle.addEventListener('click',function(){ensurePodcastStarted();setShell(shell.hidden);});
   function paintGlyph(btn,playing){
     if(!btn)return;
     btn.classList.toggle('is-playing',playing);
