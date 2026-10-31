@@ -174,6 +174,7 @@
     button.setAttribute('aria-pressed',String(playing));
     var miniToggleEl=document.getElementById('niv-bible-mini-toggle');
     if(miniToggleEl){miniToggleEl.innerHTML=playing?MINI_PAUSE_SVG:MINI_PLAY_SVG;miniToggleEl.setAttribute('aria-pressed',String(playing));}
+    if(bookSelect.value!==current.book)bookSelect.value=current.book;
     button.setAttribute('aria-expanded',String(!panel.hidden));
     button.setAttribute('aria-label',(playing?'Pause':'Play')+' KJV Audio Bible'+(current.book?' · '+(getBook(current.book)||books[0])[0]+' '+current.chapter:''));
     button.title=(playing?'Pause':'Play')+' KJV Audio Bible';
@@ -188,7 +189,7 @@
     current={book:bookCode,chapter:chapter,index:books.findIndex(function(item){return item[1]===bookCode;})};
     remember(bookCode,chapter,0);
     bookSelect.value=bookCode;
-    if(title)title.textContent=book[0]+' · Chapter '+chapter;
+    if(title)title.innerHTML='<span class="niv-bible-title-book">'+book[0]+' · </span>Chapter '+chapter;
     renderQueue();
     audio.dataset.chapterTitle=book[0]+' '+chapter;
     panel.hidden=false;
@@ -240,7 +241,7 @@
   var initialChapter=saved&&getBook(saved.book)?saved.chapter:1;
   bookSelect.value=initialBook;
   current={book:initialBook,chapter:initialChapter,index:books.findIndex(function(book){return book[1]===initialBook;})};
-  if(title)title.textContent=(getBook(initialBook)||books[0])[0]+' · Chapter '+initialChapter;
+  if(title)title.innerHTML='<span class="niv-bible-title-book">'+(getBook(initialBook)||books[0])[0]+' · </span>Chapter '+initialChapter;
   installQueue();
   function togglePlayback(){
     panel.hidden=false;

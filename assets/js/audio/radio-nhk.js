@@ -12,7 +12,7 @@
     toggle.title=playing?'Pause NHK Radio 1':'Play NHK Radio 1';
     toggle.classList.toggle('is-playing',playing);
     var label=toggle.querySelector('.nhk-radio-label');
-    if(label) label.textContent='NHK Radio';
+    if(label) label.textContent='NHK';
     if(playing && window.LibraryAudioIdentity){
       window.LibraryAudioIdentity.setNowPlaying('nhk',audio,{
         title:'NHK Radio 1',

@@ -27,7 +27,7 @@
     toggle.setAttribute('aria-label',playing?'Pause BBC Radio':'Play BBC Radio');
     toggle.classList.toggle('is-playing',playing);
     /* Button colors are painted centrally by nav-tab-state.js from aria-pressed. */
-    label.textContent='BBC Radio';
+    label.textContent='BBC';
     if ('mediaSession' in navigator) {
       /* A pause event from BBC must not mark NHK as paused if NHK is now playing. */
       var nhkAudio=document.getElementById('nhk-radio-audio');
@@ -65,4 +65,36 @@
   audio.addEventListener('pause',function(){paint(false);});
   audio.addEventListener('ended',function(){paint(false);});
   audio.addEventListener('error',function(){paint(false);});
+})();
+
+/* Shared radio play/pause button (right of the station tabs, same build
+   as the podcast mini play): it presses whichever station toggle was
+   used last — BBC by default — and mirrors the live play state. */
+(function(){
+  if(window.__libraryRadioPlayToggleInstalled)return;
+  window.__libraryRadioPlayToggleInstalled=true;
+  var btn=document.getElementById('radio-play-toggle');
+  var bbcToggle=document.getElementById('radio4-toggle');
+  var nhkToggle=document.getElementById('nhk-radio-toggle');
+  var bbcAudio=document.getElementById('radio4-audio');
+  var nhkAudio=document.getElementById('nhk-radio-audio');
+  if(!btn||!bbcToggle||!nhkToggle||!bbcAudio||!nhkAudio)return;
+  var lastStation='bbc';
+  function paint(){
+    var playing=!bbcAudio.paused||!nhkAudio.paused;
+    btn.setAttribute('aria-pressed',String(playing));
+  }
+  [bbcAudio,nhkAudio].forEach(function(a){
+    a.addEventListener('play',function(){lastStation=a===nhkAudio?'nhk':'bbc';paint();});
+    a.addEventListener('pause',paint);
+    a.addEventListener('ended',paint);
+    a.addEventListener('error',paint);
+  });
+  bbcToggle.addEventListener('click',function(){lastStation='bbc';});
+  nhkToggle.addEventListener('click',function(){lastStation='nhk';});
+  btn.addEventListener('click',function(){
+    (lastStation==='nhk'?nhkToggle:bbcToggle).click();
+    paint();
+  });
+  paint();
 })();

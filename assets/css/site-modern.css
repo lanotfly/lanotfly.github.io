@@ -2330,3 +2330,26 @@ html,body{max-width:100%;overflow-x:clip}
   .site-nav-shell { padding-left: 0 !important; padding-right: 0 !important; }
   .radio-source-tabs .radio-secondary-tab { min-height: 32px; }
 }
+
+/* 2026-10-31: KJV compact title drops the book name (the select beside
+   it already shows the book) and keeps just the chapter. */
+.niv-bible-panel:has(> .niv-bible-queue-frame[hidden]) .niv-bible-title-book { display: none; }
+/* Radio row: two station tabs plus the shared play/pause button. */
+.radio-source-tabs { grid-template-columns: 1fr 1fr auto !important; align-items: center !important; }
+.radio-play-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex: 0 0 auto; padding: 0;
+  border-radius: 9px; background: #eee7f5; color: #62458a;
+  border: 1px solid #d9cbe9; cursor: pointer;
+}
+.radio-play-toggle svg { width: 15px; height: 15px; display: block; }
+.radio-play-toggle .icon-pause { display: none; }
+.radio-play-toggle[aria-pressed="true"] .icon-pause { display: block; }
+.radio-play-toggle[aria-pressed="true"] .icon-play { display: none; }
+/* Podcast stack, one notch tighter still. */
+.site-nav-shell .site-tabs { padding-top: 1px !important; padding-bottom: 1px !important; }
+@media (max-width: 700px) {
+  .library-podcast-panel { margin-top: 2px !important; }
+  .secondary-tabs.podcast-source-tabs { margin-bottom: 1px !important; }
+  .podcast-episode-panel { margin-top: 1px !important; }
+}
