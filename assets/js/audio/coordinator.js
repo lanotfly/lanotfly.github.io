@@ -299,6 +299,17 @@
     var a=feedAudio(f);
     if(a){a.addEventListener('play',paintPodcast);a.addEventListener('pause',paintPodcast);a.addEventListener('ended',paintPodcast);}
   });
+  /* Reader-added shows create their audio elements at runtime, long
+     after the wiring above — so repaint the Podcast button from a
+     capture-phase document listener for ANY podcast audio's state
+     change. Without it, switching to Radio paused an added show but
+     left the button showing the pause glyph. */
+  ['play','pause','ended'].forEach(function(type){
+    document.addEventListener(type,function(event){
+      var t=event.target;
+      if(t&&t.id&&t.id.indexOf('podcast-')===0)paintPodcast();
+    },true);
+  });
   var bibleAudioEl=document.getElementById('niv-bible-audio');
   if(bibleAudioEl){bibleAudioEl.addEventListener('play',paintPodcast);bibleAudioEl.addEventListener('pause',paintPodcast);bibleAudioEl.addEventListener('ended',paintPodcast);}
   function closeFeedMenu(){
