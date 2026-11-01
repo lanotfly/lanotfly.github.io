@@ -795,6 +795,39 @@
       adoptSavedPosition(getFeed(current.feed));
     }
   });
+
+  /* Returning-listener resume. iOS gives a web page no interruption
+     signal and no right to restart sound from the background, so a
+     podcast interrupted while the user is away (a call, another
+     app's voice mode) can never restart itself out there. What the
+     page CAN do: remember it was playing when the user left, and if
+     it comes back paused, pick it up the moment the page becomes
+     visible again — no tap inside the page needed. One shot per
+     departure, only for the still-selected feed, and never over
+     another source that is already playing. A deliberate lock-screen
+     pause (identity.js) clears the mark. */
+  var resumeWhenVisible = null;
+  window.addEventListener('library-user-pause', function () { resumeWhenVisible = null; });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (!current.feed) return;
+      var awayFeed = getFeed(current.feed);
+      var awayAudio = awayFeed ? audioFor(awayFeed.id) : null;
+      if (awayAudio && !awayAudio.paused && !awayAudio.ended) resumeWhenVisible = awayFeed.id;
+      return;
+    }
+    if (!resumeWhenVisible) return;
+    var targetFeed = resumeWhenVisible;
+    resumeWhenVisible = null;
+    if (current.feed !== targetFeed) return;
+    var backFeed = getFeed(targetFeed);
+    var backAudio = backFeed ? audioFor(backFeed.id) : null;
+    if (!backAudio || !backAudio.paused || backAudio.ended) return;
+    if (!(episodesByFeed[targetFeed] || [])[current.index]) return;
+    var all = document.querySelectorAll('audio');
+    for (var i = 0; i < all.length; i += 1) { if (all[i] !== backAudio && !all[i].paused) return; }
+    toggleFeedPlayback(backFeed);
+  });
   window.addEventListener('storage', function (event) {
     if (!event.key || event.key.indexOf('personal-library-podcast-position:') !== 0) return;
     if (current.feed) adoptSavedPosition(getFeed(current.feed));

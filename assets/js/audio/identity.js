@@ -54,6 +54,9 @@
           });
         });
         navigator.mediaSession.setActionHandler('pause',function(){
+          /* A deliberate lock-screen pause cancels the podcast deck's
+             resume-when-you-return mark (see panel.js). */
+          try{window.dispatchEvent(new Event('library-user-pause'));}catch(_){}
           audio.pause();
           try{navigator.mediaSession.playbackState='paused';}catch(_){}
         });
