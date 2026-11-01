@@ -2631,3 +2631,83 @@ html,body{max-width:100%;overflow-x:clip}
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* Apple Podcasts Top chart (inside the Podcast panel): rows reuse the
+   deck's pale-lavender episode-row language; controls keep the borders. */
+.podcast-topchart-regions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 2px 2px 8px;
+}
+.podcast-topchart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px;
+}
+.podcast-topchart-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8f4fd;
+  border-radius: 12px;
+  padding: 6px 8px;
+}
+.podcast-topchart-rank {
+  flex: none;
+  width: 1.7em;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7a68a6;
+}
+.podcast-topchart-art {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
+  background: #e9ddf8;
+}
+.podcast-topchart-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.podcast-topchart-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2140;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.podcast-topchart-artist {
+  font-size: 12px;
+  color: #6f6390;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.podcast-topchart-add {
+  flex: none;
+  border: 1px solid #9678c7;
+  background: #eee7f5;
+  color: #4a3577;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.podcast-topchart-add.is-added {
+  background: #e9ddf8;
+  color: #7a68a6;
+}
+:root[data-theme="dark"] .podcast-topchart-row { background: rgba(70, 54, 96, .45); }
+:root[data-theme="dark"] .podcast-topchart-name { color: #e6def5; }
+:root[data-theme="dark"] .podcast-topchart-artist { color: #b3a6d4; }
+:root[data-theme="dark"] .podcast-topchart-rank { color: #b3a6d4; }
+:root[data-theme="dark"] .podcast-topchart-add { background: rgba(90, 72, 120, .55); color: #e6def5; border-color: rgba(255, 255, 255, .35); }
+:root[data-theme="dark"] .podcast-topchart-add.is-added { background: rgba(70, 54, 96, .6); color: #b3a6d4; }

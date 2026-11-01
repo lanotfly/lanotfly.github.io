@@ -90,6 +90,7 @@
           <button type="button" role="menuitem" data-feed-choice="english">Easy Natural English</button>
           <button type="button" role="menuitem" data-feed-choice="japanese">Bite Size Japanese</button>
           <button type="button" role="menuitem" data-feed-choice="kjv">KJV</button>
+          <button type="button" role="menuitem" data-feed-choice="topchart">Apple Top Podcasts</button>
         </div>
       </div>
       <div class="audio-quick-group audio-quick-group--radio" role="group" aria-label="Radio">
@@ -125,6 +126,7 @@
     <button type="button" class="secondary-tab" id="podcast-tab-english" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-english" data-podcast-tab="english" aria-label="Easy Natural English">Natural EN</button>
     <button type="button" class="secondary-tab" id="podcast-tab-japanese" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-japanese" data-podcast-tab="japanese" aria-label="Bite Size Japanese">Bite Size JP</button>
     <button type="button" class="secondary-tab" id="podcast-tab-kjv" role="tab" aria-selected="false" aria-controls="niv-bible-panel" data-podcast-tab="kjv" aria-label="KJV Audio Bible">KJV</button>
+    <button type="button" class="secondary-tab" id="podcast-tab-topchart" role="tab" aria-selected="false" aria-controls="podcast-topchart-panel" data-podcast-tab="topchart" aria-label="Apple Podcasts Top Podcasts">+ Top</button>
   </div>
   <section id="podcast-feed-panel-bbc" class="podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="bbc" role="tabpanel" aria-label="BBC Global News Podcast">
     <div class="podcast-episode-panel__heading">
@@ -181,6 +183,20 @@
     <div class="podcast-episode-panel__tools"><div class="podcast-episode-count" data-podcast-count="japanese" aria-live="polite">Loading episodes…</div><label class="podcast-panel-filter-label"><select class="podcast-panel-filter" data-podcast-filter="japanese" aria-label="Bite Size Japanese episode filter"><option value="unplayed" selected>Unplayed</option><option value="played">Played</option><option value="all">All episodes</option></select></label></div>
     <p class="podcast-episode-panel__status" data-podcast-status="japanese" aria-live="polite"></p>
     <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-japanese-list-frame"><div class="podcast-episode-list podcast-feed-episode-list" data-podcast-list="japanese" role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
+  </section>
+  <section id="podcast-topchart-panel" class="podcast-episode-panel podcast-feed-panel podcast-topchart-panel" data-podcast-feed-panel="topchart" role="tabpanel" aria-label="Apple Podcasts Top Podcasts" hidden>
+    <div class="podcast-episode-panel__heading">
+      <div class="podcast-episode-panel__identity">
+        <div class="podcast-episode-panel__identity-text"><span class="podcast-episode-panel__eyebrow">APPLE PODCASTS</span><h2 class="podcast-episode-panel__title">Top Podcasts</h2></div>
+      </div>
+    </div>
+    <div class="podcast-topchart-regions" role="tablist" aria-label="Chart region">
+      <button type="button" class="secondary-tab" data-topchart-region="jp" aria-selected="true">Japan</button>
+      <button type="button" class="secondary-tab" data-topchart-region="us" aria-selected="false">US</button>
+      <button type="button" class="secondary-tab" data-topchart-region="gb" aria-selected="false">UK</button>
+    </div>
+    <p class="podcast-episode-panel__status" data-topchart-status aria-live="polite"></p>
+    <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-topchart-list-frame"><div class="podcast-topchart-list" data-topchart-list role="list"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--left" aria-hidden="true"></div><div class="podcast-episode-scroll-edge podcast-episode-scroll-edge--right" aria-hidden="true"></div></div>
   </section>
   <section id="niv-bible-panel" class="niv-bible-panel podcast-episode-panel podcast-feed-panel" data-podcast-feed-panel="kjv" role="tabpanel" aria-label="KJV Audio Bible player" hidden>
     <div class="niv-bible-panel__heading podcast-episode-panel__heading">

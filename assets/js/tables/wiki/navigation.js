@@ -66,6 +66,10 @@
       var audio=document.getElementById(id);
       if(audio && audio.parentNode!==host) host.appendChild(audio);
     });
+    /* Reader-added podcast shows have generated ids; sweep them all. */
+    document.querySelectorAll('audio[id^="podcast-"]').forEach(function(audio){
+      if(audio.parentNode!==host) host.appendChild(audio);
+    });
   }
   preserveAudioElements();
   updatePrimaryActive(window.location.pathname);

@@ -14,19 +14,152 @@
   var mainToggle = document.getElementById('library-podcast-toggle');
   if (!root || !mainToggle) return;
 
-  var episodesByFeed = { bbc: [], chronicle: [], english: [], japanese: [] };
+  /* Podcasts the reader added from the Apple Podcasts Top chart
+     (top-chart.js). They are ordinary feeds in every way — same card,
+     list, progress and transport — except their episode lists come
+     from Apple's lookup API instead of the baked podcast.json, and
+     their set is persisted per reader in localStorage. Their tabs and
+     cards are cloned from the BBC card below, so they can never drift
+     from the built-in layout. */
+  var USER_PODCASTS_KEY = 'personal-library-my-podcasts';
+  function userFeedId(cid) { return 'u' + String(cid); }
+  function loadUserDefs() {
+    try {
+      var parsed = JSON.parse(localStorage.getItem(USER_PODCASTS_KEY) || '[]');
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(function (def) {
+        return def && def.cid && def.name && ['bbc', 'chronicle', 'english', 'japanese'].indexOf(userFeedId(def.cid)) < 0;
+      });
+    } catch (_) { return []; }
+  }
+  function saveUserDefs() {
+    try {
+      localStorage.setItem(USER_PODCASTS_KEY, JSON.stringify(feeds.filter(function (feed) { return feed.user; }).map(function (feed) {
+        return { cid: feed.cid, name: feed.title, artist: feed.artist, artwork: feed.artwork };
+      })));
+    } catch (_) {}
+  }
+  function artwork600(url) {
+    return String(url || '').replace(/\d+x\d+bb\.(jpg|png)$/i, '600x600bb.$1');
+  }
+  function buildUserFeedDom(feed) {
+    var template = root.querySelector('[data-podcast-feed-panel="bbc"]');
+    var tabBar = root.querySelector('.podcast-source-tabs');
+    if (!template || !tabBar) return;
+    var kjvTab = root.querySelector('[data-podcast-tab="kjv"]');
+    var tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'secondary-tab';
+    tab.id = 'podcast-tab-' + feed.id;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', 'false');
+    tab.setAttribute('aria-controls', 'podcast-feed-panel-' + feed.id);
+    tab.setAttribute('data-podcast-tab', feed.id);
+    tab.setAttribute('aria-label', feed.title);
+    tab.textContent = feed.title.length > 18 ? feed.title.slice(0, 17) + '…' : feed.title;
+    tabBar.insertBefore(tab, kjvTab || null);
+    var feedMenu = document.getElementById('audio-podcast-menu-list');
+    if (feedMenu) {
+      var item = document.createElement('button');
+      item.type = 'button';
+      item.setAttribute('role', 'menuitem');
+      item.setAttribute('data-feed-choice', feed.id);
+      item.textContent = feed.title;
+      var kjvItem = feedMenu.querySelector('[data-feed-choice="kjv"]');
+      feedMenu.insertBefore(item, kjvItem || null);
+    }
+
+    var section = template.cloneNode(true);
+    section.id = 'podcast-feed-panel-' + feed.id;
+    section.setAttribute('data-podcast-feed-panel', feed.id);
+    section.setAttribute('aria-label', feed.title);
+    section.hidden = true;
+    section.removeAttribute('data-playing');
+    section.querySelectorAll('.podcast-mini-btn').forEach(function (btn) { btn.remove(); });
+    var img = section.querySelector('[data-podcast-artwork]');
+    img.setAttribute('data-podcast-artwork', feed.id);
+    img.src = artwork600(feed.artwork);
+    img.alt = feed.title + ' artwork';
+    var eyebrow = section.querySelector('.podcast-episode-panel__eyebrow');
+    if (eyebrow) eyebrow.textContent = (feed.artist || 'APPLE PODCASTS').toUpperCase();
+    var title = section.querySelector('[data-podcast-title]');
+    title.setAttribute('data-podcast-title', feed.id);
+    title.setAttribute('data-podcast-show-title', feed.title);
+    title.textContent = feed.title;
+    var bulkToggle = section.querySelector('[data-podcast-bulk-toggle]');
+    bulkToggle.setAttribute('data-podcast-bulk-toggle', feed.id);
+    bulkToggle.setAttribute('aria-label', feed.title + ' episode status actions');
+    bulkToggle.setAttribute('aria-expanded', 'false');
+    var bulkMenu = section.querySelector('[data-podcast-bulk-options]');
+    bulkMenu.setAttribute('data-podcast-bulk-options', feed.id);
+    bulkMenu.setAttribute('aria-label', feed.title + ' episode status actions');
+    bulkMenu.hidden = true;
+    bulkMenu.querySelectorAll('[data-podcast-bulk-played]').forEach(function (btn) { btn.setAttribute('data-podcast-feed', feed.id); });
+    var clonedAudio = section.querySelector('audio');
+    var audio = document.createElement('audio');
+    audio.id = 'podcast-' + feed.id + '-audio';
+    audio.setAttribute('preload', 'none');
+    audio.setAttribute('playsinline', '');
+    audio.hidden = true;
+    clonedAudio.replaceWith(audio);
+    section.querySelector('[data-podcast-progress]').setAttribute('data-podcast-progress', feed.id);
+    var slider = section.querySelector('[data-podcast-progress-slider]');
+    slider.setAttribute('data-podcast-progress-slider', feed.id);
+    slider.setAttribute('aria-label', feed.title + ' playback position');
+    section.querySelector('[data-podcast-current-time]').setAttribute('data-podcast-current-time', feed.id);
+    section.querySelector('[data-podcast-total-time]').setAttribute('data-podcast-total-time', feed.id);
+    var count = section.querySelector('[data-podcast-count]');
+    count.setAttribute('data-podcast-count', feed.id);
+    count.textContent = 'Loading episodes…';
+    var filter = section.querySelector('[data-podcast-filter]');
+    filter.setAttribute('data-podcast-filter', feed.id);
+    filter.setAttribute('aria-label', feed.title + ' episode filter');
+    /* If the template's select was already swapped for a custom dropdown,
+       hand the enhancer back a bare select: it re-wraps fresh selects on
+       its own and would otherwise inherit a dead cloned button and menu. */
+    var lxWrap = filter.closest('.lx-select');
+    if (lxWrap) {
+      lxWrap.replaceWith(filter);
+      filter.classList.remove('lx-select__native');
+      filter.removeAttribute('aria-hidden');
+    }
+    var status = section.querySelector('[data-podcast-status]');
+    status.setAttribute('data-podcast-status', feed.id);
+    status.textContent = '';
+    section.querySelector('.podcast-episode-scroll-frame').id = 'podcast-' + feed.id + '-list-frame';
+    var list = section.querySelector('[data-podcast-list]');
+    list.setAttribute('data-podcast-list', feed.id);
+    list.innerHTML = '';
+    root.insertBefore(section, document.getElementById('niv-bible-panel') || null);
+    /* Park the audio element in the persistent host, like the built-in
+       elements end up after navigation.js sweeps them there. */
+    var host = document.getElementById('library-persistent-audio-host');
+    if (host) host.appendChild(audio);
+  }
+  loadUserDefs().forEach(function (def) {
+    var feed = {
+      id: userFeedId(def.cid), title: String(def.name), language: 'en',
+      user: true, cid: String(def.cid), artist: String(def.artist || ''), artwork: String(def.artwork || '')
+    };
+    feeds.push(feed);
+    buildUserFeedDom(feed);
+  });
+
+  var episodesByFeed = {};
+  feeds.forEach(function (feed) { episodesByFeed[feed.id] = []; });
   var rememberedFeed = 'bbc';
   try {
     var savedFeed = localStorage.getItem('personal-library-podcast-active-feed');
-    if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(savedFeed) >= 0) rememberedFeed = savedFeed;
+    if (feeds.some(function (feed) { return feed.id === savedFeed; })) rememberedFeed = savedFeed;
   } catch (_) {}
   var activeFeed = rememberedFeed;
   var activeTab = rememberedFeed;
   var current = { feed: null, index: -1 };
   var loaded = false;
   var pendingAutoplay = false;
-  var filters = { bbc: 'unplayed', chronicle: 'unplayed', english: 'unplayed', japanese: 'unplayed' };
-  var lastSavedAt = { bbc: 0, chronicle: 0, english: 0, japanese: 0 };
+  var filters = {};
+  var lastSavedAt = {};
+  feeds.forEach(function (feed) { filters[feed.id] = 'unplayed'; lastSavedAt[feed.id] = 0; });
   var foldExpanded = true;
   var listModules = {};
 
@@ -161,7 +294,7 @@
     });
   }
   function setActiveFeed(feedId) {
-    if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(feedId) < 0) return;
+    if (!feeds.some(function (feed) { return feed.id === feedId; })) return;
     activeFeed = feedId;
     setActiveTab(feedId);
     try { localStorage.setItem('personal-library-podcast-active-feed', feedId); } catch (_) {}
@@ -436,9 +569,9 @@
       if (list) list.textContent = '';
     }
   }
-  function createListModules() {
+  function createListModule(feed) {
     if (!window.LibraryPodcastList || !window.LibraryPodcastList.create) return;
-    feeds.forEach(function (feed) {
+    {
       var list = root.querySelector('[data-podcast-list="' + feed.id + '"]');
       var count = root.querySelector('[data-podcast-count="' + feed.id + '"]');
       var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
@@ -482,8 +615,9 @@
           return total + ' ' + (total === 1 ? 'episode' : 'episodes');
         }
       });
-    });
+    }
   }
+  function createListModules() { feeds.forEach(createListModule); }
   function renderAll() { feeds.forEach(function (feed) { render(feed); updateProgress(feed); }); }
   function setPodcastBulkMenuOpen(feedId, open) {
     var toggle = root.querySelector('[data-podcast-bulk-toggle="' + feedId + '"]');
@@ -492,24 +626,22 @@
     menu.hidden = !open;
     toggle.setAttribute('aria-expanded', String(!!open));
   }
-  root.querySelectorAll('[data-podcast-bulk-toggle]').forEach(function (toggle) {
-    var feedId = toggle.getAttribute('data-podcast-bulk-toggle');
+  function wireBulkMenu(feedId) {
+    var toggle = root.querySelector('[data-podcast-bulk-toggle="' + feedId + '"]');
     var menu = root.querySelector('[data-podcast-bulk-options="' + feedId + '"]');
-    if (!menu) return;
+    if (!toggle || !menu) return;
     toggle.addEventListener('click', function (event) {
       event.stopPropagation();
       setPodcastBulkMenuOpen(feedId, menu.hidden);
     });
     menu.addEventListener('click', function (event) { event.stopPropagation(); });
-  });
-  root.querySelectorAll('[data-podcast-bulk-played]').forEach(function (action) {
+    menu.querySelectorAll('[data-podcast-bulk-played]').forEach(function (action) {
     action.addEventListener('click', function () {
-      var feedId = action.getAttribute('data-podcast-feed');
       var feed = getFeed(feedId);
       var played = action.getAttribute('data-podcast-bulk-played') === 'true';
       setPodcastBulkMenuOpen(feedId, false);
       var episodes = episodesByFeed[feedId] || [];
-      if (!loaded || !episodes.length) {
+      if (!episodes.length) {
         var emptyStatus = root.querySelector('[data-podcast-status="' + feedId + '"]');
         if (emptyStatus) emptyStatus.textContent = 'No episodes are loaded yet.';
         return;
@@ -521,6 +653,10 @@
         ? 'Marked all ' + episodes.length + ' episodes as played.'
         : 'Marked all ' + episodes.length + ' episodes as unplayed.';
     });
+    });
+  }
+  root.querySelectorAll('[data-podcast-bulk-toggle]').forEach(function (toggle) {
+    wireBulkMenu(toggle.getAttribute('data-podcast-bulk-toggle'));
   });
   document.addEventListener('click', function () {
     feeds.forEach(function (feed) { setPodcastBulkMenuOpen(feed.id, false); });
@@ -589,7 +725,7 @@
       playDefaultEpisode(feed.id);
     }
   }
-  root.querySelectorAll('[data-podcast-feed-panel]').forEach(function (section) {
+  function injectMiniPlay(section) {
     /* Strict lookup: getFeed() falls back to the first feed for unknown
        ids, which would wire a BBC play button into the KJV card. */
     var feedId = section.getAttribute('data-podcast-feed-panel');
@@ -603,7 +739,8 @@
     playBtn.innerHTML = '<svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6.5v11l9-5.5z" fill="currentColor"/></svg><svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 6h3v12h-3zM13.5 6h3v12h-3z" fill="currentColor"/></svg>';
     playBtn.addEventListener('click', function () { toggleFeedPlayback(feed); });
     actions.insertBefore(playBtn, actions.firstChild);
-  });
+  }
+  root.querySelectorAll('[data-podcast-feed-panel]').forEach(injectMiniPlay);
   /* Set when the reader taps Home or a book chapter: lists reopen folded. */
   function consumeFoldFlag() {
     var fold = false;
@@ -627,6 +764,8 @@
       var frame = document.getElementById('podcast-' + feed.id + '-list-frame');
       if (frame) frame.hidden = !expanded;
     });
+    var chartFrame = document.getElementById('podcast-topchart-list-frame');
+    if (chartFrame) chartFrame.hidden = !expanded;
   }
   window.LibraryPodcastApplyFold = applyFeedFold;
   window.LibraryAudioSetFold = function (expanded) {
@@ -644,7 +783,7 @@
     if (t.closest('#library-audio-panel, .site-nav-shell, #library-market-panel, #library-book-chapter-handle, #library-book-chapter-drawer, .lx-select')) return;
     window.LibraryAudioSetFold(false);
   });
-  feeds.forEach(function (feed) {
+  function wireHeadingFold(feed) {
     var panelEl = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
     var heading = panelEl && panelEl.querySelector('.podcast-episode-panel__heading');
     if (!heading) return;
@@ -652,9 +791,9 @@
       if (event.target.closest('button, select, a, input, textarea, label')) return;
       window.LibraryAudioSetFold(!foldExpanded);
     });
-  });
-  root.querySelectorAll('[data-podcast-tab]').forEach(function (button) {
-    button.addEventListener('click', function () {
+  }
+  feeds.forEach(wireHeadingFold);
+  function onPodcastTabClick(button) {
       var nextFeed = button.getAttribute('data-podcast-tab');
       if (nextFeed === 'kjv') {
         /* KJV lives in this panel as a fifth source now: show its card and
@@ -664,7 +803,15 @@
         stopAllPodcasts(true);
         return;
       }
-      if (['bbc', 'chronicle', 'english', 'japanese'].indexOf(nextFeed) < 0) return;
+      if (nextFeed === 'topchart') {
+        /* The Apple Podcasts chart is a browser, not a source: show it
+           (revealing the panel if needed) without touching the active
+           feed or whatever is playing. */
+        setActiveTab('topchart');
+        setPodcastOpen(true);
+        return;
+      }
+      if (!feeds.some(function (feed) { return feed.id === nextFeed; })) return;
       /* Compare BEFORE setActiveFeed: it rewrites activeTab and activeFeed,
          so checking afterwards always reported "already selected" and the
          stop-then-play switch path below could never run. */
@@ -679,8 +826,11 @@
       stopAllPodcasts(true);
       if (loaded) playDefaultEpisode(nextFeed);
       else pendingAutoplay = true;
-    });
-  });
+  }
+  function attachTabHandler(button) {
+    button.addEventListener('click', function () { onPodcastTabClick(button); });
+  }
+  root.querySelectorAll('[data-podcast-tab]').forEach(attachTabHandler);
   /* All four podcasts use the same PodcastList renderer, including swipe-to-mark-played. */
   createListModules();
   /* If any non-Podcast player starts, pause Podcast but keep its place:
@@ -706,7 +856,7 @@
     if (target && !root.hidden) setPodcastOpen(false);
   }, true);
 
-  feeds.forEach(function (feed) {
+  function wireFeedPlayback(feed) {
     var slider = root.querySelector('[data-podcast-progress-slider="' + feed.id + '"]');
     if (slider) {
       slider.addEventListener('input', function () {
@@ -771,7 +921,8 @@
         renderAll();
       }
     });
-  });
+  }
+  feeds.forEach(wireFeedPlayback);
 
   window.addEventListener('pagehide', function () { feeds.forEach(function (feed) { savePosition(feed, true); }); });
 
@@ -950,11 +1101,133 @@
     if (current.feed) adoptSavedPosition(getFeed(current.feed));
   });
 
+  /* Episodes for a reader-added show come from Apple's lookup API,
+     which sends CORS headers and returns direct episode audio URLs —
+     no baked file and no proxy needed. The newest 100 episodes. */
+  function loadUserFeedEpisodes(feed) {
+    var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
+    fetch('https://itunes.apple.com/lookup?id=' + encodeURIComponent(feed.cid) + '&media=podcast&entity=podcastEpisode&limit=100')
+      .then(function (response) { if (!response.ok) throw new Error('lookup failed'); return response.json(); })
+      .then(function (data) {
+        var rows = (data.results || []).filter(function (row) { return row.wrapperType === 'podcastEpisode' && row.episodeUrl; });
+        episodesByFeed[feed.id] = rows.map(function (row) {
+          return {
+            title: row.trackName || 'Untitled episode',
+            audioUrl: row.episodeUrl,
+            url: row.episodeUrl,
+            link: row.trackViewUrl || row.episodeUrl,
+            published: row.releaseDate || '',
+            duration: row.trackTimeMillis ? Math.round(row.trackTimeMillis / 1000) : 0,
+            summary: row.description || ''
+          };
+        });
+        if (status) status.textContent = episodesByFeed[feed.id].length ? '' : 'No episodes found.';
+        /* Adopt the remembered episode for a restored show, mirroring
+           the built-in restore in the podcast.json load below. */
+        if (current.feed === null && activeFeed === feed.id && episodesByFeed[feed.id].length) {
+          var identity = '';
+          try { identity = localStorage.getItem(selectedEpisodeKey(feed)) || ''; } catch (_) {}
+          var idx = identity ? episodesByFeed[feed.id].findIndex(function (episode) { return episodeIdentity(episode) === identity; }) : -1;
+          if (idx >= 0) current = { feed: feed.id, index: idx };
+        }
+        render(feed);
+        if (pendingAutoplay && activeFeed === feed.id && !root.hidden) {
+          pendingAutoplay = false;
+          playDefaultEpisode(feed.id);
+        }
+        if (pendingUserAutoplay === feed.id) {
+          pendingUserAutoplay = null;
+          if (activeFeed === feed.id && current.feed !== feed.id && episodesByFeed[feed.id].length) {
+            playDefaultEpisode(feed.id);
+          }
+        }
+      })
+      .catch(function () {
+        if (status) status.textContent = 'Could not load episodes. Please try again later.';
+      });
+  }
+
+  /* Runtime install for a show added from the chart: the same wiring
+     the built-in feeds get at startup, applied to one new feed. */
+  function installUserFeedRuntime(def) {
+    var feed = {
+      id: userFeedId(def.cid), title: String(def.name), language: 'en',
+      user: true, cid: String(def.cid), artist: String(def.artist || ''), artwork: String(def.artwork || '')
+    };
+    feeds.push(feed);
+    episodesByFeed[feed.id] = [];
+    filters[feed.id] = 'unplayed';
+    lastSavedAt[feed.id] = 0;
+    buildUserFeedDom(feed);
+    var tab = root.querySelector('[data-podcast-tab="' + feed.id + '"]');
+    if (tab) attachTabHandler(tab);
+    var section = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
+    if (section) injectMiniPlay(section);
+    wireBulkMenu(feed.id);
+    wireHeadingFold(feed);
+    wireFeedPlayback(feed);
+    createListModule(feed);
+    applyFeedFold(foldExpanded);
+    return feed;
+  }
+
+  /* Set by add(): the new show's episodes are still in flight when its
+     tab is selected, so the selection cannot play yet; the loader plays
+     the first episode when they land. */
+  var pendingUserAutoplay = null;
+  window.LibraryUserPodcasts = {
+    has: function (cid) {
+      return feeds.some(function (feed) { return feed.user && feed.cid === String(cid); });
+    },
+    list: function () {
+      return feeds.filter(function (feed) { return feed.user; }).map(function (feed) {
+        return { cid: feed.cid, name: feed.title, artist: feed.artist, artwork: feed.artwork };
+      });
+    },
+    add: function (def) {
+      if (!def || !def.cid || !def.name || window.LibraryUserPodcasts.has(def.cid)) return null;
+      var feed = installUserFeedRuntime(def);
+      saveUserDefs();
+      pendingUserAutoplay = feed.id;
+      loadUserFeedEpisodes(feed);
+      /* A real click, so every listener that follows tab selection
+         (including the quick button's label painter) sees the switch. */
+      var tab = root.querySelector('[data-podcast-tab="' + feed.id + '"]');
+      if (tab) tab.click();
+      return feed.id;
+    },
+    remove: function (cid) {
+      var feed = feeds.find(function (f) { return f.user && f.cid === String(cid); });
+      if (!feed) return false;
+      if (pendingUserAutoplay === feed.id) pendingUserAutoplay = null;
+      var audio = audioFor(feed.id);
+      if (audio && !audio.paused) audio.pause();
+      if (current.feed === feed.id) current = { feed: null, index: -1 };
+      feeds.splice(feeds.indexOf(feed), 1);
+      delete episodesByFeed[feed.id];
+      delete filters[feed.id];
+      delete lastSavedAt[feed.id];
+      delete listModules[feed.id];
+      var tab = root.querySelector('[data-podcast-tab="' + feed.id + '"]');
+      if (tab) tab.remove();
+      var menuItem = document.querySelector('#audio-podcast-menu-list [data-feed-choice="' + feed.id + '"]');
+      if (menuItem) menuItem.remove();
+      var section = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
+      if (section) section.remove();
+      if (audio) audio.remove();
+      saveUserDefs();
+      if (activeFeed === feed.id || activeTab === feed.id) setActiveFeed('bbc');
+      renderAll();
+      return true;
+    }
+  };
+
   fetch('/assets/data/podcast.json?v=20261026-1', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('Unable to load Podcast cache');
     return response.json();
   }).then(function (data) {
     feeds.forEach(function (feed) {
+      if (feed.user) return;
       episodesByFeed[feed.id] = Array.isArray(data[feed.id]) ? data[feed.id] : [];
       episodesByFeed[feed.id].forEach(function (episode) { episode.url = episode.audioUrl || episode.url || ''; episode.published = episode.published || episode.date || episode.pubDate || ''; });
       var artwork = data.artwork && data.artwork[feed.id];
@@ -968,6 +1241,7 @@
       }
     });
     loaded = true;
+    feeds.forEach(function (feed) { if (feed.user) loadUserFeedEpisodes(feed); });
     /* Restore the last selected episode before the first user interaction. This also
        installs fresh Media Session handlers after a page/app reload, instead of
        leaving iOS with stale Now Playing metadata and no live Play callback. */
@@ -1001,8 +1275,10 @@
     }
   }).catch(function () {
     feeds.forEach(function (feed) {
+      if (feed.user) return;
       var status = root.querySelector('[data-podcast-status="' + feed.id + '"]');
       if (status) status.textContent = 'Could not load episodes. Please try again later.';
     });
+    feeds.forEach(function (feed) { if (feed.user) loadUserFeedEpisodes(feed); });
   });
 })(window, document);

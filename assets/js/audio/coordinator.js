@@ -242,7 +242,14 @@
   var feedMenu=document.getElementById('audio-podcast-menu-list');
   function currentFeed(){
     var tab=document.querySelector('[data-podcast-tab][aria-selected="true"]');
-    return tab?tab.getAttribute('data-podcast-tab'):'bbc';
+    var id=tab?tab.getAttribute('data-podcast-tab'):'bbc';
+    if(id==='topchart'){
+      /* The chart tab is a browser, not a source: the quick button keeps
+         naming and controlling the active feed behind it. */
+      try{id=localStorage.getItem('personal-library-podcast-active-feed')||'bbc';}catch(e){id='bbc';}
+      if(id==='topchart')id='bbc';
+    }
+    return id;
   }
   function feedAudio(feed){return document.getElementById('podcast-'+feed+'-audio');}
   /* The button names the selected feed, like Radio names its station:
@@ -250,7 +257,14 @@
   var PODCAST_SUFFIX={bbc:'NEWS EN',chronicle:'NEWS JP',english:'EASY EN',japanese:'EASY JP',kjv:'KJV'};
   function paintPodcastLabel(){
     if(!podPlay)return;
-    var suffix=PODCAST_SUFFIX[currentFeed()]||'NEWS EN';
+    var feedId=currentFeed();
+    var suffix=PODCAST_SUFFIX[feedId];
+    if(!suffix){
+      /* A reader-added show names itself on the button. */
+      var titleEl=document.querySelector('[data-podcast-title="'+feedId+'"]');
+      var show=titleEl?titleEl.getAttribute('data-podcast-show-title'):'';
+      suffix=show?show.toUpperCase().slice(0,18):'NEWS EN';
+    }
     var label=podPlay.querySelector('[data-label]');
     if(label)label.textContent='Podcast '+suffix;
     podPlay.setAttribute('aria-label','Play or pause Podcast '+suffix);
