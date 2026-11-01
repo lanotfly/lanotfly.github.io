@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 FEEDS = {
     "bbc": {"source": "BBC Global News Podcast", "url": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss"},
     "chronicle": {"source": "Chronicle News Connect", "url": "https://rss.listen.style/p/smbslbmi/rss"},
-    "english": {"source": "Easy Natural English", "url": "https://anchor.fm/s/1258881c/podcast/rss"},
+    "english": {"source": "Luke's English Podcast", "url": "https://feeds.acast.com/public/shows/62b0ada25c7ea10012f541cb"},
     "japanese": {"source": "Bite Size Japanese", "url": "https://anchor.fm/s/463a19c0/podcast/rss"},
 }
 

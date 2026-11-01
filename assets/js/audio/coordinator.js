@@ -253,8 +253,8 @@
   }
   function feedAudio(feed){return document.getElementById('podcast-'+feed+'-audio');}
   /* The button names the selected feed, like Radio names its station:
-     Podcast NEWS EN / NEWS JP / EASY EN / EASY JP / KJV. */
-  var PODCAST_SUFFIX={bbc:'NEWS EN',chronicle:'NEWS JP',english:'EASY EN',japanese:'EASY JP',kjv:'KJV'};
+     Podcast NEWS EN / NEWS JP / LUKE'S EN / EASY JP / KJV. */
+  var PODCAST_SUFFIX={bbc:'NEWS EN',chronicle:'NEWS JP',english:"LUKE'S EN",japanese:'EASY JP',kjv:'KJV'};
   function paintPodcastLabel(){
     if(!podPlay)return;
     var feedId=currentFeed();
