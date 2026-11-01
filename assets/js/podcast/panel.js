@@ -802,6 +802,17 @@
   }
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
+      if (!current.feed) return;
+      var awayFeed = getFeed(current.feed);
+      var awayAudio = awayFeed ? audioFor(awayFeed.id) : null;
+      if (awayAudio && !awayAudio.paused && !awayAudio.ended) persistResumeMark(awayFeed.id);
+      return;
+    }
+    attemptResumeOnReturn();
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
       feeds.forEach(function (feed) { savePosition(feed, true); });
     } else if (current.feed) {
       adoptSavedPosition(getFeed(current.feed));
@@ -856,42 +867,83 @@
     try { localStorage.removeItem(RESUME_MARK_KEY); } catch (_) {}
   }
   window.addEventListener('library-user-pause', clearResumeMark);
+  function resumeGuards(targetFeed) {
+    if (current.feed !== targetFeed) return null;
+    var feed = getFeed(targetFeed);
+    var audio = feed ? audioFor(feed.id) : null;
+    if (!audio || !audio.paused || audio.ended) return null;
+    if (!(episodesByFeed[targetFeed] || [])[current.index]) return null;
+    var all = document.querySelectorAll('audio');
+    for (var i = 0; i < all.length; i += 1) { if (all[i] !== audio && !all[i].paused) return null; }
+    return audio;
+  }
+  function doResume(targetFeed) {
+    var feed = getFeed(targetFeed);
+    if (feed && resumeGuards(targetFeed)) toggleFeedPlayback(feed);
+  }
+  /* If every timed attempt fails — the interrupting app is slow to
+     release the audio session, or this page instance is fresh and
+     has no gesture standing at all — the user's next tap anywhere
+     outside the audio controls lends the resume its gesture. The
+     deck's own buttons are excluded: they already do the right
+     thing from the saved state and must never be double-fired. */
+  var resumeArmCleanup = null;
+  function armTapResume(targetFeed, token, audio) {
+    if (resumeArmCleanup) resumeArmCleanup();
+    var until = Date.now() + 2 * 60 * 1000;
+    function cleanup() {
+      document.removeEventListener('pointerdown', onTap, true);
+      if (audio) audio.removeEventListener('play', onPlay);
+      if (resumeArmCleanup === cleanup) resumeArmCleanup = null;
+    }
+    /* Disarm when a play STICKS. A gesture prime also fires 'play'
+       but re-pauses inside the same task — that must not disarm. */
+    function onPlay() { setTimeout(function () { if (audio && !audio.paused) cleanup(); }, 60); }
+    function onTap(event) {
+      if (token !== resumeAttemptToken || Date.now() > until) { cleanup(); return; }
+      if (event.target && event.target.closest && event.target.closest('#library-audio-panel,.site-nav-shell')) return;
+      cleanup();
+      doResume(targetFeed);
+    }
+    document.addEventListener('pointerdown', onTap, true);
+    if (audio) audio.addEventListener('play', onPlay);
+    resumeArmCleanup = cleanup;
+  }
   function attemptResumeOnReturn() {
     var targetFeed = readResumeMark();
     if (!targetFeed) return;
     clearResumeMark();
-    if (current.feed !== targetFeed) return;
-    var backFeed = getFeed(targetFeed);
-    var backAudio = backFeed ? audioFor(backFeed.id) : null;
-    if (!backAudio || !backAudio.paused || backAudio.ended) return;
-    if (!(episodesByFeed[targetFeed] || [])[current.index]) return;
-    var all = document.querySelectorAll('audio');
-    for (var i = 0; i < all.length; i += 1) { if (all[i] !== backAudio && !all[i].paused) return; }
+    var audio = resumeGuards(targetFeed);
+    if (!audio) return;
     var token = resumeAttemptToken;
-    toggleFeedPlayback(backFeed);
-    setTimeout(function () {
-      if (token !== resumeAttemptToken) return;
-      if (current.feed !== targetFeed) return;
-      var a2 = audioFor(targetFeed);
-      if (!a2 || !a2.paused || a2.ended) return;
-      var others = document.querySelectorAll('audio');
-      for (var j = 0; j < others.length; j += 1) { if (others[j] !== a2 && !others[j].paused) return; }
-      if (a2.currentTime > 0) a2.dataset.adoptPosition = String(a2.currentTime);
-      try { a2.load(); } catch (_) {}
-      var retry = a2.play();
-      if (retry && retry.catch) retry.catch(function () {});
-    }, 1600);
+    doResume(targetFeed);
+    armTapResume(targetFeed, token, audio);
+    /* Verify, don't trust: a long interruption can leave the stream
+       torn down or the audio session not yet released. Retry on a
+       short ladder — first with a source reload (the saved position
+       is re-adopted on metadata load), then plain re-plays. */
+    [1600, 4500, 10000].forEach(function (delay, attemptIndex) {
+      setTimeout(function () {
+        if (token !== resumeAttemptToken) return;
+        var a2 = resumeGuards(targetFeed);
+        if (!a2) return;
+        if (attemptIndex === 0) {
+          if (a2.currentTime > 0) a2.dataset.adoptPosition = String(a2.currentTime);
+          try { a2.load(); } catch (_) {}
+        }
+        var retry = a2.play();
+        if (retry && retry.catch) retry.catch(function () {});
+      }, delay);
+    });
   }
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
-      if (!current.feed) return;
-      var awayFeed = getFeed(current.feed);
-      var awayAudio = awayFeed ? audioFor(awayFeed.id) : null;
-      if (awayAudio && !awayAudio.paused && !awayAudio.ended) persistResumeMark(awayFeed.id);
-      return;
+      feeds.forEach(function (feed) { savePosition(feed, true); });
+    } else if (current.feed) {
+      adoptSavedPosition(getFeed(current.feed));
     }
-    attemptResumeOnReturn();
   });
+
   window.addEventListener('pageshow', function () { if (!document.hidden) attemptResumeOnReturn(); });
   window.addEventListener('storage', function (event) {
     if (!event.key || event.key.indexOf('personal-library-podcast-position:') !== 0) return;
