@@ -2876,3 +2876,18 @@ html,body{max-width:100%;overflow-x:clip}
 .podcast-pull-add.is-armed { background: #e2d2f7; color: #5f4396; }
 :root[data-theme="dark"] .podcast-pull-add { background: #3a2a55; color: #cdbcf0; }
 :root[data-theme="dark"] .podcast-pull-add.is-armed { background: #4a3670; color: #e6def5; }
+
+/* The Top Podcasts fold toggle reads as a real button: framed and
+   taller, with air around it — easy to hit on purpose, hard to hit
+   by accident. The other subheads stay plain labels. */
+.podcast-topchart-subhead--toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  box-sizing: border-box;
+  margin: 14px 0 8px; padding: 13px 14px;
+  border: 1.5px solid #b9a3dd; border-radius: 12px;
+  background: #f2ebfa; color: #4a3566; font-size: 13px;
+}
+.podcast-topchart-subhead--toggle .podcast-topchart-caret { font-size: 12px; }
+:root[data-theme="dark"] .podcast-topchart-subhead--toggle {
+  background: #3a2a55; border-color: #5d478a; color: #e6def5;
+}
