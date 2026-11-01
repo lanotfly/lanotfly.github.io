@@ -262,6 +262,18 @@
     playNextInFeed(feed);
   }
 
+  /* Lock-screen previous: the episode before the current one in the
+     feed's full list, wrapping at the top (mirrors how the radio
+     transport wraps its stations). Next reuses playNextInFeed, the
+     same filter-aware advance as automatic continuous playback. */
+  function playPreviousInFeed(feed) {
+    var queue = episodesByFeed[feed.id] || [];
+    if (!queue.length || current.feed !== feed.id || current.index < 0) return;
+    var prevIndex = (current.index - 1 + queue.length) % queue.length;
+    if (prevIndex === current.index) return;
+    playEpisode(feed, prevIndex);
+  }
+
   function playEpisode(feed, index) {
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id);
@@ -806,6 +818,13 @@
      departure, only for the still-selected feed, and never over
      another source that is already playing. A deliberate lock-screen
      pause (identity.js) clears the mark. */
+  if (window.LibraryAudioIdentity && typeof window.LibraryAudioIdentity.setTransport === 'function') {
+    var podcastTransport = {
+      previous: function () { if (current.feed && current.feed !== 'kjv') playPreviousInFeed(getFeed(current.feed)); },
+      next: function () { if (current.feed && current.feed !== 'kjv') playNextInFeed(getFeed(current.feed)); }
+    };
+    ['podcastBbc', 'podcastChronicle', 'podcastFeed'].forEach(function (id) { window.LibraryAudioIdentity.setTransport(id, podcastTransport); });
+  }
   var resumeWhenVisible = null;
   window.addEventListener('library-user-pause', function () { resumeWhenVisible = null; });
   document.addEventListener('visibilitychange', function () {

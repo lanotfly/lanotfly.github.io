@@ -139,7 +139,28 @@
   }
   /* Radio */
   var radioPlay=document.getElementById('audio-radio-play');
+  /* Lock-screen prev/next for radio: cycle BBC > NHK > NPR and back,
+     the station-menu order (so BBC's next is NHK, its previous wraps
+     to NPR). Registered lazily from paintRadio because identity.js
+     loads after this file; the flag makes it one-time. */
+  var radioTransportReady=false;
+  function ensureRadioTransport(){
+    if(radioTransportReady)return;
+    var I=window.LibraryAudioIdentity;
+    if(!I||typeof I.setTransport!=='function')return;
+    radioTransportReady=true;
+    var order=['radio4','nhk','npr'];
+    function cycle(step){
+      var C=window.LibraryAudioCoordinator;if(!C)return;
+      var i=order.indexOf(C.getLastRadio());if(i<0)i=0;
+      var target=order[(i+step+order.length)%order.length];
+      var a=C.getAudio(target);if(!a)return;
+      if(a.paused){C.switchTo(target);var r=a.play();if(r&&r.catch)r.catch(function(){});}
+    }
+    order.forEach(function(id){I.setTransport(id,{previous:function(){cycle(-1);},next:function(){cycle(1);}});});
+  }
   function paintRadio(){
+    ensureRadioTransport();
     var C=window.LibraryAudioCoordinator;var playing=false;var station='radio4';
     if(C){station=C.getLastRadio();var a=C.getAudio(station);playing=!!(a&&!a.paused);}
     paintGlyph(radioPlay,playing);

@@ -21,6 +21,14 @@
     var selected=validArtwork(url)?absolute(url):absolute(fallback);
     return [{src:selected,sizes:'512x512',type:/\.svg(?:[?#]|$)/i.test(selected)?'image/svg+xml':/\.jpe?g(?:[?#]|$)/i.test(selected)?'image/jpeg':'image/png'}];
   }
+  /* Lock-screen transport (prev/next) per source id. Owners register
+     once; setNowPlaying installs the ACTIVE source's pair, so the
+     buttons always steer whatever is playing now. Sources without a
+     registration get no transport buttons (cleared), as before. KJV
+     does not register here — niv-bible.js installs its own chapter
+     handlers right after calling setNowPlaying. */
+  var transports={};
+  function setTransport(id,transport){transports[id]=transport||null;}
   function setNowPlaying(id,audio,details){
     details=details||{};
     var base=sources[id]||sources.podcast;
@@ -36,7 +44,11 @@
     try{
       navigator.mediaSession.metadata=new MediaMetadata(meta);
       /* Clear transport actions from the previous source before installing this source's controls. */
-      try{navigator.mediaSession.setActionHandler('previoustrack',null);navigator.mediaSession.setActionHandler('nexttrack',null);}catch(_){}
+      var transport=transports[id];
+      try{
+        navigator.mediaSession.setActionHandler('previoustrack',transport&&typeof transport.previous==='function'?transport.previous:null);
+        navigator.mediaSession.setActionHandler('nexttrack',transport&&typeof transport.next==='function'?transport.next:null);
+      }catch(_){}
       if(audio){
         navigator.mediaSession.setActionHandler('play',function(){
           /* Route Podcast Play through its engine so stale media elements are not resumed. */
@@ -95,5 +107,5 @@
     icons.forEach(function(item){ensureButtonIcon(document.getElementById(item[0]),item[1]);});
   }
   /* Top-level KJV navigation is text-only; do not inject an icon. */
-  window.LibraryAudioIdentity={setNowPlaying:setNowPlaying,clearIfActive:clearIfActive,ensureButtonIcon:ensureButtonIcon,getActiveId:function(){return activeId;},getArtwork:function(id){var s=sources[id]||sources.podcast;return s.artwork||absolute(fallback);}};
+  window.LibraryAudioIdentity={setNowPlaying:setNowPlaying,setTransport:setTransport,clearIfActive:clearIfActive,ensureButtonIcon:ensureButtonIcon,getActiveId:function(){return activeId;},getArtwork:function(id){var s=sources[id]||sources.podcast;return s.artwork||absolute(fallback);}};
 })(window,document);
