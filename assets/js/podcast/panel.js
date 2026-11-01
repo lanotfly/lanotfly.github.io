@@ -183,7 +183,12 @@
   var filters = {};
   var lastSavedAt = {};
   feeds.forEach(function (feed) { filters[feed.id] = 'unplayed'; lastSavedAt[feed.id] = 0; });
-  var foldExpanded = true;
+  /* The deck starts FOLDED (2026-11-01, the reader's request): a
+     first Audio press shows just the source's title bar, not a big
+     open panel; tapping the heading strip unfolds the episode list.
+     The state lives for the page session only — every fresh page
+     load starts folded again. */
+  var foldExpanded = false;
   var listModules = {};
 
   function getFeed(id) { return feeds.find(function (feed) { return feed.id === id; }) || feeds[0]; }
@@ -825,6 +830,7 @@
     });
   }
   feeds.forEach(wireHeadingFold);
+  window.LibraryAudioSetFold(foldExpanded);
   function onPodcastTabClick(button) {
       var nextFeed = button.getAttribute('data-podcast-tab');
       if (nextFeed === 'kjv') {
@@ -838,7 +844,9 @@
       if (nextFeed === 'topchart') {
         /* The Apple Podcasts chart is a browser, not a source: show it
            (revealing the panel if needed) without touching the active
-           feed or whatever is playing. */
+           feed or whatever is playing. The manager needs its frame
+           visible, so opening it unfolds the deck. */
+        window.LibraryAudioSetFold(true);
         setActiveTab('topchart');
         setPodcastOpen(true);
         return;

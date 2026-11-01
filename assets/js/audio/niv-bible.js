@@ -104,13 +104,14 @@
     }
     /* No fold button any more: the heading strip is the toggle, exactly
        like the podcast feeds, and the fold is global across the deck. */
-    var kjvFoldExpanded=true;
+    var kjvFoldExpanded=false; /* the deck starts folded; see panel.js */
     function applyKjvFold(expanded){
       kjvFoldExpanded=expanded;
       if(queueFrame)queueFrame.hidden=!expanded;
       if(tools)tools.hidden=!expanded;
     }
     window.LibraryKjvApplyFold=applyKjvFold;
+    applyKjvFold(kjvFoldExpanded);
     if(heading)heading.addEventListener('click',function(event){
       if(event.target.closest('button, select, a, input, textarea, label'))return;
       var next=!kjvFoldExpanded;
