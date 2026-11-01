@@ -52,7 +52,7 @@
     message.textContent = "";
     unlock.disabled = true;
     const label = unlock.textContent;
-    unlock.textContent = "验证中…";
+    unlock.textContent = "Checking\u2026";
     try {
       const response = await fetch(CHECK_URL, {
         method: "POST",
@@ -70,9 +70,9 @@
       }
       input.value = "";
       input.focus();
-      message.textContent = "密码不对，再试一次。";
+      message.textContent = "That passcode doesn\u2019t match. Please try again.";
     } catch (error) {
-      message.textContent = "验证没成功，请再试一次。";
+      message.textContent = "The check could not be completed. Please try again.";
     } finally {
       unlock.disabled = false;
       unlock.textContent = label;
