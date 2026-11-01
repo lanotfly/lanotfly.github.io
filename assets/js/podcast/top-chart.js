@@ -303,6 +303,26 @@
     searchInput.addEventListener('search', runSearch);
   }
 
+  /* The "Top Podcasts" title folds just its own block (region tabs,
+     status and the chart list), leaving My Podcasts and Search up. */
+  var chartToggle = section.querySelector('[data-topchart-chart-toggle]');
+  var chartBody = section.querySelector('[data-topchart-chart-body]');
+  if (chartToggle && chartBody) {
+    var toggleChart = function () {
+      var expand = chartBody.hidden;
+      chartBody.hidden = !expand;
+      chartToggle.setAttribute('aria-expanded', String(expand));
+      chartToggle.classList.toggle('is-collapsed', !expand);
+    };
+    chartToggle.addEventListener('click', toggleChart);
+    chartToggle.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleChart();
+      }
+    });
+  }
+
   /* The heading strip folds the whole manager like every other card's. */
   var heading = section.querySelector('.podcast-episode-panel__heading');
   if (heading) {

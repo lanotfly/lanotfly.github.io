@@ -2788,3 +2788,20 @@ html,body{max-width:100%;overflow-x:clip}
   height: min(320px, 46vh);
   min-height: 230px;
 }
+
+/* The Top Podcasts title in the manager is a fold toggle for its
+   own block; the caret turns when the block is folded. */
+.podcast-topchart-subhead--toggle {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.podcast-topchart-caret {
+  display: inline-block;
+  font-size: 10px;
+  transition: transform .15s ease;
+}
+.podcast-topchart-subhead--toggle.is-collapsed .podcast-topchart-caret {
+  transform: rotate(-90deg);
+}
