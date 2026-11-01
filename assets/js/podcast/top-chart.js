@@ -221,31 +221,41 @@
     });
   });
 
-  /* While search results are on screen the list panel grows with
-     them — as tall as the results need, down to the bottom of the
-     viewport; past that it scrolls. With no results it falls back
-     to the stylesheet's default height. */
-  function fitFrameToResults() {
+  /* Panel layout, three states:
+       - browsing (chart in view): the list runs all the way down to
+         the bottom of the viewport, so the 50 chart rows are easy
+         to pick from;
+       - searching: the Top Podcasts block steps aside entirely and
+         the panel fits the results (last row visible, viewport cap);
+       - chart folded by hand: the stylesheet default stands. */
+  var searchActive = false;
+  var chartFolded = false;
+  var chartToggleEl = null;
+  var chartBodyEl = null;
+  function applyChartVisibility() {
+    if (chartToggleEl) chartToggleEl.hidden = searchActive;
+    if (chartBodyEl) chartBodyEl.hidden = searchActive || chartFolded;
+  }
+  function layoutFrame() {
     var frame = document.getElementById('podcast-topchart-list-frame');
-    if (!frame) return;
-    var hasRows = !!(resultsEl && resultsEl.querySelector('.podcast-topchart-row'));
-    if (!hasRows) { frame.style.height = ''; return; }
+    if (!frame || section.hidden) return;
+    applyChartVisibility();
     var scroller = section.querySelector('.podcast-topchart-scroll');
     if (!scroller || !resultsEl) { frame.style.height = ''; return; }
     var maxH = window.innerHeight - frame.getBoundingClientRect().top - 12;
-    /* Grow by the results themselves: the height that makes the last
-       result row exactly visible (the chart below may stay folded
-       under the scroll), capped at the bottom of the viewport. */
-    var needed = (resultsEl.getBoundingClientRect().bottom - scroller.getBoundingClientRect().top)
-      + scroller.scrollTop + 6;
-    var target = Math.min(needed, maxH);
-    /* Never shrink below the stylesheet default — if the results fit
-       inside it, the default stands. */
-    frame.style.height = '';
-    var defaultH = frame.getBoundingClientRect().height;
-    if (target > defaultH) frame.style.height = Math.round(target) + 'px';
+    if (searchActive) {
+      var needed = (resultsEl.getBoundingClientRect().bottom - scroller.getBoundingClientRect().top)
+        + scroller.scrollTop + 6;
+      var target = Math.min(needed, maxH);
+      frame.style.height = '';
+      var defaultH = frame.getBoundingClientRect().height;
+      if (target > defaultH) frame.style.height = Math.round(target) + 'px';
+      return;
+    }
+    if (chartFolded) { frame.style.height = ''; return; }
+    if (maxH > 0) frame.style.height = Math.round(maxH) + 'px';
   }
-  window.addEventListener('resize', fitFrameToResults);
+  window.addEventListener('resize', layoutFrame);
 
   /* ---- Search ---- */
   var searchTimer = null;
@@ -261,7 +271,7 @@
     } else {
       shows.forEach(function (show) { resultsEl.appendChild(makeShowRow(show, 0)); });
     }
-    if (!keepHeight) fitFrameToResults();
+    if (!keepHeight) layoutFrame();
   }
   function fetchSearch(term, country) {
     return fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(term) + '&media=podcast&entity=podcast&limit=25&country=' + country)
@@ -280,7 +290,13 @@
   function runSearch() {
     var term = (searchInput.value || '').trim();
     var seq = ++searchSeq;
-    if (term.length < 2) { renderSearch([], term ? 'Type at least 2 characters.' : ''); return; }
+    if (term.length < 2) {
+      searchActive = false;
+      renderSearch([], term ? 'Type at least 2 characters.' : '');
+      return;
+    }
+    searchActive = true;
+    applyChartVisibility();
     renderSearch([], 'Searching…', true);
     Promise.all([fetchSearch(term, 'JP').catch(function () { return []; }), fetchSearch(term, 'US').catch(function () { return []; })])
       .then(function (pair) {
@@ -305,17 +321,17 @@
 
   /* The "Top Podcasts" title folds just its own block (region tabs,
      status and the chart list), leaving My Podcasts and Search up. */
-  var chartToggle = section.querySelector('[data-topchart-chart-toggle]');
-  var chartBody = section.querySelector('[data-topchart-chart-body]');
-  if (chartToggle && chartBody) {
+  chartToggleEl = section.querySelector('[data-topchart-chart-toggle]');
+  chartBodyEl = section.querySelector('[data-topchart-chart-body]');
+  if (chartToggleEl && chartBodyEl) {
     var toggleChart = function () {
-      var expand = chartBody.hidden;
-      chartBody.hidden = !expand;
-      chartToggle.setAttribute('aria-expanded', String(expand));
-      chartToggle.classList.toggle('is-collapsed', !expand);
+      chartFolded = !chartFolded;
+      chartToggleEl.setAttribute('aria-expanded', String(!chartFolded));
+      chartToggleEl.classList.toggle('is-collapsed', chartFolded);
+      layoutFrame();
     };
-    chartToggle.addEventListener('click', toggleChart);
-    chartToggle.addEventListener('keydown', function (event) {
+    chartToggleEl.addEventListener('click', toggleChart);
+    chartToggleEl.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         toggleChart();
@@ -335,10 +351,12 @@
 
   tab.addEventListener('click', function () {
     renderMine();
-    if (started) return;
-    started = true;
-    paintRegions();
-    loadChart();
+    if (!started) {
+      started = true;
+      paintRegions();
+      loadChart();
+    }
+    layoutFrame();
   });
   paintRegions();
   renderMine();
