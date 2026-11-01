@@ -28,10 +28,18 @@
     activeTarget=target;
     if(target==='radio4'||target==='nhk'||target==='npr')rememberRadio(target);
     Object.keys(buttonsBySource).forEach(function(source){if(source!==target)buttonsBySource[source].forEach(function(id){clearButtonState(document.getElementById(id));});});
+    var targetAudio=null;
+    if(target.indexOf('podcast:')===0)targetAudio=document.getElementById('podcast-'+target.slice(8)+'-audio');
     Object.keys(audioIds).forEach(function(name){
       if(name===target)return;
       if(target==='podcast'&&name.indexOf('podcast')===0)return;
-      var audio=getAudio(name);if(audio&&!audio.paused){try{audio.pause();}catch(_){}}
+      var audio=getAudio(name);
+      /* Never pause the target's own element: for 'podcast:<feed>'
+         targets the name never equals the target string, so the
+         resume path used to pause the very audio it was about to
+         play — a pause/play pair in one task, exactly the pattern
+         iOS drops while a play is pending. */
+      if(audio&&audio!==targetAudio&&!audio.paused){try{audio.pause();}catch(_){}}
     });
     if(target!=='bible'){var bb=document.getElementById('niv-bible-toggle');if(bb)bb.setAttribute('aria-expanded','false');}
     if(target==='bible'){var bt=document.getElementById('niv-bible-toggle');if(bt)bt.setAttribute('aria-expanded','true');}
@@ -203,7 +211,9 @@
     if(radioLongPressed){radioLongPressed=false;return;}
     var C=window.LibraryAudioCoordinator;if(!C)return;
     var target=C.getLastRadio();var a=C.getAudio(target);if(!a)return;
-    if(!a.paused){a.pause();return;}
+    var intent=radioPlay.__armedIntent;radioPlay.__armedIntent=null;
+    var playing=(intent&&intent.target===target)?!intent.wasPaused:!a.paused;
+    if(playing){a.pause();return;}
     C.switchTo(target);
     var r=a.play();if(r&&r.catch)r.catch(function(){});
   });
@@ -243,7 +253,9 @@
     var clearRadioPress=function(){if(radioPressTimer){clearTimeout(radioPressTimer);radioPressTimer=null;}};
     radioPlay.addEventListener('pointerdown',function(){
       var pc=window.LibraryAudioCoordinator;
-      if(pc)primeForBackground(pc.getAudio(pc.getLastRadio()));
+      var ra=pc?pc.getAudio(pc.getLastRadio()):null;
+      radioPlay.__tapIntent={target:pc?pc.getLastRadio():null,wasPaused:ra?!!ra.paused:true,at:Date.now()};
+      if(pc)primeForBackground(ra);
       clearRadioPress();
       radioPressTimer=setTimeout(function(){
         radioPressTimer=null;
@@ -300,6 +312,12 @@
     paintGlyph(podPlay,!!(a&&!a.paused));
   }
   function toggleFeed(feed){
+    var intent=podPlay?podPlay.__armedIntent:null;
+    if(podPlay)podPlay.__armedIntent=null;
+    if(intent&&intent.feed===feed&&typeof window.LibraryToggleFeed==='function'){
+      window.LibraryToggleFeed(feed,intent.wasPaused);
+      return;
+    }
     var section=document.querySelector('[data-podcast-feed-panel="'+feed+'"]');
     var mini=section?section.querySelector('.podcast-mini-play'):null;
     if(mini)mini.click();
@@ -357,7 +375,16 @@
     var clearPodPress=function(){if(podPressTimer){clearTimeout(podPressTimer);podPressTimer=null;}};
     podPlay.addEventListener('pointerdown',function(){
       var pf=currentFeed();
-      primeForBackground(pf==='kjv'?document.getElementById('niv-bible-audio'):feedAudio(pf));
+      var pa=pf==='kjv'?document.getElementById('niv-bible-audio'):feedAudio(pf);
+      /* Remember what the listener MEANT before the prime touches
+         anything. The prime's own play can take effect on iOS even
+         though its counter-pause was issued (a pause sent while a
+         play is still pending is dropped there), which flips the
+         element's live state — a toggle that read the live state
+         300ms later then paused instead of resuming, every time.
+         The toggle therefore acts on the state at finger-down. */
+      podPlay.__tapIntent={feed:pf,wasPaused:pa?!!pa.paused:true,at:Date.now()};
+      primeForBackground(pa);
       clearPodPress();
       podPressTimer=setTimeout(function(){
         podPressTimer=null;
@@ -424,6 +451,13 @@
       else if(stationMenu&&!stationMenu.hidden)closeStationMenu();else openStationMenu();
       return;
     }
+    /* Bind the intent captured at this tap's pointerdown to THIS
+       click, so only this tap's own replay can act on it. An intent
+       left over from an earlier press (a long press, a stray test
+       dispatch) must never steer a later, unrelated click — the
+       binding gate is the pointerdown-to-click gap of a real tap. */
+    var intent=btn.__tapIntent;btn.__tapIntent=null;
+    btn.__armedIntent=(intent&&(Date.now()-intent.at)<400)?intent:null;
     event.preventDefault();event.stopPropagation();
     quickTapHeld[id]={timer:setTimeout(function(){
       quickTapHeld[id]=null;

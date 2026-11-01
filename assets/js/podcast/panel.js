@@ -738,9 +738,14 @@
     var section = root.querySelector('[data-podcast-feed-panel="' + feed.id + '"]');
     if (section) section.dataset.playing = String(!audioFor(feed.id).paused);
   }
-  function toggleFeedPlayback(feed) {
+  function toggleFeedPlayback(feed, wasPaused) {
     var audio = audioFor(feed.id);
-    if (!audio.paused) { audio.pause(); return; }
+    /* wasPaused, when the coordinator passes it, is the element's
+       state at the listener's finger-down — truer than the live
+       state, which the gesture prime may have flipped (see
+       coordinator.js). Direct in-panel taps pass nothing. */
+    var playing = (typeof wasPaused === 'boolean') ? !wasPaused : !audio.paused;
+    if (playing) { audio.pause(); return; }
     if (current.feed === feed.id && current.index >= 0) {
       if (window.LibraryAudioCoordinator) window.LibraryAudioCoordinator.switchTo('podcast:' + feed.id);
       audio.play().catch(function () {});
@@ -748,6 +753,10 @@
       playDefaultEpisode(feed.id);
     }
   }
+  window.LibraryToggleFeed = function (feedId, wasPaused) {
+    var feed = feeds.find(function (f) { return f.id === feedId; });
+    if (feed) toggleFeedPlayback(feed, wasPaused);
+  };
   function injectMiniPlay(section) {
     /* Strict lookup: getFeed() falls back to the first feed for unknown
        ids, which would wire a BBC play button into the KJV card. */
