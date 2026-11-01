@@ -2779,3 +2779,12 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] .podcast-topchart-subhead { color: #b3a6d4; }
 :root[data-theme="dark"] .podcast-topchart-empty { color: #b3a6d4; }
 :root[data-theme="dark"] .podcast-topchart-searchbox input { background: rgba(40, 30, 58, .8); color: #e6def5; border-color: rgba(255, 255, 255, .35); }
+
+/* The Manage panel's list sits a little taller by default; while
+   search results are shown, top-chart.js grows it inline down to
+   the bottom of the viewport (clearing the inline height restores
+   this default). */
+#podcast-topchart-list-frame {
+  height: min(320px, 46vh);
+  min-height: 230px;
+}

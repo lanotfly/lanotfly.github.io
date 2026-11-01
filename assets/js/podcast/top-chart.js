@@ -221,10 +221,36 @@
     });
   });
 
+  /* While search results are on screen the list panel grows with
+     them — as tall as the results need, down to the bottom of the
+     viewport; past that it scrolls. With no results it falls back
+     to the stylesheet's default height. */
+  function fitFrameToResults() {
+    var frame = document.getElementById('podcast-topchart-list-frame');
+    if (!frame) return;
+    var hasRows = !!(resultsEl && resultsEl.querySelector('.podcast-topchart-row'));
+    if (!hasRows) { frame.style.height = ''; return; }
+    var scroller = section.querySelector('.podcast-topchart-scroll');
+    if (!scroller || !resultsEl) { frame.style.height = ''; return; }
+    var maxH = window.innerHeight - frame.getBoundingClientRect().top - 12;
+    /* Grow by the results themselves: the height that makes the last
+       result row exactly visible (the chart below may stay folded
+       under the scroll), capped at the bottom of the viewport. */
+    var needed = (resultsEl.getBoundingClientRect().bottom - scroller.getBoundingClientRect().top)
+      + scroller.scrollTop + 6;
+    var target = Math.min(needed, maxH);
+    /* Never shrink below the stylesheet default — if the results fit
+       inside it, the default stands. */
+    frame.style.height = '';
+    var defaultH = frame.getBoundingClientRect().height;
+    if (target > defaultH) frame.style.height = Math.round(target) + 'px';
+  }
+  window.addEventListener('resize', fitFrameToResults);
+
   /* ---- Search ---- */
   var searchTimer = null;
   var searchSeq = 0;
-  function renderSearch(shows, note) {
+  function renderSearch(shows, note, keepHeight) {
     if (!resultsEl) return;
     resultsEl.innerHTML = '';
     if (note) {
@@ -232,9 +258,10 @@
       noteEl.className = 'podcast-topchart-empty';
       noteEl.textContent = note;
       resultsEl.appendChild(noteEl);
-      return;
+    } else {
+      shows.forEach(function (show) { resultsEl.appendChild(makeShowRow(show, 0)); });
     }
-    shows.forEach(function (show) { resultsEl.appendChild(makeShowRow(show, 0)); });
+    if (!keepHeight) fitFrameToResults();
   }
   function fetchSearch(term, country) {
     return fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(term) + '&media=podcast&entity=podcast&limit=25&country=' + country)
@@ -254,7 +281,7 @@
     var term = (searchInput.value || '').trim();
     var seq = ++searchSeq;
     if (term.length < 2) { renderSearch([], term ? 'Type at least 2 characters.' : ''); return; }
-    renderSearch([], 'Searching…');
+    renderSearch([], 'Searching…', true);
     Promise.all([fetchSearch(term, 'JP').catch(function () { return []; }), fetchSearch(term, 'US').catch(function () { return []; })])
       .then(function (pair) {
         if (seq !== searchSeq) return;
