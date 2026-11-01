@@ -197,6 +197,71 @@
   /* Open without the toggle handler's autoplay: the Audio shell reveals
      the panel on its own schedule and starts sources via their buttons. */
   window.LibraryOpenPodcastPanel = function () { setPodcastOpen(true); };
+  /* Advance to the next episode in the feed's visible order (marks
+     the finished one played, honours the filter, wraps around).
+     Called from 'ended' — and, on iOS, preferably just BEFORE the
+     end via maybeEarlyAdvance below. */
+  function playNextInFeed(feed) {
+    savePosition(feed, true);
+    var finishedIndex = current.index;
+    var queue = episodesByFeed[feed.id] || [];
+    var episode = queue[finishedIndex];
+    if (current.feed !== feed.id || !episode) {
+      renderAll();
+      return;
+    }
+
+    /* Mark the finished episode, then continue to the next item in this
+       feed's visible list order. For the Unplayed filter, skip items already
+       marked played; for Played/All, use the same queue order. */
+    setPlayed(feed, episode, true);
+    /* Force the Unplayed filter totals and rows to refresh before auto-advance. */
+    syncFilterOptions(feed);
+    if (listModules[feed.id]) listModules[feed.id].render();
+    var mode = filters[feed.id] || 'unplayed';
+    var nextIndex = -1;
+    /* Search forward through the queue and wrap to the beginning.
+       This avoids stopping just because the remembered/current episode is
+       near the end of the feed, while still respecting the selected filter. */
+    for (var offset = 1; offset < queue.length; offset += 1) {
+      var candidateIndex = (finishedIndex + offset) % queue.length;
+      var nextIsPlayed = isPlayed(feed, queue[candidateIndex]);
+      if (mode === 'all' || (mode === 'played' && nextIsPlayed) || (mode === 'unplayed' && !nextIsPlayed)) {
+        nextIndex = candidateIndex;
+        break;
+      }
+    }
+    renderAll();
+    if (nextIndex >= 0) {
+      playEpisode(feed, nextIndex);
+    } else {
+      var finishedStatus = root.querySelector('[data-podcast-status="' + feed.id + '"]');
+      if (finishedStatus) finishedStatus.textContent = 'No more episodes in this filter.';
+    }
+  }
+
+  /* iOS releases the audio session the moment a track has fully
+     ENDED; a play() issued from the 'ended' handler then often never
+     starts while the phone is locked, and continuous playback dies
+     between episodes. So switch while the current episode is still
+     playing — inside its last fraction of a second: the session is
+     alive, 'timeupdate' is driven by the media pipeline (it keeps
+     firing in the background), and the next episode inherits a live
+     session. 'ended' remains as the backstop; the dataset mark makes
+     sure one episode instance can only early-advance once. */
+  function maybeEarlyAdvance(feed, audio) {
+    if (!audio || audio.paused || audio.ended) return;
+    if (current.feed !== feed.id || current.index < 0) return;
+    var d = audio.duration, t = audio.currentTime;
+    if (!isFinite(d) || d <= 0 || !isFinite(t)) return;
+    var remaining = d - t;
+    if (remaining < 0 || remaining > 0.6) return;
+    var mark = feed.id + '|' + current.index + '|' + (audio.currentSrc || audio.src || '');
+    if (audio.dataset.earlyAdvanceFor === mark) return;
+    audio.dataset.earlyAdvanceFor = mark;
+    playNextInFeed(feed);
+  }
+
   function playEpisode(feed, index) {
     var episode = (episodesByFeed[feed.id] || [])[index];
     var audio = audioFor(feed.id);
@@ -670,46 +735,10 @@
       updateProgress(feed);
       var lm = listModules[feed.id];
       if (lm && lm.updateLiveProgress) lm.updateLiveProgress();
+      maybeEarlyAdvance(feed, audio);
     });
     audio.addEventListener('seeking', function () { updateProgress(feed); });
-    audio.addEventListener('ended', function () {
-      savePosition(feed, true);
-      var finishedIndex = current.index;
-      var queue = episodesByFeed[feed.id] || [];
-      var episode = queue[finishedIndex];
-      if (current.feed !== feed.id || !episode) {
-        renderAll();
-        return;
-      }
-
-      /* Mark the finished episode, then continue to the next item in this
-         feed's visible list order. For the Unplayed filter, skip items already
-         marked played; for Played/All, use the same queue order. */
-      setPlayed(feed, episode, true);
-      /* Force the Unplayed filter totals and rows to refresh before auto-advance. */
-      syncFilterOptions(feed);
-      if (listModules[feed.id]) listModules[feed.id].render();
-      var mode = filters[feed.id] || 'unplayed';
-      var nextIndex = -1;
-      /* Search forward through the queue and wrap to the beginning.
-         This avoids stopping just because the remembered/current episode is
-         near the end of the feed, while still respecting the selected filter. */
-      for (var offset = 1; offset < queue.length; offset += 1) {
-        var candidateIndex = (finishedIndex + offset) % queue.length;
-        var nextIsPlayed = isPlayed(feed, queue[candidateIndex]);
-        if (mode === 'all' || (mode === 'played' && nextIsPlayed) || (mode === 'unplayed' && !nextIsPlayed)) {
-          nextIndex = candidateIndex;
-          break;
-        }
-      }
-      renderAll();
-      if (nextIndex >= 0) {
-        playEpisode(feed, nextIndex);
-      } else {
-        var finishedStatus = root.querySelector('[data-podcast-status="' + feed.id + '"]');
-        if (finishedStatus) finishedStatus.textContent = 'No more episodes in this filter.';
-      }
-    });
+    audio.addEventListener('ended', function () { playNextInFeed(feed); });
     audio.addEventListener('loadedmetadata', function () {
       if (audio.dataset.adoptPosition) {
         var adoptTo = Number(audio.dataset.adoptPosition);
