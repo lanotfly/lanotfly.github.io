@@ -46,19 +46,36 @@
      News Podcast, Chronicle's News Connect, Luke's English Podcast,
      Bite Size Japanese. Name aliases cover storefront naming
      differences and are matched whole-word from the start. */
-  var BUILTIN_CIDS = { '135067274': true, '1608666340': true, '312059190': true, '1588405417': true };
-  var BUILTIN_NAMES = ['bbc global news podcast', 'global news podcast', 'news connect',
-    'luke s english podcast', 'bite size japanese', 'the bite size japanese podcast'];
+  var BUILTIN_SHOWS = [
+    { feed: 'bbc', cid: '135067274', names: ['bbc global news podcast', 'global news podcast'] },
+    { feed: 'chronicle', cid: '1608666340', names: ['news connect', 'chronicle news connect'] },
+    { feed: 'english', cid: '312059190', names: ['luke s english podcast'] },
+    { feed: 'japanese', cid: '1588405417', names: ['bite size japanese', 'the bite size japanese podcast'] }
+  ];
+  var BUILTIN_CIDS = {};
+  BUILTIN_SHOWS.forEach(function (s) { BUILTIN_CIDS[s.cid] = true; });
   function normShowName(name) {
     return String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function nameMatchesBuiltin(name, builtin) {
+    var n = normShowName(name);
+    return builtin.names.some(function (alias) {
+      return n === alias || n.indexOf(alias + ' ') === 0;
+    });
   }
   function isBuiltinShow(show) {
     if (!show) return false;
     if (BUILTIN_CIDS[String(show.cid)]) return true;
-    var n = normShowName(show.name);
-    return BUILTIN_NAMES.some(function (alias) {
-      return n === alias || n.indexOf(alias + ' ') === 0;
-    });
+    return BUILTIN_SHOWS.some(function (builtin) { return nameMatchesBuiltin(show.name, builtin); });
+  }
+  /* The feed a search/chart row stands for: a built-in's own feed,
+     or 'u'+cid for a reader-added show; null when not in the library. */
+  function feedIdForShow(show) {
+    if (!show) return null;
+    for (var i = 0; i < BUILTIN_SHOWS.length; i += 1) {
+      if (BUILTIN_SHOWS[i].cid === String(show.cid) || nameMatchesBuiltin(show.name, BUILTIN_SHOWS[i])) return BUILTIN_SHOWS[i].feed;
+    }
+    return isAdded(show.cid) ? 'u' + show.cid : null;
   }
 
   /* ---- shared show rows (chart + search) ---- */
@@ -123,6 +140,18 @@
       renderMine();
     });
     row.appendChild(button);
+    /* A show already in the library has no Add button; tapping its
+       row jumps straight to its feed instead (the listener asked for
+       exactly that on the pinned Luke's row). */
+    var jumpFeed = feedIdForShow(show);
+    if (jumpFeed) {
+      row.classList.add('is-openable');
+      row.addEventListener('click', function (event) {
+        if (event.target && event.target.closest && event.target.closest('button')) return;
+        var tab = document.querySelector('[data-podcast-tab="' + jumpFeed + '"]');
+        if (tab) tab.click();
+      });
+    }
     return row;
   }
 

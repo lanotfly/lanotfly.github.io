@@ -844,6 +844,15 @@
         return;
       }
       if (!feeds.some(function (feed) { return feed.id === nextFeed; })) return;
+      if (activeTab === 'topchart' && nextFeed === activeFeed) {
+        /* Back from the Manage panel to the feed that was already
+           active: just show its card again. Restarting or toggling
+           playback here would punish the listener for looking —
+           without this branch the manager was a dead end, because
+           the feed-menu skips clicking the current feed's tab. */
+        setActiveTab(nextFeed);
+        return;
+      }
       /* Compare BEFORE setActiveFeed: it rewrites activeTab and activeFeed,
          so checking afterwards always reported "already selected" and the
          stop-then-play switch path below could never run. */

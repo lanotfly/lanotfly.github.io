@@ -388,7 +388,12 @@
     if(!item)return;
     var feed=item.getAttribute('data-feed-choice');
     var tab=document.querySelector('[data-podcast-tab="'+feed+'"]');
-    if(tab&&currentFeed()!==feed)tab.click();
+    /* While the Manage panel is the visible card, even the current
+       feed's entry must click through: that click is how the
+       listener gets back from the manager to their feed's list
+       (panel.js restores the card without touching playback). */
+    var managerShowing=!!document.querySelector('[data-podcast-tab="topchart"][aria-selected="true"]');
+    if(tab&&(currentFeed()!==feed||managerShowing))tab.click();
     setMode('podcast');
     closeFeedMenu();
     if(feed==='kjv'){

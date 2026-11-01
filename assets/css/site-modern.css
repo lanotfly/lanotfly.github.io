@@ -2891,3 +2891,6 @@ html,body{max-width:100%;overflow-x:clip}
 :root[data-theme="dark"] .podcast-topchart-subhead--toggle {
   background: #3a2a55; border-color: #5d478a; color: #e6def5;
 }
+
+/* Search/chart rows for shows already in the library jump to the feed. */
+.podcast-topchart-row.is-openable { cursor: pointer; }
