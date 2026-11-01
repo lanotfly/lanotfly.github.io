@@ -129,9 +129,10 @@
      back to a real finger gesture. The 300ms tap model fires the real
      play() from a timer, after the gesture has ended — so bless the
      element inside the genuine pointerdown instead: a play() that is
-     paused again in the very same task makes no sound, but marks the
-     element as gesture-started, and the later play() inherits that
-     standing for background / lock-screen playback. */
+     paused again a tick later makes no sound, but marks the element
+     as gesture-started, and the later play() inherits that standing
+     for background / lock-screen playback. The pause must NOT land
+     in the play's own task (see below). */
   function primeForBackground(a){
     if(!a||!a.paused)return;
     /* Radio elements carry their stream URL in a <source> child, so
@@ -141,7 +142,26 @@
        no gesture behind its play() and dies. Count a <source> child
        as having something to bless. */
     if(!a.currentSrc&&!a.src&&!(a.querySelector&&a.querySelector('source')))return;
-    try{var pr=a.play();if(pr&&pr.catch)pr.catch(function(){});a.pause();}catch(_){}
+    try{
+      var pr=a.play();if(pr&&pr.catch)pr.catch(function(){});
+      /* A pause issued in the same task as the play is silently
+         dropped on iOS (the play has not taken yet), leaving the
+         element PLAYING — and the tap handler, reading 'paused'
+         300ms later, then pauses instead of resuming: quick-button
+         taps could pause but never resume. Defer the un-prime to
+         the next task, with guards so it can only ever stop the
+         prime's own playback, never a deliberate start. */
+      var stamp=(a.__primeStamp=(a.__primeStamp||0)+1);
+      var plays=0;
+      var countPlay=function(){plays++;};
+      a.addEventListener('play',countPlay);
+      setTimeout(function(){
+        a.removeEventListener('play',countPlay);
+        /* Pause only if nothing but the prime itself has played
+           since — a deliberate start in between is not ours to stop. */
+        if(a.__primeStamp===stamp&&plays<=1)a.pause();
+      },0);
+    }catch(_){}
   }
   /* Radio */
   var radioPlay=document.getElementById('audio-radio-play');
