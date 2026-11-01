@@ -1542,3 +1542,25 @@ body > #library-market-panel.library-market-dropdown {
    their horizontal padding inside the panel: tiles, news items and the
    tab strip now share one pair of edges. */
 #library-market-panel .home-market-group { padding-left: 0 !important; padding-right: 0 !important; }
+
+/* 2026-11-01: the news view is a flex column whose LIST is meant to
+   be the scroller (flex:1 + min-height:0 + overflow-y:auto), but the
+   source section between the view and the list was left at
+   display:block with content height — so the list never received a
+   bounded height, the view's overflow:hidden clipped the rest, and
+   NO part of the list could scroll by touch or wheel (measured in
+   real Chromium: view overflow-y hidden, list height == content
+   height 1466px). Carry the flex chain through the section so the
+   list gets its bounded, scrollable height. */
+#library-market-panel #home-news-view:not([hidden]) .home-news-source:not([hidden]) {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+/* ...and once the list is height-bounded, its cards must not be
+   flex-shrunk into slivers: they keep their natural height and the
+   list scrolls over them. */
+#library-market-panel #home-news-view .home-news-item {
+  flex: none !important;
+}
