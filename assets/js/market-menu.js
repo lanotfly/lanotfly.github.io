@@ -75,7 +75,14 @@
         var touchingMarketView = !!(marketView && !marketView.hidden && marketView.contains(event.target));
         /* News already dismisses from the edges. Make Market Info equally easy:
            an upward swipe in either side strip or on the visible market view closes it. */
-        tracking = panel.contains(event.target) && (inSideStrip || touchingMarketView);
+        /* But a touch that starts on the news LIST is the list's own
+           scroll gesture, never a dismissal — the list must scroll
+           from anywhere on it, side strips included (the reader
+           asked for exactly that). Dismissal still works from the
+           panel's header area and everywhere else in the strips. */
+        var touchingNewsList = !!(event.target && event.target.closest &&
+          event.target.closest(".home-news-list"));
+        tracking = panel.contains(event.target) && (inSideStrip || touchingMarketView) && !touchingNewsList;
       } else {
         // Open from either screen-edge strip, at any vertical position.
         var inSideStrip = touch.clientX <= window.innerWidth * 0.15 ||
