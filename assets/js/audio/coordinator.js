@@ -134,7 +134,13 @@
      standing for background / lock-screen playback. */
   function primeForBackground(a){
     if(!a||!a.paused)return;
-    if(!a.currentSrc&&!a.src)return;
+    /* Radio elements carry their stream URL in a <source> child, so
+       src/currentSrc stay empty until the stream first loads — a
+       guard on those alone silently never primes the radio, and a
+       Radio tap that follows other playback then reaches iOS with
+       no gesture behind its play() and dies. Count a <source> child
+       as having something to bless. */
+    if(!a.currentSrc&&!a.src&&!(a.querySelector&&a.querySelector('source')))return;
     try{var pr=a.play();if(pr&&pr.catch)pr.catch(function(){});a.pause();}catch(_){}
   }
   /* Radio */
