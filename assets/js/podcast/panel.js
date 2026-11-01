@@ -817,7 +817,14 @@
      visible again — no tap inside the page needed. One shot per
      departure, only for the still-selected feed, and never over
      another source that is already playing. A deliberate lock-screen
-     pause (identity.js) clears the mark. */
+     pause (identity.js) clears the mark.
+     The mark is persisted: a LONG interruption can cost the page its
+     place in memory, and the mark must survive long enough for the
+     return either way. And the resume verifies itself — a long
+     interruption leaves the element's stream torn down, so if the
+     first play() does not take, it reloads the same source once
+     (the saved position is re-adopted on metadata load) and plays
+     again. Short interruptions never notice any of this. */
   if (window.LibraryAudioIdentity && typeof window.LibraryAudioIdentity.setTransport === 'function') {
     var podcastTransport = {
       previous: function () { if (current.feed && current.feed !== 'kjv') playPreviousInFeed(getFeed(current.feed)); },
@@ -825,19 +832,34 @@
     };
     ['podcastBbc', 'podcastChronicle', 'podcastFeed'].forEach(function (id) { window.LibraryAudioIdentity.setTransport(id, podcastTransport); });
   }
+  var RESUME_MARK_KEY = 'personal-library-podcast-resume-mark';
+  var RESUME_MARK_MAX_AGE = 45 * 60 * 1000;
   var resumeWhenVisible = null;
-  window.addEventListener('library-user-pause', function () { resumeWhenVisible = null; });
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) {
-      if (!current.feed) return;
-      var awayFeed = getFeed(current.feed);
-      var awayAudio = awayFeed ? audioFor(awayFeed.id) : null;
-      if (awayAudio && !awayAudio.paused && !awayAudio.ended) resumeWhenVisible = awayFeed.id;
-      return;
-    }
-    if (!resumeWhenVisible) return;
-    var targetFeed = resumeWhenVisible;
+  var resumeAttemptToken = 0;
+  function persistResumeMark(feedId) {
+    resumeWhenVisible = feedId;
+    try { localStorage.setItem(RESUME_MARK_KEY, JSON.stringify({ feed: feedId, at: Date.now() })); } catch (_) {}
+  }
+  function readResumeMark() {
+    if (resumeWhenVisible) return resumeWhenVisible;
+    try {
+      var raw = localStorage.getItem(RESUME_MARK_KEY);
+      if (!raw) return null;
+      var mark = JSON.parse(raw);
+      if (!mark || !mark.feed || !mark.at || Date.now() - mark.at > RESUME_MARK_MAX_AGE) return null;
+      return mark.feed;
+    } catch (_) { return null; }
+  }
+  function clearResumeMark() {
     resumeWhenVisible = null;
+    resumeAttemptToken += 1;
+    try { localStorage.removeItem(RESUME_MARK_KEY); } catch (_) {}
+  }
+  window.addEventListener('library-user-pause', clearResumeMark);
+  function attemptResumeOnReturn() {
+    var targetFeed = readResumeMark();
+    if (!targetFeed) return;
+    clearResumeMark();
     if (current.feed !== targetFeed) return;
     var backFeed = getFeed(targetFeed);
     var backAudio = backFeed ? audioFor(backFeed.id) : null;
@@ -845,8 +867,32 @@
     if (!(episodesByFeed[targetFeed] || [])[current.index]) return;
     var all = document.querySelectorAll('audio');
     for (var i = 0; i < all.length; i += 1) { if (all[i] !== backAudio && !all[i].paused) return; }
+    var token = resumeAttemptToken;
     toggleFeedPlayback(backFeed);
+    setTimeout(function () {
+      if (token !== resumeAttemptToken) return;
+      if (current.feed !== targetFeed) return;
+      var a2 = audioFor(targetFeed);
+      if (!a2 || !a2.paused || a2.ended) return;
+      var others = document.querySelectorAll('audio');
+      for (var j = 0; j < others.length; j += 1) { if (others[j] !== a2 && !others[j].paused) return; }
+      if (a2.currentTime > 0) a2.dataset.adoptPosition = String(a2.currentTime);
+      try { a2.load(); } catch (_) {}
+      var retry = a2.play();
+      if (retry && retry.catch) retry.catch(function () {});
+    }, 1600);
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (!current.feed) return;
+      var awayFeed = getFeed(current.feed);
+      var awayAudio = awayFeed ? audioFor(awayFeed.id) : null;
+      if (awayAudio && !awayAudio.paused && !awayAudio.ended) persistResumeMark(awayFeed.id);
+      return;
+    }
+    attemptResumeOnReturn();
   });
+  window.addEventListener('pageshow', function () { if (!document.hidden) attemptResumeOnReturn(); });
   window.addEventListener('storage', function (event) {
     if (!event.key || event.key.indexOf('personal-library-podcast-position:') !== 0) return;
     if (current.feed) adoptSavedPosition(getFeed(current.feed));
