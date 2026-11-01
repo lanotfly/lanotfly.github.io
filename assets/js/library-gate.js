@@ -1,20 +1,58 @@
 (() => {
-  /* The passcode is checked by a small Cloudflare Worker; the hash no
-     longer lives in this repo. The Worker only answers ok / not ok. */
+  /* Semi-public library: reading, market and news are open to
+     everyone; the AUDIO panel is the owner's private area. An Audio
+     press that would open the panel first asks for the passcode in a
+     small dialog; the check runs on the library-gate Cloudflare
+     Worker (ok / not ok only). A pass is remembered for this browser
+     session (sessionStorage), like the old full-page gate. Closing
+     the panel never asks. */
   const CHECK_URL = "https://library-gate.lanotfly.workers.dev/check";
+  const toggle = document.getElementById("library-audio-toggle");
+  const dialog = document.getElementById("library-gate-dialog");
   const form = document.getElementById("library-gate-form");
-  const input = document.getElementById("passcode");
-  const message = document.getElementById("gate-message");
-  const button = document.getElementById("unlock-button");
+  const input = document.getElementById("library-gate-passcode");
+  const message = document.getElementById("library-gate-message");
+  const unlock = document.getElementById("library-gate-unlock");
+  const cancel = document.getElementById("library-gate-cancel");
 
-  if (!form || !input || !message || !button) return;
+  if (!toggle || !dialog || !form || !input || !message || !unlock || !cancel) return;
+
+  const granted = () => {
+    try { return sessionStorage.getItem("library_access_granted") === "1"; }
+    catch (_) { return false; }
+  };
+
+  function openDialog() {
+    message.textContent = "";
+    input.value = "";
+    dialog.hidden = false;
+    setTimeout(() => { try { input.focus(); } catch (_) {} }, 30);
+  }
+  function closeDialog() { dialog.hidden = true; }
+
+  document.addEventListener("click", (event) => {
+    if (granted()) return;
+    const target = event.target;
+    if (!target || !target.closest || !target.closest("#library-audio-toggle")) return;
+    const panel = document.getElementById("library-audio-panel");
+    if (panel && !panel.hidden) return; /* already open: this press just closes it */
+    event.preventDefault();
+    event.stopPropagation();
+    openDialog();
+  }, true);
+
+  cancel.addEventListener("click", closeDialog);
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) closeDialog(); });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !dialog.hidden) closeDialog();
+  });
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     message.textContent = "";
-    button.disabled = true;
-    button.textContent = "Checking…";
-
+    unlock.disabled = true;
+    const label = unlock.textContent;
+    unlock.textContent = "验证中…";
     try {
       const response = await fetch(CHECK_URL, {
         method: "POST",
@@ -24,46 +62,20 @@
       });
       if (!response.ok) throw new Error("The check could not be completed.");
       const result = await response.json();
-
       if (result && result.ok) {
-        let destination = "/home/";
-        try {
-          sessionStorage.setItem("library_access_granted", "1");
-          const queryReturn = new URLSearchParams(window.location.search).get("return_to");
-          const savedPath = sessionStorage.getItem("library_return_to");
-          const savedAt = Number(sessionStorage.getItem("library_return_to_at") || 0);
-          const preferredPath = queryReturn || (savedPath && Date.now() - savedAt < 10 * 60 * 1000 ? savedPath : "");
-          if (preferredPath) {
-            const candidate = new URL(preferredPath, window.location.origin);
-            if (
-              candidate.origin === window.location.origin &&
-              candidate.pathname.startsWith("/") &&
-              candidate.pathname !== "/" &&
-              !candidate.pathname.startsWith("//") &&
-              !candidate.pathname.startsWith("/?return_to=")
-            ) {
-              destination = candidate.pathname + candidate.search + candidate.hash;
-            }
-          }
-          sessionStorage.removeItem("library_return_to");
-          sessionStorage.removeItem("library_return_to_at");
-        } catch (error) {
-          message.textContent = "This browser cannot keep the temporary session. Please enable session storage and try again.";
-          return;
-        }
-        message.textContent = "Welcome back. Opening your library…";
-        window.location.replace(destination);
+        try { sessionStorage.setItem("library_access_granted", "1"); } catch (_) {}
+        closeDialog();
+        toggle.click(); /* unlocked: open the panel like a normal Audio press */
         return;
       }
-
       input.value = "";
       input.focus();
-      message.textContent = "That passcode doesn’t match. Please try again.";
+      message.textContent = "密码不对，再试一次。";
     } catch (error) {
-      message.textContent = "The check could not be completed. Please try again.";
+      message.textContent = "验证没成功，请再试一次。";
     } finally {
-      button.disabled = false;
-      button.textContent = "Unlock library";
+      unlock.disabled = false;
+      unlock.textContent = label;
     }
   });
 })();

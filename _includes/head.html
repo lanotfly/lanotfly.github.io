@@ -3,26 +3,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <!-- UX-only session gate; static GitHub Pages cannot enforce real access control. -->
-  <script>
-    (function () {
-      try {
-        if (sessionStorage.getItem("library_access_granted") !== "1") {
-          var requestedPath = window.location.pathname + window.location.search + window.location.hash;
-          if (requestedPath && requestedPath !== "/") {
-            sessionStorage.setItem("library_return_to", requestedPath);
-            sessionStorage.setItem("library_return_to_at", String(Date.now()));
-            window.location.replace("/?return_to=" + encodeURIComponent(requestedPath));
-          } else {
-            window.location.replace("/");
-          }
-        }
-      } catch (error) {
-        var fallbackPath = window.location.pathname + window.location.search + window.location.hash;
-        window.location.replace(fallbackPath && fallbackPath !== "/" ? "/?return_to=" + encodeURIComponent(fallbackPath) : "/");
-      }
-    })();
-  </script>
+  <!-- Semi-public library: reading, market and news are open. Only the
+       Audio panel asks for the passcode, in a small dialog at press
+       time (assets/js/library-gate.js). -->
 
 	<title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
 	<meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
@@ -53,10 +36,11 @@
 	  " | prepend: site.baseurl | prepend: site.url }}">
 	<!--  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 -->
-  <link rel="stylesheet" href="/assets/css/site-modern.css?v=20261031-51">
+  <link rel="stylesheet" href="/assets/css/site-modern.css?v=20261031-52">
   <link rel="stylesheet" href="/assets/css/fx-bar.css?v=20261030-2">
   <script defer src="/assets/js/diagram-zoom.js?v=20261025-3"></script>
 
+  <script defer src="/assets/js/library-gate.js?v=20261101-2"></script>
   <script defer src="/assets/js/audio/coordinator.js?v=20261101-9"></script>
   <script defer src="/assets/js/audio/identity.js?v=20261101-2"></script>
   <script defer src="/assets/js/podcast/storage.js?v=20261026-1"></script>
