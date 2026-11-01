@@ -2705,6 +2705,12 @@ html,body{max-width:100%;overflow-x:clip}
   background: #e9ddf8;
   color: #7a68a6;
 }
+/* The episode frames carry 10%-wide swipe-edge overlays with
+   pointer-events:auto; in the chart frame they would sit over the
+   rows' Add buttons and swallow their taps, so they are off here. */
+#podcast-topchart-list-frame .podcast-episode-scroll-edge {
+  display: none;
+}
 :root[data-theme="dark"] .podcast-topchart-row { background: rgba(70, 54, 96, .45); }
 :root[data-theme="dark"] .podcast-topchart-name { color: #e6def5; }
 :root[data-theme="dark"] .podcast-topchart-artist { color: #b3a6d4; }

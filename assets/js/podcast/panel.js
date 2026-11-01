@@ -95,13 +95,17 @@
     bulkMenu.setAttribute('aria-label', feed.title + ' episode status actions');
     bulkMenu.hidden = true;
     bulkMenu.querySelectorAll('[data-podcast-bulk-played]').forEach(function (btn) { btn.setAttribute('data-podcast-feed', feed.id); });
-    var clonedAudio = section.querySelector('audio');
+    /* navigation.js parks every feed's audio element in the persistent
+       host at startup, so by the time a show is added the template card
+       may no longer contain one — replace it if there, add it if not. */
     var audio = document.createElement('audio');
     audio.id = 'podcast-' + feed.id + '-audio';
     audio.setAttribute('preload', 'none');
     audio.setAttribute('playsinline', '');
     audio.hidden = true;
-    clonedAudio.replaceWith(audio);
+    var clonedAudio = section.querySelector('audio');
+    if (clonedAudio) clonedAudio.replaceWith(audio);
+    else section.appendChild(audio);
     section.querySelector('[data-podcast-progress]').setAttribute('data-podcast-progress', feed.id);
     var slider = section.querySelector('[data-podcast-progress-slider]');
     slider.setAttribute('data-podcast-progress-slider', feed.id);
