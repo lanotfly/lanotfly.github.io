@@ -1188,12 +1188,15 @@
         return { cid: feed.cid, name: feed.title, artist: feed.artist, artwork: feed.artwork };
       });
     },
-    add: function (def) {
+    add: function (def, opts) {
       if (!def || !def.cid || !def.name || window.LibraryUserPodcasts.has(def.cid)) return null;
       var feed = installUserFeedRuntime(def);
       saveUserDefs();
-      pendingUserAutoplay = feed.id;
       loadUserFeedEpisodes(feed);
+      /* The Manage panel adds in place (opts.stay) so several shows can
+         be added in a row; other callers get the switch-and-play. */
+      if (opts && opts.stay) return feed.id;
+      pendingUserAutoplay = feed.id;
       /* A real click, so every listener that follows tab selection
          (including the quick button's label painter) sees the switch. */
       var tab = root.querySelector('[data-podcast-tab="' + feed.id + '"]');

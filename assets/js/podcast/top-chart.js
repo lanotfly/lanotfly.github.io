@@ -1,8 +1,10 @@
-/* Apple Podcasts Top chart: browse a region's top shows inside the
-   Podcast panel and tap Add to turn one into a regular Podcast source
-   (panel.js's LibraryUserPodcasts does the installing; this module is
-   only the chart UI). Chart data is Apple's legacy RSS JSON, which
-   sends CORS headers; episodes come from the lookup API via panel.js. */
+/* Manage Podcasts: one panel to look after reader-added shows —
+   the shows already added (with Remove), a search box (Apple's
+   search API), and the Top Podcasts chart. Two chart regions only:
+   Japan, and English (the US and UK charts interleaved, de-duped).
+   Adding installs a real feed via panel.js's LibraryUserPodcasts;
+   this module is only the management UI. All endpoints used here
+   send CORS headers, so everything loads live in the browser. */
 (function (window, document) {
   'use strict';
   if (window.__libraryTopChartInstalled) return;
@@ -11,19 +13,198 @@
   var section = document.querySelector('[data-podcast-feed-panel="topchart"]');
   var tab = document.querySelector('[data-podcast-tab="topchart"]');
   if (!section || !tab) return;
+  var mineEl = section.querySelector('[data-topchart-mine]');
+  var searchInput = section.querySelector('[data-topchart-search]');
+  var resultsEl = section.querySelector('[data-topchart-results]');
   var listEl = section.querySelector('[data-topchart-list]');
   var statusEl = section.querySelector('[data-topchart-status]');
-  if (!listEl) return;
+  if (!mineEl || !listEl) return;
 
-  var REGIONS = { jp: 'Japan', us: 'US', gb: 'UK' };
+  var REGIONS = { jp: 'Japan', en: 'English' };
   var region = 'jp';
   try {
     var savedRegion = localStorage.getItem('personal-library-topchart-region');
-    if (savedRegion && REGIONS[savedRegion]) region = savedRegion;
+    if (savedRegion === 'jp') region = 'jp';
+    else if (savedRegion) region = 'en'; /* us/gb picks fold into English */
   } catch (_) {}
   var cache = {};
   var started = false;
 
+  function userPodcasts() { return window.LibraryUserPodcasts || null; }
+  function isAdded(cid) {
+    var api = userPodcasts();
+    return !!(api && api.has(cid));
+  }
+
+  /* ---- shared show rows (chart + search) ---- */
+  function paintAddButton(button, cid) {
+    var added = isAdded(cid);
+    button.textContent = added ? 'Added ✓' : 'Add';
+    button.classList.toggle('is-added', added);
+    button.setAttribute('aria-pressed', String(added));
+  }
+  function repaintAddButtons(cid) {
+    section.querySelectorAll('[data-topchart-add-for="' + cid + '"]').forEach(function (button) {
+      paintAddButton(button, cid);
+    });
+  }
+  function makeShowRow(show, rank) {
+    var row = document.createElement('div');
+    row.className = 'podcast-topchart-row';
+    row.setAttribute('role', 'listitem');
+    if (rank) {
+      var rankEl = document.createElement('span');
+      rankEl.className = 'podcast-topchart-rank';
+      rankEl.textContent = String(rank);
+      row.appendChild(rankEl);
+    }
+    var art = document.createElement('img');
+    art.className = 'podcast-topchart-art';
+    art.src = show.artwork || '';
+    art.alt = '';
+    art.loading = 'lazy';
+    row.appendChild(art);
+    var text = document.createElement('span');
+    text.className = 'podcast-topchart-text';
+    var nameEl = document.createElement('span');
+    nameEl.className = 'podcast-topchart-name';
+    nameEl.textContent = show.name;
+    var artistEl = document.createElement('span');
+    artistEl.className = 'podcast-topchart-artist';
+    artistEl.textContent = show.artist || '';
+    text.appendChild(nameEl);
+    text.appendChild(artistEl);
+    row.appendChild(text);
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'podcast-topchart-add';
+    button.setAttribute('data-topchart-add-for', show.cid);
+    button.setAttribute('aria-label', 'Add ' + show.name + ' to my podcasts');
+    paintAddButton(button, show.cid);
+    button.addEventListener('click', function () {
+      var api = userPodcasts();
+      if (!api) return;
+      if (api.has(show.cid)) api.remove(show.cid);
+      else api.add({ cid: show.cid, name: show.name, artist: show.artist, artwork: show.artwork }, { stay: true });
+      repaintAddButtons(show.cid);
+      renderMine();
+    });
+    row.appendChild(button);
+    return row;
+  }
+
+  /* ---- My Podcasts ---- */
+  function renderMine() {
+    var api = userPodcasts();
+    var mine = api ? api.list() : [];
+    mineEl.innerHTML = '';
+    if (!mine.length) {
+      var empty = document.createElement('p');
+      empty.className = 'podcast-topchart-empty';
+      empty.textContent = 'Nothing added yet — add a show from Search or the Top list below.';
+      mineEl.appendChild(empty);
+      return;
+    }
+    mine.forEach(function (show) {
+      var row = document.createElement('div');
+      row.className = 'podcast-topchart-row';
+      var art = document.createElement('img');
+      art.className = 'podcast-topchart-art';
+      art.src = show.artwork || '';
+      art.alt = '';
+      art.loading = 'lazy';
+      row.appendChild(art);
+      var go = document.createElement('button');
+      go.type = 'button';
+      go.className = 'podcast-topchart-goto';
+      go.setAttribute('aria-label', 'Open ' + show.name);
+      var nameEl = document.createElement('span');
+      nameEl.className = 'podcast-topchart-name';
+      nameEl.textContent = show.name;
+      var artistEl = document.createElement('span');
+      artistEl.className = 'podcast-topchart-artist';
+      artistEl.textContent = show.artist || '';
+      go.appendChild(nameEl);
+      go.appendChild(artistEl);
+      go.addEventListener('click', function () {
+        var feedTab = document.querySelector('[data-podcast-tab="u' + show.cid + '"]');
+        if (feedTab) feedTab.click();
+      });
+      row.appendChild(go);
+      var remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'podcast-topchart-add is-remove';
+      remove.setAttribute('data-topchart-remove-for', show.cid);
+      remove.setAttribute('aria-label', 'Remove ' + show.name);
+      remove.textContent = 'Remove';
+      remove.addEventListener('click', function () {
+        var apiNow = userPodcasts();
+        if (apiNow) apiNow.remove(show.cid);
+        repaintAddButtons(show.cid);
+        renderMine();
+      });
+      row.appendChild(remove);
+      mineEl.appendChild(row);
+    });
+  }
+
+  /* ---- Top chart ---- */
+  function normalizeChartEntry(entry) {
+    var images = entry['im:image'] || [];
+    var best = images.length ? images[images.length - 1] : null;
+    return {
+      cid: entry.id && entry.id.attributes ? entry.id.attributes['im:id'] : '',
+      name: entry['im:name'] ? entry['im:name'].label : '',
+      artist: entry['im:artist'] ? entry['im:artist'].label : '',
+      artwork: best && best.label ? best.label : ''
+    };
+  }
+  function fetchChart(cc) {
+    return fetch('https://itunes.apple.com/' + cc + '/rss/toppodcasts/limit=50/json')
+      .then(function (response) { if (!response.ok) throw new Error('chart failed'); return response.json(); })
+      .then(function (data) {
+        return ((data.feed && data.feed.entry) || []).map(normalizeChartEntry).filter(function (show) { return show.cid && show.name; });
+      });
+  }
+  function mergeEnglish(us, gb) {
+    var seen = {}, merged = [];
+    var n = Math.max(us.length, gb.length);
+    for (var i = 0; i < n && merged.length < 50; i += 1) {
+      [us[i], gb[i]].forEach(function (show) {
+        if (show && !seen[show.cid] && merged.length < 50) {
+          seen[show.cid] = true;
+          merged.push(show);
+        }
+      });
+    }
+    return merged;
+  }
+  function renderChart(shows) {
+    listEl.innerHTML = '';
+    shows.forEach(function (show, i) { listEl.appendChild(makeShowRow(show, i + 1)); });
+    if (statusEl) {
+      statusEl.textContent = shows.length
+        ? 'Top ' + shows.length + ' · ' + (region === 'en' ? 'US + UK combined' : REGIONS[region]) + ' · tap Add to keep a show.'
+        : 'The chart is empty right now.';
+    }
+  }
+  function loadChart() {
+    if (cache[region]) { renderChart(cache[region]); return; }
+    if (statusEl) statusEl.textContent = 'Loading the chart…';
+    var work = region === 'en'
+      ? Promise.all([fetchChart('us').catch(function () { return null; }), fetchChart('gb').catch(function () { return null; })])
+          .then(function (pair) {
+            if (!pair[0] && !pair[1]) throw new Error('chart failed');
+            return mergeEnglish(pair[0] || [], pair[1] || []);
+          })
+      : fetchChart('jp');
+    work.then(function (shows) {
+      cache[region] = shows;
+      renderChart(shows);
+    }).catch(function () {
+      if (statusEl) statusEl.textContent = 'Could not load the chart. Check the connection and try again.';
+    });
+  }
   function paintRegions() {
     section.querySelectorAll('[data-topchart-region]').forEach(function (button) {
       var on = button.getAttribute('data-topchart-region') === region;
@@ -31,102 +212,71 @@
       button.setAttribute('aria-selected', String(on));
     });
   }
-
-  function entryArtwork(entry) {
-    var images = entry['im:image'] || [];
-    var best = images.length ? images[images.length - 1] : null;
-    return best && best.label ? best.label : '';
-  }
-
-  function paintAddButton(button, cid) {
-    var added = !!(window.LibraryUserPodcasts && window.LibraryUserPodcasts.has(cid));
-    button.textContent = added ? 'Added ✓' : 'Add';
-    button.classList.toggle('is-added', added);
-    button.setAttribute('aria-pressed', String(added));
-  }
-
-  function render(entries) {
-    listEl.innerHTML = '';
-    entries.forEach(function (entry, i) {
-      var cid = entry.id && entry.id.attributes ? entry.id.attributes['im:id'] : '';
-      var name = entry['im:name'] ? entry['im:name'].label : '';
-      var artist = entry['im:artist'] ? entry['im:artist'].label : '';
-      if (!cid || !name) return;
-      var row = document.createElement('div');
-      row.className = 'podcast-topchart-row';
-      row.setAttribute('role', 'listitem');
-
-      var rank = document.createElement('span');
-      rank.className = 'podcast-topchart-rank';
-      rank.textContent = String(i + 1);
-
-      var art = document.createElement('img');
-      art.className = 'podcast-topchart-art';
-      art.src = entryArtwork(entry);
-      art.alt = '';
-      art.loading = 'lazy';
-
-      var text = document.createElement('span');
-      text.className = 'podcast-topchart-text';
-      var nameEl = document.createElement('span');
-      nameEl.className = 'podcast-topchart-name';
-      nameEl.textContent = name;
-      var artistEl = document.createElement('span');
-      artistEl.className = 'podcast-topchart-artist';
-      artistEl.textContent = artist;
-      text.appendChild(nameEl);
-      text.appendChild(artistEl);
-
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'podcast-topchart-add';
-      button.setAttribute('aria-label', 'Add ' + name + ' to my podcasts');
-      paintAddButton(button, cid);
-      button.addEventListener('click', function () {
-        if (!window.LibraryUserPodcasts) return;
-        if (window.LibraryUserPodcasts.has(cid)) window.LibraryUserPodcasts.remove(cid);
-        else window.LibraryUserPodcasts.add({ cid: cid, name: name, artist: artist, artwork: entryArtwork(entry) });
-        paintAddButton(button, cid);
-      });
-
-      row.appendChild(rank);
-      row.appendChild(art);
-      row.appendChild(text);
-      row.appendChild(button);
-      listEl.appendChild(row);
-    });
-    if (statusEl) {
-      statusEl.textContent = entries.length
-        ? 'Top ' + entries.length + ' in ' + REGIONS[region] + ' · tap Add and the show joins your Podcast tabs.'
-        : 'The chart is empty right now.';
-    }
-  }
-
-  function load() {
-    if (cache[region]) { render(cache[region]); return; }
-    if (statusEl) statusEl.textContent = 'Loading the chart…';
-    fetch('https://itunes.apple.com/' + region + '/rss/toppodcasts/limit=50/json')
-      .then(function (response) { if (!response.ok) throw new Error('chart failed'); return response.json(); })
-      .then(function (data) {
-        var entries = (data.feed && data.feed.entry) || [];
-        cache[region] = entries;
-        render(entries);
-      })
-      .catch(function () {
-        if (statusEl) statusEl.textContent = 'Could not load the chart. Check the connection and try again.';
-      });
-  }
-
   section.querySelectorAll('[data-topchart-region]').forEach(function (button) {
     button.addEventListener('click', function () {
       region = button.getAttribute('data-topchart-region');
       try { localStorage.setItem('personal-library-topchart-region', region); } catch (_) {}
       paintRegions();
-      load();
+      loadChart();
     });
   });
 
-  /* The heading strip folds the chart list like every other card's. */
+  /* ---- Search ---- */
+  var searchTimer = null;
+  var searchSeq = 0;
+  function renderSearch(shows, note) {
+    if (!resultsEl) return;
+    resultsEl.innerHTML = '';
+    if (note) {
+      var noteEl = document.createElement('p');
+      noteEl.className = 'podcast-topchart-empty';
+      noteEl.textContent = note;
+      resultsEl.appendChild(noteEl);
+      return;
+    }
+    shows.forEach(function (show) { resultsEl.appendChild(makeShowRow(show, 0)); });
+  }
+  function fetchSearch(term, country) {
+    return fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(term) + '&media=podcast&entity=podcast&limit=25&country=' + country)
+      .then(function (response) { if (!response.ok) throw new Error('search failed'); return response.json(); })
+      .then(function (data) {
+        return (data.results || []).filter(function (row) { return row.collectionId && row.collectionName; }).map(function (row) {
+          return {
+            cid: String(row.collectionId),
+            name: row.collectionName,
+            artist: row.artistName || '',
+            artwork: row.artworkUrl100 || ''
+          };
+        });
+      });
+  }
+  function runSearch() {
+    var term = (searchInput.value || '').trim();
+    var seq = ++searchSeq;
+    if (term.length < 2) { renderSearch([], term ? 'Type at least 2 characters.' : ''); return; }
+    renderSearch([], 'Searching…');
+    Promise.all([fetchSearch(term, 'JP').catch(function () { return []; }), fetchSearch(term, 'US').catch(function () { return []; })])
+      .then(function (pair) {
+        if (seq !== searchSeq) return;
+        var seen = {}, merged = [];
+        pair[0].concat(pair[1]).forEach(function (show) {
+          if (!seen[show.cid] && merged.length < 30) { seen[show.cid] = true; merged.push(show); }
+        });
+        renderSearch(merged, merged.length ? '' : 'No podcasts found for “' + term + '”.');
+      })
+      .catch(function () {
+        if (seq === searchSeq) renderSearch([], 'Search failed. Check the connection and try again.');
+      });
+  }
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      if (searchTimer) clearTimeout(searchTimer);
+      searchTimer = setTimeout(runSearch, 450);
+    });
+    searchInput.addEventListener('search', runSearch);
+  }
+
+  /* The heading strip folds the whole manager like every other card's. */
   var heading = section.querySelector('.podcast-episode-panel__heading');
   if (heading) {
     heading.addEventListener('click', function (event) {
@@ -137,10 +287,12 @@
   }
 
   tab.addEventListener('click', function () {
+    renderMine();
     if (started) return;
     started = true;
     paintRegions();
-    load();
+    loadChart();
   });
   paintRegions();
+  renderMine();
 })(window, document);
