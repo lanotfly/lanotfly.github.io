@@ -39,12 +39,38 @@
     return !!(api && api.has(cid));
   }
 
+  /* Built-in shows are already in the library, so search and chart
+     rows for them must not offer an Add button — a show the reader
+     already has (above all a pinned built-in) simply gets no button.
+     Apple ids of the shows behind the built-in feeds: BBC Global
+     News Podcast, Chronicle's News Connect, Luke's English Podcast,
+     Bite Size Japanese. Name aliases cover storefront naming
+     differences and are matched whole-word from the start. */
+  var BUILTIN_CIDS = { '135067274': true, '1608666340': true, '312059190': true, '1588405417': true };
+  var BUILTIN_NAMES = ['bbc global news podcast', 'global news podcast', 'news connect',
+    'luke s english podcast', 'bite size japanese', 'the bite size japanese podcast'];
+  function normShowName(name) {
+    return String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function isBuiltinShow(show) {
+    if (!show) return false;
+    if (BUILTIN_CIDS[String(show.cid)]) return true;
+    var n = normShowName(show.name);
+    return BUILTIN_NAMES.some(function (alias) {
+      return n === alias || n.indexOf(alias + ' ') === 0;
+    });
+  }
+
   /* ---- shared show rows (chart + search) ---- */
   function paintAddButton(button, cid) {
-    var added = isAdded(cid);
-    button.textContent = added ? 'Added ✓' : 'Add';
-    button.classList.toggle('is-added', added);
-    button.setAttribute('aria-pressed', String(added));
+    /* In the library (built-in or added): no button at all. The way
+       out for an added show is the ✕ on its My Podcasts tile, which
+       repaints here and brings the Add button back. */
+    var inLibrary = isAdded(cid) || !!BUILTIN_CIDS[String(cid)] || button.getAttribute('data-topchart-builtin') === '1';
+    button.hidden = inLibrary;
+    button.textContent = 'Add';
+    button.classList.toggle('is-added', inLibrary);
+    button.setAttribute('aria-pressed', 'false');
   }
   function repaintAddButtons(cid) {
     section.querySelectorAll('[data-topchart-add-for="' + cid + '"]').forEach(function (button) {
@@ -83,6 +109,10 @@
     button.className = 'podcast-topchart-add';
     button.setAttribute('data-topchart-add-for', show.cid);
     button.setAttribute('aria-label', 'Add ' + show.name + ' to my podcasts');
+    if (isBuiltinShow(show)) {
+      button.setAttribute('data-topchart-builtin', '1');
+      BUILTIN_CIDS[String(show.cid)] = true; /* learn the id for cid-only repaints */
+    }
     paintAddButton(button, show.cid);
     button.addEventListener('click', function () {
       var api = userPodcasts();
@@ -136,7 +166,7 @@
       fav.type = 'button';
       fav.className = 'podcast-topchart-tile__badge podcast-topchart-tile__fav' + (show.fav ? ' is-fav' : '');
       fav.setAttribute('data-topchart-fav-for', show.cid);
-      fav.setAttribute('aria-label', (show.fav ? 'Unpin ' : 'Pin ') + show.name + (show.fav ? ' from Favorites' : ' to Favorites'));
+      fav.setAttribute('aria-label', (show.fav ? 'Unpin ' : 'Pin ') + show.name + (show.fav ? ' from Pinned' : ' to Pinned'));
       fav.setAttribute('aria-pressed', String(!!show.fav));
       fav.textContent = show.fav ? '★' : '☆';
       fav.addEventListener('click', function () {

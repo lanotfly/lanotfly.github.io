@@ -42,7 +42,7 @@
   function artwork600(url) {
     return String(url || '').replace(/\d+x\d+bb\.(jpg|png)$/i, '600x600bb.$1');
   }
-  /* The feed menu is grouped: Favorites (the built-ins plus starred
+  /* The feed menu is grouped: Pinned (the built-ins plus starred
      shows) and All Podcasts (the rest), which hides itself while it
      is empty. Placing is idempotent — it also moves the item when a
      show's star flips. */
