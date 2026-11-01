@@ -13,6 +13,9 @@
   var section = document.querySelector('[data-podcast-feed-panel="topchart"]');
   var tab = document.querySelector('[data-podcast-tab="topchart"]');
   if (!section || !tab) return;
+  var pasteInput = section.querySelector('[data-topchart-paste]');
+  var pasteBtn = section.querySelector('[data-topchart-paste-add]');
+  var pasteStatus = section.querySelector('[data-topchart-paste-status]');
   var mineEl = section.querySelector('[data-topchart-mine]');
   var searchInput = section.querySelector('[data-topchart-search]');
   var resultsEl = section.querySelector('[data-topchart-results]');
@@ -93,58 +96,140 @@
     return row;
   }
 
-  /* ---- My Podcasts ---- */
+  /* ---- My Podcasts: an artwork wall ---- */
   function renderMine() {
     var api = userPodcasts();
     var mine = api ? api.list() : [];
     mineEl.innerHTML = '';
+    mineEl.classList.toggle('podcast-topchart-mine--grid', mine.length > 0);
     if (!mine.length) {
       var empty = document.createElement('p');
       empty.className = 'podcast-topchart-empty';
-      empty.textContent = 'Nothing added yet — add a show from Search or the Top list below.';
+      empty.textContent = 'Nothing added yet — search above, paste a link, or pick from Top Podcasts below.';
       mineEl.appendChild(empty);
       return;
     }
     mine.forEach(function (show) {
-      var row = document.createElement('div');
-      row.className = 'podcast-topchart-row';
+      var tile = document.createElement('div');
+      tile.className = 'podcast-topchart-tile';
+      tile.setAttribute('data-mine-cid', show.cid);
+      var go = document.createElement('button');
+      go.type = 'button';
+      go.className = 'podcast-topchart-goto podcast-topchart-tile__open';
+      go.setAttribute('aria-label', 'Open ' + show.name);
       var art = document.createElement('img');
-      art.className = 'podcast-topchart-art';
+      art.className = 'podcast-topchart-tile__art';
       art.src = show.artwork || '';
       art.alt = '';
       art.loading = 'lazy';
-      row.appendChild(art);
-      var go = document.createElement('button');
-      go.type = 'button';
-      go.className = 'podcast-topchart-goto';
-      go.setAttribute('aria-label', 'Open ' + show.name);
+      go.appendChild(art);
       var nameEl = document.createElement('span');
-      nameEl.className = 'podcast-topchart-name';
+      nameEl.className = 'podcast-topchart-tile__name';
       nameEl.textContent = show.name;
-      var artistEl = document.createElement('span');
-      artistEl.className = 'podcast-topchart-artist';
-      artistEl.textContent = show.artist || '';
       go.appendChild(nameEl);
-      go.appendChild(artistEl);
       go.addEventListener('click', function () {
         var feedTab = document.querySelector('[data-podcast-tab="u' + show.cid + '"]');
         if (feedTab) feedTab.click();
       });
-      row.appendChild(go);
+      tile.appendChild(go);
+      var fav = document.createElement('button');
+      fav.type = 'button';
+      fav.className = 'podcast-topchart-tile__badge podcast-topchart-tile__fav' + (show.fav ? ' is-fav' : '');
+      fav.setAttribute('data-topchart-fav-for', show.cid);
+      fav.setAttribute('aria-label', (show.fav ? 'Unpin ' : 'Pin ') + show.name + (show.fav ? ' from Favorites' : ' to Favorites'));
+      fav.setAttribute('aria-pressed', String(!!show.fav));
+      fav.textContent = show.fav ? '★' : '☆';
+      fav.addEventListener('click', function () {
+        var apiNow = userPodcasts();
+        if (apiNow && apiNow.setFavorite) apiNow.setFavorite(show.cid, !show.fav);
+        renderMine();
+      });
+      tile.appendChild(fav);
       var remove = document.createElement('button');
       remove.type = 'button';
-      remove.className = 'podcast-topchart-add is-remove';
+      remove.className = 'podcast-topchart-tile__badge podcast-topchart-tile__del';
       remove.setAttribute('data-topchart-remove-for', show.cid);
       remove.setAttribute('aria-label', 'Remove ' + show.name);
-      remove.textContent = 'Remove';
+      remove.textContent = '✕';
       remove.addEventListener('click', function () {
         var apiNow = userPodcasts();
         if (apiNow) apiNow.remove(show.cid);
         repaintAddButtons(show.cid);
         renderMine();
       });
-      row.appendChild(remove);
-      mineEl.appendChild(row);
+      tile.appendChild(remove);
+      mineEl.appendChild(tile);
+    });
+  }
+
+  /* ---- Add by pasted link: an Apple Podcasts URL resolves through
+     the lookup API; any other http(s) address is tried as an RSS
+     feed (its channel title/artwork name the show here, panel.js
+     parses the episodes). */
+  function setPasteStatus(text) { if (pasteStatus) pasteStatus.textContent = text; }
+  function decodeText(html) {
+    var area = document.createElement('textarea');
+    area.innerHTML = html || '';
+    return area.value.trim();
+  }
+  function rssCidFor(url) {
+    var hash = 0;
+    for (var i = 0; i < url.length; i++) hash = (hash * 31 + url.charCodeAt(i)) | 0;
+    return 'rss' + Math.abs(hash);
+  }
+  function finishLinkAdd(cid) {
+    repaintAddButtons(cid);
+    renderMine();
+    if (pasteInput) pasteInput.value = '';
+  }
+  function addFromLink() {
+    var api = userPodcasts();
+    if (!api || !pasteInput) return;
+    var raw = (pasteInput.value || '').trim();
+    if (!raw) { setPasteStatus('Paste a link first.'); return; }
+    var appleMatch = raw.match(/id(\d{5,})/) || raw.match(/[?&]i=(\d{5,})/);
+    if (appleMatch || /podcasts\.apple\.com/i.test(raw)) {
+      if (!appleMatch) { setPasteStatus('That Apple link has no show id in it.'); return; }
+      var cid = appleMatch[1];
+      if (api.has(cid)) { setPasteStatus('Already in My Podcasts.'); return; }
+      setPasteStatus('Adding…');
+      fetch('https://itunes.apple.com/lookup?id=' + encodeURIComponent(cid) + '&media=podcast&entity=podcast')
+        .then(function (response) { if (!response.ok) throw new Error('lookup failed'); return response.json(); })
+        .then(function (data) {
+          var row = (data.results || [])[0];
+          if (!row || !row.collectionName) throw new Error('not found');
+          api.add({ cid: String(row.collectionId || cid), name: row.collectionName, artist: row.artistName || '', artwork: row.artworkUrl600 || row.artworkUrl100 || '' }, { stay: true });
+          setPasteStatus('Added ' + row.collectionName + '.');
+          finishLinkAdd(String(row.collectionId || cid));
+        })
+        .catch(function () { setPasteStatus('Could not add that show.'); });
+      return;
+    }
+    if (/^https?:\/\//i.test(raw)) {
+      var rssCid = rssCidFor(raw);
+      if (api.has(rssCid)) { setPasteStatus('Already in My Podcasts.'); return; }
+      setPasteStatus('Adding…');
+      fetch(raw)
+        .then(function (response) { if (!response.ok) throw new Error('feed failed'); return response.text(); })
+        .then(function (text) {
+          var channel = text.split(/<item[\s>]/)[0];
+          var titleMatch = channel.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
+          var title = titleMatch ? decodeText(titleMatch[1].replace(/<!\[CDATA\[|\]\]>/g, '')) : '';
+          if (!title) throw new Error('no title');
+          var artMatch = channel.match(/<itunes:image[^>]*href="([^"]+)"/) || channel.match(/<image>[\s\S]*?<url>([^<]+)<\/url>/);
+          api.add({ cid: rssCid, name: title, artist: '', artwork: artMatch ? decodeText(artMatch[1]) : '', rss: raw }, { stay: true });
+          setPasteStatus('Added ' + title + '.');
+          finishLinkAdd(rssCid);
+        })
+        .catch(function () { setPasteStatus('That feed could not be loaded — the publisher may block direct access.'); });
+      return;
+    }
+    setPasteStatus('Paste an Apple Podcasts link or an RSS feed address.');
+  }
+  if (pasteBtn) pasteBtn.addEventListener('click', addFromLink);
+  if (pasteInput) {
+    pasteInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') { event.preventDefault(); addFromLink(); }
     });
   }
 
@@ -229,7 +314,7 @@
          the panel fits the results (last row visible, viewport cap);
        - chart folded by hand: the stylesheet default stands. */
   var searchActive = false;
-  var chartFolded = false;
+  var chartFolded = true;
   var chartToggleEl = null;
   var chartBodyEl = null;
   function applyChartVisibility() {

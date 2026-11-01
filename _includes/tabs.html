@@ -85,12 +85,20 @@
       <div class="audio-quick-group audio-quick-group--podcast" role="group" aria-label="Podcast">
         <button id="audio-podcast-play" class="audio-quick-main" type="button" aria-label="Play or pause Podcast NEWS EN"><span class="audio-quick-glyph" data-glyph aria-hidden="true"></span><span data-label>Podcast NEWS EN</span></button>
         <div id="audio-podcast-menu-list" class="audio-feed-menu" role="menu" aria-label="Podcasts" hidden>
-          <button type="button" role="menuitem" data-feed-choice="bbc">BBC Global News</button>
-          <button type="button" role="menuitem" data-feed-choice="chronicle">News Connect</button>
-          <button type="button" role="menuitem" data-feed-choice="english">Easy Natural English</button>
-          <button type="button" role="menuitem" data-feed-choice="japanese">Bite Size Japanese</button>
-          <button type="button" role="menuitem" data-feed-choice="kjv">KJV</button>
-          <button type="button" role="menuitem" data-feed-choice="topchart">Manage Podcasts</button>
+          <div class="audio-feed-menu__scroll">
+            <div class="audio-feed-menu__group" data-menu-group="favorites">
+              <div class="audio-feed-menu__label" aria-hidden="true">Favorites</div>
+              <button type="button" role="menuitem" data-feed-choice="bbc">BBC Global News</button>
+              <button type="button" role="menuitem" data-feed-choice="chronicle">News Connect</button>
+              <button type="button" role="menuitem" data-feed-choice="english">Easy Natural English</button>
+              <button type="button" role="menuitem" data-feed-choice="japanese">Bite Size Japanese</button>
+              <button type="button" role="menuitem" data-feed-choice="kjv">KJV</button>
+            </div>
+            <div class="audio-feed-menu__group" data-menu-group="all" hidden>
+              <div class="audio-feed-menu__label" aria-hidden="true">All Podcasts</div>
+            </div>
+          </div>
+          <button type="button" role="menuitem" class="audio-feed-menu__add" data-feed-choice="topchart">+ Add / Manage Podcasts</button>
         </div>
       </div>
       <div class="audio-quick-group audio-quick-group--radio" role="group" aria-label="Radio">
@@ -120,6 +128,7 @@
     <source src="https://npr-ice.streamguys1.com/live.mp3" type="audio/mpeg">
   </audio>
             <section id="library-podcast-panel" class="library-podcast-panel" aria-label="Podcasts" hidden>
+  <div id="podcast-pull-add" class="podcast-pull-add" hidden aria-hidden="true">Pull down to add a podcast</div>
   <div class="secondary-tabs podcast-source-tabs" role="tablist" aria-label="Podcast sources">
     <button type="button" class="secondary-tab is-active" id="podcast-tab-bbc" role="tab" aria-selected="true" aria-controls="podcast-feed-panel-bbc" data-podcast-tab="bbc" aria-label="BBC Global News Podcast">BBC GP</button>
     <button type="button" class="secondary-tab" id="podcast-tab-chronicle" role="tab" aria-selected="false" aria-controls="podcast-feed-panel-chronicle" data-podcast-tab="chronicle" aria-label="News Connect">News Connect</button>
@@ -191,13 +200,18 @@
       </div>
     </div>
     <div class="podcast-episode-scroll-frame podcast-feed-episode-scroll-frame" id="podcast-topchart-list-frame"><div class="podcast-topchart-scroll">
-      <h3 class="podcast-topchart-subhead">My Podcasts</h3>
-      <div class="podcast-topchart-mine" data-topchart-mine></div>
       <h3 class="podcast-topchart-subhead">Search</h3>
       <div class="podcast-topchart-searchbox"><input type="search" data-topchart-search placeholder="Search podcasts…" aria-label="Search podcasts"></div>
       <div class="podcast-topchart-results" data-topchart-results></div>
-      <h3 class="podcast-topchart-subhead podcast-topchart-subhead--toggle" data-topchart-chart-toggle role="button" tabindex="0" aria-expanded="true">Top Podcasts <span class="podcast-topchart-caret" aria-hidden="true">▾</span></h3>
-      <div data-topchart-chart-body>
+      <div class="podcast-topchart-paste">
+        <input type="url" data-topchart-paste placeholder="Paste an Apple Podcasts or RSS link…" aria-label="Paste a podcast link">
+        <button type="button" class="podcast-topchart-add" data-topchart-paste-add>Add</button>
+      </div>
+      <p class="podcast-episode-panel__status" data-topchart-paste-status aria-live="polite"></p>
+      <h3 class="podcast-topchart-subhead">My Podcasts</h3>
+      <div class="podcast-topchart-mine" data-topchart-mine></div>
+      <h3 class="podcast-topchart-subhead podcast-topchart-subhead--toggle is-collapsed" data-topchart-chart-toggle role="button" tabindex="0" aria-expanded="false">Top Podcasts <span class="podcast-topchart-caret" aria-hidden="true">▾</span></h3>
+      <div data-topchart-chart-body hidden>
         <div class="podcast-topchart-regions" role="tablist" aria-label="Chart region">
           <button type="button" class="secondary-tab" data-topchart-region="jp" aria-selected="true">Japan</button>
           <button type="button" class="secondary-tab" data-topchart-region="en" aria-selected="false">English</button>
