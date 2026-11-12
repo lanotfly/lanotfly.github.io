@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "Nvidia CEO Jensen Huang resigns",
+      "summary": "Nvidia's chief financial officer, Colette Kress, will take over as interim CEO following Jensen Huang's departure. Shares in the company plummeted as US markets opened. It comes days after Huang admitted to an affair with a suspected Chinese spy, although Beijing denies the allegations. It also follows a New York Times report of a second affair with an executive at his own company.",
+      "link": "https://www.bbc.co.uk/programmes/p0pmn84n",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pmn5x9.mp3",
+      "date": "Thu, 12 Nov 2026 16:07:00 +0000",
+      "duration": "1722",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Democrat Scott Colom wins Mississippi in historic victory",
       "summary": "Democrat Scott Colom has won the Mississippi senate race in a shock midterms victory. He will become the state's first Democratic senator in four decades. Exit polls showed Mr Colom benefitted from surging support among black and young voters. Also: Nvidia considers ousting CEO Jensen Huang after his admitted affair with a suspected Chinese spy. A warm welcome for the Pope on his homecoming to Peru. The US Treasure Secretary, Scott Besset, relocates from his home to an unnamed military base after reports of unspecified “threats” from Tehran. Kenya prepares for the extreme weather and flooding expected from El Niño. And the manhunt for the Italian man who escaped house arrest in Argentina by abseiling off his balcony. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Democrat Scott Colom speaks to the media in Jackson, Mississippi, US November 4, 2026 Credit: Reuters",
       "link": "https://www.bbc.co.uk/programmes/p0pmjmtq",
@@ -1546,15 +1555,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4nj50.mp3",
       "date": "Sat, 15 Aug 2026 03:47:00 +0000",
       "duration": "1560",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Netanyahu derides UK as 'Islamic Republic of Great Britain'",
-      "summary": "The spokesman for the Israeli Prime Minister, Benjamin Netanyahu, has defended his reference to the UK as an 'Islamic Republic'. In a podcast with Israeli Army Radio, Mr Netanyahu recalled meeting the grandson of Winston Churchill, describing him as a 'lover of Israel' and then adding that you won't find that kind of attitude in the UK now, which he said was known as 'The Islamic Republic of Britain'. The UK and Israel are long-standing allies, but relations have become notably more tense since the war in Gaza. Also: At least eight people have died and several more have been injured in eastern Japan after record rainfall caused widespread flooding; the United Nations adds its voice to flag concerns about the pressure extreme weather events like droughts are putting on food security; builders in Belgium working on a renovation project have found a chest filled with gold bars and gold coins, bricked in the wall of a cellar; in Australia, tech executives give evidence about the ban on social media for under-16s to a parliamentary inquiry; we hear from Save the Children about the latest on the humanitarian crisis in Sudan; Spain announces it's extending the life of the country's biggest nuclear plant; and in Britain, the Reform UK leader, Nigel Farage is re-elected as an MP in a by-election he triggered, defeating 33 other candidates - a parliamentary investigation into a nearly seven-million dollar gift he received from a crypto billionaire has now resumed. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk",
-      "link": "https://www.bbc.co.uk/programmes/p0p4l9rm",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4l6fx.mp3",
-      "date": "Fri, 14 Aug 2026 16:02:00 +0000",
-      "duration": "1660",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17299,25 +17299,25 @@
     "bbc": {
       "ok": true,
       "count": 291,
-      "checkedAt": "2026-11-12T11:54:09+00:00"
+      "checkedAt": "2026-11-12T20:01:50+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1629,
-      "checkedAt": "2026-11-12T11:54:09+00:00"
+      "checkedAt": "2026-11-12T20:01:50+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-12T11:54:10+00:00"
+      "checkedAt": "2026-11-12T20:01:51+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 766,
-      "checkedAt": "2026-11-12T11:54:10+00:00"
+      "checkedAt": "2026-11-12T20:01:51+00:00"
     }
   },
-  "updatedAt": "2026-11-12T11:54:11+00:00",
+  "updatedAt": "2026-11-12T20:01:52+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
