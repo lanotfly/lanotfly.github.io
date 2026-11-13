@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "Microsoft outage: Millions affected in over 70 countries",
+      "summary": "A global Microsoft outage hits schools, doctors and businesses. The tech giant is scrambling the fix the issue - but with so many of us relying on its products such as Outlook and Teams, it has prompted a conversation about how reliant we are on its services. Microsoft says it's not found any evidence that malicious activity caused the problems, and in its latest update it reported that \"broader improvements\" were being observed in North America and Europe. Also: El Salvador soldiers use combat robot dogs equipped with assault rifles to re-take the national football stadium from gangs in Haiti. The FBI says North Korean hackers used fake video calls in a 400-million dollar crypto hack. Mauricio Pochettino is finally confirmed as Manchester United's new manager. We go inside a secret wartime bunker rediscovered beneath cliffs on the south coast England. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: The icons for several Microsoft apps, including Microsoft Outlook. Credit: Yui Mok / PA",
+      "link": "https://www.bbc.co.uk/programmes/p0pmwsp6",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pmwqby.mp3",
+      "date": "Fri, 13 Nov 2026 15:51:00 +0000",
+      "duration": "1380",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Putin lets Europe join Ukraine peace talks",
       "summary": "Ukraine's President Zelensky has welcomed efforts by Jared Kushner and Steve Witkoff, to secure European involvement at the next round of peace talks with Russia. He was speaking alongside the US envoys in Dublin, where they'd flown to brief Mr Zelensky on their earlier discussions with Vladimir Putin in Moscow. Mr Zelensky said it made sense for Europeans to be involved as Ukraine would eventually be an EU member. Also: One of the most powerful men in the AI industry -Jensen Huang- will appear before Congress in the US after being forced to resign over a sex and spying scandal. Schools in Italy have been evacuated for a second day in a row after receiving hoax bomb threats. US Defence Secretary Pete Hegseth has awarded a medal to the guard who reprimanded his group for laughing at Arlington National Cemetery. Haiti's security forces say they've regained control of the country’s main stadium in the capital Port au Prince, which has held by gangs for two years. How Pakistan is leading the way in solar energy... and, as matcha continues to boom, a new Japanese matcha congress meets to try and stop it being a victim of its own success. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Russian President Vladimir Putin chairs a meeting in Moscow, Russia. Credit: Sergey Builkin / Sputnik",
       "link": "https://www.bbc.co.uk/programmes/p0pmr8st",
@@ -17307,26 +17316,26 @@
   "feedStatus": {
     "bbc": {
       "ok": true,
-      "count": 291,
-      "checkedAt": "2026-11-13T08:06:03+00:00"
+      "count": 292,
+      "checkedAt": "2026-11-13T16:30:22+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1630,
-      "checkedAt": "2026-11-13T08:06:03+00:00"
+      "checkedAt": "2026-11-13T16:30:22+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-13T08:06:05+00:00"
+      "checkedAt": "2026-11-13T16:30:23+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 766,
-      "checkedAt": "2026-11-13T08:06:05+00:00"
+      "checkedAt": "2026-11-13T16:30:23+00:00"
     }
   },
-  "updatedAt": "2026-11-13T08:06:05+00:00",
+  "updatedAt": "2026-11-13T16:30:23+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
