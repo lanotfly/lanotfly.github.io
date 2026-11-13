@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "Putin lets Europe join Ukraine peace talks",
+      "summary": "Ukraine's President Zelensky has welcomed efforts by Jared Kushner and Steve Witkoff, to secure European involvement at the next round of peace talks with Russia. He was speaking alongside the US envoys in Dublin, where they'd flown to brief Mr Zelensky on their earlier discussions with Vladimir Putin in Moscow. Mr Zelensky said it made sense for Europeans to be involved as Ukraine would eventually be an EU member. Also: One of the most powerful men in the AI industry -Jensen Huang- will appear before Congress in the US after being forced to resign over a sex and spying scandal. Schools in Italy have been evacuated for a second day in a row after receiving hoax bomb threats. US Defence Secretary Pete Hegseth has awarded a medal to the guard who reprimanded his group for laughing at Arlington National Cemetery. Haiti's security forces say they've regained control of the country’s main stadium in the capital Port au Prince, which has held by gangs for two years. How Pakistan is leading the way in solar energy... and, as matcha continues to boom, a new Japanese matcha congress meets to try and stop it being a victim of its own success. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Russian President Vladimir Putin chairs a meeting in Moscow, Russia. Credit: Sergey Builkin / Sputnik",
+      "link": "https://www.bbc.co.uk/programmes/p0pmr8st",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pmr8dk.mp3",
+      "date": "Fri, 13 Nov 2026 05:28:00 +0000",
+      "duration": "1700",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Nvidia CEO Jensen Huang resigns",
       "summary": "Nvidia's chief financial officer, Colette Kress, will take over as interim CEO following Jensen Huang's departure. Shares in the company plummeted as US markets opened. It comes days after Huang admitted to an affair with a suspected Chinese spy, although Beijing denies the allegations. It also follows a New York Times report of a second affair with an executive at his own company.",
       "link": "https://www.bbc.co.uk/programmes/p0pmn84n",
@@ -1546,15 +1555,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4cv39.mp3",
       "date": "Sat, 15 Aug 2026 11:00:00 +0000",
       "duration": "1591",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Luigi Mangione pleads guilty to CEO shooting",
-      "summary": "The man accused of killing an American health insurance executive has confessed to the crime in court. Luigi Mangione pleaded guilty to two federal counts of stalking resulting in death. He shot the UnitedHealthcare CEO Brian Thompson on a New York street in 2024. Mangione will be sentenced in December; prosecutors say they will seek life in prison. Also: Jason Arday - the Cambridge University professor who resigned over accusations of plagiarism - has been found dead at his home in London. President Trump says he will soon declare the Strait of Hormuz a US territory. The founder of Amazon, Jeff Bezos, has become the latest American billionaire to invest in English football, after buying a share of the Premier League club, Liverpool. As Russia continues to bombard Ukraine, Kyiv is responding with its own campaign of long-range strikes. Following the surge of migrants to the Spanish North African territory of Ceuta, the BBC has identified dozens of Instagram profiles promoting positive content about crossing there from Morocco. And with the right training, could a normal man compete in the 2028 Olympic Games in Los Angeles? Four out of 10 seem to think so. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Luigi Mangione in a previous court appearance in New York City in September 2025. Credit: REUTERS/Mike Segar",
-      "link": "https://www.bbc.co.uk/programmes/p0p4nj76",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4nj50.mp3",
-      "date": "Sat, 15 Aug 2026 03:47:00 +0000",
-      "duration": "1560",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17308,25 +17308,25 @@
     "bbc": {
       "ok": true,
       "count": 291,
-      "checkedAt": "2026-11-13T01:10:02+00:00"
+      "checkedAt": "2026-11-13T08:06:03+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1630,
-      "checkedAt": "2026-11-13T01:10:02+00:00"
+      "checkedAt": "2026-11-13T08:06:03+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-13T01:10:03+00:00"
+      "checkedAt": "2026-11-13T08:06:05+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 766,
-      "checkedAt": "2026-11-13T01:10:03+00:00"
+      "checkedAt": "2026-11-13T08:06:05+00:00"
     }
   },
-  "updatedAt": "2026-11-13T01:10:04+00:00",
+  "updatedAt": "2026-11-13T08:06:05+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
