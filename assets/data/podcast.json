@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "US airspace reopens after flights grounded for several hours",
+      "summary": "On Friday, the US made the rare decision to ground flights nationwide, leaving tens of thousands of people stranded. An overloaded air traffic control system triggered communications failures across the country. The White House says there's no evidence of a cyberattack. Flights resumed after four hours, but Transportation Secretary Sean Duffy has warned that getting the aviation network back to normal will take time. Also: Divisions deepen inside the Trump administration as the US Commerce Secretary comes under criticism for his failure to ban exports of advanced Nvidia chips to a company linked to a suspected Chinese spy. Microsoft says its services are gradually returning to normal after a global outage that affected hundreds of millions of people. Pope Leo says he's overcoming cancer as huge crowds turn out to welcome him in Peru. We report from India, where members of the Gen-Z \"Cockroach\" protest movement face growing legal pressure and detentions. And the grand final of the first-ever Asian Eurovision Song Contest is about to get underway. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Plane landing at Ronald Reagan Washington National Airport after the US FAA issued a national ground stop. Credit: Reuters/Jonathan Ernst",
+      "link": "https://www.bbc.co.uk/programmes/p0pmzyrg",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pmzy3x.mp3",
+      "date": "Sat, 14 Nov 2026 04:41:00 +0000",
+      "duration": "1661",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Microsoft outage: Millions affected in over 70 countries",
       "summary": "A global Microsoft outage hits schools, doctors and businesses. The tech giant is scrambling the fix the issue - but with so many of us relying on its products such as Outlook and Teams, it has prompted a conversation about how reliant we are on its services. Microsoft says it's not found any evidence that malicious activity caused the problems, and in its latest update it reported that \"broader improvements\" were being observed in North America and Europe. Also: El Salvador soldiers use combat robot dogs equipped with assault rifles to re-take the national football stadium from gangs in Haiti. The FBI says North Korean hackers used fake video calls in a 400-million dollar crypto hack. Mauricio Pochettino is finally confirmed as Manchester United's new manager. We go inside a secret wartime bunker rediscovered beneath cliffs on the south coast England. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: The icons for several Microsoft apps, including Microsoft Outlook. Credit: Yui Mok / PA",
       "link": "https://www.bbc.co.uk/programmes/p0pmwsp6",
@@ -1546,15 +1555,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4j0f6.mp3",
       "date": "Sun, 16 Aug 2026 19:00:00 +0000",
       "duration": "1663",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Indonesia earthquake: rescuers search for survivors",
-      "summary": "Rescue workers have been attempting to reach suvivors of a powerful earthquake that hit the Indonesian island of Flores in the early hours of Saturday morning. Around fifty people have died and some five thousand have been evacuated from their homes. Also: Israel has carried out its deadliest strikes in Lebanon for months killing eleven people. Moroccan police stopped hundreds of people from illegally crossing into Spain's North African territory of Ceuta, two weeks after tens of thousands entered the exclave. International observers of Zambia's election have told political parties to tone down inflammatory statements, saying the poll was marred by intimidation, abductions and an hours-long pause in the vote count. The Spanish government has ordered an investigation into the likely shooting of an endangered killer whale that was captured on video with wounds to its dorsal fin. The nineteen year old British cyclist Fin Tarling has died in a crash during the Tour of Portugal race. The Miss Universe Canada pageant is introducing a ''comprehensive costume guide'' after a row triggered by two contestants wearing Indigenous-style costumes. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: A man cries outside his family house that was damaged by the earthquake in Indonesia Credit: EPA/Shutterstock",
-      "link": "https://www.bbc.co.uk/programmes/p0p4sj0p",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4shw7.mp3",
-      "date": "Sun, 16 Aug 2026 04:03:00 +0000",
-      "duration": "1451",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17317,25 +17317,25 @@
     "bbc": {
       "ok": true,
       "count": 291,
-      "checkedAt": "2026-11-14T02:29:50+00:00"
+      "checkedAt": "2026-11-14T09:29:53+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1631,
-      "checkedAt": "2026-11-14T02:29:51+00:00"
+      "checkedAt": "2026-11-14T09:29:53+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-14T02:29:52+00:00"
+      "checkedAt": "2026-11-14T09:29:54+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 766,
-      "checkedAt": "2026-11-14T02:29:52+00:00"
+      "checkedAt": "2026-11-14T09:29:54+00:00"
     }
   },
-  "updatedAt": "2026-11-14T02:29:52+00:00",
+  "updatedAt": "2026-11-14T09:29:55+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
