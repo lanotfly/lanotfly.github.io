@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "SpaceX makes history catching part of returning spacecraft",
+      "summary": "Part of SpaceX's Starship rocket was caught as it descended back to Earth in Texas. It's the first time the upper section of a reusable rocket has ever been captured. Mechanical arms carried out a \"chopstick\" manoeuvre to catch the spacecraft. The breakthrough could dramatically cut the cost of space travel and marks a major step towards making Starship suitable for human spaceflight. Also: Ukraine's president says the US has, for the first time, floated the idea of Ukraine joining NATO in exchange for ceding control of the Donbas region to Russia. We hear from the first black senator of the US state of Mississippi in 145 years. A fierce debate is brewing in Germany over the future of Hitler's Eagle's Nest after the building was destroyed by fire. A leading specialist in detecting digitally manipulated images warns that deepfakes are becoming almost impossible to spot. And a Philippine teenager has won the first-ever Eurovision Asia competition. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: SpaceX Starship 42 returns from orbit to the launch pad on the 15th test flight from the SpaceX launch complex in Starbase, Texas, US, November 14, 2026. Credit: REUTERS/Steve Nesius",
+      "link": "https://www.bbc.co.uk/programmes/p0pn35d7",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pn353v.mp3",
+      "date": "Sun, 15 Nov 2026 04:59:00 +0000",
+      "duration": "1836",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "The Happy Pod: I've put women on the map with Antarctic record",
       "summary": "Before taking on Antarctica's 160 kilometre ultramarathon, Stephanie Case said she wanted to show her daughter what mothers can achieve even in the toughest places on Earth. The Canadian ultra-runner has now made history, becoming the first woman to complete the race. Case says she wanted to prove that ''motherhood isn't the finish line''. Also: we catch up with a young Sudanese boy who received a surprise message from his favourite footballer, the Real Madrid player Vinícius Júnior. We visit a drama workshop where actors use sound to create theatre for blind and visually impaired people. How robotic kits with chopsticks are inspiring children around the world. The African athletes who have made history at the Youth Olympic Games in Senegal. Plus the chimpanzee in Florida that had his own drone delivery service of bananas. (Photo: Stephanie Case pictured after completing the Antarctic Ice Ultra 2026. Credit: Reuters) Presenter: Chantal Hartle. Music composed by Iona Hampson",
       "link": "https://www.bbc.co.uk/programmes/p0pmw5pp",
@@ -1549,15 +1558,6 @@
       "source": "BBC Global News Podcast"
     },
     {
-      "title": "Trump orders cuts to US-South Korea drills, citing ties with Kim Jong Un",
-      "summary": "Donald Trump has ordered a substantial reduction in joint US-South Korea military exercises, saying they are \"too expensive\" and risk damaging his “very good relationship” with North Korean leader Kim Jong Un. In a post on Truth Social, he also noted that South Korea had recently declined to join the US in the \"denuclearisation\" of Iran. Also: Russia and Ukraine trade deadly attacks, with a well-known book market in Kyiv among the targets; Brazil’s presidential campaign gets under way; a 60-day US-Iran agreement expires without resolving key disputes; four paintings by Renaissance master Antonello da Messina are stolen from his hometown of Messina in Sicily; Cameroon makes history by winning the Women’s Africa Cup of Nations for the first time; and the alarming lengths that some social media influencers are going to for a photo close up with a shark. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: U.S. President Donald Trump meets with North Korean leader Kim Jong Un at the demilitarized zone separating the two Koreas, in Panmunjom, South Korea, June 30, 2019. Credit: Reuters",
-      "link": "https://www.bbc.co.uk/programmes/p0p4wskw",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p4wscm.mp3",
-      "date": "Mon, 17 Aug 2026 04:29:00 +0000",
-      "duration": "1760",
-      "source": "BBC Global News Podcast"
-    },
-    {
       "title": "The Global Story - Is Iran really trying to kill Trump?",
       "summary": "Last month, President Trump secretly swapped planes via a catering truck as he left a Nato summit in Turkey. The elaborate ruse, first reported by the Washington Post, was in response to a possible threat from Iran. But how serious were the US administration’s fears of an assassination attempt? And does the Iranian regime have the capability to carry out such an operation beyond its borders? We speak to Parham Ghobadi, a senior reporter at the BBC’s Persian Service, and Dan Lamothe of the Washington Post, to understand more about what transpired on Air Force One, the history of Iran’s alleged assassination plots, and why the Iranian regime’s prime target might be its own citizens. For more episodes, just search 'The Global Story' wherever you get your BBC Podcasts. Producers: Mhairi MacKenzie, Hannah Moore and Xandra Ellin Executive producers: Martine Powers and James Shield Mix: Travis Evans Digital producer: Sam Gruet Studio manager: Mike Regaard Senior news editor: China Collins Photo: A catering truck is parked on the other side of Air Force One, before U.S. President Donald Trump's departure from Ankara en route to Washington after his participation in the NATO leaders' summit, at Ankara Esenboga Airport in Ankara, Turkey, July 8, 2026. Credit: Reuters/ABC-TV/Pool/File Photo",
       "link": "https://www.bbc.co.uk/programmes/p0p4j11y",
@@ -2643,7 +2643,7 @@
       "title": "【土曜版 #101】新浪剛史氏が語る、辞任後の日々で見えたこと。そして日本の進路（ゲスト：新浪剛史さん）",
       "summary": "今回のゲストは、サントリーホールディングス前社長・会長、前経済同友会代表幹事の新浪剛史さんです。2025年秋の辞任から約1年。表舞台を離れていた期間、新浪さんは何を思考し、何に取り組んでいたのか。AIエージェントの構築から、肌身に感じた新冷戦のリアル、さらには高市政権の産業政策（17分野投資）に欠けている「国のCFO」という視点、そして日本経済への処方箋まで、大局的な視点から語られる高密度のインタビューです。 ▼Podcast Studio Chronicle YouTubeチャンネル ⁠https://www.youtube.com/@PodcastStudioChronicle ▼出演： 野村高文（Podcastプロデューサー／Podcast Studio Chronicle代表） ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ ⁠⁠ https://x.com/nmrtkfm ▼ゲストプロフィール 新浪剛史／前・全国経済同友会代表幹事 実業家、元サントリーホールディングス株式会社代表取締役社長・会長、前公益社団法人経済同友会代表幹事。1959年神奈川県生まれ。慶應義塾大学経済学部卒業、ハーバード大学経営大学院修士課程（MBA）修了。1981年三菱商事入社。2002年株式会社ローソン代表取締役社長兼CEO就任。2014年サントリーホールディングス株式会社代表取締役社長に就任（創業家以外で初）。2023年経済同友会代表幹事に就任。政府の経済財政諮問会議議員などを歴任。現在はスタンフォード大学客員教授、各種グローバル会議のアドバイザーなどを務める。 ▼News Connect 土曜版・日曜版・夕刊版 Spotifyプレイリストはこちら 🟢土曜版 ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠https://open.spotify.com/playlist/3MKhzjyNlx96n2Khmt35EK⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ 🔴日曜版 ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠https://open.spotify.com/playlist/2cAjmNYGXvSXCtPujQSNVb⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ 🔵夕刊版 国際欄 https://open.spotify.com/playlist/3CtpYOPniQT6FEuByBdfg3 🟣夕刊版 文化欄 ⁠⁠⁠ https://open.spotify.com/playlist/6DSiNeJQwWhV982h3BxOyg 🟡夕刊版 金融欄 ⁠ https://open.spotify.com/playlist/4btihPGM3vOhndcdtzQTtM ▼支援プログラム「Chronicleサポーター」については、こちらをご参照ください。 https://chronicle-inc.net/support LISTENで開く",
       "link": "https://listen.style/p/smbslbmi/quh5a2ca",
-      "audioUrl": "https://anchor.fm/s/81fb5eec/podcast/play/129383186/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-10-13%2F436658814-44100-2-fdc9e9b7d084d.mp3",
+      "audioUrl": "https://cdn.listen.style/p/01hgjnrjszt1mrg3jk1829j0cn/audio/published-dc0e74c0-27ee-4795-b3b3-af96013f8493/Eh9nncIMA9kLpkFxBzWeLlzb2st3APw6bcEu8A8c.mp3",
       "date": "Fri, 13 Nov 2026 20:00:00 +0000",
       "duration": "00:59:36",
       "source": "Chronicle News Connect"
@@ -17335,25 +17335,25 @@
     "bbc": {
       "ok": true,
       "count": 292,
-      "checkedAt": "2026-11-15T00:25:55+00:00"
+      "checkedAt": "2026-11-15T07:15:07+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1632,
-      "checkedAt": "2026-11-15T00:25:56+00:00"
+      "checkedAt": "2026-11-15T07:15:07+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-15T00:25:57+00:00"
+      "checkedAt": "2026-11-15T07:15:09+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 766,
-      "checkedAt": "2026-11-15T00:25:57+00:00"
+      "checkedAt": "2026-11-15T07:15:10+00:00"
     }
   },
-  "updatedAt": "2026-11-15T00:25:57+00:00",
+  "updatedAt": "2026-11-15T07:15:10+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
