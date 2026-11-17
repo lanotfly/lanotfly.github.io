@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "OpenAI sued by California over rogue cyber attacks",
+      "summary": "The California Attorney General Rob Bonta is suing OpenAI, alleging the ChatGPT maker misled the public and put people at risk by developing AI models without adequate safeguards. The lawsuit cites the July 2026 attack on the AI platform Hugging Face, in which experimental OpenAI agents accessed the internet and breached the company's internal systems. An OpenAI spokesperson told the BBC that the lawsuit \"appears to single out OpenAI over a challenge that's been identified by every major AI lab\". Also: Five European countries have announced plans to set up immigration \"return hubs\" in Rwanda. Robert Pattinson has been named as the new James Bond. Russia and Ukraine have launched major attacks on each other, destroying three key bridges. A forensic expert has told the BBC he believes Jeffrey Epstein's death was the result of a homicide, not suicide. And controversy in South Africa over the removal of wild baboons from Cape Town. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: OpenAI CEO Sam Altman speaks at the Semafor \"Silicon Valley & The World\" Conference in San Francisco, California, US November 16, 2026. REUTERS/Manuel Orbegozo",
+      "link": "https://www.bbc.co.uk/programmes/p0pnc231",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pnc1vp.mp3",
+      "date": "Tue, 17 Nov 2026 05:35:00 +0000",
+      "duration": "1715",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Crimea Kerch Bridge hit in a huge Ukrainian drone attack",
       "summary": "The Russian defence ministry says a record number of drones were fired from Ukraine overnight and more than 1300 were brought down by its air defences. An oil refinery in the Krasnodar region was targeted and there was damage to the Kerch Bridge which links Russia to occupied Crimea. Western countries call on Israel to allow rapid humanitarian access to Gaza. The Indonesian president apologises to neighbouring countries for the thick haze caused by massive forest fires in his country. The director of the Shakespeare Institute threatens to resign if plans to move the centre from Stratford-upon-Avon to Birmingham go ahead. And could co-founder Jensen Huang make a swift return to the US technology giant, Nvidia? The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: A view shows the Crimean Bridge as seen from the city of Kerch, Crimea Credit: REUTERS/Alexey Pavlishak/File Photo",
       "link": "https://www.bbc.co.uk/programmes/p0pn98q4",
@@ -1558,15 +1567,6 @@
       "source": "BBC Global News Podcast"
     },
     {
-      "title": "Meta 'hid the truth' over child safety, US court hears",
-      "summary": "The technology giant Meta has gone on trial in California over allegations its platforms, Facebook and Instagram, are deliberately designed to keep young people hooked. Nearly thirty US states are seeking changes to the platforms and financial penalties amounting to hundreds of billions of dollars. California's prosecutor told the court Meta had put profits over safety and deliberately misled the public. Meta strongly denies the accusations. Also: the United States announces sanctions against the president and a senior lawyer of the International Criminal Court; the head of the WHO warns that the Ebola virus outbreak in the Democratic Republic of Congo is far from being under control; Earl Spencer is to publish a book telling the life story of his sister, Diana, Princess of Wales, from his perspective; and could tree shrews help us correct short sightedness in humans? The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: The Meta logo is displayed on a mobile phone in Liverpool, Britain, 09 June 2026. Credit: Photo by ADAM VAUGHAN/EPA/Shutterstock",
-      "link": "https://www.bbc.co.uk/programmes/p0p56ktz",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p56khl.mp3",
-      "date": "Wed, 19 Aug 2026 04:46:00 +0000",
-      "duration": "1778",
-      "source": "BBC Global News Podcast"
-    },
-    {
       "title": "The Global Story - Is Iran really trying to kill Trump?",
       "summary": "Last month, President Trump secretly swapped planes via a catering truck as he left a Nato summit in Turkey. The elaborate ruse, first reported by the Washington Post, was in response to a possible threat from Iran. But how serious were the US administration’s fears of an assassination attempt? And does the Iranian regime have the capability to carry out such an operation beyond its borders? We speak to Parham Ghobadi, a senior reporter at the BBC’s Persian Service, and Dan Lamothe of the Washington Post, to understand more about what transpired on Air Force One, the history of Iran’s alleged assassination plots, and why the Iranian regime’s prime target might be its own citizens. For more episodes, just search 'The Global Story' wherever you get your BBC Podcasts. Producers: Mhairi MacKenzie, Hannah Moore and Xandra Ellin Executive producers: Martine Powers and James Shield Mix: Travis Evans Digital producer: Sam Gruet Studio manager: Mike Regaard Senior news editor: China Collins Photo: A catering truck is parked on the other side of Air Force One, before U.S. President Donald Trump's departure from Ankara en route to Washington after his participation in the NATO leaders' summit, at Ankara Esenboga Airport in Ankara, Turkey, July 8, 2026. Credit: Reuters/ABC-TV/Pool/File Photo",
       "link": "https://www.bbc.co.uk/programmes/p0p4j11y",
@@ -2639,6 +2639,15 @@
     }
   ],
   "chronicle": [
+    {
+      "title": "【国際欄 #23】アメリカ中間選挙振り返り。トランプ党化した共和党への「強烈なNO」（ゲスト：三牧聖子さん）",
+      "summary": "News Connect 国際欄、今回のゲストは、同志社大学大学院グローバル・スタディーズ研究科 教授の三牧聖子さんです。11月3日に行われたアメリカ中間選挙では、民主党が事前予測を超える大勝で上下両院の多数派を奪還しました。今回の結果は、「トランプ党」化する共和党へ、国民が「NO」を突きつけた結果だという見方もされています。民主党の大勝の背景や、今回の選挙で見られた特徴的な動きや議員についても解説していただきました。 ▼ゲストプロフィール 三牧聖子（同志社大学大学院グローバル・スタディーズ研究科 教授） 専門はアメリカ政治外交、国際関係。東京大学教養学部卒、同大大学院総合文化研究科で博士号取得（学術）。早稲田大学助手、米ハーバード大学、ジョンズホプキンズ大学研究員、高崎経済大学准教授などを経て2025年より現職。著書に『Z世代のアメリカ』（NHK出版新書）、『戦争違法化運動の時代―「危機の20年」のアメリカ国際関係思想』（名古屋大学出版会）など。 X： https://x.com/SeikoMimaki ▼MC 佐々木真奈美（経済キャスター） X： ⁠⁠⁠https://x.com/manamisasaki⁠⁠⁠ ▼News Connect 土曜版・日曜版・夕刊版 Spotifyプレイリストはこちら 🟢土曜版 ⁠⁠⁠https://open.spotify.com/playlist/3MKhzjyNlx96n2Khmt35EK⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ 🔴日曜版 ⁠⁠⁠https://open.spotify.com/playlist/2cAjmNYGXvSXCtPujQSNVb⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ 🔵夕刊版 国際欄 ⁠https://open.spotify.com/playlist/3CtpYOPniQT6FEuByBdfg3⁠ 🟣夕刊版 文化欄 ⁠⁠⁠ ⁠https://open.spotify.com/playlist/6DSiNeJQwWhV982h3BxOyg⁠ 🟡夕刊版 金融欄 ⁠ ⁠https://open.spotify.com/playlist/4btihPGM3vOhndcdtzQTtM⁠ ▼支援プログラム「Chronicleサポーター」については、こちらをご参照ください。 ⁠https://chronicle-inc.net/support LISTENで開く",
+      "link": "https://listen.style/p/smbslbmi/g7lrmqcf",
+      "audioUrl": "https://anchor.fm/s/81fb5eec/podcast/play/129459866/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-10-15%2Fc7deb678-f217-03b1-249e-289a17a68e58.mp3",
+      "date": "Tue, 17 Nov 2026 06:55:00 +0000",
+      "duration": "00:39:02",
+      "source": "Chronicle News Connect"
+    },
     {
       "title": "【11月17日】トヨタ、軽トラックをアメリカで来年発売へ。まずは法人向けから",
       "summary": "News Connect（ニュースコネクト）あなたと経済をつなぐ5分間 1日1つ、5分間で、国際政治や海外のビジネスシーンを中心に、世界のメガトレンドがわかる重要ニュースを解説。朝の支度や散歩、通勤、家事の時間などにお聴きいただけるとうれしいです。 ▼出演： 野村高文（Podcastプロデューサー／Podcast Studio Chronicle代表） https://x.com/nmrtkfm ▼支援プログラム「Chronicleサポーター」については、こちらをご参照ください。 https://chronicle-inc.net/support https://note.com/t_nomura/n/n43e514e703b4 ▼参考ニュース： Toyota Says ‘Okei’ to America: Introducing the Scion by Toyota Brand and KEI-01 https://pressroom.toyota.com/toyota-says-okei-to-america-introducing-the-scion-by-toyota-brand-and-kei-01/ Toyota Sees a U.S. Future for Tiny Trucks With a Devoted Following https://www.nytimes.com/2026/11/10/business/toyota-kei-pickup-truck.html Toyota to bring 'really cute' tiny trucks favored by Trump to the US https://www.usatoday.com/story/cars/news/2026/11/11/toyota-scion-kei-truck-america/92727212007/ You Can Own A Kei Car In The US. But You Might Not Be Able To Drive It https://www.motor1.com/features/815397/why-you-cant-drive-old-kei-cars-in-some-us-states/ Kei Trucks Are Now Street Legal to Register in 22 States, New 50-State Kei Truck Laws Guide Finds https://theweeklydriver.com/2026/10/kei-trucks-are-now-street-legal-to-register-in-22-states-new-50-state-kei-truck-laws-guide-finds/ Toyota to Launch Kei Truck in US in 2027, Capped at 40 kph to Meet 'Low-Speed Vehicle' Standard https://finance.biggo.com/news/fe40ee50-7357-4415-865d-35282cf6ac68 日本の軽自動車規格は、グローバルの自動車規格となるのか？ スズキのCES出展から始まった軽自動車規格の広がり https://car.watch.impress.co.jp/docs/news/2155362.html トランプ米大統領、米国での「超小型車」の生産を承認と発言 https://www.jetro.go.jp/biznews/2025/12/4f7e34115f8a5bf5.html BYD’s smallest EV, the Racco, heads to new international markets https://thedriven.io/2026/10/10/byds-smallest-ev-the-racco-heads-to-new-international-markets/ ▼Podcast Studio Chronicle公式サイト https://chronicle-inc.net/ LISTENで開く",
@@ -17362,25 +17371,25 @@
     "bbc": {
       "ok": true,
       "count": 293,
-      "checkedAt": "2026-11-17T01:06:13+00:00"
+      "checkedAt": "2026-11-17T09:16:38+00:00"
     },
     "chronicle": {
       "ok": true,
-      "count": 1634,
-      "checkedAt": "2026-11-17T01:06:13+00:00"
+      "count": 1635,
+      "checkedAt": "2026-11-17T09:16:38+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-17T01:06:14+00:00"
+      "checkedAt": "2026-11-17T09:16:39+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 767,
-      "checkedAt": "2026-11-17T01:06:14+00:00"
+      "checkedAt": "2026-11-17T09:16:40+00:00"
     }
   },
-  "updatedAt": "2026-11-17T01:06:15+00:00",
+  "updatedAt": "2026-11-17T09:16:40+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
