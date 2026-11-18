@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "Nvidia rules out return for disgraced boss",
+      "summary": "Jensen Huang fails in his bid to be re-hired as CEO of Nvidia after a scandal over his affair with an alleged Chinese spy. The US Securities and Exchange Commission is reportedly investigating whether the company misled investors. Nvidia has meanwhile reported a doubling of revenues during his last quarter in charge. Also: President Donald Trump is attending a regional economic summit in China, a day ahead of a historic meeting with his Chinese counterpart, Xi Jinping, and the Russian leader, Vladimir Putin, in the city of Shenzhen. The US has lost its measles-free status and infections are continuing to spread. Researchers have been learning more about humpback whales by using drones to collect their snot. We have a report from the West Bank after a 72-year-old Palestinian woman was shot dead by armed settlers in Jericho. New research has found that genes inherited from Neanderthals can reduce the risk of schizophrenia. A Georgia O'Keefe painting that was hidden in a cupboard for years has sold at auction for 4.8 million dollars. And the spacecraft Voyager 1 will clock up a milestone - reaching a distance of one light day from earth. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Jensen Huang looks on during National Design Studio's launch event for America.gov, a new AI-powered government website, at the Mellon Auditorium in Washington, DC, US, September 29, 2026. Credit: REUTERS/Kylie Cooper",
+      "link": "https://www.bbc.co.uk/programmes/p0pnjy0q",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pnjxxc.mp3",
+      "date": "Wed, 18 Nov 2026 05:26:00 +0000",
+      "duration": "1737",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Special episode: Trump, Putin and Xi meeting",
       "summary": "This special episode of the Global News Podcast brings together our China specialist, our North America correspondent, and our Russia and Ukraine analyst, to discuss an unprecedented summit taking place this week. The US President Donald Trump, Russian President Vladimir Putin and Chinese President Xi Jinping are due to meet in Shenzhen, China, for their first-ever trilateral talks. President Trump has said the agenda will include denuclearisation, the war with Iran, and the war in Ukraine. So what could emerge from this meeting? Some analysts are hopeful that China could exert some influence on Tehran, and act as a mediator between Moscow and Kyiv. But Ukrainian President Volodymyr Zelensky has said he's worried that the three leaders could try to reshape the international order as they see fit, without consulting smaller countries. Trump, Putin and Xi are also expected to talk about the economy and AI, particularly after Jensen Huang was ousted as CEO of Nvidia, following allegations that he had an affair with a suspected Chinese spy. But will any big decisions come out of the talks in Shenzhen? Or is this about symbolism: a way for the leaders of China, the US and Russia to give themselves a boost and a distraction from their problems at home? The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Traditional Russian wooden Matryoshka dolls depicting US President Donald J. Trump (L), Russian President Vladimir Putin (C) and Chinese President Xi Jinping (R) are displayed at a gift shop in Moscow, Russia, 16 November 2026 Credit: EPA/Shutterstock",
       "link": "https://www.bbc.co.uk/programmes/p0pnhq1p",
@@ -1564,15 +1573,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p5k01q.mp3",
       "date": "Thu, 20 Aug 2026 16:16:00 +0000",
       "duration": "1729",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Israel investigates death of five-year-old girl in Gaza",
-      "summary": "Israel's military has confirmed for the first time that its troops opened fire on a car carrying Hind Rajab, the five-year old Palestinian child who was killed alongside six of her relatives in Gaza in 2024. The IDF is opening a criminal investigation into the deaths, as well as those of two paramedics sent to rescue her. A separate inquiry will examine the killing of fifteen emergency and aid workers in Rafah last year. Also: after six years in the US state of California, Prince Harry and his family are moving back to the UK, but will not be undertaking royal duties. At least five people have been killed by Russian missile attacks on Kyiv in the early hours of Thursday morning. The US pharmaceutical giants, Moderna and Merck, say trials of an experimental treatment for melanoma have shown signs of success. US public debt has soared to a record 40 trillion dollars. A former Meta employee, turned whistleblower, tells a court in California that Meta CEO, Mark Zuckerberg, put growth in Facebook and Instagram before child safety. We have a special report about the gold rush in Kenya that's causing security and safety concerns. Scientists say giant whales are taking advantage of the ice disappearing from East Greenland, and shares in the Chinese robot maker, Unitree, soar as it launches its new humanoid robots. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Five-year-old Hind Rajab who was killed in Gaza, January 29th 2004, by the Israel Defense Forces (IDF) during the Gaza war. Credit: Family",
-      "link": "https://www.bbc.co.uk/programmes/p0p5dl04",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p5d6hr.mp3",
-      "date": "Thu, 20 Aug 2026 05:02:00 +0000",
-      "duration": "1713",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17380,25 +17380,25 @@
     "bbc": {
       "ok": true,
       "count": 293,
-      "checkedAt": "2026-11-18T01:21:02+00:00"
+      "checkedAt": "2026-11-18T09:14:02+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1636,
-      "checkedAt": "2026-11-18T01:21:03+00:00"
+      "checkedAt": "2026-11-18T09:14:03+00:00"
     },
     "english": {
       "ok": true,
       "count": 1022,
-      "checkedAt": "2026-11-18T01:21:04+00:00"
+      "checkedAt": "2026-11-18T09:14:03+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 767,
-      "checkedAt": "2026-11-18T01:21:04+00:00"
+      "checkedAt": "2026-11-18T09:14:03+00:00"
     }
   },
-  "updatedAt": "2026-11-18T01:21:05+00:00",
+  "updatedAt": "2026-11-18T09:14:04+00:00",
   "english": [
     {
       "title": "Life, Death & Mario Kart [1008] A Rambling Challenge 🗣️",
