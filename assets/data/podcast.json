@@ -550,15 +550,6 @@
       "source": "BBC Global News Podcast"
     },
     {
-      "title": "Ukraine comes under renewed Russian attack",
-      "summary": "The Ukrainian president has accused Russia of responding to the latest negotiations about ending the war by launching three waves of ballistic missiles. Nine people were killed and more than 30 injured across Ukraine, as homes, power facilities, shops and a medical centre were hit. The attacks came after Russia had said it was \"ready in principle\" to resume peace talks, and the US said an end to the war was close. Also: American media reports say the US and Israel are developing plans for renewed strikes against specific targets in Iran. How Arab parties could hold the balance of power in the Israeli general election. Why has President Trump been heckled at a rally in South Carolina? And a clinical trial has been launched in the UK which scientists hope could cut years from the search for new treatments for Alzheimer's disease. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: A rescuer works at the site of a shopping centre hit by a Russian missile attack, amid Russia's attack on Ukraine, in Kyiv, Ukraine October 22, 2026. Credit: REUTERS/Gleb Garanich",
-      "link": "https://www.bbc.co.uk/programmes/p0pj1x9c",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pj1qgg.mp3",
-      "date": "Thu, 22 Oct 2026 15:22:00 +0000",
-      "duration": "1582",
-      "source": "BBC Global News Podcast"
-    },
-    {
       "title": "US and European websites go offline over security concerns",
       "summary": "A cyber security flaw has prompted governments in Finland and the Netherlands and websites such as Wikipedia and the BBC to go completely dark temporarily. The flaws in a programming language were discovered by AI. PHP is a scripting language that powers 70 per cent of all websites in the world. Also: Three-way talks between Russia, Ukraine and the United States are scheduled to take place in Abu Dhabi next month to try to bring an end to the Russia-Ukraine war. We hear about an Iranian prisoner who went to extraordinary lengths to chronicle the brutal reality of life Inside one of the country's notorious jail's. Our correspondent details the rise in the number of wild elephants dying in Sri Lanka. The new rules that mean you won't have to clean up before you leave an Airbnb. And why John Malkovich is tipped for an Oscar for his performance in Wild Horse Nine. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: The website of the Computer Emergency Response Team for the EU Institutions, Bodies and Agencies displays a warning message after critical vulnerabilities were detected in the PHP programming language Credit: Rob Engelaar - EPA/Shutterstock",
       "link": "https://www.bbc.co.uk/programmes/p0phxwpq",
@@ -17424,26 +17415,26 @@
   "feedStatus": {
     "bbc": {
       "ok": true,
-      "count": 295,
-      "checkedAt": "2026-11-21T12:45:18+00:00"
+      "count": 294,
+      "checkedAt": "2026-11-21T19:51:05+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1639,
-      "checkedAt": "2026-11-21T12:45:18+00:00"
+      "checkedAt": "2026-11-21T19:51:06+00:00"
     },
     "english": {
       "ok": true,
       "count": 1023,
-      "checkedAt": "2026-11-21T12:45:19+00:00"
+      "checkedAt": "2026-11-21T19:51:07+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 768,
-      "checkedAt": "2026-11-21T12:45:19+00:00"
+      "checkedAt": "2026-11-21T19:51:07+00:00"
     }
   },
-  "updatedAt": "2026-11-21T12:45:19+00:00",
+  "updatedAt": "2026-11-21T19:51:07+00:00",
   "english": [
     {
       "title": "Sick in France 🇫🇷 | How My Family Holiday Became a 3-Week Nightmare [1009]",
