@@ -1,6 +1,15 @@
 {
   "bbc": [
     {
+      "title": "The Global Story: AI can imitate a human. But can it think like one?",
+      "summary": "For decades, computer scientists have been trying to figure out whether computers can think. But with the advent of highly sophisticated chatbots like Claude and ChatGPT…might we finally have our answer? This week we’re introducing The Global Backstory, the new strand of our show that explores the history behind the news today. We constantly hear stories about artificial intelligence, but most of them are about where AI is going; in this five-episode series we’re looking at where it came from. Beginning with computer scientist Alan Turing’s famous Turing test in 1950, the quest to verify the existence of machine intelligence has taken on many forms – from the rudimentary chatbots of the 1960s, to the 1997 defeat of a chess grand master by a computer, to IBM Watson’s stint on Jeopardy in the 2010s. But large language models have rendered old methods of measuring machine intelligence obsolete. So how smart is AI, anyway? And will it ever be smarter than us? Tristan Redman and Asma Khalid are joined by Thomas Germain, BBC technology columnist and host of the BBC podcast The Interface. The Global Story brings clarity to politics, business and foreign policy in a time of connection and disruption. For more episodes, just search 'The Global Story' wherever you get your BBC Podcasts.",
+      "link": "https://www.bbc.co.uk/programmes/p0pp0406",
+      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0pp03f4.mp3",
+      "date": "Sun, 22 Nov 2026 20:00:00 +0000",
+      "duration": "1720",
+      "source": "BBC Global News Podcast"
+    },
+    {
       "title": "Deadlock at UN climate summit in Turkey",
       "summary": "The COP31 summit has gone into a second day of overtime after talks were suspended for the night. There is no agreement in sight with the European Union and Pacific Island nations threatening to walk away without agreeing to a deal because the draft text makes no mention of reducing global demand for fossil fuels. Also: Croatians take to the streets over the death in hospital of a psychiatric patient who was beaten and smothered. We hear from British endurance athlete Lewis Pugh who swam through the Strait of Hormuz to highlight the environmental cost of the war between the US and Iran. Nepal's Prime Minister Balendra Shah visits India to try to secure much needed financial aid following devastating floods in the Himalayan nation. And has a maths problem that has puzzled humans for 167 years finally been solved? The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Members of the public visit the free-entry 'Green Zone' during the 31st United Nations Climate Change Conference (COP31) in Antalya, Turkey, 19 November 2026. Credit: EPA/Shutterstock",
       "link": "https://www.bbc.co.uk/programmes/p0pp9hxv",
@@ -1555,15 +1564,6 @@
       "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p66zbc.mp3",
       "date": "Tue, 25 Aug 2026 14:51:00 +0000",
       "duration": "1583",
-      "source": "BBC Global News Podcast"
-    },
-    {
-      "title": "Britain hands over long-range missile blueprints to Ukraine",
-      "summary": "Britain's Prime Minister, Andy Burnham, on a visit to Kyiv, has promised to continue support for Ukraine despite what he called \"outrageous threats\" from Russia. He was speaking at an event marking Ukraine's independence day. Mr Burnham said that the UK and its allies would help Ukraine develop new technologies and support efforts to destroy Russian missiles before they are launched. He confirmed that the UK will provide blueprints so Ukraine can manufacture more long-range cruise missiles. Also: Pakistan's representative is visiting Iran to push for the reopening of talks between Washington and Teheran. A special BBC report from inside Afghanistan under the Taliban hearing from politicians and the impact their hardline rules are having on women. A spike in pirate attacks in the Western Indian Ocean and we hear from Kenya where four people have been arrested following the death of at least eighteen elephants that died after suspected poisoning. The Global News Podcast brings you the breaking news you need to hear, as it happens. Listen for the latest headlines and current affairs from around the world. Politics, economics, climate, business, technology, health – we cover it all with expert analysis and insight. Get the news that matters, delivered twice a day on weekdays and daily at weekends, plus special bonus episodes reacting to urgent breaking stories. Follow or subscribe now and never miss a moment. Get in touch: globalpodcast@bbc.co.uk Photo: Britain's Prime Minister Andy Burnham receives the \"Honorary Distinction to the British People\", \"Gratitude of the Ukrainian People\" award from Ukraine's President Volodymyr Zelenskiy during a celebration ceremony of the Independence Day of Ukraine, amid Russia's attack on Ukraine, in central Kyiv, Ukraine August 24, 2026. Credit: REUTERS/Gleb Garanich",
-      "link": "https://www.bbc.co.uk/programmes/p0p62p97",
-      "audioUrl": "https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download-rss-low/proto/http/vpid/p0p62n6y.mp3",
-      "date": "Mon, 24 Aug 2026 15:43:00 +0000",
-      "duration": "1603",
       "source": "BBC Global News Podcast"
     },
     {
@@ -17416,25 +17416,25 @@
     "bbc": {
       "ok": true,
       "count": 293,
-      "checkedAt": "2026-11-22T15:42:58+00:00"
+      "checkedAt": "2026-11-22T21:19:16+00:00"
     },
     "chronicle": {
       "ok": true,
       "count": 1640,
-      "checkedAt": "2026-11-22T15:42:58+00:00"
+      "checkedAt": "2026-11-22T21:19:17+00:00"
     },
     "english": {
       "ok": true,
       "count": 1023,
-      "checkedAt": "2026-11-22T15:42:59+00:00"
+      "checkedAt": "2026-11-22T21:19:18+00:00"
     },
     "japanese": {
       "ok": true,
       "count": 768,
-      "checkedAt": "2026-11-22T15:43:00+00:00"
+      "checkedAt": "2026-11-22T21:19:18+00:00"
     }
   },
-  "updatedAt": "2026-11-22T15:43:00+00:00",
+  "updatedAt": "2026-11-22T21:19:19+00:00",
   "english": [
     {
       "title": "Sick in France 🇫🇷 | How My Family Holiday Became a 3-Week Nightmare [1009]",
