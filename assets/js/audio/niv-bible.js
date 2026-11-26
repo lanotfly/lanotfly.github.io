@@ -222,8 +222,40 @@
     button.title=(playing?'Pause':'Play')+' KJV Audio Bible';
     updateQueuePlaybackState();
   }
+  /* This host's streams can be cut short by the phone's media stack
+     when playback starts while the chapter is still downloading
+     (the end then arrives early and the chapter rolls into the next
+     one mid-reading). So a chapter's play() is held until the file
+     has buffered through, with a timed fallback, and a newer chapter
+     request — or a pause — supersedes a held start. */
+  var startToken=0;
+  var pendingStart=null;
+  function startPlayback(token){
+    if(!pendingStart||pendingStart.token!==token)return;
+    pendingStart=null;
+    audio.play().then(function(){
+      setStatus('');
+      if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='playing';}catch(_){}}
+      paint();
+    }).catch(function(){
+      setStatus('');
+      paint();
+    });
+  }
+  function holdStartUntilBuffered(){
+    var token=++startToken;
+    pendingStart={token:token};
+    if(audio.readyState>=3){startPlayback(token);return;}
+    var onBuffered=function(){
+      audio.removeEventListener('canplaythrough',onBuffered);
+      startPlayback(token);
+    };
+    audio.addEventListener('canplaythrough',onBuffered);
+    setTimeout(function(){startPlayback(token);},8000);
+  }
   function playChapter(bookCode,chapter,shouldPlay){
     earlyEndRetries=0;
+    pendingStart=null;
     var book=getBook(bookCode);if(!book)return;
     chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
     var previousSaved=savedChapter();
@@ -252,16 +284,7 @@
     setStatus('');
     updateProgress();
     paint();
-    if(shouldPlay){
-      audio.play().then(function(){
-        setStatus('');
-        if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='playing';}catch(_){}}
-        paint();
-      }).catch(function(){
-        setStatus('');
-        paint();
-      });
-    }
+    if(shouldPlay)holdStartUntilBuffered();
   }
   function nextChapter(){
     var book=getBook(current.book);if(!book)return;
@@ -310,7 +333,7 @@
   button.addEventListener('click',togglePlayback);
   bookSelect.addEventListener('change',function(){playChapter(bookSelect.value,1,false);});
   audio.addEventListener('play',function(){setStatus('Playing KJV · '+(getBook(current.book)||books[0])[0]+' '+current.chapter);setMetadata((getBook(current.book)||books[0])[0],current.chapter);paint();});
-  audio.addEventListener('pause',function(){saveChapterProgress(true);if(queueModule)queueModule.render();if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
+  audio.addEventListener('pause',function(){pendingStart=null;saveChapterProgress(true);if(queueModule)queueModule.render();if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='paused';}catch(_){}}paint();});
   audio.addEventListener('timeupdate',function(){
     if(audio.currentTime>0&&isFinite(audio.currentTime))remember(current.book,current.chapter,audio.currentTime);
     saveChapterProgress(false);
@@ -370,5 +393,9 @@
     adoptSavedChapter();
   });
   window.addEventListener('storage',function(event){if(event.key===lastKey)adoptSavedChapter();});
+  /* Fetch each chapter in full once it is selected (see
+     holdStartUntilBuffered): a fully downloaded chapter cannot be
+     cut short by the media stack's streaming estimates. */
+  try{audio.preload='auto';}catch(_){}
   paint();
 })(window,document);
