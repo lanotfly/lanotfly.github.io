@@ -244,7 +244,14 @@
   function setPlayed(feed, episode, value) {
     try {
       if (value) localStorage.setItem(storageKey(feed, episode), '1');
-      else localStorage.removeItem(storageKey(feed, episode));
+      else {
+        localStorage.removeItem(storageKey(feed, episode));
+        /* Marking unplayed means "start over": drop the saved position
+           too, so the episode's progress bar resets to zero and the
+           next play starts from the beginning. The bulk menu loops
+           this function, so Mark all as unplayed clears every bar. */
+        localStorage.removeItem(positionKey(feed, episode));
+      }
     } catch (_) {}
   }
   function dateLabel(value, language) {
