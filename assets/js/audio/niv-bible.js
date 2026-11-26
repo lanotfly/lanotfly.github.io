@@ -159,6 +159,7 @@
   function chapterProgressKey(book,chapter){return 'library_kjv_progress:'+book+':'+chapter;}
   function readChapterProgress(book,chapter){try{var r=JSON.parse(localStorage.getItem(chapterProgressKey(book,chapter))||'null');return r&&Number(r.t)>0?r:null;}catch(_){return null;}}
   var lastProgressSave=0;
+  var earlyEndRetries=0;
   function saveChapterProgress(force){
     if(!isFinite(audio.duration)||audio.duration<=0)return;
     var t=audio.currentTime||0;
@@ -222,6 +223,7 @@
     updateQueuePlaybackState();
   }
   function playChapter(bookCode,chapter,shouldPlay){
+    earlyEndRetries=0;
     var book=getBook(bookCode);if(!book)return;
     chapter=Math.min(Math.max(Number(chapter)||1,1),book[2]);
     var previousSaved=savedChapter();
@@ -318,7 +320,35 @@
   audio.addEventListener('loadedmetadata',updateProgress);
   audio.addEventListener('durationchange',updateProgress);
   if(progress){progress.addEventListener('input',function(){if(isFinite(audio.duration)&&audio.duration>0)audio.currentTime=(Number(progress.value)/1000)*audio.duration;});}
-  audio.addEventListener('ended',function(){try{localStorage.setItem('library_kjv_played:'+current.book+':'+current.chapter,'1');localStorage.removeItem(chapterProgressKey(current.book,current.chapter));}catch(_){}if(queueModule)queueModule.render();nextChapter();});
+  /* This host's chapter files are low-bitrate MPEG-2 MP3s, and some
+     browsers (notably iOS) can end such a stream before the chapter is
+     really over; advancing on that 'ended' would skip into the next
+     chapter mid-reading. Guard: when the playhead stops well short of
+     the reported duration, reload the same chapter at the cut point
+     and keep playing it instead of advancing. A genuine end (playhead
+     at the duration) takes the normal path, and the retry cap lets a
+     truly broken file advance rather than loop forever. */
+  audio.addEventListener('ended',function(){
+    var d=audio.duration,t=audio.currentTime;
+    if(isFinite(d)&&d>0&&isFinite(t)&&t<d-5&&earlyEndRetries<3){
+      earlyEndRetries++;
+      var resumeAt=t;
+      audio.src=chapterUrl(current.book,current.chapter);
+      audio.load();
+      var restoreEarly=function(){
+        audio.removeEventListener('loadedmetadata',restoreEarly);
+        try{audio.currentTime=Math.min(resumeAt,Math.max(0,(audio.duration||resumeAt)-1));}catch(_){}
+        audio.play().catch(function(){});
+      };
+      audio.addEventListener('loadedmetadata',restoreEarly);
+      paint();
+      return;
+    }
+    earlyEndRetries=0;
+    try{localStorage.setItem('library_kjv_played:'+current.book+':'+current.chapter,'1');localStorage.removeItem(chapterProgressKey(current.book,current.chapter));}catch(_){}
+    if(queueModule)queueModule.render();
+    nextChapter();
+  });
   audio.addEventListener('error',function(){setStatus('');paint();});
   /* Cross-tab progress: the last chapter/position lives in localStorage,
      which Safari shares across tabs of this site. Save when the tab is
