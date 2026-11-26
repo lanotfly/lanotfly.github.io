@@ -93,8 +93,13 @@
           setKjvBulkOpen(false);
           var book=getBook(current.book)||books[0];
           for(var chapter=1;chapter<=book[2];chapter++){
-            try{var key='library_kjv_played:'+book[1]+':'+chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);}catch(_){}
+            try{var key='library_kjv_played:'+book[1]+':'+chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);localStorage.removeItem(chapterProgressKey(book[1],chapter));}catch(_){}
           }
+          /* Marking also resets the resume point of the book's saved
+             chapter: a (un)played chapter must replay from the start,
+             not from wherever a previous listen left the playhead. */
+          var savedBulk=savedChapter();
+          if(savedBulk&&savedBulk.book===book[1])remember(book[1],Number(savedBulk.chapter)||1,0);
           renderQueue();
           setStatus(played?'Marked all '+book[2]+' chapters as played.':'Marked all '+book[2]+' chapters as unplayed.');
         });
@@ -143,7 +148,7 @@
       getProgressSeconds:function(item){var r=readChapterProgress(item.book,item.chapter);return r?Number(r.t)||0:0;},
       getProgressDuration:function(item){var r=readChapterProgress(item.book,item.chapter);return r?Number(r.d)||0:0;},
       isPlayed:function(item){try{return localStorage.getItem('library_kjv_played:'+item.book+':'+item.chapter)==='1';}catch(_){return false;}},
-      setPlayed:function(item,played){try{var key='library_kjv_played:'+item.book+':'+item.chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);}catch(_){}},
+      setPlayed:function(item,played){try{var key='library_kjv_played:'+item.book+':'+item.chapter;if(played)localStorage.setItem(key,'1');else localStorage.removeItem(key);localStorage.removeItem(chapterProgressKey(item.book,item.chapter));var savedItem=savedChapter();if(savedItem&&savedItem.book===item.book&&Number(savedItem.chapter)===Number(item.chapter))remember(item.book,item.chapter,0);}catch(_){}},
       isPlaying:function(){return !audio.paused&&!audio.ended;},
       toggleCurrentEpisode:function(){toggleChapter(current.book,current.chapter);},
       playEpisodeAt:function(index){playChapter(current.book,index+1,true);},
@@ -275,6 +280,14 @@
       if(resumeTime>0){
         var restoreProgress=function(){
           audio.removeEventListener('loadedmetadata',restoreProgress);
+          /* A saved point in the chapter's last seconds belongs to a
+             chapter that was already heard to the end — its final
+             position survived because the app closed before the
+             advance, or the chapter was marked unplayed afterwards,
+             and neither clears it. Resuming there would 'finish' the
+             chapter almost at once and skip to the next one, so a
+             near-end point means: play from the beginning. */
+          if(isFinite(audio.duration)&&audio.duration>0&&resumeTime>=audio.duration-10)return;
           try{audio.currentTime=Math.min(resumeTime,Math.max(0,(audio.duration||resumeTime)-1));}catch(_){}
         };
         audio.addEventListener('loadedmetadata',restoreProgress);
